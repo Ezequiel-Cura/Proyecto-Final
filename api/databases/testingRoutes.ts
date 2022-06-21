@@ -16,3 +16,4 @@ router.post("/", async (req: Request, res: Response) => {
         res.status(400).send("Errorrrrrrrrr en la ruta post de user");
     }
 });
+

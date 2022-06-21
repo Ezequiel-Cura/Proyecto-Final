@@ -1,6 +1,14 @@
+
 'use strict'
 
 const {Schema, model} = require('mongoose')
 
-model('User', UserSchema);
-model('Account', AccountSchema);
+const User = model('User', UserSchema);
+const Account = model('Account', AccountSchema);
+
+
+module.exports = {
+    User,
+    Account
+}
+

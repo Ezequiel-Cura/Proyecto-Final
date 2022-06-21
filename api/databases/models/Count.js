@@ -1,7 +1,7 @@
 "use strict";
-const AcountSchema = new Schema({
+const AccountSchema = new Schema({
     _id: Schema.Types.ObjectId,
-    AcountName: { type: String, required: true },
+    AccountName: { type: String, required: true },
     expenses: {
         category: { type: String, required: true },
         amount: Number
@@ -13,4 +13,4 @@ const AcountSchema = new Schema({
 }, {
     timestamps: true // fecha de creación y de actualización
 });
-module.exports = AcountSchema;
+module.exports = AccountSchema;
