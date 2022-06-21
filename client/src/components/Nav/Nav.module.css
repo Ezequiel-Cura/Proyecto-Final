@@ -1,0 +1,39 @@
+.Nav_wrapper{
+    position: fixed;
+    top:0px;
+    left: 0px;
+    height: 100%;
+    width: 150px;
+    padding: 6px 14px;
+    background-color: #11101d;
+    display: flex;
+    flex-direction: column;
+}
+.image_wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+.image_cointainer{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px red solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.items_wrapper{
+    margin: 100px 0 200px 0;
+}
+.items_wrapper div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.items_wrapper div:hover{
+    background-color: lightslategray;
+    border-radius: 30px;
+}
