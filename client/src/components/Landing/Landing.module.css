@@ -1,6 +1,103 @@
 .wrapper {
     height: 100vh;
-    display: grid;
+    display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url("assets/vieja.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(3px);
 }
+.welcome{
+    font-size: var(--bigFont);
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    width: 100%;
+    max-height: 20%;
+}
+.container {
+    position: absolute;
+    top: 20%;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 35fr 65fr;
+    height: 60%;
+    width: 100%;
+}
+.formContainer{
+    background-color: rgba(124, 132, 132, 0.286);
+    display: grid;
+    grid-template-rows: 1fr 5fr;
+    padding: 15%;
+}
+.form{
+    display:grid;
+    grid-gap: 10px;
+    width: 100%;
+}
+.form h3 {
+    margin: 0px;
+    align-self: center;
+}
+input {
+    border-radius: 15px;
+    padding: 2px 20px;
+}
+
+.image {
+    background-color: rgba(124, 132, 132, 0.286);
+    background-image: url("assets/vieja.png");
+    background-size: cover;
+    background-position: center;
+}
+
+@media (max-width: 900px) {
+    .container{
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+}
+.button {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 0.15rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+.button:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0cf;
+    border-radius: 10rem;
+    z-index: -2;
+  }
+.button:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: #008fb3;
+    transition: all 0.3s;
+    border-radius: 10rem;
+    z-index: -1;
+  }
+.button:hover {
+    color: #fff;
+  }
+.button:hover:before {
+    width: 100%;
+  }
