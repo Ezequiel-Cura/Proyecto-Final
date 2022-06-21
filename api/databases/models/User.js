@@ -6,7 +6,7 @@ const UserSchema = new Schema({
     email: { type: String, unique: true, lowercase: true },
     password: { type: String, select: false },
     avatar: String,
-    Acounts: [{ type: Schema.Types.ObjectId, refs: 'Acount' }]
+    Accounts: [{ type: Schema.Types.ObjectId, refs: 'Account' }]
 }, {
     timestamps: true // fecha de creación y de actualización
 });
