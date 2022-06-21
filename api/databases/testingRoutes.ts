@@ -1,6 +1,6 @@
 
 import { Router, Request, Response } from "express";
-const User = require("./models/User");
+const { User, Count } = require('./models/index');
 const router = Router()
 
 
