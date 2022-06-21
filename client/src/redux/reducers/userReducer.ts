@@ -1,20 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-export interface Cosas{
-    reducerSlice: Object
-}
-
-
 const initialState = {
-
+    usuario: {}
 }
 
 const reducerSlice = createSlice({
     name: "user",
     initialState,
     reducers:{
-
+       
     }
 })
-
-export default reducerSlice;
+export default reducerSlice.reducer
