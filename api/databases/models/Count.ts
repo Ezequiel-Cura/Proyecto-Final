@@ -1,13 +1,13 @@
 
-const CountSchema = new Schema({
+const AcountSchema = new Schema({
     _id: Schema.Types.ObjectId,
-    countName: {type: String, require: true},
+    AcountName: {type: String, required: true},
     expenses: {
-        category: {type: String, require: true},
+        category: {type: String, required: true},
         amount: Number
     },
     entrance: {
-        category: {type: String, require: true},
+        category: {type: String, required: true},
         amount: Number
     }
 },
@@ -16,4 +16,4 @@ const CountSchema = new Schema({
 })
 
 
-module.exports = CountSchema;
+module.exports = AcountSchema;

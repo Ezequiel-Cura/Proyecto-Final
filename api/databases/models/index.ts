@@ -3,4 +3,4 @@
 const {Schema, model} = require('mongoose')
 
 model('User', UserSchema);
-model('Count', CountSchema);
+model('Acount', AcountSchema);
