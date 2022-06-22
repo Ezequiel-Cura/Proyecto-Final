@@ -1,3 +1,4 @@
+import { Schema, model } from "mongoose"
 'use strict'
 
 interface IMoney{
@@ -10,8 +11,7 @@ interface IAccount {
  expenses: IMoney[],
  entrance: IMoney[]
 }
-const AccountSchema: IAccount = new Schema({
-    _id: Schema.Types.ObjectId,
+const AccountSchema = new Schema<IAccount>({
     AccountName: {type: String, required: true},
     expenses: [{
         category: {type: String, required: true},
@@ -20,7 +20,7 @@ const AccountSchema: IAccount = new Schema({
     entrance: [{
         category: {type: String, required: true},
         amount: Number
-    }]
+    }],
 },
 {
     timestamps: true  // fecha de creación y de actualización
@@ -42,5 +42,4 @@ const AccountSchema: IAccount = new Schema({
 // }
 // }
 
-module.exports = AccountSchema;
-
+export default model<IAccount>('Account', AccountSchema);

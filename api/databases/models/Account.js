@@ -1,6 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
 'use strict';
-const AccountSchema = new Schema({
-    _id: Schema.Types.ObjectId,
+const AccountSchema = new mongoose_1.Schema({
     AccountName: { type: String, required: true },
     expenses: [{
             category: { type: String, required: true },
@@ -9,7 +11,7 @@ const AccountSchema = new Schema({
     entrance: [{
             category: { type: String, required: true },
             amount: Number
-        }]
+        }],
 }, {
     timestamps: true // fecha de creación y de actualización
 });
@@ -29,4 +31,4 @@ const AccountSchema = new Schema({
 // amount: 100000
 // }
 // }
-module.exports = AccountSchema;
+exports.default = (0, mongoose_1.model)('Account', AccountSchema);

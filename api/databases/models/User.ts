@@ -1,16 +1,17 @@
+import { Schema, model } from "mongoose"
 'use strict'
+
 interface IUser{
-    _id: string,
-    userName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    avatar: string,
-    Accounts: any
+    _id?: string,
+    userName?: string,
+    lastName?: string,
+    email?: string,
+    password?: string,
+    avatar?: string,
+    Accounts?: any
 }
 
-const UserSchema: IUser = new Schema({
-    _id: Schema.Types.ObjectId,
+const UserSchema = new Schema<IUser>({
     userName: {type: String, required: true},
     lastName: String,
     email: {type: String, unique: true, lowercase: true, required: true},
@@ -22,6 +23,5 @@ const UserSchema: IUser = new Schema({
     timestamps: true  // fecha de creación y de actualización
 })
 
-
-module.exports = UserSchema
+export default model<IUser>('User', UserSchema);
 
