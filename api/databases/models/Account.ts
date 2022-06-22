@@ -6,11 +6,12 @@ interface IMoney{
     amount: number
 }
 interface IAccount {
- _id: string,
+ _id?: string,
  AccountName: string,
- expenses: IMoney[],
- entrance: IMoney[]
+ expenses?: IMoney[],
+ entrance?: IMoney[]
 }
+
 const AccountSchema = new Schema<IAccount>({
     AccountName: {type: String, required: true},
     expenses: [{

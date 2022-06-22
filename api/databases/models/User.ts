@@ -1,12 +1,13 @@
 import { Schema, model } from "mongoose"
 'use strict'
 
+
 interface IUser{
     _id?: string,
-    userName?: string,
+    userName: string,
     lastName?: string,
-    email?: string,
-    password?: string,
+    email: string,
+    password: string,
     avatar?: string,
     Accounts?: any
 }

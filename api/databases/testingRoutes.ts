@@ -6,14 +6,26 @@ import db from "../databases/models/index"; // importas todos los modelos como u
 router.post("/", async (req: Request, res: Response) => {
     try {
         const newUser: typeof Object = req.body;
-        const result = await new db.User(newUser).save();
-        console.log("result: ", result)
-        result
-            ? res.status(200).json(`Successfully created a new user with id ${result._id}`)
+        const savingNewUser = await new db.User(newUser).save();
+        // console.log("result: ", result)
+        savingNewUser
+            ? res.status(200).json(`Successfully created a new user with id ${savingNewUser._id}`)
             : res.status(500).send("Failed to create a new user.");
     } catch (error: any) {
-        console.error(error.message);
-        res.status(400).send("Errorrrrrrrrr en la ruta post de user");
+        // console.error(error.message);
+        res.status(400).send("Error en la ruta post de user");
+    }
+});
+
+
+
+router.get("/", async (_req: Request, res: Response) => {
+    try {
+       const Users = await db.User.find({});
+       console.log("Users: ", Users) 
+       res.status(200).send(Users);
+    } catch (error: any) {
+        res.status(500).send(error.message);
     }
 });
 
