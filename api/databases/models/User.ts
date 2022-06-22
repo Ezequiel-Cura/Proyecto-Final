@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose"
-'use strict'
 
+'use strict'
+import { Schema, model } from "mongoose"
 
 interface IUser{
     _id?: string,

@@ -1,5 +1,5 @@
-import { Schema, model } from "mongoose"
 'use strict'
+import { Schema, model } from "mongoose"
 
 interface IMoney{
     category: string,
@@ -7,13 +7,13 @@ interface IMoney{
 }
 interface IAccount {
  _id?: string,
- AccountName: string,
+ name: string,
  expenses?: IMoney[],
  entrance?: IMoney[]
 }
 
 const AccountSchema = new Schema<IAccount>({
-    AccountName: {type: String, required: true},
+    name: {type: String, required: true},
     expenses: [{
         category: {type: String, required: true},
         amount: Number

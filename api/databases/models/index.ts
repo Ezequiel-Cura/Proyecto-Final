@@ -2,10 +2,10 @@
 'use strict'
 import User from "./User"
 import Account from "./Account"
+import Category from "./Category"
 
-export default {User, Account}
+export default {User, Account, Category}
 
-// faltaría importar los modelos pero al parecer ya están importados automáticamente. Reveer.
 
 
 
