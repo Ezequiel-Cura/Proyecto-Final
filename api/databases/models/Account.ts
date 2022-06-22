@@ -15,11 +15,11 @@ interface IAccount {
 const AccountSchema = new Schema<IAccount>({
     name: {type: String, required: true},
     expenses: [{
-        category: {type: String, required: true},
+        category: { type: Schema.Types.ObjectId, ref: 'Category'},
         amount: Number
     }],
     entrance: [{
-        category: {type: String, required: true},
+        category: { type: Schema.Types.ObjectId, ref: 'Category'},
         amount: Number
     }],
 },

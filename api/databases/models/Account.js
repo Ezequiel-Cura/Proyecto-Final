@@ -1,15 +1,14 @@
-"use strict";
+'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-'use strict';
 const AccountSchema = new mongoose_1.Schema({
-    AccountName: { type: String, required: true },
+    name: { type: String, required: true },
     expenses: [{
-            category: { type: String, required: true },
+            category: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Category' },
             amount: Number
         }],
     entrance: [{
-            category: { type: String, required: true },
+            category: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Category' },
             amount: Number
         }],
 }, {

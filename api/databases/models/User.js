@@ -1,7 +1,6 @@
-"use strict";
+'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-'use strict';
 const UserSchema = new mongoose_1.Schema({
     userName: { type: String, required: true },
     lastName: String,
