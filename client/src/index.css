@@ -15,12 +15,10 @@ code {
 :root {
   --background: #1f1f1f;
   --font-color: white;
-  --bigFont: 1.5rem;
-}
-
-@media (max-width: 600px) {
-  :root{
-    --bigFont: 1 rem;
-
-  }
+  --font-size-bigger: 1.75rem;
+  --font-size-big: 1.5rem;
+  --font-size-medium: 1.25rem;
+  --font-size-normal: 1rem;
+  --font-size-small: .75rem;
+  --btn-color: rgb(42, 180, 255);
 }
