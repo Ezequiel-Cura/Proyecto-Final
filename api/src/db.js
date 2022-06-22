@@ -12,21 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const index_1 = __importDefault(require("../databases/models/index")); // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
-const router = (0, express_1.Router)();
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.connectDB = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const { DB_CONN_STRING } = process.env;
+const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newUser = req.body;
-        const result = yield new index_1.default.User(newUser).save();
-        console.log("result: ", result);
-        result
-            ? res.status(200).json(`Successfully created a new user with id ${result._id}`)
-            : res.status(500).send("Failed to create a new user.");
+        const db = yield mongoose_1.default.connect(DB_CONN_STRING);
+        console.log("Mongodb is connected to", db.connection.host);
     }
     catch (error) {
-        console.error(error.message);
-        res.status(400).send("Errorrrrrrrrr en la ruta post de user");
+        console.error(error);
     }
-}));
-exports.default = router;
+});
+exports.connectDB = connectDB;
