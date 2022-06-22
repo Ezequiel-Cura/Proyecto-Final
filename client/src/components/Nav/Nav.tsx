@@ -39,9 +39,6 @@ export default function Nav() {
                 </div>
             </Link>
         </div>
-        <div>
-            <p>Algun codigo de modo oscuro 🌙</p>
-        </div>
     </div>
   )
 }
