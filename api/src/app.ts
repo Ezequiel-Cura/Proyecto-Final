@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import { connectDB } from "./db";
-import router from "../databases/testingRoutes"
+import router from "./routes"
 import morgan from "morgan"
 import cookieparser from "cookie-parser"
 import bodyparser from "body-parser"
@@ -8,7 +8,7 @@ import cors from "cors"
 // Initializations
 connectDB()
  const server: Application = express()
-server.set("port", process.env.PORT || 3000)
+server.set("port", process.env.PORT || 3001)
 
 server.use(bodyparser.urlencoded({extended: true}));
 server.use(bodyparser.json());

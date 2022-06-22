@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import db from "../databases/models/index"; // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
+import db from "../../databases/models/index"; // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
  const router = Router()
 
 

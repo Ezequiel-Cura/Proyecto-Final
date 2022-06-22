@@ -13,20 +13,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const index_1 = __importDefault(require("../databases/models/index")); // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
+const index_1 = __importDefault(require("../../databases/models/index")); // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
 const router = (0, express_1.Router)();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newUser = req.body;
-        const result = yield new index_1.default.User(newUser).save();
-        console.log("result: ", result);
-        result
-            ? res.status(200).json(`Successfully created a new user with id ${result._id}`)
+        const savingNewUser = yield new index_1.default.User(newUser).save();
+        // console.log("result: ", result)
+        savingNewUser
+            ? res.status(200).json(`Successfully created a new user with id ${savingNewUser._id}`)
             : res.status(500).send("Failed to create a new user.");
     }
     catch (error) {
-        console.error(error.message);
-        res.status(400).send("Errorrrrrrrrr en la ruta post de user");
+        // console.error(error.message);
+        res.status(400).send("Error en la ruta post de user");
+    }
+}));
+router.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const Users = yield index_1.default.User.find({});
+        console.log("Users: ", Users);
+        res.status(200).send(Users);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
     }
 }));
 exports.default = router;
