@@ -1,0 +1,133 @@
+body {
+
+    background-image: url("assets/vieja.png");
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(5px);
+}
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.input {
+    border-radius: 15px;
+    height: 30px;
+    width: 80%;
+    padding: 2px 20px;
+    align-self: center;
+    justify-self: center;
+}
+.welcome{
+    padding: 0px 20px;
+    font-size: var(--font-size-big);
+    top: 0px;
+    max-height: 20%;
+}
+.container {
+    display: grid;
+    grid-template-columns: 35fr 65fr;
+    height: 60%;
+    border-radius: 4px;
+}
+.formContainer{
+    background-color: rgba(124, 132, 132, 0.286);
+    display: grid;
+    grid-template-rows: 1fr 5fr;
+    height: calc(100% - 50px);
+    padding: 25px 50px;
+}
+.textContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form{
+    display:grid;
+    width: 100%;
+}
+.image {
+    background-color: rgba(124, 132, 132, 0.286);
+    background-image: url("assets/vieja.png");
+    background-size: cover;
+    background-position: center;
+}
+.buttons {
+  display:flex;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+.checkboxContainer{
+    display:flex;
+}
+.buttonContainer{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.button {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 10rem;
+    color: rgb(255, 11, 47);
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 0.15rem;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    height: 59px;
+  }
+.button:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0cf;
+    border-radius: 10rem;
+    z-index: -2;
+  }
+.button:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: #008fb3;
+    transition: all 0.3s;
+    border-radius: 10rem;
+    z-index: -1;
+  }
+.button:hover {
+    color: #fff;
+  }
+.button:hover:before {
+    width: 100%;
+  }
+
+    @media (max-width: 900px) {
+        .container{
+            grid-template-columns: 1fr;
+        }
+        .image{
+            display: none;
+        }
+        .formContainer{
+            padding: 50px;
+            width: calc(100% - 100px);
+            height: 50vh;
+        }
+    }
+    @media (max-width: 600px) {
+        .formContainer{
+            padding: 20px;
+            width: calc(100% - 40px);
+        }
+    }
