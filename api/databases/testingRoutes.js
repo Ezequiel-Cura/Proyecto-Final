@@ -17,7 +17,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const newUser = req.body;
         const result = yield User.insertOne(newUser);
         result
-            ? res.status(201).send(`Successfully created a new user with id ${result._id}`)
+            ? res.status(200).json(`Successfully created a new user with id ${result._id}`)
             : res.status(500).send("Failed to create a new user.");
     }
     catch (error) {

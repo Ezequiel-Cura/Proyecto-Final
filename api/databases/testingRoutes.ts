@@ -6,10 +6,10 @@ const router = Router()
 
 router.post("/", async (req: Request, res: Response) => {
     try {
-        const newUser: {} = req.body;
+        const newUser: typeof Object = req.body;
         const result = await User.insertOne(newUser);
         result
-            ? res.status(201).send(`Successfully created a new user with id ${result._id}`)
+            ? res.status(200).json(`Successfully created a new user with id ${result._id}`)
             : res.status(500).send("Failed to create a new user.");
     } catch (error) {
         console.error(error);
