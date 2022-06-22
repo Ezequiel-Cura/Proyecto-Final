@@ -1,76 +1,86 @@
-.wrapper {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+
     background-image: url("assets/vieja.png");
     background-size: cover;
     background-position: center;
-    filter: blur(3px);
+    backdrop-filter: blur(5px);
+}
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.input {
+    border-radius: 15px;
+    height: 30px;
+    width: 80%;
+    padding: 2px 20px;
+    align-self: center;
+    justify-self: center;
 }
 .welcome{
-    font-size: var(--bigFont);
-    position: absolute;
-    z-index: 2;
+    padding: 0px 20px;
+    font-size: var(--font-size-big);
     top: 0px;
-    width: 100%;
     max-height: 20%;
 }
 .container {
-    position: absolute;
-    top: 20%;
-    z-index: 2;
     display: grid;
     grid-template-columns: 35fr 65fr;
     height: 60%;
-    width: 100%;
+    border-radius: 4px;
 }
 .formContainer{
     background-color: rgba(124, 132, 132, 0.286);
     display: grid;
     grid-template-rows: 1fr 5fr;
-    padding: 15%;
+    height: calc(100% - 50px);
+    padding: 25px 50px;
+}
+.textContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .form{
     display:grid;
-    grid-gap: 10px;
     width: 100%;
 }
-.form h3 {
-    margin: 0px;
-    align-self: center;
-}
-input {
-    border-radius: 15px;
-    padding: 2px 20px;
-}
-
 .image {
     background-color: rgba(124, 132, 132, 0.286);
     background-image: url("assets/vieja.png");
     background-size: cover;
     background-position: center;
 }
-
-@media (max-width: 900px) {
-    .container{
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
-    }
+.buttons {
+  display:flex;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+.checkboxContainer{
+    display:flex;
+}
+.buttonContainer{
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
 .button {
     cursor: pointer;
-    display: inline-block;
-    padding: 0.75rem 1.25rem;
+    padding: 0.5rem 1rem;
     border-radius: 10rem;
-    color: #fff;
+    color: rgb(255, 11, 47);
     text-transform: uppercase;
     font-size: 1rem;
     letter-spacing: 0.15rem;
     transition: all 0.3s;
     position: relative;
-    overflow: hidden;
     z-index: 1;
+    width: 90%;
+    height: 59px;
   }
 .button:after {
     content: "";
@@ -101,3 +111,23 @@ input {
 .button:hover:before {
     width: 100%;
   }
+
+    @media (max-width: 900px) {
+        .container{
+            grid-template-columns: 1fr;
+        }
+        .image{
+            display: none;
+        }
+        .formContainer{
+            padding: 50px;
+            width: calc(100% - 100px);
+            height: 50vh;
+        }
+    }
+    @media (max-width: 600px) {
+        .formContainer{
+            padding: 20px;
+            width: calc(100% - 40px);
+        }
+    }
