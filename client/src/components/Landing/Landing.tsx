@@ -16,6 +16,7 @@ export default function Landing() {
           }
           <div className={styles.image}/>
       </div>
+      <div className={styles.background}/>
     </div>
   )
 }
