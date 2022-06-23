@@ -6,7 +6,7 @@ import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
 
 const router = Router()
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/user", async (req: Request, res: Response) => {
     try {
         const newUser: object = req.body;
         console.log({newUser})
@@ -21,14 +21,14 @@ router.post("/", async (req: Request, res: Response) => {
     }
 });
 
-router.put("/:id", async (req: Request, res: Response) => {
+router.put("/user/:id", async (req: Request, res: Response) => {
     const id = req?.params?.id;
 
     try {
-        const updatedUser: typeof UserNoSqlTemp = req.body;
+        const userToUpdate: typeof UserNoSqlTemp = req.body;
         const query = { _id: new ObjectId(id) };
       
-        const updateUser = await db.UserNoSqlTemp.updateOne(query, { $set: updatedUser });
+        const updateUser = await db.UserNoSqlTemp.updateOne(query, { $set: userToUpdate });
 
         updateUser
             ? res.status(200).send(`Successfully updated user with id ${id}`)
@@ -49,7 +49,7 @@ router.get("/users", async (_req: Request, res: Response) => {
     }
 });
 
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/user/:id", async (req: Request, res: Response) => {
     const id = req?.params?.id;
 
     try {

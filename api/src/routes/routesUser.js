@@ -59,11 +59,12 @@ router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     var _b;
     const id = (_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.id;
     try {
-        console.log("id: ", id);
+        // console.log("id: ", id)
         const query = { _id: new mongodb_1.ObjectId(id) };
-        console.log("query: ", query);
+        // console.log("query: ", query)
         const deleteUser = yield index_1.default.UserNoSqlTemp.deleteOne(query);
-        console.log({ deleteUser });
+        // console.log({deleteUser})
+        // deleteUser ahora tiene un obj con dos props: acknowledged: boolean y deletedCount: number
         if (deleteUser && deleteUser.deletedCount) {
             res.status(202).send(`Successfully removed user with id ${id}`);
         }
