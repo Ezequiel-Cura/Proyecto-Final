@@ -15,27 +15,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const mongodb_1 = require("mongodb");
 const index_1 = __importDefault(require("../../databases/models/index")); // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
+const UserNoSql_temp_1 = __importDefault(require("../../databases/models/UserNoSql(temp)"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const router = (0, express_1.Router)();
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userName, lastName, email, password } = req.body;
     try {
-        const newUser = req.body;
-        console.log({ newUser });
-        const savingNewUser = yield index_1.default.UserNoSqlTemp.create(newUser);
-        savingNewUser
-            ? res.status(200).json(`Successfully created a new user with id ${savingNewUser._id}`)
-            : res.status(500).send("Failed to create a new user.");
+        const userExistCheck = yield UserNoSql_temp_1.default.findOne({ email: email });
+        if (userExistCheck) {
+            return res.status(400).send('E-mail ya registrado');
+        }
     }
-    catch (error) {
-        res.status(400).send("Error en la ruta post de user");
+    catch (err) {
+        return res.status(400).send('Error');
     }
+    bcrypt_1.default.hash(password, 10)
+        .then((hashPass) => {
+        return UserNoSql_temp_1.default.create({
+            userName,
+            lastName,
+            email,
+            password: hashPass
+        });
+    })
+        .then(() => {
+        res.status(200).send();
+    })
+        .catch(() => {
+        res.status(400).send('Error en creacion de usuario');
+    });
 }));
-router.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/user/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
     try {
-        const updatedUser = req.body;
+        const userToUpdate = req.body;
         const query = { _id: new mongodb_1.ObjectId(id) };
-        const updateUser = yield index_1.default.UserNoSqlTemp.updateOne(query, { $set: updatedUser });
+        const updateUser = yield index_1.default.UserNoSqlTemp.updateOne(query, { $set: userToUpdate });
         updateUser
             ? res.status(200).send(`Successfully updated user with id ${id}`)
             : res.status(304).send(`User with id: ${id} not updated`);
@@ -45,17 +61,28 @@ router.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).send(error.message);
     }
 }));
-router.get("/users", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/user", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = _req.body;
     try {
-        const Users = yield index_1.default.UserNoSqlTemp.find({});
-        console.log("Users: ", Users);
-        res.status(200).send(Users);
+        const User = yield UserNoSql_temp_1.default.findOne({ email });
+        console.log(User);
+        const passwordCompare = User && (yield bcrypt_1.default.compare(password, User.password));
+        console.log(passwordCompare);
+        if (!User) {
+            res.send('Usuario inexistente');
+        }
+        if (passwordCompare) {
+            res.send(User);
+        }
+        else {
+            res.status(400).send('Contraseña Incorrecta');
+        }
     }
     catch (error) {
-        res.status(500).send(error.message);
+        res.send(error);
     }
 }));
-router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/user/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     const id = (_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.id;
     try {

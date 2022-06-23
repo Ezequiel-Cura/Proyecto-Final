@@ -5,6 +5,7 @@ const UserSQLessSchema = new mongoose_1.Schema({
     userName: { type: String, required: true },
     lastName: String,
     email: { type: String, unique: true, lowercase: true, required: true },
+    password: { type: String, required: true },
     avatar: String,
     Account: {
         // La cuenta de cada User tiene 4 props: 

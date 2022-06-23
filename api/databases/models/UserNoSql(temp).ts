@@ -15,8 +15,10 @@ interface IUser {
 const UserSQLessSchema = new Schema<IUser>({
   userName: { type: String, required: true },
   lastName: String,
-
+  
   email: { type: String, unique: true, lowercase: true, required: true },
+  password: {type: String, required: true},
+  
   avatar: String,
 
   Account: {
@@ -30,7 +32,6 @@ const UserSQLessSchema = new Schema<IUser>({
     // y una relacion con el modelo de categorias a través de su Id.
 
     // INGRESOS
-
 
     monthlyInput: [{
       // Array de ingresos mensuales, aplicado todos los meses  
