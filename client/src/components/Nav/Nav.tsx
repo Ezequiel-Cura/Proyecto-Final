@@ -8,9 +8,11 @@ export default function Nav() {
     <div className={styles.Nav_wrapper}>
 
         <div className={styles.image_wrapper}>
-            <div className={styles.image_cointainer}>
-                <img src="" alt="foto de perfil" />
-            </div>
+            <Link to="/profile">
+                <div className={styles.image_cointainer}>
+                    <img src="" alt="foto de perfil" />
+                </div>
+            </Link>
         </div>
         <div className={styles.items_wrapper}>
             <Link to="/home">
