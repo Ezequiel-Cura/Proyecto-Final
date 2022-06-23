@@ -1,14 +1,14 @@
 import { Router } from "express";
 
  const router = Router()
+// Backup:
+//  import routeUserNoSql from '../../backup/routeUserNoSql'
+// router.use('/test', routeUserNoSql)
 
- import routesUser from './routesUser';
- import routeUserNoSql from './routeUserNoSql'
-
+import routesUser from './routesUser';
 
  router.use("/", routesUser)
 
- router.use('/test', routeUserNoSql)
 
 
 

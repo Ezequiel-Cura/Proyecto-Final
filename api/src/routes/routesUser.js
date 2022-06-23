@@ -19,7 +19,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newUser = req.body;
         console.log({ newUser });
-        const savingNewUser = yield index_1.default.UserNoSql.create(newUser);
+        const savingNewUser = yield index_1.default.UserNoSqlTemp.create(newUser);
         savingNewUser
             ? res.status(200).json(`Successfully created a new user with id ${savingNewUser._id}`)
             : res.status(500).send("Failed to create a new user.");
@@ -30,7 +30,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 router.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const Users = yield index_1.default.UserNoSql.find({});
+        const Users = yield index_1.default.UserNoSqlTemp.find({});
         console.log("Users: ", Users);
         res.status(200).send(Users);
     }

@@ -8,7 +8,7 @@ router.post("/", async (req: Request, res: Response) => {
     try {
         const newUser: object = req.body;
         console.log({newUser})
-        const savingNewUser = await db.UserNoSql.create(newUser);
+        const savingNewUser = await db.UserNoSqlTemp.create(newUser);
 
         savingNewUser
             ? res.status(200).json(`Successfully created a new user with id ${savingNewUser._id}`)
@@ -21,7 +21,7 @@ router.post("/", async (req: Request, res: Response) => {
 
 router.get("/", async (_req: Request, res: Response) => {
     try {
-       const Users = await db.UserNoSql.find({});
+       const Users = await db.UserNoSqlTemp.find({});
        console.log("Users: ", Users) 
        res.status(200).send(Users);
     } catch (error: any) {
