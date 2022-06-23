@@ -1,15 +1,14 @@
 
 'use strict'
+// In './backup/
+// import User from "../../backup/User"
+// import Account from "../../backup/Account"
+// import UserNoSql from "./UserNoSql(temp)"
+// export default {User, Account, Category, UserNoSql}
+// import Category from "../../backup/Category"
 
-const {Schema, model} = require('mongoose')
-// faltaría importar los modelos pero al parecer ya están importados automáticamente. Reveer.
-
-const User = model('User', UserSchema);
-const Account = model('Account', AccountSchema);
+import UserNoSqlTemp from "./UserNoSql(temp)"
 
 
-module.exports = {
-    User,
-    Account
-}
+export default { UserNoSqlTemp }
 
