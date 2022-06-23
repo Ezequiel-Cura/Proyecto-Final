@@ -35,9 +35,9 @@ const UserSQLessSchema = new Schema<IUser>({
     monthlyInput: [{
       // Array de ingresos mensuales, aplicado todos los meses  
       date: { type: Date, default: Date.now() },
-      end: String,
+      end: Number,
       description: String,
-      // category: { type: Schema.Types.ObjectId, ref: 'Category' },
+      category: String,
       amount: Number
     }],
 
@@ -46,7 +46,7 @@ const UserSQLessSchema = new Schema<IUser>({
 
       date: { type: Date, default: Date.now() },
       description: String,
-      // category: { type: Schema.Types.ObjectId, default:"Other", ref: 'Category'},
+      category: String,
       amount: Number
     }],
 
@@ -55,10 +55,10 @@ const UserSQLessSchema = new Schema<IUser>({
     monthlyExpenses: [{
       // Gastos mensuales; incluyen cuotas, servicios, etc; descontados de los ingresos totales cada mes
       date: { type: Date, default: Date.now() },
-      end: String,
+      end: Number,
       description: String,
       amount: Number,
-      // category: { type: Schema.Types.ObjectId, ref: 'Category' }
+      category: String,
     }],
 
     variableExpenses: [{
@@ -67,9 +67,8 @@ const UserSQLessSchema = new Schema<IUser>({
       // cada obj tiene la fecha en la que se realizó, su id, su descripcion, category y amount 
 
       date: { type: Date, default: Date.now() },
-      end: String,
       id: Schema.Types.ObjectId,
-      // category: { type: Schema.Types.ObjectId, ref: 'Category' },
+      category: String,
       description: String,
     }]
   }
