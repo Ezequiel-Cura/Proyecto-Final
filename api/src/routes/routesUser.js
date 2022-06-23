@@ -65,9 +65,7 @@ router.get("/user", (_req, res) => __awaiter(void 0, void 0, void 0, function* (
     const { email, password } = _req.body;
     try {
         const User = yield UserNoSql_temp_1.default.findOne({ email });
-        console.log(User);
         const passwordCompare = User && (yield bcrypt_1.default.compare(password, User.password));
-        console.log(passwordCompare);
         if (!User) {
             res.send('Usuario inexistente');
         }

@@ -70,7 +70,7 @@ router.get("/user", async (_req: Request, res: Response) => {
     const User = await UserNoSqlTemp.findOne({email})
     const passwordCompare = User && await bcrypt.compare(password, User.password)
 
-    
+
     if(!User){
       res.send('Usuario inexistente')
     }
