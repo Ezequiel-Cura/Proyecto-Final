@@ -34,16 +34,15 @@ const UserSQLessSchema = new Schema<IUser>({
 
     monthlyInput: [{
       // Array de ingresos mensuales, aplicado todos los meses  
-      date: { type: Date, default: Date.now() },
+      date: { type: Date, default: Date.now(), required: true },
       end: Number,
       description: String,
+      amount: {type: Number, required: true},
       category: String,
-      amount: Number
     }],
 
     extraInput: [{
       // Ingresos adicionales, aplicados a demanda del usuario
-
       date: { type: Date, default: Date.now() },
       description: String,
       category: String,
@@ -54,10 +53,10 @@ const UserSQLessSchema = new Schema<IUser>({
 
     monthlyExpenses: [{
       // Gastos mensuales; incluyen cuotas, servicios, etc; descontados de los ingresos totales cada mes
-      date: { type: Date, default: Date.now() },
+      date: { type: Date, default: Date.now(), required: true },
       end: Number,
       description: String,
-      amount: Number,
+      amount: {type: Number, required: true},
       category: String,
     }],
 

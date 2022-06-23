@@ -8,6 +8,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import Account from "../../backup/Account"
 // import UserNoSql from "./UserNoSql(temp)"
 // export default {User, Account, Category, UserNoSql}
+// import Category from "../../backup/Category"
 const UserNoSql_temp_1 = __importDefault(require("./UserNoSql(temp)"));
-const Category_1 = __importDefault(require("./Category"));
-exports.default = { Category: Category_1.default, UserNoSqlTemp: UserNoSql_temp_1.default };
+exports.default = { UserNoSqlTemp: UserNoSql_temp_1.default };
