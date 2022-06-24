@@ -28,6 +28,7 @@
 .tabla {
     background-color: #333333;
     border-collapse: collapse;
+    border: none;
 }
 
 .tabla td, th {
