@@ -39,7 +39,7 @@ router.get("/user", async (_req: Request, res: Response) => {
       res.status(400).send('Contraseña Incorrecta')
     }
   } catch (error) {
-    res.send(error)
+    res.status(404).send(error)
   }
 });
 
@@ -89,34 +89,26 @@ router.delete("/user", async (req: Request, res: Response) => {
     }
   })
   .catch(() => {
-    res.send('Error en protocolo de borrado')
+    res.status(400).send('Error en protocolo de borrado')
   })
 });
 
 
 
-// router.put("/user", async (req: Request, res: Response) => {
-//   const {id} = req.query
-//   const { key, value } = req.body
+router.put("/user", async (req: Request, res: Response) => {
+  const {id, key, value} = req.body
 
-// });
+  try{
 
-router.put("/user/:id", async (req: Request, res: Response) => {
-    const id = req?.params?.id;
+    const user = await UserNoSqlTemp.findById(id)
+    await user?.Account[key].push(value)
+    await user?.save()
+    res.status(200).send('Usuario actualizado')
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
 
-    try {
-        const userToUpdate: typeof UserNoSqlTemp = req.body;
-        const query = { _id: new ObjectId(id) };
-      
-        const updateUser = await UserNoSqlTemp.updateOne(query, { $set: userToUpdate });
-
-        updateUser
-            ? res.status(200).send(`Successfully updated user with id ${id}`)
-            : res.status(304).send(`User with id: ${id} not updated`);
-    } catch (error: any) {
-        console.error(error.message);
-        res.status(400).send(error.message);
-    }
 });
 
 

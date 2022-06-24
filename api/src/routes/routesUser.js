@@ -13,7 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+
 const mongodb_1 = require("mongodb");
+
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const UserNoSql_temp_1 = __importDefault(require("../../databases/models/UserNoSql(temp)"));
@@ -43,7 +45,8 @@ router.get("/user", (_req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
     }
     catch (error) {
-        res.send(error);
+
+        res.status(404).send(error);
     }
 }));
 router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -73,6 +76,23 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (err) {
         return res.status(400).send('Error');
     }
+
+    bcrypt_1.default.hash(password, 10)
+        .then((hashPass) => {
+        return UserNoSql_temp_1.default.create({
+            userName,
+            lastName,
+            email,
+            password: hashPass
+        });
+    })
+        .then((user) => {
+        res.status(200).send(user);
+    })
+        .catch((err) => {
+        console.log(err);
+        res.status(400).send('Error en creacion de usuario');
+    });
 }));
 router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.query;
@@ -87,27 +107,20 @@ router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
     })
         .catch(() => {
-        res.send('Error en protocolo de borrado');
+        res.status(400).send('Error en protocolo de borrado');
     });
 }));
-// router.put("/user", async (req: Request, res: Response) => {
-//   const {id} = req.query
-//   const { key, value } = req.body
-// });
-router.put("/user/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
+router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, key, value } = req.body;
     try {
-        const userToUpdate = req.body;
-        const query = { _id: new mongodb_1.ObjectId(id) };
-        const updateUser = yield UserNoSql_temp_1.default.updateOne(query, { $set: userToUpdate });
-        updateUser
-            ? res.status(200).send(`Successfully updated user with id ${id}`)
-            : res.status(304).send(`User with id: ${id} not updated`);
+        const user = yield UserNoSql_temp_1.default.findById(id);
+        yield (user === null || user === void 0 ? void 0 : user.Account[key].push(value));
+        yield (user === null || user === void 0 ? void 0 : user.save());
+        res.status(200).send('Usuario actualizado');
     }
-    catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+    catch (err) {
+        res.status(400).send(err);
+
     }
 }));
 exports.default = router;
