@@ -4,6 +4,7 @@ import Nav from "components/Nav/Nav"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { RootState } from "redux/store"
 import { loadMockUser } from "redux/reducers/userReducer"
+import { Link } from 'react-router-dom'
 
 export default function Home() {
   const {usuario}:any = useAppSelector((state: RootState) => state.userReducer)
@@ -17,7 +18,25 @@ export default function Home() {
   return (
     <div>
       <Nav/>
-      <div>HOME</div>
+      <div>
+        <h1>Administra tus finanzas</h1>
+
+      </div>
+      <div>
+        <Link to="/home/ingresos">
+          <h2>INGRESOS</h2> 
+        </Link>
+
+        <Link to="/gastos">
+          <h2>GASTOS</h2>
+        </Link>
+
+        <Link to="/ahorros">
+          <h2>AHORROS</h2>
+        </Link>
+
+        <h2>NOVEDADES</h2>
+      </div>
     </div>
   )
 }
