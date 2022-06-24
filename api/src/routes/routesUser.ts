@@ -53,12 +53,7 @@ router.post("/user", async (req: Request, res: Response) => {
     if (userExistCheck) {
       return res.status(400).send('E-mail ya registrado')
     }
-
-  } catch (err) {
-    return res.status(400).send('Error')
-  }
-
-  bcrypt.hash(password, 10)
+    bcrypt.hash(password, 10)
     .then((hashPass) => {
       return UserNoSqlTemp.create({
         userName,
@@ -68,12 +63,16 @@ router.post("/user", async (req: Request, res: Response) => {
       })
     })
     .then((user) => {
-      res.status(200).send(user)
+      res.status(200).send(`User con ${user.email} fue creado`)
     })
     .catch((err) => {
       console.log(err)
       res.status(400).send('Error en creacion de usuario')
     })
+
+  } catch (err) {
+    return res.status(400).send('Error')
+  }
 
 });
 
@@ -95,6 +94,7 @@ router.delete("/user", async (req: Request, res: Response) => {
 });
 
 
+
 router.put("/user", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
@@ -108,10 +108,11 @@ router.put("/user", async (req: Request, res: Response) => {
   catch (err) {
     res.status(400).send(err)
   }
+
 });
 
 
 
 
 
-export default router
+export default router;

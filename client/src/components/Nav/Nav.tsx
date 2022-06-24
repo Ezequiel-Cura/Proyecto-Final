@@ -8,9 +8,11 @@ export default function Nav() {
     <div className={styles.Nav_wrapper}>
 
         <div className={styles.image_wrapper}>
-            <div className={styles.image_cointainer}>
-                <img src="" alt="foto de perfil" />
-            </div>
+            <Link to="/profile">
+                <div className={styles.image_cointainer}>
+                    <img src="" alt="foto de perfil" />
+                </div>
+            </Link>
         </div>
         <div className={styles.items_wrapper}>
             <Link to="/home">
@@ -18,7 +20,7 @@ export default function Nav() {
                     <h4>Home</h4>
                 </div>
             </Link>
-            <Link to="/home">
+            <Link to="/home/ingresos">
                 <div>
                     <h4>Ingresos</h4>
                 </div>
@@ -38,9 +40,6 @@ export default function Nav() {
                     <h4>Balance</h4>
                 </div>
             </Link>
-        </div>
-        <div>
-            <p>Algun codigo de modo oscuro 🌙</p>
         </div>
     </div>
   )

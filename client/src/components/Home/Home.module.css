@@ -1,6 +1,7 @@
+
 .wrapper{
+    background-color: rgb(28, 28, 28);
     height: 100vh;
-    display: grid;
+    display: flex;
     justify-content: center;
-    align-items: center;
 }
