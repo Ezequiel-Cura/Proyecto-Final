@@ -1,4 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap');
+
+*{
+  margin: 0px;
+  padding: 0px;
+  overflow-wrap: anywhere;
+}
+a{
+  text-decoration: none;
+}
+
 body {
   margin: 0;
   font-family: 'Comfortaa', "Arial";
@@ -20,10 +30,5 @@ code {
 :root {
   --background: #1f1f1f;
   --font-color: white;
-  --font-size-bigger: 1.75rem;
-  --font-size-big: 1.5rem;
-  --font-size-medium: 1.25rem;
-  --font-size-normal: 1rem;
-  --font-size-small: .75rem;
   --btn-color: rgb(42, 180, 255);
 }
