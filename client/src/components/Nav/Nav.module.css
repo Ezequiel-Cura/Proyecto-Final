@@ -1,5 +1,5 @@
 .Nav_wrapper{
-    position: sticky;
+    float: left;
     top:0px;
     left: 0px;
     height: 100vh;

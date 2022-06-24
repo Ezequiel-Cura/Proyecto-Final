@@ -6,16 +6,16 @@ import { loadMockUser, setUser } from "../../redux/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
-  const { usuario } = useAppSelector( state => state.userReducer);
+  const { usuario, todosLosUsuarios } = useAppSelector( state => state.userReducer);
   const dispatch = useAppDispatch();
-  console.log(usuario)
+  console.log(usuario, 'Trae el ejemplo :D')
+  console.log(todosLosUsuarios, 'No trae nada .-.')
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const [monto, setMonto] = useState<number>(89086);  //const total = setMonto(usuario.Account.monthlyInput[0].amount + monto)
   
-  //EL DATO SE INGRESA AUTOMATICAMENTE- cambiar form
   //----------Form-------------
-  interface AgregarIngresos {    //objeto que se envia!
+  interface AgregarIngresos {    //objeto que se envia?
     description: string,
     category: string,
     amount: number,
@@ -67,11 +67,8 @@ export default function ConDatos() {
 
   useEffect(() => {
     dispatch(loadMockUser());      //carga de user(ej Erik)
-    //dispatch(setUser());
+    dispatch(setUser);
   }, [dispatch])
-
-  //Agregar un order al tocar los montos,
-  //ver las funciones  para los handlers con typescript
 
   return (
     <div>
@@ -110,7 +107,7 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              {/* {usuario.Account.monthlyInput.length && usuario.Account.monthlyInput.map( ingreso => (
+              {usuario.Account.monthlyInput.length && usuario.Account.monthlyInput.map( ingreso => (
                 <tr>
                   <th>{ingreso.date.split("T")[0]}</th>
                   <th>{ingreso.description}</th>
@@ -118,7 +115,7 @@ export default function ConDatos() {
                   <th>$ {ingreso.amount}</th>
                   <th></th>
                 </tr>
-              ))} */}
+              ))}
               <tr>
                 <th></th>
                 <th></th>
