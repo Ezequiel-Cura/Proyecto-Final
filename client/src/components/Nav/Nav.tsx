@@ -20,7 +20,7 @@ export default function Nav() {
                     <h4>Home</h4>
                 </div>
             </Link>
-            <Link to="/home">
+            <Link to="/home/ingresos">
                 <div>
                     <h4>Ingresos</h4>
                 </div>
