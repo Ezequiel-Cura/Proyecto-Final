@@ -1,4 +1,4 @@
-import styles from "./Home.module.css"
+// import styles from "./Home.module.css"
 import React, { useEffect } from 'react'
 import Nav from "components/Nav/Nav"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
@@ -13,7 +13,7 @@ export default function Home() {
     dispatch(loadMockUser())
   }, [dispatch])
 
-
+  console.log(usuario)
   return (
     <div>
       <Nav/>

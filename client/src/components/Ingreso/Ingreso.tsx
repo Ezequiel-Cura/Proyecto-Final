@@ -19,9 +19,9 @@ export default function Ingreso() {
   //Falta en el condicional si existe el usuario con un ingreso. Solo verifica que haya un usuario(NO ESTOY USANDO EL loadMockUser())
 
   return (
-    <div>
+    <>
       <Nav/>
       {ingresoUsuario.usuario ? <SinDatos/> : <ConDatos/>}  
-    </div>
+    </>
   )
   }

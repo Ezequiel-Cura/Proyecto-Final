@@ -6,16 +6,13 @@ import { Link } from "react-router-dom";
 
 export default function SinDatos() {
     return (
-      <div>
-        <Nav/>
-        <div className={styles.wrapper}>
-            <h1>Comienza a administrar tus ingresos </h1>
-            <p>Crea una nueva plantilla ahora!</p>
-            <Link to="/home/ingresos/add">
-                <div className={styles.add}>+</div>
-            </Link>
-            <img className={styles.image} src={img} alt="not found"/>
-        </div>
+      <div className={styles.wrapper}>
+          <h1>Comienza a administrar tus ingresos </h1>
+          <p>Crea una nueva plantilla ahora!</p>
+          <Link to="/home/ingresos/add">
+              <div className={styles.add}>+</div>
+          </Link>
+          <img className={styles.image} src={img} alt="not found"/>
       </div>
     )
   }
