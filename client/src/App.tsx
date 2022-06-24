@@ -6,7 +6,6 @@ import Landing from 'components/Landing/Landing';
 
 function App() {
   return (
-    
     <Routes>
       <Route path="/" element={<Landing/>}/>
       <Route path='/home' element={<Home/>}/>
