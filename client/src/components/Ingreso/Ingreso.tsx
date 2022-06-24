@@ -1,25 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom'
 import Nav from "../Nav/Nav";
 import ConDatos from "./ConDatos";
 import SinDatos from './SinDatos';
-//-------------
-//redux: para que se autocomplete por el tipado + para poder utilizar otras funciones que no sean puras
-import  { setUser }  from "../../redux/reducers/userReducer";
+import styles from "./Ingreso.module.css"
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function Ingreso() {
-  const { todosLosUsuarios } = useAppSelector( state => state.userReducer); //traigo el estado global, con el  dispatch(ej Erik) cargado
-  const dispatch = useAppDispatch();
-
-  console.log(todosLosUsuarios, "INGRESO");
-
-  useEffect(() => {
-    //dispatch(setUser());      //carga de user(ej Erik)
-  }, [])
+  const { todosLosUsuarios } = useAppSelector( state => state.userReducer); 
 
   return (
     <div>
+      <Nav/>
       {todosLosUsuarios ? <SinDatos/> : <ConDatos/>}  
+      <Link to="/home">
+        <div>
+          <p>Home</p>
+        </div>
+      </Link>
     </div>
   )
   }
