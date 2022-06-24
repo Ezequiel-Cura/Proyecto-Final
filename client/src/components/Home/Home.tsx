@@ -13,7 +13,6 @@ export default function Home() {
     
   }, [dispatch])
 
-  console.log(usuario)
   return (
     <div>
       <Nav/>

@@ -64,13 +64,11 @@
     background-position: center;
 }
 .buttons {
-  display:flex;
-  gap: 30px;
-  justify-content: center;
-  align-items: center;
-}
-.checkboxContainer{
+    padding: 20px;
     display:flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
 }
 .buttonContainer{
     display:flex;
@@ -140,6 +138,9 @@
             grid-template-columns: 1fr;
             width: 90%;
         }
+        .button{
+            width: 60%;
+        }
         .image{
             display: none;
         }
@@ -174,6 +175,6 @@
             width: calc(100% - 4px)
         }
         .button {
-            width: 100%;
+            width: 80%;
         }
     }
