@@ -1,12 +1,47 @@
 
 import { Router, Request, Response } from "express";
 import { ObjectId } from "mongodb";
-import db from "../../databases/models/index"; // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
+import dotenv from 'dotenv'
+dotenv.config()
 import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
 import bcrypt from 'bcrypt'
 
-
 const router = Router()
+
+interface value {
+  date?: string
+}
+
+const entriesUpdate = (key: string, value: object) => {
+  /*
+  monthlyInput
+  extraInput
+  monthlyExpenses
+  variableExpenses
+  */
+
+}
+
+router.get("/user", async (_req: Request, res: Response) => {
+  const { email, password } = _req.body
+
+  try {
+    const User = await UserNoSqlTemp.findOne({ email })
+    const passwordCompare = User && await bcrypt.compare(password, User.password)
+
+
+    if (!User) {
+      res.send('Usuario inexistente')
+    }
+    if (passwordCompare) {
+      res.send(User)
+    } else {
+      res.status(400).send('Contraseña Incorrecta')
+    }
+  } catch (error) {
+    res.send(error)
+  }
+});
 
 router.post("/user", async (req: Request, res: Response) => {
 
@@ -18,12 +53,7 @@ router.post("/user", async (req: Request, res: Response) => {
     if (userExistCheck) {
       return res.status(400).send('E-mail ya registrado')
     }
-
-  } catch (err) {
-    return res.status(400).send('Error')
-  }
-
-  bcrypt.hash(password, 10)
+    bcrypt.hash(password, 10)
     .then((hashPass) => {
       return UserNoSqlTemp.create({
         userName,
@@ -32,79 +62,65 @@ router.post("/user", async (req: Request, res: Response) => {
         password: hashPass
       })
     })
-    .then(() => {
-      res.status(200).send()
+    .then((user) => {
+      res.status(200).send(`User con ${user.email} fue creado`)
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err)
       res.status(400).send('Error en creacion de usuario')
     })
 
-
-
-
+  } catch (err) {
+    return res.status(400).send('Error')
+  }
 
 });
+
+router.delete("/user", async (req: Request, res: Response) => {
+  const {id} = req.query
+
+  UserNoSqlTemp.findByIdAndDelete(id)
+  .then((user) => {
+    console.log(user)
+    if(user){
+      res.send('Usuario eliminado')
+    } else {
+      res.send('Usuario no encontrado')
+    }
+  })
+  .catch(() => {
+    res.send('Error en protocolo de borrado')
+  })
+});
+
+
+
+// router.put("/user", async (req: Request, res: Response) => {
+//   const {id} = req.query
+//   const { key, value } = req.body
+
+// });
 
 router.put("/user/:id", async (req: Request, res: Response) => {
-  const id = req?.params?.id;
+    const id = req?.params?.id;
 
-  try {
-    const userToUpdate: typeof UserNoSqlTemp = req.body;
-    const query = { _id: new ObjectId(id) };
+    try {
+        const userToUpdate: typeof UserNoSqlTemp = req.body;
+        const query = { _id: new ObjectId(id) };
+      
+        const updateUser = await UserNoSqlTemp.updateOne(query, { $set: userToUpdate });
 
-    const updateUser = await db.UserNoSqlTemp.updateOne(query, { $set: userToUpdate });
-
-    updateUser
-      ? res.status(200).send(`Successfully updated user with id ${id}`)
-      : res.status(304).send(`User with id: ${id} not updated`);
-  } catch (error: any) {
-    console.error(error.message);
-    res.status(400).send(error.message);
-  }
+        updateUser
+            ? res.status(200).send(`Successfully updated user with id ${id}`)
+            : res.status(304).send(`User with id: ${id} not updated`);
+    } catch (error: any) {
+        console.error(error.message);
+        res.status(400).send(error.message);
+    }
 });
 
-router.get("/user", async (_req: Request, res: Response) => {
-  const {email, password} = _req.body
-
-  try {    
-    const User = await UserNoSqlTemp.findOne({email})
-    const passwordCompare = User && await bcrypt.compare(password, User.password)
 
 
-    if(!User){
-      res.send('Usuario inexistente')
-    }
-    if(passwordCompare){
-      res.send(User)
-    } else {
-      res.status(400).send('Contraseña Incorrecta')
-    }
-  } catch (error) {
-    res.send(error)
-  }
-});
 
-router.delete("/user/:id", async (req: Request, res: Response) => {
-  const id = req?.params?.id;
 
-  try {
-    // console.log("id: ", id)
-    const query = { _id: new ObjectId(id) };
-    // console.log("query: ", query)
-    const deleteUser = await db.UserNoSqlTemp.deleteOne(query);
-    // console.log({deleteUser})
-    // deleteUser ahora tiene un obj con dos props: acknowledged: boolean y deletedCount: number
-    if (deleteUser && deleteUser.deletedCount) {
-      res.status(202).send(`Successfully removed user with id ${id}`);
-    } else if (!deleteUser) {
-      res.status(400).send(`Failed to remove user with id ${id}`);
-    } else if (!deleteUser.deletedCount) {
-      res.status(404).send(`User with id ${id} does not exist`);
-    }
-  } catch (error: any) {
-    console.error(error.message);
-    res.status(400).send(error.message);
-  }
-});
-
-export default router
+export default router;
