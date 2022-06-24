@@ -1,4 +1,6 @@
+
 import styles from "./Home.module.css"
+
 import React, { useEffect } from 'react'
 import Nav from "components/Nav/Nav"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
@@ -16,35 +18,45 @@ export default function Home() {
 
   console.log(usuario)
   return (
-    <div>
+    <div >
       <Nav/>
       <div>
         <h1>Administra tus finanzas</h1>
 
       </div>
       <div className={styles.links_wrapper}>
-        <div className={styles.ingreso_link}>
-          <Link to="/home/ingresos">
-            <h2>INGRESOS</h2> 
+
+        <div>
+            <Link to="/home/ingresos">
+              <div className={styles.ingresoLink}>
+                  <h2>INGRESOS</h2> 
+              </div>
+            </Link>
+        </div>
+
+        <div>
+          <Link to="/home/gastos">
+            <div className={styles.gastos_link}>
+                <h2>GASTOS</h2>
+            </div>
           </Link>
         </div>
 
-        <div className={styles.gastos_link}>
-          <Link to="/gastos">
-            <h2>GASTOS</h2>
+        <div>
+
+          <Link to="/home">
+            <div className={styles.ahorros_link}>
+                <h2>AHORROS</h2>
+            </div>
           </Link>
         </div>
 
-        <div className={styles.ahorros_link}>
-          <Link to="/ahorros">
-            <h2>AHORROS</h2>
-          </Link>
-        </div>
-        
-        <div className={styles.detalles_link}>
-          <Link to="/detalles">
-            <h2>Detalles</h2>            
-          </Link>
+        <div>
+            <Link to="/home/detalles">
+              <div className={styles.detalles_link}>
+                  <h2>DETALLES</h2>            
+              </div>
+            </Link>
         </div>
 
       </div>

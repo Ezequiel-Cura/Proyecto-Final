@@ -6,26 +6,21 @@
     margin: 0 auto;
     
 }
-.links_wrapper div{
+.links_wrapper div div{
     margin: 2rem auto;
     width: 40rem;
-    height: 6rem;
     border: 1px white solid;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
 
 h2{
     color: black;
 }
-h1{
-    display: inline-block;
-}
 
-.ingreso_link{
+.ingresoLink{
     background-color: #00BFA6;
 }
 
