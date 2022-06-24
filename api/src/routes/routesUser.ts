@@ -53,12 +53,7 @@ router.post("/user", async (req: Request, res: Response) => {
     if (userExistCheck) {
       return res.status(400).send('E-mail ya registrado')
     }
-
-  } catch (err) {
-    return res.status(400).send('Error')
-  }
-
-  bcrypt.hash(password, 10)
+    bcrypt.hash(password, 10)
     .then((hashPass) => {
       return UserNoSqlTemp.create({
         userName,
@@ -68,12 +63,16 @@ router.post("/user", async (req: Request, res: Response) => {
       })
     })
     .then((user) => {
-      res.status(200).send(user)
+      res.status(200).send(`User con ${user.email} fue creado`)
     })
     .catch((err) => {
       console.log(err)
       res.status(400).send('Error en creacion de usuario')
     })
+
+  } catch (err) {
+    return res.status(400).send('Error')
+  }
 
 });
 
@@ -94,17 +93,34 @@ router.delete("/user", async (req: Request, res: Response) => {
   })
 });
 
-router.put("/user", async (req: Request, res: Response) => {
-  const {id} = req.query
-  const {key, value} = req.body
-
-  
 
 
+// router.put("/user", async (req: Request, res: Response) => {
+//   const {id} = req.query
+//   const { key, value } = req.body
+
+// });
+
+router.put("/user/:id", async (req: Request, res: Response) => {
+    const id = req?.params?.id;
+
+    try {
+        const userToUpdate: typeof UserNoSqlTemp = req.body;
+        const query = { _id: new ObjectId(id) };
+      
+        const updateUser = await UserNoSqlTemp.updateOne(query, { $set: userToUpdate });
+
+        updateUser
+            ? res.status(200).send(`Successfully updated user with id ${id}`)
+            : res.status(304).send(`User with id: ${id} not updated`);
+    } catch (error: any) {
+        console.error(error.message);
+        res.status(400).send(error.message);
+    }
 });
 
 
 
 
 
-export default router
+export default router;
