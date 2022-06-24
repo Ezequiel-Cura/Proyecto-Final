@@ -1,7 +1,42 @@
 
-.wrapper{
-    background-color: rgb(28, 28, 28);
-    height: 100vh;
+.links_wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    
+}
+.links_wrapper div{
+    margin: 2rem auto;
+    width: 40rem;
+    height: 6rem;
+    border: 1px white solid;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
+    align-items: center;
+    
+}
+
+h2{
+    color: black;
+}
+h1{
+    display: inline-block;
+}
+
+.ingreso_link{
+    background-color: #00BFA6;
+}
+
+.gastos_link{
+    background-color: #F47579;
+}
+
+.ahorros_link{
+    background-color: #FACB68;
+}
+
+.detalles_link{
+    background-color: #65B5E9;
 }
