@@ -13,54 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+
 const mongodb_1 = require("mongodb");
-const index_1 = __importDefault(require("../../databases/models/index")); // importas todos los modelos como un objeto al que despues accedes con db.[modelo]
+
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const UserNoSql_temp_1 = __importDefault(require("../../databases/models/UserNoSql(temp)"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const router = (0, express_1.Router)();
-router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userName, lastName, email, password } = req.body;
-    try {
-        const userExistCheck = yield UserNoSql_temp_1.default.findOne({ email: email });
-        if (userExistCheck) {
-            return res.status(400).send('E-mail ya registrado');
-        }
-    }
-    catch (err) {
-        return res.status(400).send('Error');
-    }
-    bcrypt_1.default.hash(password, 10)
-        .then((hashPass) => {
-        return UserNoSql_temp_1.default.create({
-            userName,
-            lastName,
-            email,
-            password: hashPass
-        });
-    })
-        .then(() => {
-        res.status(200).send();
-    })
-        .catch(() => {
-        res.status(400).send('Error en creacion de usuario');
-    });
-}));
-router.put("/user/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
-    try {
-        const userToUpdate = req.body;
-        const query = { _id: new mongodb_1.ObjectId(id) };
-        const updateUser = yield index_1.default.UserNoSqlTemp.updateOne(query, { $set: userToUpdate });
-        updateUser
-            ? res.status(200).send(`Successfully updated user with id ${id}`)
-            : res.status(304).send(`User with id: ${id} not updated`);
-    }
-    catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
-    }
-}));
+const entriesUpdate = (key, value) => {
+    /*
+    monthlyInput
+    extraInput
+    monthlyExpenses
+    variableExpenses
+    */
+};
 router.get("/user", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = _req.body;
     try {
@@ -77,32 +45,82 @@ router.get("/user", (_req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
     }
     catch (error) {
-        res.send(error);
+
+        res.status(404).send(error);
     }
 }));
-router.delete("/user/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
-    const id = (_b = req === null || req === void 0 ? void 0 : req.params) === null || _b === void 0 ? void 0 : _b.id;
+router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userName, lastName, email, password } = req.body;
     try {
-        // console.log("id: ", id)
-        const query = { _id: new mongodb_1.ObjectId(id) };
-        // console.log("query: ", query)
-        const deleteUser = yield index_1.default.UserNoSqlTemp.deleteOne(query);
-        // console.log({deleteUser})
-        // deleteUser ahora tiene un obj con dos props: acknowledged: boolean y deletedCount: number
-        if (deleteUser && deleteUser.deletedCount) {
-            res.status(202).send(`Successfully removed user with id ${id}`);
+        const userExistCheck = yield UserNoSql_temp_1.default.findOne({ email: email });
+        if (userExistCheck) {
+            return res.status(400).send('E-mail ya registrado');
         }
-        else if (!deleteUser) {
-            res.status(400).send(`Failed to remove user with id ${id}`);
-        }
-        else if (!deleteUser.deletedCount) {
-            res.status(404).send(`User with id ${id} does not exist`);
-        }
+        bcrypt_1.default.hash(password, 10)
+            .then((hashPass) => {
+            return UserNoSql_temp_1.default.create({
+                userName,
+                lastName,
+                email,
+                password: hashPass
+            });
+        })
+            .then((user) => {
+            res.status(200).send(`User con ${user.email} fue creado`);
+        })
+            .catch((err) => {
+            console.log(err);
+            res.status(400).send('Error en creacion de usuario');
+        });
     }
-    catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+    catch (err) {
+        return res.status(400).send('Error');
+    }
+
+    bcrypt_1.default.hash(password, 10)
+        .then((hashPass) => {
+        return UserNoSql_temp_1.default.create({
+            userName,
+            lastName,
+            email,
+            password: hashPass
+        });
+    })
+        .then((user) => {
+        res.status(200).send(user);
+    })
+        .catch((err) => {
+        console.log(err);
+        res.status(400).send('Error en creacion de usuario');
+    });
+}));
+router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.query;
+    UserNoSql_temp_1.default.findByIdAndDelete(id)
+        .then((user) => {
+        console.log(user);
+        if (user) {
+            res.send('Usuario eliminado');
+        }
+        else {
+            res.send('Usuario no encontrado');
+        }
+    })
+        .catch(() => {
+        res.status(400).send('Error en protocolo de borrado');
+    });
+}));
+router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, key, value } = req.body;
+    try {
+        const user = yield UserNoSql_temp_1.default.findById(id);
+        yield (user === null || user === void 0 ? void 0 : user.Account[key].push(value));
+        yield (user === null || user === void 0 ? void 0 : user.save());
+        res.status(200).send('Usuario actualizado');
+    }
+    catch (err) {
+        res.status(400).send(err);
+
     }
 }));
 exports.default = router;

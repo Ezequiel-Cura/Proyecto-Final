@@ -25,10 +25,13 @@
     justify-self: center;
 }
 .welcome{
-    padding: 0px 20px;
+    padding: 20px;
     font-size: var(--font-size-big);
     top: 0px;
     max-height: 20%;
+}
+.textWelcome{
+    font-size: 3.5rem;
 }
 .container {
     display: grid;
@@ -116,6 +119,17 @@
     width: 100%;
   }
 
+    @media (max-width: 1400px) {
+        .textWelcome{
+            font-size: 3rem;
+        }
+    }  
+    @media (max-width: 1200px) {
+        .textWelcome{
+            font-size: 2.5rem;
+        }
+    }
+
     @media (max-width: 900px) {
         .container{
             grid-template-columns: 1fr;
@@ -128,10 +142,26 @@
             width: calc(100% - 100px);
             height: 50vh;
         }
+        .textWelcome{
+            font-size: 1.5rem;
+        }
     }
     @media (max-width: 600px) {
         .formContainer{
             padding: 20px;
             width: calc(100% - 40px);
+        }
+        .textContainer h3 {
+            font-size: 1rem;
+        }
+        .button{
+            width: 60%;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .formContainer{
+            padding: 2px;
+            width: calc(80% - 10px)
         }
     }

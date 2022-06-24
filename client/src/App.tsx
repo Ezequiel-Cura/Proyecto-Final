@@ -10,7 +10,6 @@ import ConDatos from 'components/Ingreso/ConDatos';
 
 function App() {
   return (
-    
     <Routes>
       <Route path="/" element={<Landing/>}/>
       <Route path='/home' element={<Home/>}/>
