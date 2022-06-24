@@ -25,21 +25,17 @@ export default function Nav() {
                     <h4>Ingresos</h4>
                 </div>
             </Link>
-            <Link to="/home">    
+            <Link to="/home/gastos">    
                 <div>
                     <h4>Gastos</h4>
                 </div>
             </Link>
-            <Link to="/home">
+            <Link to="/home/detalles">
                 <div>
                     <h4>Detalles</h4>
                 </div>
             </Link>
-            <Link to="/home">    
-                <div> 
-                    <h4>Balance</h4>
-                </div>
-            </Link>
+            
         </div>
     </div>
   )
