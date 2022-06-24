@@ -49,6 +49,7 @@ const initialState: User = {
   status: 'idle'
 }
 
+<<<<<<< HEAD
 export const getAllUsers : any = createAsyncThunk('user/getAllUsers', 
   (obj, hola) => {
     console.log(obj)
@@ -57,6 +58,21 @@ export const getAllUsers : any = createAsyncThunk('user/getAllUsers',
     .get("http://localhost:3001/user")
     .then(response => response.data)
     .catch(error => error)
+=======
+// export const getAllUsers : any = createAsyncThunk('user/getAllUsers', 
+//   (obj, hola) => {
+//     console.log("segundo argumento: ", hola)
+//   return axios
+//     .get("http://localhost:3001")
+//     .then(response => response.data)
+//     .catch(error => error)
+// })
+
+export const registerUser : any = createAsyncThunk("user/registerUser", 
+async (user) => {
+  const data = await axios.post("/user", user)
+  return data
+>>>>>>> 627b9293f49399525af5f30e775c2378d6351d11
 })
 
 const reducerSlice = createSlice({
@@ -65,6 +81,7 @@ const reducerSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<any>) => {
       console.log(action.payload, 'REDUCERRRR')
+<<<<<<< HEAD
       state.todosLosUsuarios = action.payload
     },
     loadMockUser: (state) => {
@@ -95,19 +112,40 @@ const reducerSlice = createSlice({
   extraReducers: {
     [getAllUsers.pending]: (state) => {
       console.log('pending')
+=======
+      state.usuario = action.payload
+    }
+  },
+  extraReducers: {
+    // [getAllUsers.pending]: (state) => {
+    //   state.status = "loading"
+    // },
+    // [getAllUsers.fulfilled]: (state, {payload}) => {
+    //   state.status = "success"
+    //   state.todosLosUsuarios = payload
+    // },
+    // [getAllUsers.rejected]: (state, {payload}) => {
+    //   state.status = "failed"
+    //   console.log("error: ", payload)
+    // },
+    [registerUser.pending]: (state) => {
+>>>>>>> 627b9293f49399525af5f30e775c2378d6351d11
       state.status = "loading"
     },
-    [getAllUsers.fulfilled]: (state, {payload}) => {
+    [registerUser.fulfilled]: (state, {payload}) => {
       state.status = "success"
+<<<<<<< HEAD
       state.todosLosUsuarios = payload
       console.log('sucess')
+=======
+      state.usuario = payload
+>>>>>>> 627b9293f49399525af5f30e775c2378d6351d11
     },
-    [getAllUsers.rejected]: (state, {payload}) => {
+    [registerUser.rejected]: (state) => {
       state.status = "failed"
-      console.log("error: ", payload)
     },
   }
 })
 
-export const {loadMockUser, setUser} = reducerSlice.actions
+export const {setUser} = reducerSlice.actions
 export default reducerSlice.reducer

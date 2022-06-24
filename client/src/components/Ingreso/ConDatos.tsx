@@ -1,8 +1,6 @@
 import styles from "./Ingreso.module.css";
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
-//------------
-import { loadMockUser, setUser } from "../../redux/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
@@ -66,8 +64,8 @@ export default function ConDatos() {
   //----------------------
 
   useEffect(() => {
-    dispatch(loadMockUser());      //carga de user(ej Erik)
-    dispatch(setUser);
+    //dispatch(loadMockUser());      //carga de user(ej Erik)
+    //dispatch(setUser);
   }, [dispatch])
 
   return (

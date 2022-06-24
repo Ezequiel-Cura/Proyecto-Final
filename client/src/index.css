@@ -3,7 +3,6 @@
 *{
   margin: 0px;
   padding: 0px;
-  overflow-wrap: anywhere;
 }
 a{
   text-decoration: none;
@@ -20,7 +19,7 @@ body {
 
 a{
   text-decoration: none;
-  color:wheat;
+  /* color:wheat; */
 }
 
 code {

@@ -15,6 +15,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 .input {
     border-radius: 15px;
@@ -34,6 +35,7 @@
     font-size: 3.5rem;
 }
 .container {
+    width: 80%;
     display: grid;
     grid-template-columns: 35fr 65fr;
     height: 60%;
@@ -64,7 +66,7 @@
 .buttons {
   display:flex;
   gap: 30px;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 .checkboxContainer{
@@ -75,14 +77,20 @@
     align-items: center;
     justify-content: center;
 }
+
+.errorMessage {
+    text-align: center;
+    color: red;
+}
 .button {
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 10rem;
-    color: rgb(255, 11, 47);
+    color: black;
     text-transform: uppercase;
+    font-weight: bolder;
     font-size: 1rem;
-    letter-spacing: 0.15rem;
+    letter-spacing: 0.1rem;
     transition: all 0.3s;
     position: relative;
     z-index: 1;
@@ -96,7 +104,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #0cf;
+    background-color: wheat;
     border-radius: 10rem;
     z-index: -2;
   }
@@ -107,13 +115,10 @@
     left: 0;
     width: 0%;
     height: 100%;
-    background-color: #008fb3;
+    background-color: rgb(255, 211, 129);
     transition: all 0.3s;
     border-radius: 10rem;
     z-index: -1;
-  }
-.button:hover {
-    color: #fff;
   }
 .button:hover:before {
     width: 100%;
@@ -133,6 +138,7 @@
     @media (max-width: 900px) {
         .container{
             grid-template-columns: 1fr;
+            width: 90%;
         }
         .image{
             display: none;
@@ -160,8 +166,14 @@
     }
 
     @media (max-width: 400px) {
+        .container{
+            width: 100%;
+        }
         .formContainer{
             padding: 2px;
-            width: calc(80% - 10px)
+            width: calc(100% - 4px)
+        }
+        .button {
+            width: 100%;
         }
     }

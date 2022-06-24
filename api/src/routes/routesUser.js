@@ -13,13 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-
-const mongodb_1 = require("mongodb");
-
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 const UserNoSql_temp_1 = __importDefault(require("../../databases/models/UserNoSql(temp)"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const joi_1 = __importDefault(require("joi"));
+const schema = joi_1.default.object({
+    firstName: joi_1.default.string().required(),
+    lastName: joi_1.default.string().required(),
+    email: joi_1.default.string().email().required(),
+    password: joi_1.default.string().required()
+});
 const router = (0, express_1.Router)();
 const entriesUpdate = (key, value) => {
     /*
@@ -45,21 +47,23 @@ router.get("/user", (_req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
     }
     catch (error) {
-
         res.status(404).send(error);
     }
 }));
 router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     try {
+        const { error } = schema.validate(req.body);
+        if (error)
+            return res.status(404).send(error);
         const userExistCheck = yield UserNoSql_temp_1.default.findOne({ email: email });
         if (userExistCheck) {
-            return res.status(400).send('E-mail ya registrado');
+            return res.status(400).send('Email ya registrado');
         }
-        bcrypt_1.default.hash(password, 10)
+        bcrypt_1.default.hash(password, process.env.SUPER_SECRET_SALT)
             .then((hashPass) => {
             return UserNoSql_temp_1.default.create({
-                userName,
+                userName: firstName,
                 lastName,
                 email,
                 password: hashPass
@@ -76,23 +80,6 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (err) {
         return res.status(400).send('Error');
     }
-
-    bcrypt_1.default.hash(password, 10)
-        .then((hashPass) => {
-        return UserNoSql_temp_1.default.create({
-            userName,
-            lastName,
-            email,
-            password: hashPass
-        });
-    })
-        .then((user) => {
-        res.status(200).send(user);
-    })
-        .catch((err) => {
-        console.log(err);
-        res.status(400).send('Error en creacion de usuario');
-    });
 }));
 router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.query;
@@ -120,7 +107,6 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (err) {
         res.status(400).send(err);
-
     }
 }));
 exports.default = router;
