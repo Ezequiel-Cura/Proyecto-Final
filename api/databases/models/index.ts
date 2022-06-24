@@ -1,12 +1,14 @@
 
 'use strict'
-import User from "./User"
-import Account from "./Account"
+// In './backup/
+// import User from "../../backup/User"
+// import Account from "../../backup/Account"
+// import UserNoSql from "./UserNoSql(temp)"
+// export default {User, Account, Category, UserNoSql}
+// import Category from "../../backup/Category"
 
-export default {User, Account}
-
-// faltaría importar los modelos pero al parecer ya están importados automáticamente. Reveer.
+import UserNoSqlTemp from "./UserNoSql(temp)"
 
 
-
+export default { UserNoSqlTemp }
 
