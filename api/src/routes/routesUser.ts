@@ -39,7 +39,7 @@ router.get("/user", async (_req: Request, res: Response) => {
       res.status(400).send('Contraseña Incorrecta')
     }
   } catch (error) {
-    res.send(error)
+    res.status(404).send(error)
   }
 });
 
@@ -90,17 +90,24 @@ router.delete("/user", async (req: Request, res: Response) => {
     }
   })
   .catch(() => {
-    res.send('Error en protocolo de borrado')
+    res.status(400).send('Error en protocolo de borrado')
   })
 });
 
+
 router.put("/user", async (req: Request, res: Response) => {
-  const {id} = req.query
-  const {key, value} = req.body
+  const {id, key, value} = req.body
 
-  
+  try{
 
-
+    const user = await UserNoSqlTemp.findById(id)
+    await user?.Account[key].push(value)
+    await user?.save()
+    res.status(200).send('Usuario actualizado')
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
 });
 
 

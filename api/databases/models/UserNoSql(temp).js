@@ -21,23 +21,23 @@ const UserSQLessSchema = new mongoose_1.Schema({
                 // Array de ingresos mensuales, aplicado todos los meses  
                 date: { type: Date, default: Date.now(), required: true },
                 end: Number,
-                description: String,
+                description: { type: String, required: true },
                 amount: { type: Number, required: true },
                 category: String,
             }],
         extraInput: [{
                 // Ingresos adicionales, aplicados a demanda del usuario
                 date: { type: Date, default: Date.now() },
-                description: String,
+                description: { type: String, required: true },
+                amount: { type: Number, required: true },
                 category: String,
-                amount: Number
             }],
         // GASTOS
         monthlyExpenses: [{
                 // Gastos mensuales; incluyen cuotas, servicios, etc; descontados de los ingresos totales cada mes
                 date: { type: Date, default: Date.now(), required: true },
                 end: Number,
-                description: String,
+                description: { type: String, required: true },
                 amount: { type: Number, required: true },
                 category: String,
             }],
@@ -48,7 +48,8 @@ const UserSQLessSchema = new mongoose_1.Schema({
                 date: { type: Date, default: Date.now() },
                 id: mongoose_1.Schema.Types.ObjectId,
                 category: String,
-                description: String,
+                description: { type: String, required: true },
+                ammount: { type: Number, required: true }
             }]
     }
 });
