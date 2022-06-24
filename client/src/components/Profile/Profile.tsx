@@ -2,17 +2,11 @@ import React, { useEffect } from 'react'
 import Nav from 'components/Nav/Nav'
 import styles from "./Profile.module.css"
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
-import { loadMockUser } from 'redux/reducers/userReducer'
 
 export default function Profile() {
     const dispatch = useAppDispatch()
-
-    useEffect(()=>{
-        dispatch(loadMockUser())
-    },[dispatch])
-
-    const infoUsuario:any= useAppSelector((state)=> state.userReducer.usuario)
-    console.log(infoUsuario.id)
+    const usuario:any= useAppSelector(({userReducer})=> userReducer)
+    console.log(usuario.id)
 
 
   return (
@@ -28,16 +22,16 @@ export default function Profile() {
         </div>
         <div className={styles.info_Cointainer}>
             <div className={styles.image_cointainer}>
-                <img src={infoUsuario.avatar} alt="Avatar" />
+                <img src={usuario.avatar} alt="Avatar" />
             </div>
             <div className={styles.info_user}>
                 <div className={styles.name_wrapper}>
                     <span>Nombre Del usuario:</span>
-                    <span>{infoUsuario.nombre + " " + infoUsuario.apellido} </span>
+                    <span>{usuario.nombre + " " + usuario.apellido} </span>
                 </div>
                 <div>
                     <span>Email:</span>
-                    <span>{infoUsuario.email} </span>
+                    <span>{usuario.email} </span>
                 </div>
                 <div>
                     <span>Cuentas compartidas</span>

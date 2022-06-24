@@ -1,5 +1,4 @@
 /node_modules
-/lib/.env
 
 # misc
 .DS_Store

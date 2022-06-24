@@ -1,10 +1,16 @@
 
 import { Router, Request, Response } from "express";
 import { ObjectId } from "mongodb";
-import dotenv from 'dotenv'
-dotenv.config()
 import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
 import bcrypt from 'bcrypt'
+import Joi from "joi"
+
+const schema = Joi.object({
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required()
+})
 
 const router = Router()
 
@@ -29,7 +35,6 @@ router.get("/user", async (_req: Request, res: Response) => {
     const User = await UserNoSqlTemp.findOne({ email })
     const passwordCompare = User && await bcrypt.compare(password, User.password)
 
-
     if (!User) {
       res.send('Usuario inexistente')
     }
@@ -44,19 +49,18 @@ router.get("/user", async (_req: Request, res: Response) => {
 });
 
 router.post("/user", async (req: Request, res: Response) => {
-
-  const { userName, lastName, email, password } = req.body;
-
+  const { firstName, lastName, email, password } = req.body;
   try {
+    const { error } = schema.validate(req.body)
+    if(error) return res.status(404).send(error)
     const userExistCheck = await UserNoSqlTemp.findOne({ email: email })
-
     if (userExistCheck) {
-      return res.status(400).send('E-mail ya registrado')
+      return res.status(400).send('Email ya registrado')
     }
-    bcrypt.hash(password, 10)
+    bcrypt.hash(password, process.env.SUPER_SECRET_SALT)
     .then((hashPass) => {
       return UserNoSqlTemp.create({
-        userName,
+        userName: firstName,
         lastName,
         email,
         password: hashPass

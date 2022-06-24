@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 // Backup:
-//  import routeUserNoSql from '../../backup/routeUserNoSql'
+// import routeUserNoSql from '../../backup/routeUserNoSql'
 // router.use('/test', routeUserNoSql)
 const routesUser_1 = __importDefault(require("./routesUser"));
 router.use("/", routesUser_1.default);

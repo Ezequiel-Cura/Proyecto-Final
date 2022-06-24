@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import Nav from "components/Nav/Nav"
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import { RootState } from "redux/store"
-import { loadMockUser } from "redux/reducers/userReducer"
 import { Link } from 'react-router-dom'
 
 export default function Home() {
@@ -11,7 +10,7 @@ export default function Home() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(loadMockUser())
+    
   }, [dispatch])
 
   console.log(usuario)
