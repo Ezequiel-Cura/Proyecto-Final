@@ -14,13 +14,19 @@ const initialState: User = {
   status: 'idle'
 }
 
-export const getAllUsers : any = createAsyncThunk('user/getAllUsers', 
-  (obj, hola) => {
-    console.log("segundo argumento: ", hola)
-  return axios
-    .get("http://localhost:3001")
-    .then(response => response.data)
-    .catch(error => error)
+// export const getAllUsers : any = createAsyncThunk('user/getAllUsers', 
+//   (obj, hola) => {
+//     console.log("segundo argumento: ", hola)
+//   return axios
+//     .get("http://localhost:3001")
+//     .then(response => response.data)
+//     .catch(error => error)
+// })
+
+export const registerUser : any = createAsyncThunk("user/registerUser", 
+async (user) => {
+  const data = await axios.post("/user", user)
+  return data
 })
 
 const reducerSlice = createSlice({
@@ -30,46 +36,32 @@ const reducerSlice = createSlice({
     setUser: (state, action: PayloadAction<User>) => {
       console.log(action.payload, 'REDUCERRRR')
       state.usuario = action.payload
-    },
-    loadMockUser: (state) => {
-      state.usuario = {
-        "Account": {
-          "monthlyInput": [
-            {
-              "date": "2022-06-22T23:58:46.550Z",
-              "description": "Ta caro el gym",
-              "amount": 5000,
-              "_id": "62b3acbe003d297af5e75ead"
-            }
-          ],
-          "extraInput": [],
-          "monthlyExpenses": [],
-          "variableExpenses": []
-        },
-        "_id": "62b3acbe003d297af5e75eac",
-        "userName": "Bon Jovi",
-        "lastName": "Jovi",
-        "email": "bon@jovitojejox",
-        "avatar": "jovitoPic",
-        "__v": 0
-      }
-      
     }
   },
   extraReducers: {
-    [getAllUsers.pending]: (state) => {
+    // [getAllUsers.pending]: (state) => {
+    //   state.status = "loading"
+    // },
+    // [getAllUsers.fulfilled]: (state, {payload}) => {
+    //   state.status = "success"
+    //   state.todosLosUsuarios = payload
+    // },
+    // [getAllUsers.rejected]: (state, {payload}) => {
+    //   state.status = "failed"
+    //   console.log("error: ", payload)
+    // },
+    [registerUser.pending]: (state) => {
       state.status = "loading"
     },
-    [getAllUsers.fulfilled]: (state, {payload}) => {
+    [registerUser.fulfilled]: (state, {payload}) => {
       state.status = "success"
-      state.todosLosUsuarios = payload
+      state.usuario = payload
     },
-    [getAllUsers.rejected]: (state, {payload}) => {
+    [registerUser.rejected]: (state) => {
       state.status = "failed"
-      console.log("error: ", payload)
     },
   }
 })
 
-export const {loadMockUser, setUser} = reducerSlice.actions
+export const {setUser} = reducerSlice.actions
 export default reducerSlice.reducer

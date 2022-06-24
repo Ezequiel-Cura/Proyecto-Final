@@ -10,7 +10,6 @@ const morgan_1 = __importDefault(require("morgan"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
-// Initializations
 (0, db_1.connectDB)();
 const server = (0, express_1.default)();
 server.set("port", process.env.PORT || 3001);

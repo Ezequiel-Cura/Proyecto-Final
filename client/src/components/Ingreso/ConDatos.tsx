@@ -1,8 +1,6 @@
 import styles from "./Ingreso.module.css";
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
-//------------
-import { loadMockUser, setUser } from "../../redux/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
@@ -62,13 +60,8 @@ export default function ConDatos() {
       category: "",
       amount: 0,
     });
-  } 
-  //----------------------
-
-  useEffect(() => {
-    dispatch(loadMockUser());      //carga de user(ej Erik)
-    //dispatch(setUser());
-  }, [dispatch])
+  }
+  
 
   //Agregar un order al tocar los montos,
   //ver las funciones  para los handlers con typescript
