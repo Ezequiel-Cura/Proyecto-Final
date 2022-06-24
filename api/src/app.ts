@@ -6,6 +6,19 @@ import cookieparser from "cookie-parser"
 import bodyparser from "body-parser"
 import cors from "cors"
 // Initializations
+
+declare global {
+    namespace NodeJS {
+      interface ProcessEnv {
+        SUPER_SECRET_SALT: number;
+        NODE_ENV: 'development' | 'production';
+        PORT?: string;
+        PWD: string;
+      }
+    }
+  }
+
+
 connectDB()
  const server: Application = express()
 server.set("port", process.env.PORT || 3001)

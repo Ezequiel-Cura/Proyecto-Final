@@ -15,10 +15,8 @@ interface IUser {
 const UserSQLessSchema = new Schema<IUser>({
   userName: { type: String, required: true },
   lastName: String,
-  
   email: { type: String, unique: true, lowercase: true, required: true },
   password: {type: String, required: true},
-  
   avatar: String,
 
   Account: {
