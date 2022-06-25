@@ -1,10 +1,11 @@
 import styles from "../Ingreso/ConDatos.module.css";
 import React, { useState } from 'react';
 import Nav from "../Nav/Nav";
+import Pagination from "components/Ingreso/Pagination";
 // import { useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
-//   const { usuario } = useAppSelector( state => state.userReducer);
+//   const { usuario } = useAppSelector( state => state.user);
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const [monto, setMonto] = useState<number>(5756756);
@@ -15,7 +16,7 @@ export default function ConDatos() {
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
           <div className={styles.title}>
-            <h1>Tus Ingresos </h1>
+            <h1>Tus Gastos </h1>
           </div>
 
           <div className={styles.selectsOrder}>
@@ -49,7 +50,6 @@ export default function ConDatos() {
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
-                <th>Total</th>
                 <th></th>
               </tr>
             </thead>
@@ -59,6 +59,12 @@ export default function ConDatos() {
                 <th>Ej</th>
                 <th>Ej</th>
                 <th>Ej</th>
+                <th><button></button></th>
+              </tr>
+              <tr>
+                <th>Ejemplo</th>
+                <th>Ej</th>
+                <th>Ej</th>
                 <th>Ej</th>
                 <th><button></button></th>
               </tr>
@@ -67,38 +73,30 @@ export default function ConDatos() {
                 <th>Ej</th>
                 <th>Ej</th>
                 <th>Ej</th>
-                <th>Ej</th>
                 <th><button></button></th>
               </tr>
               <tr>
-                <th>Ejemplo</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th><button></button></th>
-              </tr>
-              <tr>
+                <th className={styles.lastBox}></th>
                 <th></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th className={styles.totalAmount}>$ {monto}</th>
+                <th className={styles.totalAmount}><b>Total: ${monto}</b></th>
                 <th className={styles.vacia}></th>
               </tr>
             </tbody>
           </table>
 
+          <Pagination/>
+
           <form>
             <div className={styles.form}>
               <select name='category'>
                 <option>Selecciona una categoria</option>
-                <option value='Salario'>Salario</option>
-                <option value='Aguinaldo'>Aguinaldo</option>
-                <option value='Herencia'>Herencia</option>
-                <option value='Changa'>Changa</option>
-                <option value='Regalo'>Regalo</option>
-                <option value='Prestamo'>Prestamo</option>
+                <option value='Alimentos'>Alimentos</option>
+                <option value='Gimnasio'>Gimnasio</option>
+                <option value='Salud'>Salud</option>
+                <option value='Hobby'>Hobby</option>
+                <option value='Ocio'>Ocio</option>
+                <option value='Combustible'>Combustible</option>
                 <option value='Otros'>Otros</option>
               </select>
               <input 
