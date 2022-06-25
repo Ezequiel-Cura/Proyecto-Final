@@ -8,6 +8,7 @@ import Profile from 'components/Profile/Profile';
 import Ingreso from 'components/Ingreso/Ingreso';
 import ConDatos from 'components/Ingreso/ConDatos';
 import Gastos from 'components/Gastos/Gastos';
+import ConDatosGastos from 'components/Gastos/ConDatosGastos';
 import Detalles from 'components/Detalles/Detalles';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route path='/home/ingresos' element={<Ingreso/>}/>
       <Route path='/home/ingresos/add' element={<ConDatos/>}/>
       <Route path='/home/gastos' element={<Gastos/>}/>
+      <Route path='/home/gastos/add' element={<ConDatosGastos/>}/>
       <Route path='/home/detalles' element={<Detalles/>}/>
     </Routes>
   );
