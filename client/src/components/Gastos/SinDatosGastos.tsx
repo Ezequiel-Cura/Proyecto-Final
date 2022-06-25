@@ -1,16 +1,16 @@
-import styles from "./Ingreso.module.css";
+import styles from "../Ingreso/Ingreso.module.css";
 import React from 'react';
-import img from "../../assets/ingreso.svg";
+import img from "../../assets/gastos.svg";
 import { Link } from "react-router-dom";
 
 export default function SinDatos() {
     return (
       <div className={styles.wrapperAllIngreso}>
         <div className={styles.wrapperText}>
-          <h1>Comienza a administrar tus <b>ingresos</b></h1>
+          <h1>Comienza a controlar tus <b>gastos</b></h1>
           <div className={styles.wrapperLink}>
             <p>Crea una nueva plantilla ahora!</p>
-            <Link to="/home/ingresos/add">
+            <Link to="/home/gastos/add">
               <button>+</button>
             </Link>
           </div>
