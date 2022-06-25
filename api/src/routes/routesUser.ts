@@ -1,8 +1,9 @@
 
 import { Router, Request, Response } from "express";
 import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
-import bcrypt from 'bcrypt'
-import Joi from "joi"
+import bcrypt from 'bcrypt';
+import Joi from 'joi';
+import { ObjectId } from "mongodb";
 
 const schema = Joi.object({
   firstName: Joi.string().required(),
@@ -34,7 +35,7 @@ router.get("/user", async (req: Request, res: Response) => {
     if (!User) return res.status(400).send('Usuario inexistente')
     const passwordCompare = await bcrypt.compare(query.password, User.password)
     if (passwordCompare) {
-     return res.status(200).send(User)
+     return res.status(200).json(User)
     } else {
      return res.status(400).send('Contraseña Incorrecta')
     }
@@ -53,36 +54,33 @@ router.post("/user", async (req: Request, res: Response) => {
     const salt: any = await bcrypt.genSalt(Number(process.env.SUPER_SECRET_SALT))
     const hashPass = await bcrypt.hash(password, salt)
     const user = await UserNoSqlTemp.create({userName: firstName, lastName, email, password: hashPass})
-    res.status(201).send(user)
+    res.status(201).json(`${user} creado exitosamente.`)
   } catch (err: any) {
     res.status(400).send(err.message)
   }
 })
 
-router.delete("/user", async (req: Request, res: Response) => {
-  const {id} = req.query
+router.put("/user/:id", async (req: Request, res: Response) => {
+  const id = req?.params?.id;
 
-  UserNoSqlTemp.findByIdAndDelete(id)
-  .then((user) => {
-    console.log(user)
-    if(user){
-      res.send('Usuario eliminado')
-    } else {
-      res.send('Usuario no encontrado')
-    }
-  })
-  .catch(() => {
-    res.status(400).send('Error en protocolo de borrado')
-  })
+  try {
+      const updateUser: typeof UserNoSqlTemp = req.body;
+      const query = { _id: new ObjectId(id) };
+      const result = await UserNoSqlTemp.updateOne(query, { $set: updateUser });
+
+      result
+          ? res.status(200).send(`Successfully updated user with id ${id}`)
+          : res.status(304).send(`User with id: ${id} not updated`);
+  } catch (error: any) {
+      console.error(error.message);
+      res.status(400).send(error.message);
+  }
 });
-
-
 
 router.put("/user", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
   try{
-
     const user = await UserNoSqlTemp.findById(id)
     await user?.Account[key].push(value)
     await user?.save()
@@ -95,7 +93,22 @@ router.put("/user", async (req: Request, res: Response) => {
 });
 
 
+router.delete("/user", async (req: Request, res: Response) => {
+  const {id} = req.query
 
+  UserNoSqlTemp.findByIdAndDelete(id)
+  .then((user) => {
+    console.log(user)
+    if(user){
+      res.status(200).json(`Usuario ${user} eliminado`)
+    } else {
+      res.status(404).json(`Usuario ${user} eliminado`)
+    }
+  })
+  .catch(() => {
+    res.status(400).send('Error en protocolo de borrado')
+  })
+});
 
 
 export default router;

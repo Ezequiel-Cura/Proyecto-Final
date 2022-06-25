@@ -16,6 +16,7 @@ const express_1 = require("express");
 const UserNoSql_temp_1 = __importDefault(require("../../databases/models/UserNoSql(temp)"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const joi_1 = __importDefault(require("joi"));
+const mongodb_1 = require("mongodb");
 const schema = joi_1.default.object({
     firstName: joi_1.default.string().required(),
     lastName: joi_1.default.string().required(),
@@ -33,14 +34,13 @@ const entriesUpdate = (key, value) => {
 };
 router.get("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password } = req.query;
-        const User = yield UserNoSql_temp_1.default.findOne({ email });
-        console.log("user: ", User);
+        const query = req.query;
+        const User = yield UserNoSql_temp_1.default.findOne({ email: query.email });
         if (!User)
             return res.status(400).send('Usuario inexistente');
-        const passwordCompare = yield bcrypt_1.default.compare(password, User.password);
+        const passwordCompare = yield bcrypt_1.default.compare(query.password, User.password);
         if (passwordCompare) {
-            return res.status(200).send(User);
+            return res.status(200).json(User);
         }
         else {
             return res.status(400).send('Contraseña Incorrecta');
@@ -62,27 +62,27 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const salt = yield bcrypt_1.default.genSalt(Number(process.env.SUPER_SECRET_SALT));
         const hashPass = yield bcrypt_1.default.hash(password, salt);
         const user = yield UserNoSql_temp_1.default.create({ userName: firstName, lastName, email, password: hashPass });
-        res.status(201).send(user);
+        res.status(201).json(`${user} creado exitosamente.`);
     }
     catch (err) {
         res.status(400).send(err.message);
     }
 }));
-router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.query;
-    UserNoSql_temp_1.default.findByIdAndDelete(id)
-        .then((user) => {
-        console.log(user);
-        if (user) {
-            res.send('Usuario eliminado');
-        }
-        else {
-            res.send('Usuario no encontrado');
-        }
-    })
-        .catch(() => {
-        res.status(400).send('Error en protocolo de borrado');
-    });
+router.put("/user/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
+    try {
+        const updateUser = req.body;
+        const query = { _id: new mongodb_1.ObjectId(id) };
+        const result = yield UserNoSql_temp_1.default.updateOne(query, { $set: updateUser });
+        result
+            ? res.status(200).send(`Successfully updated user with id ${id}`)
+            : res.status(304).send(`User with id: ${id} not updated`);
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
+    }
 }));
 router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
@@ -95,5 +95,21 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     catch (err) {
         res.status(400).send(err);
     }
+}));
+router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.query;
+    UserNoSql_temp_1.default.findByIdAndDelete(id)
+        .then((user) => {
+        console.log(user);
+        if (user) {
+            res.status(200).json(`Usuario ${user} eliminado`);
+        }
+        else {
+            res.json(`Usuario ${user} eliminado`);
+        }
+    })
+        .catch(() => {
+        res.status(400).send('Error en protocolo de borrado');
+    });
 }));
 exports.default = router;
