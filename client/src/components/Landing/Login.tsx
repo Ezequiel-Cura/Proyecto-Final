@@ -18,7 +18,7 @@ export default function Login() {
     <div className={styles.formContainer}>
         <div className={styles.textContainer}>
         {
-          state.message ? <h3 style={{color: "rgba(3, 224, 21, 1)", padding: "20px"}}>{state.message}</h3> : <h3>Te extrañamos ! inicia sesión</h3>
+          state?.message ? <h3 style={{color: "rgba(3, 224, 21, 1)", padding: "20px"}}>{state.message}</h3> : <h3>Te extrañamos ! inicia sesión</h3>
         }
         </div>
         <Formik

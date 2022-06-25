@@ -14,7 +14,7 @@ export default function Landing() {
       </div>
       <div className={styles.container}>
           {
-            state.registered ? <Login/> : <Register/>
+            state?.registered ? <Login/> : <Register/>
           }
           <div className={styles.image}/>
       </div>
