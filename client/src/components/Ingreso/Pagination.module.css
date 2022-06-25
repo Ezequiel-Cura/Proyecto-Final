@@ -1,0 +1,23 @@
+.wrapperPag {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.wrapperPag button {
+    width: 70px;
+    height: 40px;
+    font-size: 15px;
+    font-weight:lighter;
+    border: none;
+    border-radius: 15px;
+    color: rgb(74, 70, 70);
+    background-color: #333333;;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.wrapperPag button:hover {
+    background-color: rgb(118, 189, 3) ;
+}

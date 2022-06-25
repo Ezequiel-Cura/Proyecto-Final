@@ -17,7 +17,7 @@
 }
 
 .title h1 {
-    padding: 20px 20px 20px 0px;
+    padding: 20px 20px 5px 0px;
     font-size: 3.0em;
     color: #D2D2D2;
     font-weight: lighter;
@@ -47,7 +47,7 @@
     width: 100%;
 }
 
-.months:global(#Enero){ background-color: #f94144}
+.months:global(#Enero){ background-color: #f94144; border-bottom-left-radius: 20px;}
 .months:global(#Febrero){ background-color: #f3722c}
 .months:global(#Marzo){ background-color: #f8961e}
 .months:global(#Abril){ background-color: #f9844a;}
@@ -112,7 +112,8 @@
 }
 
 .table tbody tr, th {
-    padding: 10px;
+    padding: 7px;
+    font-weight: lighter;
 }
 
 .table button {
@@ -130,6 +131,10 @@
 
 .table button:hover {
     background-color: #00BFA6;;
+}
+
+.table .lastBox {
+    border-bottom-left-radius: 20px;
 }
 
 .table .totalAmount {
@@ -150,7 +155,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding: 30px;
+    padding: 15px;
     justify-content: center;
     align-items: center;
 }

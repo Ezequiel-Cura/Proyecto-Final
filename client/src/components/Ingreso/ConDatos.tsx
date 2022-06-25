@@ -1,10 +1,13 @@
 import styles from "./ConDatos.module.css";
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
+import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
+  const { usuario } = useAppSelector( state => state.userReducer);
   const dispatch = useAppDispatch();
+  console.log(usuario, 'Que trae del reducer')
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const [monto, setMonto] = useState<number>(89086);  //const total = setMonto(usuario.Account.monthlyInput[0].amount + monto)
@@ -105,7 +108,6 @@ export default function ConDatos() {
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
-                <th>Total</th>
                 <th></th>
               </tr>
             </thead>
@@ -115,12 +117,31 @@ export default function ConDatos() {
                 <th>Ej</th>
                 <th>Ej</th>
                 <th>Ej</th>
+                <th><button></button></th>
+              </tr>
+              <tr>
+                <th>Ejemplo</th>
+                <th>Ej</th>
+                <th>Ej</th>
                 <th>Ej</th>
                 <th><button></button></th>
               </tr>
               <tr>
                 <th>Ejemplo</th>
                 <th>Ej</th>
+                <th>Ej</th>
+                <th>Ej</th>
+                <th><button></button></th>
+              </tr>
+              <tr>
+                <th>Ejemplo</th>
+                <th>Ej</th>
+                <th>Ej</th>
+                <th>Ej</th>
+                <th><button></button></th>
+              </tr>
+              <tr>
+                <th>Ejemplo</th>
                 <th>Ej</th>
                 <th>Ej</th>
                 <th>Ej</th>
@@ -136,15 +157,16 @@ export default function ConDatos() {
                 </tr>
               ))} */}
               <tr>
+                <th className={styles.lastBox}></th>
                 <th></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th className={styles.totalAmount}>$ {monto}</th>
+                <th className={styles.totalAmount}><b>Total: ${monto}</b></th>
                 <th className={styles.vacia}></th>
               </tr>
             </tbody>
           </table>
+
+          <Pagination/>
 
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className={styles.form}>
