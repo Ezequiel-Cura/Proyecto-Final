@@ -1,6 +1,5 @@
 
 import { Router, Request, Response } from "express";
-import { ObjectId } from "mongodb";
 import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
 import bcrypt from 'bcrypt'
 import Joi from "joi"
@@ -28,23 +27,19 @@ const entriesUpdate = (key: string, value: object) => {
 
 }
 
-router.get("/user", async (_req: Request, res: Response) => {
-  const { email, password } = _req.body
-
+router.get("/user", async (req: Request, res: Response) => {
   try {
-    const User = await UserNoSqlTemp.findOne({ email })
-    const passwordCompare = User && await bcrypt.compare(password, User.password)
-
-    if (!User) {
-      res.send('Usuario inexistente')
-    }
+    const query : any = req.query
+    const User = await UserNoSqlTemp.findOne({email: query.email})
+    if (!User) return res.status(400).send('Usuario inexistente')
+    const passwordCompare = await bcrypt.compare(query.password, User.password)
     if (passwordCompare) {
-      res.send(User)
+     return res.status(200).send(User)
     } else {
-      res.status(400).send('Contraseña Incorrecta')
+     return res.status(400).send('Contraseña Incorrecta')
     }
-  } catch (error) {
-    res.status(404).send(error)
+  } catch (err) {
+    res.status(404).send(err)
   }
 });
 
@@ -52,33 +47,17 @@ router.post("/user", async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
   try {
     const { error } = schema.validate(req.body)
-    if(error) return res.status(404).send(error)
+    if(error) return res.status(400).send({message: error.details[0].message})
     const userExistCheck = await UserNoSqlTemp.findOne({ email: email })
-    if (userExistCheck) {
-      return res.status(400).send('Email ya registrado')
-    }
-    bcrypt.hash(password, process.env.SUPER_SECRET_SALT)
-    .then((hashPass) => {
-      return UserNoSqlTemp.create({
-        userName: firstName,
-        lastName,
-        email,
-        password: hashPass
-      })
-    })
-    .then((user) => {
-      res.status(200).send(`User con ${user.email} fue creado`)
-    })
-    .catch((err) => {
-      console.log(err)
-      res.status(400).send('Error en creacion de usuario')
-    })
-
-  } catch (err) {
-    return res.status(400).send('Error')
+    if (userExistCheck) return res.status(400).send('Email ya registrado')
+    const salt: any = await bcrypt.genSalt(Number(process.env.SUPER_SECRET_SALT))
+    const hashPass = await bcrypt.hash(password, salt)
+    const user = await UserNoSqlTemp.create({userName: firstName, lastName, email, password: hashPass})
+    res.status(201).send(user)
+  } catch (err: any) {
+    res.status(400).send(err.message)
   }
-
-});
+})
 
 router.delete("/user", async (req: Request, res: Response) => {
   const {id} = req.query

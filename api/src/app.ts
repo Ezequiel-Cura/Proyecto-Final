@@ -7,18 +7,6 @@ import bodyparser from "body-parser"
 import cors from "cors"
 // Initializations
 
-declare global {
-    namespace NodeJS {
-      interface ProcessEnv {
-        SUPER_SECRET_SALT: number;
-        NODE_ENV: 'development' | 'production';
-        PORT?: string;
-        PWD: string;
-      }
-    }
-  }
-
-
 connectDB()
  const server: Application = express()
 server.set("port", process.env.PORT || 3001)
@@ -27,7 +15,14 @@ server.use(bodyparser.urlencoded({extended: true}));
 server.use(bodyparser.json());
 server.use(cookieparser());
 server.use(morgan("dev"));
-server.use(cors())
+server.use(cors(
+  {
+    origin: 'http://localhost:3000', 
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    allowedHeaders: ['Accept', 'Content-Type'],
+    credentials: true
+  }
+))
 
 
 server.get("/ping", (req: Request, res: Response) => {
