@@ -4,10 +4,7 @@ import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
-  const { usuario, todosLosUsuarios } = useAppSelector( state => state.userReducer);
   const dispatch = useAppDispatch();
-  console.log(usuario, 'Trae el ejemplo :D')
-  console.log(todosLosUsuarios, 'No trae nada .-.')
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const [monto, setMonto] = useState<number>(89086);  //const total = setMonto(usuario.Account.monthlyInput[0].amount + monto)
