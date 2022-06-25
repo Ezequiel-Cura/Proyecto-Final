@@ -14,11 +14,6 @@ export default function Ingreso() {
     <div>
       <Nav/>
       {todosLosUsuarios ? <SinDatos/> : <ConDatos/>}  
-      <Link to="/home">
-        <div>
-          <p>Home</p>
-        </div>
-      </Link>
     </div>
   )
   }

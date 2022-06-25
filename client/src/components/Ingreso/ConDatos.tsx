@@ -1,4 +1,4 @@
-import styles from "./Ingreso.module.css";
+import styles from "./ConDatos.module.css";
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -71,10 +71,13 @@ export default function ConDatos() {
   return (
     <div>
       <Nav/>
-      <div className={styles.wrapper}>
-          <h1>Tus ingresos </h1>
+      <div className={styles.background}>
+        <div className={styles.wrapperAllIngreso}>
+          <div className={styles.title}>
+            <h1>Tus Ingresos </h1>
+          </div>
 
-          <div className={styles.selectOrder}>
+          <div className={styles.selectsOrder}>
             <select onChange={(e) => handleOrderAmount(e)}>
               <option>Ordenar por monto</option>
               <option value='desc'>De mayor a menor</option>
@@ -87,25 +90,38 @@ export default function ConDatos() {
             </select>
           </div>
 
-          <div className={styles.meses}>
-            {meses.map(mes => 
-              (<a className={styles.cajaMes} id={mes.toLowerCase()} >{mes}</a>)
-            )}
-            <a className={styles.todos}>Todos</a>
+          <div className={styles.allMonths}>
+            <div className={styles.monthCard}>
+              {meses.map(month => 
+                (<button className={styles.month} id={month}>{month}</button>)
+              )}
+            </div>
+            <div className={styles.annualCard}>
+              <button className={styles.annual}>Todos</button>
+            </div>
           </div>
 
-          <table className={styles.tabla}>
-            <thead>
-              <tr className={styles.titulo}>
+          <table className={styles.table}>
+            <thead className={styles.head}>
+              <tr>
                 <th>Fecha</th>
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
                 <th>Total</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {usuario.Account.monthlyInput.length && usuario.Account.monthlyInput.map( ingreso => (
+              <tr>
+                <th>Ejemplo</th>
+                <th>Ej</th>
+                <th>Ej</th>
+                <th>Ej</th>
+                <th>Ej</th>
+                <th><button></button></th>
+              </tr>
+              {/* {usuario.Account.monthlyInput.length && usuario.Account.monthlyInput.map( ingreso => (
                 <tr>
                   <th>{ingreso.date.split("T")[0]}</th>
                   <th>{ingreso.description}</th>
@@ -113,13 +129,14 @@ export default function ConDatos() {
                   <th>$ {ingreso.amount}</th>
                   <th></th>
                 </tr>
-              ))}
+              ))} */}
               <tr>
                 <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
-                <th className={styles.monto}>$ {monto}</th>
+                <th className={styles.totalAmount}>$ {monto}</th>
+                <th className={styles.vacia}></th>
               </tr>
             </tbody>
           </table>
@@ -128,12 +145,12 @@ export default function ConDatos() {
             <div className={styles.form}>
               <select name='category' onChange={(e) => handleSelect(e)}>
                 <option>Selecciona una categoria</option>
-                <option value='Alimentos'>Alimentos</option>
-                <option value='Combustible'>Combustible</option>
-                <option value='GastosPersonales'>Gastos personales</option>
-                <option value='Gimnasio'>Gimnasio</option>
-                <option value='Hobby'>Hobby</option>
-                <option value='Indumentaria'>Indumentaria</option>
+                <option value='Salario'>Salario</option>
+                <option value='Aguinaldo'>Aguinaldo</option>
+                <option value='Herencia'>Herencia</option>
+                <option value='Changa'>Changa</option>
+                <option value='Regalo'>Regalo</option>
+                <option value='Prestamo'>Prestamo</option>
                 <option value='Otros'>Otros</option>
               </select>
               <input 
@@ -155,6 +172,7 @@ export default function ConDatos() {
               <button type='submit'>Agregar</button>
             </div>
           </form>
+        </div>
       </div>
     </div>
   )

@@ -1,114 +1,92 @@
-.wrapper{
-    display: grid;
-    justify-content: center;
-    align-items: center;
-}
-
-.add{
-    width: 57px;
-    height: 56px;
-    left: 634px;
-    top: 617px;
-    background: #00BFA6;
-    border-radius: 20px;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-}
-
-.selectOrder select {
-    border: 1px solid rgb(142, 140, 140);
-    background: none;
-    border-radius: 10px;
-    color: rgb(142, 140, 140);
-    padding: 5px;
-    margin-right: 10px;
-}
-
-.tabla {
-    background-color: #333333;
-    border-collapse: collapse;
-    border: none;
-}
-
-.tabla td, th {
-    border:  1px solid rgb(143, 143, 143);
-    padding: 10px;
-}
-
-.tabla .titulo {
-    color: #00BFA6;
-}
-
-.tabla .monto {
- background-color: #00BFA6;
-}
-
-.tabla button {
-    background-color:#00BFA6;
-    border: none;
-    border-radius: 10px;
-    color: white;
-}
-
-.tabla tr:nth-child(even){
-    background-color: #555555;
-}
-
-.form{
-    padding: 10px;
-    background-color: #005d34;
-    margin-top: 30px;
+.wrapperAllIngreso{
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+.wrapperText {
+    width: 40%;
+    padding:60px 0px 20px 20px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
-.form input{
-    background-color: #0c7f4d;
-    border: none;
-    margin: 5px;
-    color: white;
+.wrapperText h1 {
+    padding: 0px 10px 10px 50px;
+    font-weight: lighter;
+    font-size: 3.0em;
+    color: #D2D2D2;
 }
 
-.form select {
-    background-color: #0c7f4d;
-    border: none;
-    color: white;
-}
-
-.meses {
+.wrapperLink {
     display: flex;
     flex-direction: row;
     align-items: center;
-    position: relative;
-    font-size: 15px;
 }
 
-/* #enero{
-    background-color: rgb(56, 26, 8);
-    color: #028170;
-} */
+.wrapperLink p {
+    padding: 0px 20px 0px 50px;
+    font-weight: lighter;
+    font-size: 1.0em;
+    color: #D2D2D2;
+}
 
-.meses a {
-    height: 50px;
-    width: auto;
-    display: flex;
-    flex-direction:column;
+.wrapperLink button {
+    width: 57px;
+    height: 56px;
+    display: grid;
     justify-content: center;
-    align-items: center;
-    margin: 10px;
-    border: 1px solid rgb(142, 140, 140);
-    border-radius: 10px;
-    color: rgb(142, 140, 140);
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color .2s;
+    align-content: center;
+    position: relative;
+    color: white;
+    font-size: 40px;
+    border: none;
+    border-radius: 20px;
+    background: #00BFA6;
     cursor: pointer;
+    transition: background-color .2s;
 }
 
-.meses .todos {
-    background-color: black;
-    color: rgb(67, 67, 67);
-    border-color:rgb(67, 67, 67);
+.wrapperLink button:hover {
+    font-weight: bold;
+    color: white;
+    border-color:rgb(118, 189, 3) ;
+    background-color: rgb(118, 189, 3) ;
+}
+
+.wrapperImage {
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    align-content: center;
+}
+
+.wrapperImage img {
+    width: 100%;
+    padding: 20px;
+}
+
+@media screen and (max-width:1300px)  {
+    .wrapperText{
+        width: 100%;
+    }
+    .wrapperImage {
+        width: 100%;
+    }
+    .wrapperAllIngreso {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width:900px)  {
+    .wrapperText {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width:500px)  {
+    .wrapperText {
+        font-size: 0.5rem;
+    }
 }

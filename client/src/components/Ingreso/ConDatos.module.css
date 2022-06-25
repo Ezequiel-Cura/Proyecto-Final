@@ -1,0 +1,192 @@
+
+.background {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapperAllIngreso {
+    width: 1200px;
+    padding: 20px;
+}
+
+.title{
+    width: 100%;
+}
+
+.title h1 {
+    padding: 20px 20px 20px 0px;
+    font-size: 3.0em;
+    color: #D2D2D2;
+    font-weight: lighter;
+}
+
+.selectsOrder {
+    width: 100%;
+    padding: 20px 20px 20px 0px;
+}
+
+.selectsOrder select {
+    padding: 10px;
+    margin-right: 20px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background-color: #1f1f1f;;
+}
+
+.allMonths {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.monthCard {
+    width: 100%;
+}
+
+/* .month:global(#Enero){ background-color: #f94144}
+.month:global(#Febrero){ background-color: #f3722c}
+.month:global(#Marzo){ background-color: #f8961e}
+.month:global(#Abril){ background-color: #f9844a;}
+.month:global(#Mayo){ background-color: #f9c74f;}
+.month:global(#Junio){ background-color: #90be6d;}
+.month:global(#Julio){ background-color: #43aa8b;}
+.month:global(#Agosto){ background-color: #4d908e;}
+.month:global(#Septiembre){ background-color: #577590;}
+.month:global(#Octubre){ background-color: #277da1;}
+.month:global(#Noviembre){ background-color: #1e6091;}
+.month:global(#Diciembre){ background-color: #184e77;} */
+
+.month:global(#Enero){ background-color: #cedf8e; border-bottom-left-radius: 20px;}
+.month:global(#Febrero){ background-color: #b5e48c;}
+.month:global(#Marzo){ background-color: #99d98c;}
+.month:global(#Abril){ background-color: #76c893;}
+.month:global(#Mayo){ background-color: #52b69a;}
+.month:global(#Junio){ background-color: #34a0a4;}
+.month:global(#Julio){ background-color: #168aad;}
+.month:global(#Agosto){ background-color: #1a759f;}
+.month:global(#Septiembre){ background-color: #1e6091;}
+.month:global(#Octubre){ background-color: #184e77;}
+.month:global(#Noviembre){ background-color: #0a3454;}
+.month:global(#Diciembre){ background-color: #003459;}
+
+.allMonths button {
+    width: 80px;
+    height: 50px;
+    font-size: 15px;
+    font-weight:lighter;
+    border: none;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    color: rgb(255, 255, 255);
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.allMonths button:hover {
+    font-weight: bold;
+    color: rgb(118, 118, 118);
+    opacity: 0.8;
+}
+
+.annual {
+    border-radius: 20px;
+    background-color: black;
+}
+
+.table {
+    width: 100%;
+    background-color: #333333;
+    border-collapse: collapse;
+    border-radius: 20px;
+}
+
+.table thead th {
+    padding: 15px;
+    font-size: 20px;
+    color: #00BFA6;
+    border-bottom: 1px solid white;
+}
+
+.table tbody tr, th {
+    padding: 10px;
+}
+
+.table button {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    background-image: url(../../assets/delete.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #333333;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.table button:hover {
+    background-color: #00BFA6;;
+}
+
+.table .totalAmount {
+    background-color: #00BFA6;
+}
+
+.table .vacia {
+    border-bottom-right-radius: 20px;
+    background-color: #1f1f1f;
+}
+
+.table tr:nth-child(even){
+    background-color: #555555;
+}
+
+.form{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form input{
+    padding: 10px;
+    margin-right: 20px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background: none;
+    color: white;
+}
+
+.form select {
+    padding: 10px;
+    margin-right: 20px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background-color: #1f1f1f;
+}
+
+.form button {
+    padding: 12px;
+    margin-right: 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color: #00BFA6;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background-color: rgb(118, 189, 3) ;
+}
+
