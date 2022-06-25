@@ -1,11 +1,15 @@
 import styles from "./Landing.module.css"
 import React from 'react'
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-// import { loginUser } from "redux/reducers/userReducer"
+import { loginUser } from "redux/reducers/userReducer"
 import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
+
 export default function Login() {
+    const navigate = useNavigate()
+    const {state} : any = useLocation()
+    const dispatch = useAppDispatch()
     const SigninSchema = Yup.object().shape({
         email: Yup.string().email('Ese email no existe').required("Tu email es requerido"),
         password: Yup.string().min(4).max(30).required("dale amigo q onda no tenes contraseña")
@@ -13,33 +17,41 @@ export default function Login() {
   return (
     <div className={styles.formContainer}>
         <div className={styles.textContainer}>
-            <h3>Bienvenido devuelta! Inicia sesión</h3>
+        {
+          state?.message ? <h3 style={{color: "rgba(3, 224, 21, 1)", padding: "20px"}}>{state.message}</h3> : <h3>Te extrañamos ! inicia sesión</h3>
+        }
         </div>
         <Formik
         initialValues={{
             email: "",
-            password: ""
+            password: "",
+            message: ""
         }}
         validationSchema={SigninSchema}
-        onSubmit = {((values, {setFieldError}) => {
-            console.log(values)
-        })}
-        >
+        onSubmit = {(({email, password}, {setFieldError}) => {
+        return dispatch(loginUser({email, password}))
+            .then((resp: any)=> {
+                if (resp.error) return setFieldError("message", resp.payload)
+                navigate("/home")
+            })
+        })
+        }>
             {({isSubmitting}) => (
                 <Form className={styles.form}>
-                    <Field className={styles.input} style={{padding: "10px 20px"}} name="Email" type="text" placeholder="Email"/>
+                    <Field className={styles.input} style={{padding: "10px 20px"}} name="email" type="text" placeholder="Email"/>
                     <ErrorMessage className={styles.errorMessage} name="email" component="span"/>
-                    <Field className={styles.input} style={{padding: "10px 20px"}} name="Contraseña" type="password" placeholder="Contraseña"/>
+                    <Field className={styles.input} style={{padding: "10px 20px"}} name="password" type="password" placeholder="Contraseña"/>
                     <ErrorMessage className={styles.errorMessage} name="password" component="span"/>
+                    <ErrorMessage className={styles.errorMessage} name="message" component="span"/>
                     <div className={styles.buttons}>
-                        <div className={styles.checkboxContainer}>
-                            <input id="recordarme" type="checkbox"/> 
-                            <label htmlFor="recordarme" style={{marginLeft: "5px"}}>Recordarme</label>
-                        </div>
+                    {
+                        state.message ? <h4 style={{color: "rgba(3, 224, 21, 1)"}}>Esta es la mejor aplicación para controlar tus finanzas que vas a encontrar 💸</h4> :  
                         <div style={{display: "flex", marginTop: "2px", flexDirection: "row", alignItems: "top"}}>
                             <h4 style={{margin: "0px"}}>No tienes cuenta?</h4>
                             <Link to="/" state={{registered: false}} style={{marginLeft: "3px", color: "var(--btn-color)"}}>Registrate</Link>
                         </div>
+                    }
+                    
                     </div>
                     <div className={styles.buttonContainer}>
                         <button type="submit" className={styles.button}>Conectate</button>
