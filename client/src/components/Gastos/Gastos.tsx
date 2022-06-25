@@ -6,12 +6,11 @@ import SinDatosGastos from "./SinDatosGastos";
 import { useAppSelector } from "../../redux/hooks";
 
 export default function Gastos() {
-  const { todosLosUsuarios } = useAppSelector( state => state.userReducer); 
 
   return (
     <div>
         <Nav/>
-        {todosLosUsuarios ? <SinDatosGastos/> : <ConDatosGastos/>}  
+        <SinDatosGastos/>
     </div>
   )
 }

@@ -6,12 +6,11 @@ import SinDatos from './SinDatos';
 import { useAppSelector } from "../../redux/hooks";
 
 export default function Ingreso() {
-  const { todosLosUsuarios } = useAppSelector( state => state.userReducer); 
 
   return (
     <div>
       <Nav/>
-      {todosLosUsuarios ? <SinDatos/> : <ConDatos/>}  
+      <SinDatos/>
     </div>
   )
   }
