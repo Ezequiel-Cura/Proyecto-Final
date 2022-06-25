@@ -1,11 +1,9 @@
 .Nav_wrapper{
     float: left;
-    top:0px;
-    left: 0px;
-    height: 100vh;
+    height: calc(100vh - 12px);
     width: 150px;
     padding: 6px 14px;
-    background-color: #11101d;
+    background-color: #11101d5f;
     display: flex;
     flex-direction: column;
 }

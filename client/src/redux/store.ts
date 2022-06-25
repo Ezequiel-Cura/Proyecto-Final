@@ -1,8 +1,8 @@
 import { combineReducers, configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import userReducer from "redux/reducers/userReducer"
+import user from "redux/reducers/userReducer"
 
 const reducer = combineReducers({
-    userReducer
+    user
 })
 
 const store = configureStore({
