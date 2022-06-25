@@ -47,18 +47,18 @@
     width: 100%;
 }
 
-/* .month:global(#Enero){ background-color: #f94144}
-.month:global(#Febrero){ background-color: #f3722c}
-.month:global(#Marzo){ background-color: #f8961e}
-.month:global(#Abril){ background-color: #f9844a;}
-.month:global(#Mayo){ background-color: #f9c74f;}
-.month:global(#Junio){ background-color: #90be6d;}
-.month:global(#Julio){ background-color: #43aa8b;}
-.month:global(#Agosto){ background-color: #4d908e;}
-.month:global(#Septiembre){ background-color: #577590;}
-.month:global(#Octubre){ background-color: #277da1;}
-.month:global(#Noviembre){ background-color: #1e6091;}
-.month:global(#Diciembre){ background-color: #184e77;} */
+.months:global(#Enero){ background-color: #f94144}
+.months:global(#Febrero){ background-color: #f3722c}
+.months:global(#Marzo){ background-color: #f8961e}
+.months:global(#Abril){ background-color: #f9844a;}
+.months:global(#Mayo){ background-color: #f9c74f;}
+.months:global(#Junio){ background-color: #90be6d;}
+.months:global(#Julio){ background-color: #43aa8b;}
+.months:global(#Agosto){ background-color: #4d908e;}
+.months:global(#Septiembre){ background-color: #577590;}
+.months:global(#Octubre){ background-color: #277da1;}
+.months:global(#Noviembre){ background-color: #1e6091;}
+.months:global(#Diciembre){ background-color: #184e77;}
 
 .month:global(#Enero){ background-color: #cedf8e; border-bottom-left-radius: 20px;}
 .month:global(#Febrero){ background-color: #b5e48c;}
@@ -123,7 +123,7 @@
     background-image: url(../../assets/delete.png);
     background-repeat: no-repeat;
     background-size: cover;
-    background-color: #333333;
+    background-color: transparent;
     transition: background-color .2s;
     cursor: pointer;
 }
