@@ -66,11 +66,12 @@ router.put("/user/:id", async (req: Request, res: Response) => {
   try {
       const updateUser: typeof UserNoSqlTemp = req.body;
       const query = { _id: new ObjectId(id) };
-      const result = await UserNoSqlTemp.updateOne(query, { $set: updateUser });
-
-      result
-          ? res.status(200).send(`Successfully updated user with id ${id}`)
-          : res.status(304).send(`User with id: ${id} not updated`);
+      const result = await UserNoSqlTemp.updateOne({_id: id}, { $set: updateUser });
+      if (result) {
+        const user: any = await UserNoSqlTemp.findById(id)
+        return res.status(200).send(user.avatar)
+      }
+      res.status(304).send(`User with id: ${id} not updated`);
   } catch (error: any) {
       console.error(error.message);
       res.status(400).send(error.message);

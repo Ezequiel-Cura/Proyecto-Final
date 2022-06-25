@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/react-avatar-editor": "^12.0.0"
   }
 }
