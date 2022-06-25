@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
-  const { usuario } = useAppSelector( state => state.userReducer);
+  const { usuario } = useAppSelector( state => state.user);
   const dispatch = useAppDispatch();
   console.log(usuario, 'Que trae del reducer')
 
