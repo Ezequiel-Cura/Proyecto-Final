@@ -7,6 +7,7 @@ import {  addIngreso } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
   const { usuario } = useAppSelector( state => state.user);
+  console.log(usuario)
   const dispatch = useAppDispatch();
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -18,7 +19,7 @@ export default function ConDatos() {
   //----------Form-------------
   interface AgregarIngresos { 
     id: string,  
-    key: string,
+    key: string,               //extraInput, monthlyInput
     value: Value,
   }
   interface Value {
@@ -63,7 +64,7 @@ export default function ConDatos() {
   // }
 
   const form : AgregarIngresos = {
-    id: '62b77fc6cf92600dadcd1918',  
+    id: usuario._id,  
     key: 'extraInput',
     value: input,
   }
@@ -139,17 +140,45 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              {/* {usuario.Account.extraInput && usuario.Account.extraInput.map( detalles => {
+              {usuario.Account ? usuario.Account.extraInput.map( (detalles : any) => {
                 return(
                   <tr>
                   <th>{detalles.date.split("T")[0]}</th>
-                  <th></th>
+                  <th>{detalles.category ? detalles.category : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
                   <th><button></button></th>
                 </tr>
                 )
-              })} */}
+              }) : (
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              )}
+            {/* Cuando se hace el post  te devuelve otro objeto (el account solo y no su totalidad, entonces se entra de otra manera) */}
+              {usuario.extraInput ? usuario.extraInput.map( (detalles : any) => {
+                return(
+                  <tr>
+                  <th>{detalles.date.split("T")[0]}</th>
+                  <th>{detalles.category ? detalles.category : "-"}</th>
+                  <th>{detalles.description}</th>
+                  <th>$ {detalles.amount}</th>
+                  <th><button></button></th>
+                </tr>
+                )
+              }) : (
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              )}
 
               {/* {usuario.Account.monthlyInput } */}
 
@@ -167,11 +196,11 @@ export default function ConDatos() {
 
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
-              {/* <select onChange={handleSelectI}>
+              <select >
                 <option>Selecciona el tipo</option>
                 <option value='monthlyInput'>Ingreso fijo</option>
                 <option value='extraInput'>Ingreso extra</option>
-              </select> */}
+              </select>
               <select onChange={handleSelectC}>
                 <option>Selecciona una categoria</option>
                 <option value='Salario'>Salario</option>

@@ -62,16 +62,27 @@ async (user, {rejectWithValue}) => {
 })
 
 //-----------------------------------------
-export const addIngreso : any = createAsyncThunk("user/ingresos", 
+export const addIngreso : any = createAsyncThunk("user/addIngreso", 
 async (ingreso, {rejectWithValue}) => {
   try {
-    console.log(ingreso, 'Pasa por el reducer') //---------------------------!
     const {data} = await axios.post(`/user/account`, ingreso)
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)
   }
 })
+
+export const deleteIngreso : any = createAsyncThunk("user/deleteIngreso",
+async (ingreso : any, {rejectWithValue}) => {
+  try {
+    const data = await axios.delete("/user/account", ingreso)
+    return data
+  } catch (err : any) {
+    return rejectWithValue(err.response.data)
+  }
+}
+)
+
 //-----------------------------------------
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
 async (info: any) => {
@@ -117,6 +128,15 @@ const reducerSlice = createSlice({
       state.usuario = payload
     },
     [addIngreso.rejected]: (state) => {
+      state.usuario = {...state.usuario}
+    },
+    [deleteIngreso.pending]: (state) => {
+      state.usuario = {...state.usuario}
+    },
+    [deleteIngreso.fulfilled]: (state, {payload}) => {
+      state.usuario = payload
+    },
+    [deleteIngreso.rejected]: (state) => {
       state.usuario = {...state.usuario}
     },
     [uploadImage.pending]: (state) => {
