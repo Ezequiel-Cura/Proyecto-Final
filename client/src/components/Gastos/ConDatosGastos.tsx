@@ -5,7 +5,7 @@ import Pagination from "components/Ingreso/Pagination";
 // import { useAppSelector } from "../../redux/hooks";
 
 export default function ConDatos() {
-//   const { usuario } = useAppSelector( state => state.userReducer);
+//   const { usuario } = useAppSelector( state => state.user);
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const [monto, setMonto] = useState<number>(5756756);

@@ -1,8 +1,9 @@
 
 import { Router, Request, Response } from "express";
 import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
-import bcrypt from 'bcrypt'
-import Joi from "joi"
+import bcrypt from 'bcrypt';
+import Joi from 'joi';
+import { ObjectId } from "mongodb";
 
 const schema = Joi.object({
   firstName: Joi.string().required(),
@@ -26,8 +27,8 @@ const entriesUpdate = (key: string, value: object) => {
   */
 
 }
-
-router.get("/user", async (req: Request, res: Response) => {
+// Funciona como un get para traer toda la data del usuario:
+router.post("/user/loggin", async (req: Request, res: Response) => {
   try {
     const query : any = req.query
     console.log(query, 'sdkdjfnkd')
@@ -35,7 +36,7 @@ router.get("/user", async (req: Request, res: Response) => {
     if (!User) return res.status(400).send('Usuario inexistente')
     const passwordCompare = await bcrypt.compare(query.password, User.password)
     if (passwordCompare) {
-     return res.status(200).json(User.email)
+     return res.status(200).json(User)
     } else {
      return res.status(400).send('Contraseña Incorrecta')
     }
@@ -44,7 +45,26 @@ router.get("/user", async (req: Request, res: Response) => {
     res.status(404).send(err)
   }
 });
+// Para agregar valores a la cuenta del usuario:
+router.post("/user/account", async (req: Request, res: Response) => {
+  const {id, key, value} = req.body
 
+  try{
+    const user = await UserNoSqlTemp.findById(id)
+   if(!user){
+    res.status(404).send(`No se encontró al usuario con id: ${id}`)
+   }else {
+    await user?.Account[key].push(value)
+    await user?.save()
+    res.status(200).send(`${key}: ${value}, usuario con id: ${id} actualizado`)
+   }
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
+
+});
+// Para registrar al usuario:
 router.post("/user", async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
   try {
@@ -55,11 +75,48 @@ router.post("/user", async (req: Request, res: Response) => {
     const salt: any = await bcrypt.genSalt(Number(process.env.SUPER_SECRET_SALT))
     const hashPass = await bcrypt.hash(password, salt)
     const user = await UserNoSqlTemp.create({userName: firstName, lastName, email, password: hashPass})
-    res.status(201).send(user)
+    res.status(201).json(`${user} creado exitosamente.`)
   } catch (err: any) {
     res.status(400).send(err.message)
   }
 })
+
+// Para modificar y setear datos del usuario manden los tres datos con sus respectivos valores:
+// {"id": "62b7b9f2168812a442797012",
+// "key": "userName",
+// "value": "test"}
+router.put("/user", async (req: Request, res: Response) => {
+  const {id, key, value} = req.body
+
+  try {
+    console.log({req})
+
+      const result = await UserNoSqlTemp.updateOne({_id: id}, { $set: { [key]: value} });
+      // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
+
+      result
+          ? res.status(200).json({key, value})
+          : res.status(304).send(`User with id: ${id} not updated`);
+  } catch (error: any) {
+      console.error(error.message);
+      res.status(400).send(error.message);
+  }
+});
+
+// router.delete("/user/account", async (req: Request, res: Response) => {
+//   const {date, key, value} = req.body
+
+//   try{
+//     const user = await UserNoSqlTemp.findById(id)
+//     await user?.Account[key].filter(obj => obj === value)
+//     await user?.save()
+//     res.status(200).send('Usuario actualizado')
+//   }
+//   catch (err) {
+//     res.status(400).send(err)
+//   }
+// });
+
 
 router.delete("/user", async (req: Request, res: Response) => {
   const {id} = req.query
@@ -68,9 +125,9 @@ router.delete("/user", async (req: Request, res: Response) => {
   .then((user) => {
     console.log(user)
     if(user){
-      res.send('Usuario eliminado')
+      res.status(200).json(`Usuario ${user} eliminado`)
     } else {
-      res.send('Usuario no encontrado')
+      res.status(404).json(`Usuario ${user} eliminado`)
     }
   })
   .catch(() => {

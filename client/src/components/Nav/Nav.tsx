@@ -1,16 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from 'redux/hooks'
 import styles from "./Nav.module.css"
 
 
 export default function Nav() {
+const {usuario} = useAppSelector(({user}) => user)
   return (
     <div className={styles.Nav_wrapper}>
 
         <div className={styles.image_wrapper}>
             <Link to="/profile">
                 <div className={styles.image_cointainer}>
-                    <img src="" alt="foto de perfil" />
+                    <img src={usuario.avatar} alt="foto de perfil" />
                 </div>
             </Link>
         </div>

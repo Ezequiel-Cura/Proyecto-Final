@@ -1,5 +1,5 @@
 /node_modules
-
+/backup
 # misc
 .DS_Store
 .env.local

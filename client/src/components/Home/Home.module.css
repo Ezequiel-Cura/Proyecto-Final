@@ -3,28 +3,53 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 auto;
+    flex-wrap: nowrap;
+    margin: 0px auto;
 }
 .links_wrapper div{
-    margin: 2rem auto;
-    width: 40rem;
-    height: 6rem;
+    width: min-content;
+    display: flex;
+    align-items: center;
+    margin-left:100px ;
+    
+}
+.text_wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.home_wrapper{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    width: 100%;
+}
+.links_wrapper div div{
+    margin: 10px 0;
     border: 1px white solid;
+    width: 400px;
     border-radius: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding: 20px;
+    height: 20px;
+}
+
+.links_wrapper div a{
+    
+}
+
+.title_wrapper{
+    display: inline-block;
+    margin-top: 70px;
+    margin-bottom: 40px;
     
 }
 
 h2{
     color: black;
 }
-h1{
-    display: inline-block;
-}
 
-.ingreso_link{
+.ingresoLink{
     background-color: #00BFA6;
 }
 

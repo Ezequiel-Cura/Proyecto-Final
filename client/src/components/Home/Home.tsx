@@ -1,50 +1,53 @@
 import styles from "./Home.module.css"
-import React, { useEffect } from 'react'
 import Nav from "components/Nav/Nav"
-import { useAppDispatch, useAppSelector } from "redux/hooks"
-import { RootState } from "redux/store"
 import { Link } from 'react-router-dom'
 
 export default function Home() {
-  const {usuario}:any = useAppSelector((state: RootState) => state.userReducer)
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    
-  }, [dispatch])
 
   return (
-    <div>
+    <div className={styles.home_wrapper}>
       <Nav/>
-      <div>
-        <h1>Administra tus finanzas</h1>
+      <div className={styles.text_wrapper}>
 
-      </div>
-      <div className={styles.links_wrapper}>
-        <div className={styles.ingreso_link}>
-          <Link to="/home/ingresos">
-            <h2>INGRESOS</h2> 
-          </Link>
+        <div className={styles.title_wrapper}>
+          <h1>Administra tus finanzas</h1>
         </div>
+        <div className={styles.links_wrapper}>
 
-        <div className={styles.gastos_link}>
-          <Link to="/gastos">
-            <h2>GASTOS</h2>
-          </Link>
-        </div>
+          <div >
+              <Link to="/home/ingresos">
+                <div className={styles.ingresoLink}>
+                    <h2>INGRESOS</h2> 
+                </div>
+              </Link>
+          </div>
 
-        <div className={styles.ahorros_link}>
-          <Link to="/ahorros">
-            <h2>AHORROS</h2>
-          </Link>
-        </div>
-        
-        <div className={styles.detalles_link}>
-          <Link to="/detalles">
-            <h2>Detalles</h2>            
-          </Link>
-        </div>
+          <div>
+            <Link to="/home/gastos">
+              <div className={styles.gastos_link}>
+                  <h2>GASTOS</h2>
+              </div>
+            </Link>
+          </div>
 
+          <div>
+
+            <Link to="/home">
+              <div className={styles.ahorros_link}>
+                  <h2>AHORROS</h2>
+              </div>
+            </Link>
+          </div>
+
+          <div>
+              <Link to="/home/detalles">
+                <div className={styles.detalles_link}>
+                    <h2>DETALLES</h2>            
+                </div>
+              </Link>
+          </div>
+
+        </div>
       </div>
     </div>
   )

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {  addIngreso, setUser } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
-  const { usuario } = useAppSelector( state => state.userReducer);
+  const { usuario } = useAppSelector( state => state.user);
   const dispatch = useAppDispatch();
   console.log(usuario, 'Que trae del reducer')
 

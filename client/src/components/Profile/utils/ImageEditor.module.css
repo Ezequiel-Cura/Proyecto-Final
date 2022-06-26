@@ -1,0 +1,25 @@
+.wrapper {
+    position: absolute;
+    top: calc(20vh - 40px);
+    left: calc(20vw - 40px);
+    width: calc(60vw - 40px);
+    height: calc(60vh - 40px);
+    border-radius: 10px;
+    padding: 40px;
+    background-color: #2e332cbd;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.closeButton {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
