@@ -32,9 +32,9 @@ const entriesUpdate = (key, value) => {
     variableExpenses
     */
 };
-// Funciona como un get para traer toda la data del usuario:
+// Funciona como un get para traer toda la data del usuario, mandar los params por body así:
 // {
-//   "email": "alhe@lands.com", 
+//   "email": "test@test.com", 
 //   "password": "1234"
 // }
 router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
