@@ -32,7 +32,7 @@ const entriesUpdate = (key, value) => {
     */
 };
 // Funciona como un get para traer toda la data del usuario:
-router.post("/user/loggin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
         const User = yield UserNoSql_temp_1.default.findOne({ email });
@@ -94,7 +94,6 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
 router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
     try {
-        console.log({ req });
         const result = yield UserNoSql_temp_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
         // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
         result

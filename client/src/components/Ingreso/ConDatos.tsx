@@ -61,12 +61,6 @@ export default function ConDatos() {
       amount: 0,
     });
   } 
-  //----------------------
-
-  useEffect(() => {
-    //dispatch(loadMockUser());      //carga de user(ej Erik)
-    //dispatch(setUser);
-  }, [dispatch])
 
   return (
     <div>

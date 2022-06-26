@@ -28,7 +28,7 @@ const entriesUpdate = (key: string, value: object) => {
 
 }
 // Funciona como un get para traer toda la data del usuario:
-router.post("/user/loggin", async (req: Request, res: Response) => {
+router.post("/user/login", async (req: Request, res: Response) => {
   try {
     const { email, password } : any = req.body
     const User = await UserNoSqlTemp.findOne({email})
@@ -87,8 +87,6 @@ router.put("/user", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
   try {
-    console.log({req})
-
       const result = await UserNoSqlTemp.updateOne({_id: id}, { $set: { [key]: value} });
       // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
 
@@ -121,7 +119,6 @@ router.delete("/user", async (req: Request, res: Response) => {
 
   UserNoSqlTemp.findByIdAndDelete(id)
   .then((user) => {
-    console.log(user)
     if(user){
       res.status(200).json(`Usuario ${user} eliminado`)
     } else {
