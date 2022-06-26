@@ -30,15 +30,17 @@ const entriesUpdate = (key: string, value: object) => {
 router.get("/user", async (req: Request, res: Response) => {
   try {
     const query : any = req.query
+    console.log(query, 'sdkdjfnkd')
     const User = await UserNoSqlTemp.findOne({email: query.email})
     if (!User) return res.status(400).send('Usuario inexistente')
     const passwordCompare = await bcrypt.compare(query.password, User.password)
     if (passwordCompare) {
-     return res.status(200).send(User)
+     return res.status(200).json(User.email)
     } else {
      return res.status(400).send('Contraseña Incorrecta')
     }
   } catch (err) {
+    console.log('adjtythgngkas')
     res.status(404).send(err)
   }
 });
@@ -82,7 +84,6 @@ router.put("/user", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
   try{
-
     const user = await UserNoSqlTemp.findById(id)
     await user?.Account[key].push(value)
     await user?.save()

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {  addIngreso, setUser } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
   const { usuario } = useAppSelector( state => state.userReducer);
@@ -12,32 +13,69 @@ export default function ConDatos() {
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const [monto, setMonto] = useState<number>(89086);  //const total = setMonto(usuario.Account.monthlyInput[0].amount + monto)
   
+  //monto ---> la suma de todos los ingresos en el mes ()
+
+
   //----------Form-------------
-  interface AgregarIngresos {    //objeto que se envia?
+  interface AgregarIngresos { 
+    id: string,  
+    key: string,
+    value: Value,
+  }
+  interface Value {
     description: string,
-    category: string,
     amount: number,
+    category?: string
   }
 
-  const [input, setInput] = useState<AgregarIngresos> ({
-    description: "",
-    category: "",
-    amount: 0,
+  const [input, setInput] = useState<Value>({
+      category: '',
+      description: '',
+      amount: 0,
   })
 
-  function handleChange(e : any){     //cambia el estado de los input
-    setInput((prevState) => {
-        const newState = {              
-            ...prevState,
-            [e.target.name] : e.target.value
-        };
-        return newState;
-    })
+  function handleChange(e : any){ 
+    console.log(e.target.value, "valor del input")
+    setInput({
+      ...input,
+       [e.target.name] : e.target.value
+      })
   }
 
+  function handleSelect(e : any){    
+    console.log(e.target.value, 'EL SELECT')   
+    setInput({
+      ...input,
+      category : e.target.value
+  })
+  }
+
+  const form : AgregarIngresos = {
+    id: usuario._id,
+    key: "extraInput",
+    value: input
+  }
+
+  const clearForm = () =>{
+    setInput({
+      category: '',
+      description: '',
+      amount: 0,
+    });
+  }
+
+  function handleSubmit(e : any){   
+    e.preventDefault();
+    console.log(form,'va el form')   //SOLO SE VA A ENVIAR SI se agrega el id del usuario, para eso hay que modificar el reducer
+    dispatch(addIngreso(form));
+    clearForm();
+  } 
+  //----------------------
+
+  
   function handleOrderAmount( e : any){
     e.preventDefault();
-    //dispatch(filterByAmount(e.target.value));
+    //dispatch(setUser(e.target.value));
   }
 
   function handleOrderDate(e : any){
@@ -45,28 +83,9 @@ export default function ConDatos() {
     //dispatch(filterByDate(e.target.value));
   }
 
-  function handleSelect(e : any){     //cambia el estado de category
-    setInput({
-      ...input,
-      category: e.target.value
-  })
-  }
-
-  function handleSubmit(e : any){      //enviar form
-    e.preventDefault();
-    //dispatch(crearIngreso(input));
-    setInput({
-      description: "",
-      category: "",
-      amount: 0,
-    });
-  } 
-  //----------------------
-
-  useEffect(() => {
-    //dispatch(loadMockUser());      //carga de user(ej Erik)
-    //dispatch(setUser);
-  }, [dispatch])
+  //  useEffect(() => {
+  //   dispatch(setUser())
+  // }, [])
 
   return (
     <div>
@@ -112,50 +131,18 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>Ejemplo</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th><button></button></th>
-              </tr>
-              <tr>
-                <th>Ejemplo</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th><button></button></th>
-              </tr>
-              <tr>
-                <th>Ejemplo</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th><button></button></th>
-              </tr>
-              <tr>
-                <th>Ejemplo</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th><button></button></th>
-              </tr>
-              <tr>
-                <th>Ejemplo</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th>Ej</th>
-                <th><button></button></th>
-              </tr>
-              {/* {usuario.Account.monthlyInput.length && usuario.Account.monthlyInput.map( ingreso => (
-                <tr>
-                  <th>{ingreso.date.split("T")[0]}</th>
-                  <th>{ingreso.description}</th>
-                  <th>{ingreso.description}</th>
-                  <th>$ {ingreso.amount}</th>
+              {/* {usuario.Account.extraInput && usuario.Account.extraInput.map( detalles => {
+                return(
+                  <tr>
+                  <th>{detalles.date.split("T")[0]}</th>
                   <th></th>
+                  <th>{detalles.description}</th>
+                  <th>$ {detalles.amount}</th>
+                  <th><button></button></th>
                 </tr>
-              ))} */}
+                )
+              })} */}
+
               <tr>
                 <th className={styles.lastBox}></th>
                 <th></th>
@@ -168,9 +155,9 @@ export default function ConDatos() {
 
           <Pagination/>
 
-          <form onSubmit={(e) => handleSubmit(e)}>
+          <form onSubmit={handleSubmit}>
             <div className={styles.form}>
-              <select name='category' onChange={(e) => handleSelect(e)}>
+              <select onChange={handleSelect}>
                 <option>Selecciona una categoria</option>
                 <option value='Salario'>Salario</option>
                 <option value='Aguinaldo'>Aguinaldo</option>
@@ -183,17 +170,17 @@ export default function ConDatos() {
               <input 
                 type='text' 
                 name='description'
+                // value={input.value.description} 
                 placeholder='Agrega una descripcion'
-                value={input.description} 
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
                 >
               </input>
               <input 
                 type='number' 
                 name='amount'
+                // value={input.value.amount} 
                 placeholder='Agrega un monto'
-                value={input.amount} 
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
                 >
                 </input>
               <button type='submit'>Agregar</button>
