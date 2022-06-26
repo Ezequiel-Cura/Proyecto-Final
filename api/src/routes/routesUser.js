@@ -104,7 +104,6 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
 router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
     try {
-        console.log({ req });
         const result = yield UserNoSql_temp_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
         // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
         result
@@ -142,7 +141,6 @@ router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function*
     const { id } = req.query;
     UserNoSql_temp_1.default.findByIdAndDelete(id)
         .then((user) => {
-        console.log(user);
         if (user) {
             res.status(200).send(`Usuario ${user} eliminado`);
         }

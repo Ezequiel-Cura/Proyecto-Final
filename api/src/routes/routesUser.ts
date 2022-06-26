@@ -96,8 +96,6 @@ router.put("/user", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
   try {
-    console.log({req})
-
       const result = await UserNoSqlTemp.updateOne({_id: id}, { $set: { [key]: value} });
       // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
 
@@ -139,7 +137,6 @@ router.delete("/user", async (req: Request, res: Response) => {
 
   UserNoSqlTemp.findByIdAndDelete(id)
   .then((user) => {
-    console.log(user)
     if(user){
       res.status(200).send(`Usuario ${user} eliminado`)
     } else {

@@ -3,7 +3,7 @@
     height: calc(100vh - 12px);
     width: 150px;
     padding: 6px 14px;
-    background-color: #11101d5f;
+    background-color: #2E332C;
     display: flex;
     flex-direction: column;
 }
@@ -12,14 +12,11 @@
     justify-content: center;
     margin-top: 24px;
 }
-.image_cointainer{
+.image_container{
     width: 100px;
     height: 100px;
-    border-radius: 50%;
-    border: 1px red solid;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 20%;
+    object-fit: cover;
 }
 .items_wrapper{
     margin: 100px 0 200px 0;
