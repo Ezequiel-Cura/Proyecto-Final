@@ -74,10 +74,12 @@ router.put("/user/:id", (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const updateUser = req.body;
         const query = { _id: new mongodb_1.ObjectId(id) };
-        const result = yield UserNoSql_temp_1.default.updateOne(query, { $set: updateUser });
-        result
-            ? res.status(200).send(`Successfully updated user with id ${id}`)
-            : res.status(304).send(`User with id: ${id} not updated`);
+        const result = yield UserNoSql_temp_1.default.updateOne({ _id: id }, { $set: updateUser });
+        if (result) {
+            const user = yield UserNoSql_temp_1.default.findById(id);
+            return res.status(200).send(user.avatar);
+        }
+        res.status(304).send(`User with id: ${id} not updated`);
     }
     catch (error) {
         console.error(error.message);
@@ -105,7 +107,7 @@ router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(200).json(`Usuario ${user} eliminado`);
         }
         else {
-            res.json(`Usuario ${user} eliminado`);
+            res.status(404).json(`Usuario ${user} eliminado`);
         }
     })
         .catch(() => {
