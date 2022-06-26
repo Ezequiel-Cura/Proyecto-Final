@@ -16,6 +16,7 @@ const express_1 = require("express");
 const UserNoSql_temp_1 = __importDefault(require("../../databases/models/UserNoSql(temp)"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const joi_1 = __importDefault(require("joi"));
+const mongodb_1 = require("mongodb");
 const schema = joi_1.default.object({
     firstName: joi_1.default.string().required(),
     lastName: joi_1.default.string().required(),
@@ -54,7 +55,12 @@ router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(404).send(err);
     }
 }));
-// Para agregar valores a la cuenta del usuario:
+// Para agregar valores a la cuenta del usuario se mandan así los parámetros en el body:
+// {   "id": "62b7b9f2168812a442797012",
+//     "key": "extraInput",
+//     "value": {"description": "para comer",
+//     "amount": 5000}
+// }
 router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
     try {
@@ -63,9 +69,9 @@ router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, fun
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
-            yield (user === null || user === void 0 ? void 0 : user.Account[key].push(value));
-            yield (user === null || user === void 0 ? void 0 : user.save());
-            res.status(200).send(`${key}: ${value}, usuario con id: ${id} actualizado`);
+            yield user.Account[key].push(value);
+            yield user.save();
+            res.status(200).send(user.Account);
         }
     }
     catch (err) {
@@ -110,18 +116,28 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(400).send(error.message);
     }
 }));
-// router.delete("/user/account", async (req: Request, res: Response) => {
-//   const {id, key, value} = req.body
-//   try{
-//     const user = await UserNoSqlTemp.findById(id)
-//     await user?.Account[key].filter( (obj: object) => obj._id !== value._id)
-//     await user?.save()
-//     res.status(200).send('Usuario actualizado')
-//   }
-//   catch (err) {
-//     res.status(400).send(err)
-//   }
-// });
+// Para eliminar entradas de la cuenta, hay que pasar estos parametros por body:
+// {   "id": "62b7b9f2168812a442797012",
+//     "key": "extraInput",
+//     "value": {"_id": "62b8b79f91091d937fe969d7"}
+// }
+router.delete("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, key, value } = req.body;
+    try {
+        const user = yield UserNoSql_temp_1.default.findById(id);
+        if (!user) {
+            res.status(404).send(`No se encontró al usuario con id: ${id}`);
+        }
+        else {
+            yield user.Account[key].remove({ "_id": new mongodb_1.ObjectId(value._id) });
+            yield user.save();
+            res.status(200).send(user.Account);
+        }
+    }
+    catch (err) {
+        res.status(400).send(err);
+    }
+}));
 router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.query;
     UserNoSql_temp_1.default.findByIdAndDelete(id)

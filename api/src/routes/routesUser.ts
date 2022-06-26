@@ -47,7 +47,12 @@ router.post("/user/login", async (req: Request, res: Response) => {
     res.status(404).send(err)
   }
 });
-// Para agregar valores a la cuenta del usuario:
+// Para agregar valores a la cuenta del usuario se mandan así los parámetros en el body:
+// {   "id": "62b7b9f2168812a442797012",
+//     "key": "extraInput",
+//     "value": {"description": "para comer",
+//     "amount": 5000}
+// }
 router.post("/user/account", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
@@ -55,10 +60,10 @@ router.post("/user/account", async (req: Request, res: Response) => {
     const user = await UserNoSqlTemp.findById(id)
    if(!user){
     res.status(404).send(`No se encontró al usuario con id: ${id}`)
-   }else {
-    await user?.Account[key].push(value)
-    await user?.save()
-    res.status(200).send(`${key}: ${value}, usuario con id: ${id} actualizado`)
+   } else {
+    await user.Account[key].push(value)
+    await user.save()
+    res.status(200).send(user.Account)
    }
   }
   catch (err) {
@@ -105,19 +110,28 @@ router.put("/user", async (req: Request, res: Response) => {
   }
 });
 
-// router.delete("/user/account", async (req: Request, res: Response) => {
-//   const {id, key, value} = req.body
+// Para eliminar entradas de la cuenta, hay que pasar estos parametros por body:
+// {   "id": "62b7b9f2168812a442797012",
+//     "key": "extraInput",
+//     "value": {"_id": "62b8b79f91091d937fe969d7"}
+// }
+router.delete("/user/account", async (req: Request, res: Response) => {
+  const {id, key, value} = req.body
 
-//   try{
-//     const user = await UserNoSqlTemp.findById(id)
-//     await user?.Account[key].filter( (obj: object) => obj._id !== value._id)
-//     await user?.save()
-//     res.status(200).send('Usuario actualizado')
-//   }
-//   catch (err) {
-//     res.status(400).send(err)
-//   }
-// });
+  try{
+    const user = await UserNoSqlTemp.findById(id)
+    if(!user){
+     res.status(404).send(`No se encontró al usuario con id: ${id}`)
+    } else {
+      await user.Account[key].remove( {"_id": new ObjectId(value._id)})
+      await user.save()
+      res.status(200).send(user.Account)
+    }
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
+});
 
 
 router.delete("/user", async (req: Request, res: Response) => {
