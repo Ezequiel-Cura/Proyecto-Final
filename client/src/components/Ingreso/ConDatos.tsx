@@ -8,7 +8,6 @@ import {  addIngreso, setUser } from "redux/reducers/userReducer";
 export default function ConDatos() {
   const { usuario } = useAppSelector( state => state.user);
   const dispatch = useAppDispatch();
-  console.log(usuario, 'Que trae del reducer')
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
   const [monto, setMonto] = useState<number>(89086);  //const total = setMonto(usuario.Account.monthlyInput[0].amount + monto)
@@ -34,26 +33,39 @@ export default function ConDatos() {
       amount: 0,
   })
 
+  // const [form, setForm] = useState<AgregarIngresos>({ ------------------Ver como o unir dos estados (uno dentro del otro) o que 
+  //   id: "62b77fc6cf92600dadcd1918",
+  //   key: "",
+  //   input : {
+  //     category
+  //   }
+  // })
+
   function handleChange(e : any){ 
-    console.log(e.target.value, "valor del input")
     setInput({
       ...input,
        [e.target.name] : e.target.value
       })
   }
 
-  function handleSelect(e : any){    
-    console.log(e.target.value, 'EL SELECT')   
+  function handleSelectC(e : any){    
     setInput({
       ...input,
       category : e.target.value
   })
   }
 
+  // function handleSelectI(e : any){    
+  //   setForm({
+  //     ...form,
+  //     key : e.target.value
+  // })
+  // }
+
   const form : AgregarIngresos = {
-    id: usuario._id,
-    key: "extraInput",
-    value: input
+    id: '62b77fc6cf92600dadcd1918',  
+    key: 'extraInput',
+    value: input,
   }
 
   const clearForm = () =>{
@@ -66,7 +78,7 @@ export default function ConDatos() {
 
   function handleSubmit(e : any){   
     e.preventDefault();
-    console.log(form,'va el form')   //SOLO SE VA A ENVIAR SI se agrega el id del usuario, para eso hay que modificar el reducer
+    console.log(form)
     dispatch(addIngreso(form));
     clearForm();
   } 
@@ -143,6 +155,8 @@ export default function ConDatos() {
                 )
               })} */}
 
+              {/* {usuario.Account.monthlyInput } */}
+
               <tr>
                 <th className={styles.lastBox}></th>
                 <th></th>
@@ -157,7 +171,12 @@ export default function ConDatos() {
 
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
-              <select onChange={handleSelect}>
+              {/* <select onChange={handleSelectI}>
+                <option>Selecciona el tipo</option>
+                <option value='monthlyInput'>Ingreso fijo</option>
+                <option value='extraInput'>Ingreso extra</option>
+              </select> */}
+              <select onChange={handleSelectC}>
                 <option>Selecciona una categoria</option>
                 <option value='Salario'>Salario</option>
                 <option value='Aguinaldo'>Aguinaldo</option>

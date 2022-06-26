@@ -62,11 +62,11 @@ async (user, {rejectWithValue}) => {
 })
 
 //-----------------------------------------
-export const addIngreso : any = createAsyncThunk("user/ingresos/add", 
+export const addIngreso : any = createAsyncThunk("user/ingresos", 
 async (ingreso, {rejectWithValue}) => {
   try {
-    console.log(ingreso, 'Pasa por el reducer')
-    const {data} = await axios.put(`/user`, {params: ingreso})
+    console.log(ingreso, 'Pasa por el reducer') //---------------------------!
+    const {data} = await axios.post(`/user/account`, ingreso)
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)

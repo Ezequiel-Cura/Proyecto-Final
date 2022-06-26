@@ -1,4 +1,3 @@
-
 import { Router, Request, Response } from "express";
 import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
 import bcrypt from 'bcrypt';
@@ -28,20 +27,18 @@ const entriesUpdate = (key: string, value: object) => {
 
 }
 // Funciona como un get para traer toda la data del usuario:
-router.post("/user/loggin", async (req: Request, res: Response) => {
+router.post("/user/login", async (req: Request, res: Response) => {
   try {
-    const query : any = req.query
-    console.log(query, 'sdkdjfnkd')
-    const User = await UserNoSqlTemp.findOne({email: query.email})
+    const { email, password } : any = req.body
+    const User = await UserNoSqlTemp.findOne({email})
     if (!User) return res.status(400).send('Usuario inexistente')
-    const passwordCompare = await bcrypt.compare(query.password, User.password)
+    const passwordCompare = await bcrypt.compare(password, User.password)
     if (passwordCompare) {
      return res.status(200).json(User)
     } else {
      return res.status(400).send('Contraseña Incorrecta')
     }
   } catch (err) {
-    console.log('adjtythgngkas')
     res.status(404).send(err)
   }
 });
@@ -89,8 +86,6 @@ router.put("/user", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
   try {
-    console.log({req})
-
       const result = await UserNoSqlTemp.updateOne({_id: id}, { $set: { [key]: value} });
       // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
 
@@ -123,7 +118,6 @@ router.delete("/user", async (req: Request, res: Response) => {
 
   UserNoSqlTemp.findByIdAndDelete(id)
   .then((user) => {
-    console.log(user)
     if(user){
       res.status(200).json(`Usuario ${user} eliminado`)
     } else {
@@ -134,26 +128,6 @@ router.delete("/user", async (req: Request, res: Response) => {
     res.status(400).send('Error en protocolo de borrado')
   })
 });
-
-
-
-router.put("/user", async (req: Request, res: Response) => {
-  const {id, key, value} = req.body
-
-  try{
-    const user = await UserNoSqlTemp.findById(id)
-    await user?.Account[key].push(value)
-    await user?.save()
-    res.status(200).send('Usuario actualizado')
-  }
-  catch (err) {
-    res.status(400).send(err)
-  }
-
-});
-
-
-
 
 
 export default router;
