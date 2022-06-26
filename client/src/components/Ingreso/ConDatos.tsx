@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {  addIngreso, setUser } from "redux/reducers/userReducer";
+import {  addIngreso } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
   const { usuario } = useAppSelector( state => state.user);
@@ -94,10 +94,6 @@ export default function ConDatos() {
     e.preventDefault();
     //dispatch(filterByDate(e.target.value));
   }
-
-  //  useEffect(() => {
-  //   dispatch(setUser())
-  // }, [])
 
   return (
     <div>

@@ -54,7 +54,7 @@ async (user, {rejectWithValue}) => {
 export const loginUser : any = createAsyncThunk("user/loginUser", 
 async (user, {rejectWithValue}) => {
   try {
-    const {data} = await axios.get("/user", {params: user})
+    const {data} = await axios.post("/user/login", user)
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)
@@ -79,7 +79,7 @@ async (info: any) => {
   formData.append("file", info.img)
   formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)  
   const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload", formData, {withCredentials: false})
-  const {data} = await axios.put(`/user/${info.id}`, {avatar: result.data.url})
+  const {data} = await axios.put("/user", {id: info.id, key: "avatar", value: result.data.url})
   return data
 })
 
@@ -87,9 +87,6 @@ const reducerSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.usuario = action.payload
-    },    
   },
   extraReducers: {
     [registerUser.pending]: (state) => {
@@ -127,7 +124,7 @@ const reducerSlice = createSlice({
     },
     [uploadImage.fulfilled]: (state, {payload}) => {
       state.status = "success"
-      state.usuario.avatar = payload
+      state.usuario[payload.key] = payload.value
     },
     [uploadImage.rejected]: (state) => {
       state.status = "failed"
@@ -135,5 +132,4 @@ const reducerSlice = createSlice({
   }
 })
 
-export const {setUser} = reducerSlice.actions
 export default reducerSlice.reducer
