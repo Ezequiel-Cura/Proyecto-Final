@@ -28,14 +28,18 @@ const entriesUpdate = (key: string, value: object) => {
 
 }
 // Funciona como un get para traer toda la data del usuario:
-router.post("/user/loggin", async (req: Request, res: Response) => {
+// {
+//   "email": "alhe@lands.com", 
+//   "password": "1234"
+// }
+router.post("/user/login", async (req: Request, res: Response) => {
   try {
     const { email, password } : any = req.body
     const User = await UserNoSqlTemp.findOne({email})
     if (!User) return res.status(400).send('Usuario inexistente')
     const passwordCompare = await bcrypt.compare(password, User.password)
     if (passwordCompare) {
-     return res.status(200).json(User)
+     return res.status(200).send(User)
     } else {
      return res.status(400).send('Contraseña Incorrecta')
     }
@@ -73,7 +77,7 @@ router.post("/user", async (req: Request, res: Response) => {
     const salt: any = await bcrypt.genSalt(Number(process.env.SUPER_SECRET_SALT))
     const hashPass = await bcrypt.hash(password, salt)
     const user = await UserNoSqlTemp.create({userName: firstName, lastName, email, password: hashPass})
-    res.status(201).json(`${user} creado exitosamente.`)
+    res.status(201).send(`${user} creado exitosamente.`)
   } catch (err: any) {
     res.status(400).send(err.message)
   }
@@ -93,7 +97,7 @@ router.put("/user", async (req: Request, res: Response) => {
       // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
 
       result
-          ? res.status(200).json({key, value})
+          ? res.status(200).send({key, value})
           : res.status(304).send(`User with id: ${id} not updated`);
   } catch (error: any) {
       console.error(error.message);
@@ -102,11 +106,11 @@ router.put("/user", async (req: Request, res: Response) => {
 });
 
 // router.delete("/user/account", async (req: Request, res: Response) => {
-//   const {date, key, value} = req.body
+//   const {id, key, value} = req.body
 
 //   try{
 //     const user = await UserNoSqlTemp.findById(id)
-//     await user?.Account[key].filter(obj => obj === value)
+//     await user?.Account[key].filter( (obj: object) => obj._id !== value._id)
 //     await user?.save()
 //     res.status(200).send('Usuario actualizado')
 //   }
@@ -123,9 +127,9 @@ router.delete("/user", async (req: Request, res: Response) => {
   .then((user) => {
     console.log(user)
     if(user){
-      res.status(200).json(`Usuario ${user} eliminado`)
+      res.status(200).send(`Usuario ${user} eliminado`)
     } else {
-      res.status(404).json(`Usuario ${user} eliminado`)
+      res.status(404).send(`Usuario ${user} eliminado`)
     }
   })
   .catch(() => {

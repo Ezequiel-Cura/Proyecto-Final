@@ -32,7 +32,11 @@ const entriesUpdate = (key, value) => {
     */
 };
 // Funciona como un get para traer toda la data del usuario:
-router.post("/user/loggin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// {
+//   "email": "alhe@lands.com", 
+//   "password": "1234"
+// }
+router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
         const User = yield UserNoSql_temp_1.default.findOne({ email });
@@ -40,7 +44,7 @@ router.post("/user/loggin", (req, res) => __awaiter(void 0, void 0, void 0, func
             return res.status(400).send('Usuario inexistente');
         const passwordCompare = yield bcrypt_1.default.compare(password, User.password);
         if (passwordCompare) {
-            return res.status(200).json(User);
+            return res.status(200).send(User);
         }
         else {
             return res.status(400).send('Contraseña Incorrecta');
@@ -81,7 +85,7 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const salt = yield bcrypt_1.default.genSalt(Number(process.env.SUPER_SECRET_SALT));
         const hashPass = yield bcrypt_1.default.hash(password, salt);
         const user = yield UserNoSql_temp_1.default.create({ userName: firstName, lastName, email, password: hashPass });
-        res.status(201).json(`${user} creado exitosamente.`);
+        res.status(201).send(`${user} creado exitosamente.`);
     }
     catch (err) {
         res.status(400).send(err.message);
@@ -98,7 +102,7 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const result = yield UserNoSql_temp_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
         // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
         result
-            ? res.status(200).json({ key, value })
+            ? res.status(200).send({ key, value })
             : res.status(304).send(`User with id: ${id} not updated`);
     }
     catch (error) {
@@ -107,10 +111,10 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 }));
 // router.delete("/user/account", async (req: Request, res: Response) => {
-//   const {date, key, value} = req.body
+//   const {id, key, value} = req.body
 //   try{
 //     const user = await UserNoSqlTemp.findById(id)
-//     await user?.Account[key].filter(obj => obj === value)
+//     await user?.Account[key].filter( (obj: object) => obj._id !== value._id)
 //     await user?.save()
 //     res.status(200).send('Usuario actualizado')
 //   }
@@ -124,10 +128,10 @@ router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function*
         .then((user) => {
         console.log(user);
         if (user) {
-            res.status(200).json(`Usuario ${user} eliminado`);
+            res.status(200).send(`Usuario ${user} eliminado`);
         }
         else {
-            res.status(404).json(`Usuario ${user} eliminado`);
+            res.status(404).send(`Usuario ${user} eliminado`);
         }
     })
         .catch(() => {
