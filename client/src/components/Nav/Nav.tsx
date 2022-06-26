@@ -2,18 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from 'redux/hooks'
 import styles from "./Nav.module.css"
+import imagePlaceholder from "assets/imagePlaceholder.jpg"
 
 
 export default function Nav() {
 const {usuario} = useAppSelector(({user}) => user)
   return (
     <div className={styles.Nav_wrapper}>
-
         <div className={styles.image_wrapper}>
             <Link to="/profile">
-                <div className={styles.image_cointainer}>
-                    <img src={usuario.avatar} alt="foto de perfil" />
-                </div>
+                <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} className={styles.image_container}alt="foto de perfil"/>
             </Link>
         </div>
         <div className={styles.items_wrapper}>
@@ -37,7 +35,6 @@ const {usuario} = useAppSelector(({user}) => user)
                     <h4>Detalles</h4>
                 </div>
             </Link>
-            
         </div>
     </div>
   )

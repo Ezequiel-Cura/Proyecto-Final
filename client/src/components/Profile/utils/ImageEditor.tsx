@@ -30,7 +30,9 @@ function submitImage() {
 }
   return (
     <div className={styles.wrapper}>
-        <div>
+        <div className={styles.topAvatarEditorContainer}>
+            <h1>Your profile photo</h1>
+        </div>
             <Dropzone maxFiles={1} multiple={false} noClick noKeyboard onDrop={handleDrop}>
                 {({ getRootProps, getInputProps }) => (
                 <div {...getRootProps({ className: "dropzone" })} className={styles.dropZone}>
@@ -38,12 +40,11 @@ function submitImage() {
                     {
                         image ? null : <p style={{userSelect: "none", position: "absolute"}}>Suelta tu imagen aquí</p>
                     }
-                    <AvatarEditor ref={handleCropImage} border={image ? 3 : 0} color={[255, 255, 255, 0.9]} image={image} className={styles.avatarEditor} style={image ? {cursor: "grab", borderRadius: "4px"} : {cursor: "default"}}/>
+                    <AvatarEditor ref={handleCropImage} border={image ? 3 : 0} width={300} color={[255, 255, 255, 0.9]} image={image} className={styles.avatarEditor} style={image ? {cursor: "grab", borderRadius: "4px"} : {cursor: "default"}}/>
                 </div>
                 )}
             </Dropzone>
-        </div>
-        <div>
+        <div className={styles.bottomAvatarEditorContainer}>
         <input className={styles.imageInput} accept=".jpg, .jpeg, .png" type="file" multiple={false} onChange={handleImage}/>
         <button className="btn" style={{width: "30%"}} onClick={submitImage}>Aceptar</button>
         </div>
