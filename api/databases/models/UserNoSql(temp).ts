@@ -1,5 +1,6 @@
 
 'use strict'
+import { ObjectId } from "mongodb";
 import { Schema, model } from "mongoose"
 
 interface IUser {
@@ -65,10 +66,10 @@ const UserSQLessSchema = new Schema<IUser>({
       // cada obj tiene la fecha en la que se realizó, su id, su descripcion, category y amount 
 
       date: { type: Date, default: Date.now() },
-      id: Schema.Types.ObjectId,
+      // id: {type: Schema.Types.ObjectId, default: new ObjectId()},
       category: String,
       description: {type: String, required: true},
-      ammount: {type:Number, required: true}
+      amount: {type:Number, required: true}
     }]
   }
 })

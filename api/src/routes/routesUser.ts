@@ -28,12 +28,12 @@ const entriesUpdate = (key: string, value: object) => {
 
 }
 
-router.get("/user", async (req: Request, res: Response) => {
+router.post("/user/loggin", async (req: Request, res: Response) => {
   try {
-    const query : any = req.query
-    const User = await UserNoSqlTemp.findOne({email: query.email})
+    const { email, password } : any = req.body
+    const User = await UserNoSqlTemp.findOne({email})
     if (!User) return res.status(400).send('Usuario inexistente')
-    const passwordCompare = await bcrypt.compare(query.password, User.password)
+    const passwordCompare = await bcrypt.compare(password, User.password)
     if (passwordCompare) {
      return res.status(200).json(User)
     } else {
@@ -42,6 +42,24 @@ router.get("/user", async (req: Request, res: Response) => {
   } catch (err) {
     res.status(404).send(err)
   }
+});
+router.post("/user/account", async (req: Request, res: Response) => {
+  const {id, key, value} = req.body
+
+  try{
+    const user = await UserNoSqlTemp.findById(id)
+   if(!user){
+    res.status(404).send(`No se encontró al usuario con id: ${id}`)
+   }else {
+    await user?.Account[key].push(value)
+    await user?.save()
+    res.status(200).send(`${key}: ${value}, usuario con id: ${id} actualizado`)
+   }
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
+
 });
 
 router.post("/user", async (req: Request, res: Response) => {
@@ -60,16 +78,18 @@ router.post("/user", async (req: Request, res: Response) => {
   }
 })
 
-router.put("/user/:id", async (req: Request, res: Response) => {
-  const id = req?.params?.id;
+
+
+router.put("/user", async (req: Request, res: Response) => {
+  const {id, key, value} = req.body
 
   try {
-      const updateUser: typeof UserNoSqlTemp = req.body;
-      const query = { _id: new ObjectId(id) };
-      const result = await UserNoSqlTemp.updateOne(query, { $set: updateUser });
+    console.log({req})
+
+      const result = await UserNoSqlTemp.updateOne({_id: id}, { $set: { [key]: value} });
 
       result
-          ? res.status(200).send(`Successfully updated user with id ${id}`)
+          ? res.status(200).send({key, value})
           : res.status(304).send(`User with id: ${id} not updated`);
   } catch (error: any) {
       console.error(error.message);
@@ -77,20 +97,19 @@ router.put("/user/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/user", async (req: Request, res: Response) => {
-  const {id, key, value} = req.body
+// router.delete("/user/account", async (req: Request, res: Response) => {
+//   const {date, key, value} = req.body
 
-  try{
-    const user = await UserNoSqlTemp.findById(id)
-    await user?.Account[key].push(value)
-    await user?.save()
-    res.status(200).send('Usuario actualizado')
-  }
-  catch (err) {
-    res.status(400).send(err)
-  }
-
-});
+//   try{
+//     const user = await UserNoSqlTemp.findById(id)
+//     await user?.Account[key].filter(obj => obj === value)
+//     await user?.save()
+//     res.status(200).send('Usuario actualizado')
+//   }
+//   catch (err) {
+//     res.status(400).send(err)
+//   }
+// });
 
 
 router.delete("/user", async (req: Request, res: Response) => {
