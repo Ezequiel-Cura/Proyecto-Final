@@ -27,7 +27,7 @@ const entriesUpdate = (key: string, value: object) => {
   */
 
 }
-
+// Funciona como un get para traer toda la data del usuario:
 router.post("/user/loggin", async (req: Request, res: Response) => {
   try {
     const { email, password } : any = req.body
@@ -43,6 +43,7 @@ router.post("/user/loggin", async (req: Request, res: Response) => {
     res.status(404).send(err)
   }
 });
+// Para agregar valores a la cuenta del usuario:
 router.post("/user/account", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
@@ -61,7 +62,7 @@ router.post("/user/account", async (req: Request, res: Response) => {
   }
 
 });
-
+// Para registrar al usuario:
 router.post("/user", async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
   try {
@@ -78,8 +79,10 @@ router.post("/user", async (req: Request, res: Response) => {
   }
 })
 
-
-
+// Para modificar y setear datos del usuario manden los tres datos con sus respectivos valores:
+// {"id": "62b7b9f2168812a442797012",
+// "key": "userName",
+// "value": "test"}
 router.put("/user", async (req: Request, res: Response) => {
   const {id, key, value} = req.body
 
@@ -87,9 +90,10 @@ router.put("/user", async (req: Request, res: Response) => {
     console.log({req})
 
       const result = await UserNoSqlTemp.updateOne({_id: id}, { $set: { [key]: value} });
+      // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
 
       result
-          ? res.status(200).send({key, value})
+          ? res.status(200).json({key, value})
           : res.status(304).send(`User with id: ${id} not updated`);
   } catch (error: any) {
       console.error(error.message);

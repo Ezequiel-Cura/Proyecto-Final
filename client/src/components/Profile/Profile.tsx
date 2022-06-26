@@ -5,6 +5,10 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import ImageEditor from './utils/ImageEditor'
 
+interface Profile {
+    setImageEditor: () => any
+}
+
 export default function Profile() {
     const dispatch = useAppDispatch()
     const {usuario} : any = useAppSelector(({user})=> user)
@@ -22,7 +26,7 @@ export default function Profile() {
                 <h2>modifica o elimina datos</h2>
             </div>
             <div className={styles.infoWrapper}>
-                <img src={usuario.image ? usuario.image : imagePlaceholder} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
+                <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
                 <div className={styles.infoContainer}>
                     <h3>Nombre del usuario: {usuario.userName} {usuario.lastName}</h3>
                     <h3>Email: {usuario.email}</h3>

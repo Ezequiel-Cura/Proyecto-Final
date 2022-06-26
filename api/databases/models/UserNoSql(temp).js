@@ -1,6 +1,5 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongodb_1 = require("mongodb");
 const mongoose_1 = require("mongoose");
 const UserSQLessSchema = new mongoose_1.Schema({
     userName: { type: String, required: true },
@@ -47,7 +46,7 @@ const UserSQLessSchema = new mongoose_1.Schema({
                 // es un array de obj con el registro de todos los gastos del mes, se pushea uno nuevo cada mes
                 // cada obj tiene la fecha en la que se realizó, su id, su descripcion, category y amount 
                 date: { type: Date, default: Date.now() },
-                id: { type: mongoose_1.Schema.Types.ObjectId, default: new mongodb_1.ObjectId() },
+                // id: {type: Schema.Types.ObjectId, default: new ObjectId()},
                 category: String,
                 description: { type: String, required: true },
                 amount: { type: Number, required: true }

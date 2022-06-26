@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 interface User {
-  usuario: object
+  usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
 }
 
@@ -29,6 +29,16 @@ async (user, {rejectWithValue}) => {
   } catch (err: any) {
     return rejectWithValue(err.response.data)
   }
+})
+
+export const uploadImage: any = createAsyncThunk("user/uploadImage",
+async (info: any) => {
+  let formData = new FormData();
+  formData.append("file", info.img)
+  formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)  
+  const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload", formData, {withCredentials: false})
+  const {data} = await axios.put(`/user/${info.id}`, {avatar: result.data.url})
+  return data
 })
 
 const reducerSlice = createSlice({
@@ -58,6 +68,16 @@ const reducerSlice = createSlice({
       state.usuario = payload
     },
     [loginUser.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [uploadImage.pending]: (state) => {
+      state.status = "loading"
+    },
+    [uploadImage.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.usuario.avatar = payload
+    },
+    [uploadImage.rejected]: (state) => {
       state.status = "failed"
     },
   }

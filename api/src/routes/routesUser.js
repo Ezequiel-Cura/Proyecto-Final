@@ -31,6 +31,7 @@ const entriesUpdate = (key, value) => {
     variableExpenses
     */
 };
+// Funciona como un get para traer toda la data del usuario:
 router.post("/user/loggin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
@@ -49,6 +50,7 @@ router.post("/user/loggin", (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(404).send(err);
     }
 }));
+// Para agregar valores a la cuenta del usuario:
 router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
     try {
@@ -66,6 +68,7 @@ router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(400).send(err);
     }
 }));
+// Para registrar al usuario:
 router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
     try {
@@ -84,13 +87,18 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(400).send(err.message);
     }
 }));
+// Para modificar y setear datos del usuario manden los tres datos con sus respectivos valores:
+// {"id": "62b7b9f2168812a442797012",
+// "key": "userName",
+// "value": "test"}
 router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
     try {
         console.log({ req });
         const result = yield UserNoSql_temp_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
+        // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
         result
-            ? res.status(200).send({ key, value })
+            ? res.status(200).json({ key, value })
             : res.status(304).send(`User with id: ${id} not updated`);
     }
     catch (error) {
