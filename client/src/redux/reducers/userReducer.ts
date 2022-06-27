@@ -133,13 +133,14 @@ const reducerSlice = createSlice({
     },
 //---------------------------------------------------------
     [addDato.pending]: (state) => {
-      state.usuario = {...state.usuario}
-    },
+      state.status = "loading"
+    },   
     [addDato.fulfilled]: (state, {payload}) => {
+      state.status = "success"
       state.usuario = payload
     },
     [addDato.rejected]: (state) => {
-      state.usuario = {...state.usuario}
+      state.status = "failed"
     },
     [deleteDato.pending]: (state) => {
       state.usuario = {...state.usuario}

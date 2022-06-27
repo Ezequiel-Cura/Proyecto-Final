@@ -12,7 +12,7 @@ export default function Register() {
     firstName: Yup.string().max(30, 'Re largo tu nombre').required("Tu nombre es requerido"),
     lastName: Yup.string().max(30, 'Re largo tu apellido').required("Tu apellido es requerido"),
     email: Yup.string().email('Ese email no existe').required("Tu email es requerido"),
-    password: Yup.string().min(4).max(30).required("dale amigo q onda no tenes contraseña")
+    password: Yup.string().min(4, "Tu contraseña es muy corta").max(30, "wtf re largo eso").required("dale amigo q onda no tenes contraseña")
   });
   const dispatch = useAppDispatch()
   return (

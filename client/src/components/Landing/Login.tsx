@@ -1,5 +1,5 @@
-import styles from "./Landing.module.css"
 import React from 'react'
+import styles from "./Landing.module.css"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { loginUser } from "redux/reducers/userReducer"
@@ -12,7 +12,7 @@ export default function Login() {
     const dispatch = useAppDispatch()
     const SigninSchema = Yup.object().shape({
         email: Yup.string().email('Ese email no existe').required("Tu email es requerido"),
-        password: Yup.string().min(4).max(30).required("dale amigo q onda no tenes contraseña")
+        password: Yup.string().min(4, "Tu contraseña es muy corta").max(30, "wtf re largo eso").required("dale amigo q onda no tenes contraseña")
       });
   return (
     <div className={styles.formContainer}>
