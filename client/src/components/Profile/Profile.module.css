@@ -1,0 +1,48 @@
+.wrapper {
+    height: 100vh;
+}
+h3 {
+    margin: 4px 0px;
+}
+
+.profileWrapper {
+    height: 100%;
+    background-color: rgb(83, 83, 83);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-content: center;
+    justify-items: center;
+}
+
+.cuentaWrapper {
+    color: black;
+    padding: 15vh 5%;
+    width: calc(100% - 10%);
+    background-color: #FFFFFF;
+}
+.cuentaWrapper h1 {
+    font-size: 50px;
+}
+
+.infoWrapper {
+    background-color: #2E332C;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    width: 100%;
+    justify-items: center;
+    overflow: auto;
+}
+
+.infoContainer {
+    display: flex;
+    padding: 25px;
+    width: calc(100% - 50px);
+    flex-direction: column;
+    justify-content: space-around;
+}
+    
+.profilePic {
+    width: 100%;
+    cursor: pointer;
+}

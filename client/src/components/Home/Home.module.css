@@ -1,0 +1,49 @@
+
+.text_wrapper{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3fr;
+}
+
+.title_wrapper{
+    margin-top: 80px;
+    margin-left: 20px;
+}
+
+.links_wrapper div{
+    width: 80%;
+    border-radius: 20px;
+    height: 80px;
+    margin: 20px 3%;
+}
+
+.links_wrapper div div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+h2{
+    color: black;
+    font-size: xx-large;
+    
+}
+
+.ingresoLink{
+    background-color: #00BFA6;
+}
+
+.gastos_link{
+    background-color: #F47579;
+}
+
+.ahorros_link{
+    background-color: #FACB68;
+}
+
+.detalles_link{
+    background-color: #65B5E9;
+}
