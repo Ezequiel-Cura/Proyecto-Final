@@ -75,6 +75,7 @@ async (ingreso, {rejectWithValue}) => {
 export const deleteIngreso : any = createAsyncThunk("user/deleteIngreso",
 async (ingreso : any, {rejectWithValue}) => {
   try {
+    console.log("ingreso------>", ingreso)
     const data = await axios.delete("/user/account", ingreso)
     return data
   } catch (err : any) {

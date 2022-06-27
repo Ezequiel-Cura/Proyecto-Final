@@ -42,14 +42,14 @@ export default function ConDatos() {
   //   }
   // })
 
-  function handleChange(e : any){ 
+  function handleChange(e : React.ChangeEvent<HTMLInputElement>){ 
     setInput({
       ...input,
        [e.target.name] : e.target.value
       })
   }
 
-  function handleSelectC(e : any){    
+  function handleSelectC(e : React.ChangeEvent<HTMLSelectElement>){    
     setInput({
       ...input,
       category : e.target.value
@@ -77,7 +77,7 @@ export default function ConDatos() {
     });
   }
 
-  function handleSubmit(e : any){   
+  function handleSubmit(e : React.FormEvent<HTMLFormElement>){   
     e.preventDefault();
     console.log(form)
     dispatch(addIngreso(form));
@@ -86,12 +86,12 @@ export default function ConDatos() {
   //----------------------
 
   
-  function handleOrderAmount( e : any){
+  function handleOrderAmount( e : React.ChangeEvent<HTMLSelectElement>){
     e.preventDefault();
     //dispatch(setUser(e.target.value));
   }
 
-  function handleOrderDate(e : any){
+  function handleOrderDate(e : React.ChangeEvent<HTMLSelectElement>){
     e.preventDefault();
     //dispatch(filterByDate(e.target.value));
   }
@@ -160,6 +160,7 @@ export default function ConDatos() {
                 </tr>
               )}
             {/* Cuando se hace el post  te devuelve otro objeto (el account solo y no su totalidad, entonces se entra de otra manera) */}
+            {/* ahora si devuelve todo el objeto user, faltaria arreglar que no devuelva el password shit*/}
               {usuario.extraInput ? usuario.extraInput.map( (detalles : any) => {
                 return(
                   <tr>
@@ -202,13 +203,13 @@ export default function ConDatos() {
                 <option value='extraInput'>Ingreso extra</option>
               </select>
               <select onChange={handleSelectC}>
-                <option>Selecciona una categoria</option>
+                <option>Selecciona una categoría</option>
                 <option value='Salario'>Salario</option>
                 <option value='Aguinaldo'>Aguinaldo</option>
                 <option value='Herencia'>Herencia</option>
                 <option value='Changa'>Changa</option>
                 <option value='Regalo'>Regalo</option>
-                <option value='Prestamo'>Prestamo</option>
+                <option value='Prestamo'>Préstamo</option>
                 <option value='Otros'>Otros</option>
               </select>
               <input 
