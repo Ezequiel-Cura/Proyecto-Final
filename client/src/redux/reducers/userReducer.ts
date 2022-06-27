@@ -22,6 +22,7 @@ interface InfoUser {
 interface User {
   usuario: any   //any
   status: 'idle' | 'loading' | 'success' | 'failed'
+  totalInput: number
 }
 
 const initialState: User = {
@@ -39,6 +40,7 @@ const initialState: User = {
     password: '',
   },  
   status: 'idle',
+  totalInput: 0
 }
 
 export const registerUser : any = createAsyncThunk("user/registerUser", 
@@ -62,7 +64,7 @@ async (user, {rejectWithValue}) => {
 })
 
 //-----------------------------------------
-export const addIngreso : any = createAsyncThunk("user/addIngreso", 
+export const addDato : any = createAsyncThunk("user/addIngreso", 
 async (ingreso, {rejectWithValue}) => {
   try {
     const {data} = await axios.post(`/user/account`, ingreso)
@@ -72,7 +74,7 @@ async (ingreso, {rejectWithValue}) => {
   }
 })
 
-export const deleteIngreso : any = createAsyncThunk("user/deleteIngreso",
+export const deleteDato : any = createAsyncThunk("user/deleteIngreso",
 async (ingreso : any, {rejectWithValue}) => {
   try {
     console.log("ingreso------>", ingreso)
@@ -99,6 +101,14 @@ const reducerSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    // totalInput: (state, action) => {
+    //   const total = 0;
+    //   const monto = state.usuario.Account.extraInput.forEach((e: any) => total += parseInt(e.amount))
+    //   return {
+    //     ...state,
+    //     totalInput: monto
+    //   }
+    // }
   },
   extraReducers: {
     [registerUser.pending]: (state) => {
@@ -122,22 +132,22 @@ const reducerSlice = createSlice({
       state.status = "failed"
     },
 //---------------------------------------------------------
-    [addIngreso.pending]: (state) => {
+    [addDato.pending]: (state) => {
       state.usuario = {...state.usuario}
     },
-    [addIngreso.fulfilled]: (state, {payload}) => {
+    [addDato.fulfilled]: (state, {payload}) => {
       state.usuario = payload
     },
-    [addIngreso.rejected]: (state) => {
+    [addDato.rejected]: (state) => {
       state.usuario = {...state.usuario}
     },
-    [deleteIngreso.pending]: (state) => {
+    [deleteDato.pending]: (state) => {
       state.usuario = {...state.usuario}
     },
-    [deleteIngreso.fulfilled]: (state, {payload}) => {
+    [deleteDato.fulfilled]: (state, {payload}) => {
       state.usuario = payload
     },
-    [deleteIngreso.rejected]: (state) => {
+    [deleteDato.rejected]: (state) => {
       state.usuario = {...state.usuario}
     },
     [uploadImage.pending]: (state) => {

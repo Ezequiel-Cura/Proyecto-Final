@@ -1,52 +1,35 @@
 
-.links_wrapper{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-wrap: nowrap;
-    margin: 0px auto;
-}
-.links_wrapper div{
-    width: min-content;
-    display: flex;
-    align-items: center;
-    margin-left:100px ;
-    
-}
 .text_wrapper{
-    display: flex;
-    flex-direction: column;
-}
-.home_wrapper{
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    width: 100%;
-}
-.links_wrapper div div{
-    margin: 10px 0;
-    border: 1px white solid;
-    width: 400px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    height: 20px;
-}
-
-.links_wrapper div a{
-    
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3fr;
 }
 
 .title_wrapper{
-    display: inline-block;
-    margin-top: 70px;
-    margin-bottom: 40px;
-    
+    margin-top: 80px;
+    margin-left: 20px;
 }
+
+.links_wrapper div{
+    width: 80%;
+    border-radius: 20px;
+    height: 80px;
+    margin: 20px 3%;
+}
+
+.links_wrapper div div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 h2{
     color: black;
+    font-size: xx-large;
+    
 }
 
 .ingresoLink{

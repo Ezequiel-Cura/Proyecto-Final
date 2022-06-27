@@ -71,7 +71,7 @@ router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, fun
         else {
             yield user.Account[key].push(value);
             yield user.save();
-            res.status(200).send(user.Account);
+            res.status(200).send(user);
         }
     }
     catch (err) {
@@ -125,12 +125,13 @@ router.delete("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         const user = yield UserNoSql_temp_1.default.findById(id);
         if (!user) {
+            console.log({ user });
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
             yield user.Account[key].remove({ "_id": new mongodb_1.ObjectId(value._id) });
             yield user.save();
-            res.status(200).send(user.Account);
+            res.status(200).send(user);
         }
     }
     catch (err) {
