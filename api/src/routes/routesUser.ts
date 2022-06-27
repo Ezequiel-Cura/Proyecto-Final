@@ -1,4 +1,3 @@
-
 import { Router, Request, Response } from "express";
 import UserNoSqlTemp from "../../databases/models/UserNoSql(temp)";
 import bcrypt from 'bcrypt';
@@ -63,7 +62,7 @@ router.post("/user/account", async (req: Request, res: Response) => {
    } else {
     await user.Account[key].push(value)
     await user.save()
-    res.status(200).send(user.Account)
+    res.status(200).send(user)
    }
   }
   catch (err) {
