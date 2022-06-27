@@ -71,7 +71,7 @@ router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, fun
         else {
             yield user.Account[key].push(value);
             yield user.save();
-            res.status(200).send(user.Account);
+            res.status(200).send(user);
         }
     }
     catch (err) {
