@@ -104,6 +104,10 @@
     border-radius: 20px;
 }
 
+.monthlyInput {
+    color: #08a4e2;
+}
+
 .table thead th {
     padding: 15px;
     font-size: 20px;
