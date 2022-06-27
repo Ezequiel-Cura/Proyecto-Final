@@ -113,10 +113,11 @@ router.put("/user", async (req: Request, res: Response) => {
 //     "value": {"_id": "62b8b79f91091d937fe969d7"}
 // }
 router.delete("/user/account", async (req: Request, res: Response) => {
-  const {id, key, value} = req.body
+  const {id, key, value} = req.body.source
 
   try{
-    const user = await UserNoSqlTemp.findById(id)
+    let newId = new ObjectId(id)
+    const user = await UserNoSqlTemp.findById(newId)
     if(!user){
       console.log({user})
      res.status(404).send(`No se encontró al usuario con id: ${id}`)

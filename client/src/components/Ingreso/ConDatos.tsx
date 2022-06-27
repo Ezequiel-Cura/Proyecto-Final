@@ -14,15 +14,30 @@ export default function ConDatos() {
   const [monto, setMonto] = useState<number>(0);  
 
   //----------Form-------------
-  interface AgregarIngresos { 
-    id: string,  
-    key: string,               //extraInput, monthlyInput
-    value: Value,
-  }
+
+  type keyValue = "extraInput" | "monthlyInput"
+  
   interface Value {
     description: string,
     amount: number,
-    category?: string
+    category?: string,
+    date?: string,
+    _id?: string
+  }
+  interface AgregarIngresos { 
+    id: string,  
+    key: keyValue,             //extraInput, monthlyInput
+    value: Value,
+  }
+
+  interface idUndefined{
+      _id: string | undefined
+  }
+
+  interface accountParameter{
+    id: string,
+    key: keyValue,
+    value: idUndefined
   }
 
   const [input, setInput] = useState<Value>({
@@ -74,7 +89,6 @@ export default function ConDatos() {
     clearForm();
   } 
   //----------------------
-
   
   function handleOrderAmount( e : React.ChangeEvent<HTMLSelectElement>){
   // {   "id": "62b7b9f2168812a442797012",
@@ -83,10 +97,10 @@ export default function ConDatos() {
   // }
   }
 
-  function handleDelete(e : any){
-    //e.preventDefault();
-    console.log(e, 'que es eeeee')
-    dispatch(deleteDato(e))
+  function handleDelete(event: accountParameter){
+    // event.preventDefault();
+    console.log({event})
+    dispatch(deleteDato(event))
   }
 
   function handleOrderDate(e : React.ChangeEvent<HTMLSelectElement>){
@@ -138,35 +152,18 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              {usuario.Account ? usuario.Account.extraInput.map( (detalles : any) => {
+              { usuario.Account.extraInput.map( (detalles : Value) => {
                 return(
                   <tr>
-                  <th>{detalles.date.split("T")[0]}</th>
+                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
                   <th>{detalles.category ? detalles.category : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
-                  <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
+                  <th><button onClick={ () => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
                 </tr>
                 )
-              }) : (
-                <></>
-              )}
-            {/* Cuando se hace el post  te devuelve otro objeto (el account solo y no su totalidad, entonces se entra de otra manera) */}
-            {/* ahora si devuelve todo el objeto user, faltaria arreglar que no devuelva el password shit*/}
-              {usuario.extraInput ? usuario.extraInput.map( (detalles : any) => {
-                return(
-                  <tr>
-                    <th>{detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
-                    <th>{detalles.description}</th>
-                    <th>$ {detalles.amount}</th>
-                    <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
-                  </tr>
-                )
-              }) : (
-                <></>
-              )}
-
+              }) 
+              }
               {usuario.Account ? usuario.Account.monthlyInput.map((detalles : any) => {
                 return (
                   <tr className={styles.monthlyInput}>

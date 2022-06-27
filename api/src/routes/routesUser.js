@@ -121,9 +121,14 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 //     "value": {"_id": "62b8b79f91091d937fe969d7"}
 // }
 router.delete("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, key, value } = req.body;
+    const { id, key, value } = req.body.source;
+    console.log("req.bodyyyyy", req.body);
+    console.log({ id });
+    console.log({ key });
+    console.log({ value });
     try {
-        const user = yield UserNoSql_temp_1.default.findById(id);
+        let newId = new mongodb_1.ObjectId(id);
+        const user = yield UserNoSql_temp_1.default.findById(newId);
         if (!user) {
             console.log({ user });
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
