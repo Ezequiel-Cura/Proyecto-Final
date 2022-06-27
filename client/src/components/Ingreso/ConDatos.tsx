@@ -3,18 +3,15 @@ import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {  addIngreso } from "redux/reducers/userReducer";
+import {  addDato, deleteDato } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
   const { usuario } = useAppSelector( state => state.user);
-  console.log(usuario)
+  console.log(usuario, 'que trae el reducer en ingresos?')
   const dispatch = useAppDispatch();
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-  const [monto, setMonto] = useState<number>(89086);  //const total = setMonto(usuario.Account.monthlyInput[0].amount + monto)
-  
-  //monto ---> la suma de todos los ingresos en el mes ()
-
+  const [monto, setMonto] = useState<number>(0);  
 
   //----------Form-------------
   interface AgregarIngresos { 
@@ -56,13 +53,6 @@ export default function ConDatos() {
   })
   }
 
-  // function handleSelectI(e : any){    
-  //   setForm({
-  //     ...form,
-  //     key : e.target.value
-  // })
-  // }
-
   const form : AgregarIngresos = {
     id: usuario._id,  
     key: 'extraInput',
@@ -76,16 +66,27 @@ export default function ConDatos() {
       amount: 0,
     });
   }
-
+  //Envio de form
   function handleSubmit(e : any){   
     e.preventDefault();
     console.log(form)
-    dispatch(addIngreso(form));
+    dispatch(addDato(form));
     clearForm();
   } 
   //----------------------
 
-  
+  // {   "id": "62b7b9f2168812a442797012",
+  //   "key": "extraInput",
+  //   "value": {"_id": "62b8b79f91091d937fe969d7"}
+  // }
+
+  function handleDelete(e : any){
+    //e.preventDefault();
+    console.log(e, 'que es eeeee')
+    dispatch(deleteDato(e))
+  }
+
+  //Para futuros filtros
   function handleOrderAmount( e : any){
     e.preventDefault();
     //dispatch(setUser(e.target.value));
@@ -147,40 +148,54 @@ export default function ConDatos() {
                   <th>{detalles.category ? detalles.category : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
-                  <th><button></button></th>
+                  <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
                 </tr>
                 )
               }) : (
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
+                <></>
               )}
             {/* Cuando se hace el post  te devuelve otro objeto (el account solo y no su totalidad, entonces se entra de otra manera) */}
               {usuario.extraInput ? usuario.extraInput.map( (detalles : any) => {
                 return(
                   <tr>
-                  <th>{detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category : "-"}</th>
-                  <th>{detalles.description}</th>
-                  <th>$ {detalles.amount}</th>
-                  <th><button></button></th>
-                </tr>
+                    <th>{detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                    <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
+                  </tr>
                 )
               }) : (
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
+                <></>
               )}
 
-              {/* {usuario.Account.monthlyInput } */}
+              {usuario.Account ? usuario.Account.monthlyInput.map((detalles : any) => {
+                return (
+                  <tr className={styles.monthlyInput}>
+                    <th>{detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                    <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
+                  </tr>
+                )
+              }) : (
+                <></>
+              )}
+
+              {usuario.monthlyInput ? usuario.monthlyInput.map( (detalles : any) => {
+                return(
+                  <tr className={styles.monthlyInput}>
+                    <th>{detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                    <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
+                  </tr>
+                )
+              }) : (
+                <></>
+              )}
 
               <tr>
                 <th className={styles.lastBox}></th>
@@ -196,11 +211,11 @@ export default function ConDatos() {
 
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
-              <select >
+              {/* <select >
                 <option>Selecciona el tipo</option>
                 <option value='monthlyInput'>Ingreso fijo</option>
                 <option value='extraInput'>Ingreso extra</option>
-              </select>
+              </select> */}
               <select onChange={handleSelectC}>
                 <option>Selecciona una categoria</option>
                 <option value='Salario'>Salario</option>
