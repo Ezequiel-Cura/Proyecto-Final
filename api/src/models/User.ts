@@ -17,6 +17,8 @@ interface IUser {
   email: string,
   password: string,
   avatar?: string,
+  premium: boolean,
+  Saving: [Object],
   Account?: any,
   generateAuthToken: () => any
 }
