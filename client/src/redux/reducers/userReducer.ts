@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
-
 interface Detalle {
   date: string,
   amount: number,
@@ -77,7 +76,7 @@ async (ingreso, {rejectWithValue}) => {
 export const deleteDato : any = createAsyncThunk("user/deleteIngreso",
 async (ingreso: any, {rejectWithValue}) => {
   try {
-    console.log("ingreso------>", ingreso)
+
     let deleteEntry: any = await axios.delete("/user/account", {
       data: {
         source: ingreso
@@ -101,11 +100,6 @@ async (info: any) => {
   return data
 })
 
-// export const updateUser: any = createAsyncThunk("user/updateName",
-// async (data: any) => {
-//   const userUpdated = await axios.put("/user", {id: data.id, key: "userName", value: data.userName})
-//   return userUpdated.data
-// })
 
 const reducerSlice = createSlice({
   name: "user",
