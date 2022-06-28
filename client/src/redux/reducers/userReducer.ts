@@ -1,26 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-interface Detalle {
-  date: string,
-  amount: number,
-  description: string
-}
-interface InfoUser {
-  Account: {
-    monthlyInput: [],
-    extraInput: Detalle[],
-    monthlyExpenses: [],
-    variableExpenses: []
-  },
-  _id: string,
-  userName: string,
-  lastName: string,
-  email: string,
-  password: string,
-}
 interface User {
-  usuario: any   //any
+  usuario: any   
   status: 'idle' | 'loading' | 'success' | 'failed'
   totalInput: number
 }
@@ -63,7 +45,6 @@ async (user, {rejectWithValue}) => {
   }
 })
 
-//-----------------------------------------
 export const addDato : any = createAsyncThunk("user/addIngreso", 
 async (ingreso, {rejectWithValue}) => {
   try {
@@ -86,7 +67,6 @@ async (ingreso : any, {rejectWithValue}) => {
 }
 )
 
-//-----------------------------------------
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
 async (info: any) => {
   let formData = new FormData();
@@ -97,18 +77,16 @@ async (info: any) => {
   return data
 })
 
+
 const reducerSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // totalInput: (state, action) => {
-    //   const total = 0;
-    //   const monto = state.usuario.Account.extraInput.forEach((e: any) => total += parseInt(e.amount))
-    //   return {
-    //     ...state,
-    //     totalInput: monto
-    //   }
-    // }
+    totalInput (state, {payload}) {
+      let total : number = 0;
+      let monto = payload.usuario.Account.extraInput.forEach((e: any) => total += parseInt(e.amount))
+      state.totalInput = monto
+    }
   },
   extraReducers: {
     [registerUser.pending]: (state) => {
@@ -163,5 +141,5 @@ const reducerSlice = createSlice({
     },
   }
 })
-
+export const {totalInput} = reducerSlice.actions
 export default reducerSlice.reducer

@@ -7,7 +7,6 @@ import {  addDato } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
    const { usuario } = useAppSelector( state => state.user);
-  //  console.log(usuario, 'que trae el reduceeeer en gasstos')
    const dispatch = useAppDispatch();
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']

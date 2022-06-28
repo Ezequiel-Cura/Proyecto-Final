@@ -6,12 +6,12 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {  addDato, deleteDato } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
-  const { usuario } = useAppSelector( state => state.user);
-  console.log(usuario, 'que trae el reducer en ingresos?')
+  const { usuario, totalInput } = useAppSelector( state => state.user );
   const dispatch = useAppDispatch();
+  console.log(totalInput, 'total input')
 
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-  const [monto, setMonto] = useState<number>(0);  
+  //const [monto, setMonto] = useState<number>(0);  
 
   //----------Form-------------
   interface AgregarIngresos { 
@@ -45,6 +45,13 @@ export default function ConDatos() {
        [e.target.name] : e.target.value
       })
   }
+
+  // function handleSelectI(e : any){    
+  //   setInput({
+  //     ...input,
+  //     category : e.target.value
+  // })
+  // }
 
   function handleSelectC(e : any){    
     setInput({
@@ -96,6 +103,10 @@ export default function ConDatos() {
     e.preventDefault();
     //dispatch(filterByDate(e.target.value));
   }
+
+  useEffect( () => {
+     //dispatch(totalInput())
+  }, [dispatch])
 
   return (
     <div>
@@ -201,7 +212,7 @@ export default function ConDatos() {
                 <th className={styles.lastBox}></th>
                 <th></th>
                 <th></th>
-                <th className={styles.totalAmount}><b>Total: ${monto}</b></th>
+                <th className={styles.totalAmount}><b>Total: ${totalInput}</b></th>
                 <th className={styles.vacia}></th>
               </tr>
             </tbody>
@@ -211,7 +222,7 @@ export default function ConDatos() {
 
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
-              {/* <select >
+              {/* <select onChange={handleSelectI}>
                 <option>Selecciona el tipo</option>
                 <option value='monthlyInput'>Ingreso fijo</option>
                 <option value='extraInput'>Ingreso extra</option>
