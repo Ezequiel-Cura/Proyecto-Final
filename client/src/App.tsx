@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 // COMPONENTS
@@ -10,8 +10,15 @@ import ConDatos from 'components/Ingreso/ConDatos';
 import Gastos from 'components/Gastos/Gastos';
 import ConDatosGastos from 'components/Gastos/ConDatosGastos';
 import Detalles from 'components/Detalles/Detalles';
+import { useAppDispatch } from 'redux/hooks';
+import { getUserInfo } from 'redux/reducers/userReducer';
 
 function App() {
+  const dispatch = useAppDispatch()
+  useEffect(()=> {
+    if(localStorage.getItem("logged")) dispatch(getUserInfo())
+  },[])
+
   return (
     <Routes>
       <Route path="/" element={<Landing/>}/>
