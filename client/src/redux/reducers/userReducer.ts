@@ -75,11 +75,15 @@ async (ingreso, {rejectWithValue}) => {
 })
 
 export const deleteDato : any = createAsyncThunk("user/deleteIngreso",
-async (ingreso : any, {rejectWithValue}) => {
+async (ingreso: any, {rejectWithValue}) => {
   try {
-    console.log(ingreso, 'reduceeeer')
-    const data = await axios.delete("/user/account", ingreso)
-    return data
+    console.log("ingreso------>", ingreso)
+    let deleteEntry: any = await axios.delete("/user/account", {
+      data: {
+        source: ingreso
+      }
+    });
+    return deleteEntry.data
   } catch (err : any) {
     return rejectWithValue(err.response.data)
   }
@@ -96,6 +100,12 @@ async (info: any) => {
   const {data} = await axios.put("/user", {id: info.id, key: "avatar", value: result.data.url})
   return data
 })
+
+// export const updateUser: any = createAsyncThunk("user/updateName",
+// async (data: any) => {
+//   const userUpdated = await axios.put("/user", {id: data.id, key: "userName", value: data.userName})
+//   return userUpdated.data
+// })
 
 const reducerSlice = createSlice({
   name: "user",
@@ -143,13 +153,14 @@ const reducerSlice = createSlice({
       state.status = "failed"
     },
     [deleteDato.pending]: (state) => {
-      state.usuario = {...state.usuario}
+      state.status = 'loading'
     },
     [deleteDato.fulfilled]: (state, {payload}) => {
+      state.status = 'success'
       state.usuario = payload
     },
     [deleteDato.rejected]: (state) => {
-      state.usuario = {...state.usuario}
+      state.status = 'failed'
     },
     [uploadImage.pending]: (state) => {
       state.status = "loading"

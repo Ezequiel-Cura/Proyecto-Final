@@ -78,6 +78,24 @@ router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(400).send(err);
     }
 }));
+// Para agregar ahorros se requiere dos parámetros:
+router.post("/user/saving", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, value } = req.body;
+    try {
+        const user = yield UserNoSql_temp_1.default.findById(id);
+        if (!user) {
+            res.status(404).send(`No se encontró al usuario con id: ${id}`);
+        }
+        else {
+            user.Saving.push(value);
+            yield user.save();
+            res.status(200).send(user);
+        }
+    }
+    catch (err) {
+        res.status(400).send(err);
+    }
+}));
 // Para registrar al usuario:
 router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
@@ -121,16 +139,18 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 //     "value": {"_id": "62b8b79f91091d937fe969d7"}
 // }
 router.delete("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, key, value } = req.body;
+    const { id, key, value } = req.body.source;
     try {
-        const user = yield UserNoSql_temp_1.default.findById(id);
+        let newId = new mongodb_1.ObjectId(id);
+        const user = yield UserNoSql_temp_1.default.findById(newId);
         if (!user) {
+            console.log({ user });
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
             yield user.Account[key].remove({ "_id": new mongodb_1.ObjectId(value._id) });
             yield user.save();
-            res.status(200).send(user.Account);
+            res.status(200).send(user);
         }
     }
     catch (err) {
