@@ -57,10 +57,18 @@ export const loginUser : any = createAsyncThunk("user/loginUser",
 async (user, {rejectWithValue}) => {
   try {
     const {data} = await axios.post("/user/login", user)
+    localStorage.setItem("logged", "true")
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)
   }
+})
+
+export const googleLogin: any = createAsyncThunk("user/googleLogin",
+async (jwt) => {
+  const {data} = await axios.post("/user/googleLogin", jwt)
+    localStorage.setItem("logged", "true")
+    return data
 })
 
 //-----------------------------------------
@@ -129,6 +137,16 @@ const reducerSlice = createSlice({
       state.usuario = payload
     },
     [loginUser.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [googleLogin.pending]: (state) => {
+      state.status = "loading"
+    },
+    [googleLogin.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [googleLogin.rejected]: (state) => {
       state.status = "failed"
     },
 //---------------------------------------------------------
