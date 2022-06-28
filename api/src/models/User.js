@@ -11,6 +11,13 @@ const userSchema = new mongoose_1.Schema({
     email: { type: String, unique: true, lowercase: true, required: true },
     password: { type: String, required: true },
     avatar: String,
+    premium: { type: Boolean, default: false },
+    Saving: [{
+            name: { type: String, required: true },
+            start: { type: Date, required: true, default: Date.now() },
+            end: Date,
+            goal: Number
+        }],
     Account: {
         // La cuenta de cada User tiene 4 props: 
         // 1- Es un arreglo de obj/ingresos mensuales.

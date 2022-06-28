@@ -1,9 +1,15 @@
 
 'use strict'
-import { ObjectId } from "mongodb";
+
 import { Schema, model } from "mongoose"
 import jwt from "jsonwebtoken"
 
+interface savingProps{
+  name: string,
+  start: string,
+  end?: string,
+  goal: number
+}
 interface IUser {
   _id?: string,
   userName: string,
@@ -12,6 +18,8 @@ interface IUser {
   password: string,
   avatar?: string,
   Account?: any,
+  Saving: savingProps[],
+  premium: boolean,
   generateAuthToken: () => any
 }
 
@@ -21,7 +29,13 @@ const userSchema = new Schema<IUser>({
   email: { type: String, unique: true, lowercase: true, required: true },
   password: {type: String, required: true},
   avatar: String,
-
+  premium: {type: Boolean, default: false},
+  Saving: [{
+    name: { type: String, required: true },
+    start: { type: Date, required: true, default: Date.now()},
+    end: Date,
+    goal: Number
+  }],
   Account: {
     // La cuenta de cada User tiene 4 props: 
     // 1- Es un arreglo de obj/ingresos mensuales.

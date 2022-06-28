@@ -110,6 +110,26 @@ router.post("/user/account", async (req: Request, res: Response) => {
   }
 
 });
+
+// Para agregar ahorros se requiere dos parámetros:
+router.post("/user/saving", async (req: Request, res: Response) => {
+  const {id, value} = req.body
+
+  try{
+    const user = await User.findById(id)
+   if(!user){
+    res.status(404).send(`No se encontró al usuario con id: ${id}`)
+   } else {
+    user.Saving.push(value)
+    await user.save()
+    res.status(200).send(user)
+   }
+  }
+  catch (err) {
+    res.status(400).send(err)
+  }
+
+});
 // Para registrar al usuario:
 router.post("/user/register", async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
@@ -155,16 +175,17 @@ router.put("/user", async (req: Request, res: Response) => {
 //     "value": {"_id": "62b8b79f91091d937fe969d7"}
 // }
 router.delete("/user/account", async (req: Request, res: Response) => {
-  const {id, key, value} = req.body
+  const {id, key, value} = req.body.source
 
   try{
     const user = await User.findById(id)
     if(!user){
+      console.log({user})
      res.status(404).send(`No se encontró al usuario con id: ${id}`)
     } else {
       await user.Account[key].remove( {"_id": new ObjectId(value._id)})
       await user.save()
-      res.status(200).send(user.Account)
+      res.status(200).send(user)
     }
   }
   catch (err) {
