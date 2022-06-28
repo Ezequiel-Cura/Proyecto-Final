@@ -46,7 +46,8 @@ const initialState: User = {
 export const registerUser : any = createAsyncThunk("user/registerUser", 
 async (user, {rejectWithValue}) => {
   try {
-    const {data} = await axios.post("/user", user)
+    const {data} = await axios.post("/user/register", user)
+    localStorage.setItem("logged", "true")
     return data
   } catch (err : any) {
     return rejectWithValue(err.response.data)
@@ -57,10 +58,30 @@ export const loginUser : any = createAsyncThunk("user/loginUser",
 async (user, {rejectWithValue}) => {
   try {
     const {data} = await axios.post("/user/login", user)
+    localStorage.setItem("logged", "true")
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)
   }
+})
+
+export const googleLogin: any = createAsyncThunk("user/googleLogin",
+async (jwt) => {
+  const {data} = await axios.post("/user/googleLogin", {jwt: jwt})
+    localStorage.setItem("logged", "true")
+    return data
+})
+
+export const logout: any =createAsyncThunk("user/logout",
+async ()=>{
+  await axios.post("/user/logout")
+  localStorage.removeItem("logged")
+})
+
+export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
+async ()=> {
+  const {data} = await axios.get("/user/getUserInfo")
+  return data
 })
 
 //-----------------------------------------
@@ -75,11 +96,15 @@ async (ingreso, {rejectWithValue}) => {
 })
 
 export const deleteDato : any = createAsyncThunk("user/deleteIngreso",
-async (ingreso : any, {rejectWithValue}) => {
+async (ingreso: any, {rejectWithValue}) => {
   try {
-    console.log(ingreso, 'reduceeeer')
-    const data = await axios.delete("/user/account", ingreso)
-    return data
+    console.log("ingreso------>", ingreso)
+    let deleteEntry: any = await axios.delete("/user/account", {
+      data: {
+        source: ingreso
+      }
+    });
+    return deleteEntry.data
   } catch (err : any) {
     return rejectWithValue(err.response.data)
   }
@@ -96,6 +121,12 @@ async (info: any) => {
   const {data} = await axios.put("/user", {id: info.id, key: "avatar", value: result.data.url})
   return data
 })
+
+// export const updateUser: any = createAsyncThunk("user/updateName",
+// async (data: any) => {
+//   const userUpdated = await axios.put("/user", {id: data.id, key: "userName", value: data.userName})
+//   return userUpdated.data
+// })
 
 const reducerSlice = createSlice({
   name: "user",
@@ -131,6 +162,35 @@ const reducerSlice = createSlice({
     [loginUser.rejected]: (state) => {
       state.status = "failed"
     },
+    [googleLogin.pending]: (state) => {
+      state.status = "loading"
+    },
+    [googleLogin.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [googleLogin.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [logout.pending]: (state) => {
+      state.status = "loading"
+    },
+    [logout.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [logout.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [getUserInfo.pending]: (state) => {
+      state.status = "loading"
+    },
+    [getUserInfo.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [getUserInfo.rejected]: (state) => {
+      state.status = "failed"
+    },
 //---------------------------------------------------------
     [addDato.pending]: (state) => {
       state.status = "loading"
@@ -143,13 +203,14 @@ const reducerSlice = createSlice({
       state.status = "failed"
     },
     [deleteDato.pending]: (state) => {
-      state.usuario = {...state.usuario}
+      state.status = 'loading'
     },
     [deleteDato.fulfilled]: (state, {payload}) => {
+      state.status = 'success'
       state.usuario = payload
     },
     [deleteDato.rejected]: (state) => {
-      state.usuario = {...state.usuario}
+      state.status = 'failed'
     },
     [uploadImage.pending]: (state) => {
       state.status = "loading"

@@ -1,11 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { useAppSelector } from 'redux/hooks'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import styles from "./Nav.module.css"
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
+import { logout } from 'redux/reducers/userReducer'
 
 
 export default function Nav() {
+const navigate = useNavigate()
+const dispatch = useAppDispatch()
 const {usuario} = useAppSelector(({user}) => user)
   return (
     <div className={styles.Nav_wrapper}>
@@ -37,6 +40,9 @@ const {usuario} = useAppSelector(({user}) => user)
                 </div>
             </Link>
         </div>
+        <button onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
+            Logout
+        </button>
     </div>
   )
 }
