@@ -1,35 +1,27 @@
 
-/* .detalles_wrapper{
-    display: grid;
-    
-} */
+.detalles_wrapper{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+
+
+}
+
+h1{
+  margin: 20px;
+}
 
 
 .fruit_meter {
-    border: 2px solid white;
-    border-radius: 10px;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    
+  border: 2px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr ;
+  
 }
 
-.apples {
-    background: #48bb78;
-  }
+
   
-.bananas {
-    background: #ecc94b;
-  }
-  
-  .peaches {
-    background: #ed8936;
-  }
-  
-  .cherries {
-    background: #e53e3e;
-  }
-  
-  .grapes {
-    background: #805ad5;
-  }
+
+ 
