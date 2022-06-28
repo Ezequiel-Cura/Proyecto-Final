@@ -7,8 +7,8 @@
 // export default {User, Account, Category, UserNoSql}
 // import Category from "../../backup/Category"
 
-import UserNoSqlTemp from "./UserNoSql(temp)"
+import User from "./User"
 
 
-export default { UserNoSqlTemp }
+export default { User }
 

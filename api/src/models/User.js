@@ -1,7 +1,11 @@
 'use strict';
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-const UserSQLessSchema = new mongoose_1.Schema({
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const userSchema = new mongoose_1.Schema({
     userName: { type: String, required: true },
     lastName: String,
     email: { type: String, unique: true, lowercase: true, required: true },
@@ -60,18 +64,8 @@ const UserSQLessSchema = new mongoose_1.Schema({
             }]
     }
 });
-// Andan 
-// {
-//   "userName": "Bon Jovi",
-//   "lastName": "Jovi",
-//   "email": "bon@jovito",
-//   "avatar": "jovitoPic",
-//   "Account": {
-//   "monthlyInput": [{
-//     "date": "",
-//     "description": "Ta caro el gym",
-//     "category": "",
-//     "amount": 5000 }]
-//   }
-// }
-exports.default = (0, mongoose_1.model)('UserNoSql-temp', UserSQLessSchema);
+userSchema.methods.generateAuthToken = function () {
+    const token = jsonwebtoken_1.default.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, { expiresIn: "7d" });
+    return token;
+};
+exports.default = (0, mongoose_1.model)('user', userSchema);

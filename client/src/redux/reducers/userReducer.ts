@@ -45,7 +45,8 @@ const initialState: User = {
 export const registerUser : any = createAsyncThunk("user/registerUser", 
 async (user, {rejectWithValue}) => {
   try {
-    const {data} = await axios.post("/user", user)
+    const {data} = await axios.post("/user/register", user)
+    localStorage.setItem("logged", "true")
     return data
   } catch (err : any) {
     return rejectWithValue(err.response.data)
@@ -56,10 +57,30 @@ export const loginUser : any = createAsyncThunk("user/loginUser",
 async (user, {rejectWithValue}) => {
   try {
     const {data} = await axios.post("/user/login", user)
+    localStorage.setItem("logged", "true")
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)
   }
+})
+
+export const googleLogin: any = createAsyncThunk("user/googleLogin",
+async (jwt) => {
+  const {data} = await axios.post("/user/googleLogin", {jwt: jwt})
+    localStorage.setItem("logged", "true")
+    return data
+})
+
+export const logout: any =createAsyncThunk("user/logout",
+async ()=>{
+  await axios.post("/user/logout")
+  localStorage.removeItem("logged")
+})
+
+export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
+async ()=> {
+  const {data} = await axios.get("/user/getUserInfo")
+  return data
 })
 
 //-----------------------------------------
@@ -133,6 +154,35 @@ const reducerSlice = createSlice({
       state.usuario = payload
     },
     [loginUser.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [googleLogin.pending]: (state) => {
+      state.status = "loading"
+    },
+    [googleLogin.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [googleLogin.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [logout.pending]: (state) => {
+      state.status = "loading"
+    },
+    [logout.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [logout.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [getUserInfo.pending]: (state) => {
+      state.status = "loading"
+    },
+    [getUserInfo.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [getUserInfo.rejected]: (state) => {
       state.status = "failed"
     },
 //---------------------------------------------------------
