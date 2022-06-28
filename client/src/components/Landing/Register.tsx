@@ -21,21 +21,16 @@ export default function Register() {
           <h3>Bienvenido! Registrate</h3>
         </div>
       <Formik 
-        initialValues={{
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: ""
-        }}
+        initialValues={{firstName: "", lastName: "", email: "", password: ""}}
         validationSchema={SignupSchema}
         onSubmit={(values, {setFieldError}) => {
           return dispatch(registerUser(values))
           .then((resp: any) => {
             if (resp.error) return setFieldError("email", resp.payload)
-            navigate("/", {state : {registered:true, message: "Te has registrado exitosamente, Inicia sesión"}});
+            navigate("/home");
           })}
       }>
-        {({isSubmitting}) => (
+        {() => (
             <Form className={styles.form}>
             <Field className={styles.input}name="firstName" type="text" placeholder="Nombre"/>
             <ErrorMessage className={styles.errorMessage} name="firstName" component="span"/>
@@ -52,7 +47,7 @@ export default function Register() {
               </div>
             </div>
             <div className={styles.buttonContainer}>
-              <button type="submit" disabled={isSubmitting} className={styles.button}>Registrarme</button>
+              <button type="submit" className={styles.button}>Registrarme</button>
             </div>
           </Form>
         )}

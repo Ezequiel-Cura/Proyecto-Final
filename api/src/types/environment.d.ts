@@ -7,7 +7,9 @@ declare global {
       PORT: string,
       DB_NAME: string,
       USER_COLLECTION_NAME: string,
-      SUPER_SECRET_SALT: number
+      SUPER_SECRET_SALT: number,
+      JWTPRIVATEKEY: string,
+      GOOGLE_SECRET: string
     }
   }
 }

@@ -2,6 +2,7 @@
 'use strict'
 
 import { Schema, model } from "mongoose"
+import jwt from "jsonwebtoken"
 
 interface savingProps{
   name: string,
@@ -18,10 +19,11 @@ interface IUser {
   avatar?: string,
   Account?: any,
   Saving: savingProps[],
-  premium: boolean
+  premium: boolean,
+  generateAuthToken: () => any
 }
 
-const UserSQLessSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser>({
   userName: { type: String, required: true },
   lastName: String,
   email: { type: String, unique: true, lowercase: true, required: true },
@@ -87,20 +89,11 @@ const UserSQLessSchema = new Schema<IUser>({
     }]
   }
 })
-// Andan 
-// {
-//   "userName": "Bon Jovi",
-//   "lastName": "Jovi",
-//   "email": "bon@jovito",
-//   "avatar": "jovitoPic",
-//   "Account": {
-//   "monthlyInput": [{
-//     "date": "",
-//     "description": "Ta caro el gym",
-//     "category": "",
-//     "amount": 5000 }]
-//   }
-// }
 
-export default model<IUser>('UserNoSql-temp', UserSQLessSchema);
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({_id: this._id}, process.env.JWTPRIVATEKEY, {expiresIn:"7d"})
+  return token
+};
+
+export default model<IUser>('user', userSchema);
 
