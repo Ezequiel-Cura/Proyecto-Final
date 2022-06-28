@@ -16,11 +16,11 @@ export default function Login() {
       });
     useEffect(()=>{
     /* global google */
-    window.google.accounts.id.initialize({
+    google.accounts.id.initialize({
         client_id: process.env.REACT_APP_GOOGLE_ID,
         callback: handleGoogleLogin
         })
-    window.google.accounts.id.renderButton(
+    google.accounts.id.renderButton(
         document.getElementById("signInDiv"),
         {width: "100%",longtitle: true,theme: 'dark'}
         )
@@ -28,6 +28,7 @@ export default function Login() {
     
     function handleGoogleLogin(response: any) {
     dispatch(googleLogin(response.credential))
+    .then(()=> navigate("/home"))
     }
 
 

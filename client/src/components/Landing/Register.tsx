@@ -27,7 +27,7 @@ export default function Register() {
           return dispatch(registerUser(values))
           .then((resp: any) => {
             if (resp.error) return setFieldError("email", resp.payload)
-            navigate("/", {state : {registered:true, message: "Te has registrado exitosamente, Inicia sesión"}});
+            navigate("/home");
           })}
       }>
         {() => (
