@@ -82,11 +82,6 @@ export default function ConDatos() {
   } 
   //----------------------
 
-  // {   "id": "62b7b9f2168812a442797012",
-  //   "key": "extraInput",
-  //   "value": {"_id": "62b8b79f91091d937fe969d7"}
-  // }
-
   function handleDelete(e : any){
     //e.preventDefault();
     console.log(e, 'que es eeeee')
@@ -132,9 +127,18 @@ export default function ConDatos() {
 
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
-              {meses.map(month => 
-                (<button className={styles.month} id={month}>{month}</button>)
-              )}
+            <button value='01' className={styles.month} id="Enero">Enero</button>
+            <button value='02' className={styles.month} id="Febrero">Febrero</button>
+            <button value='03' className={styles.month} id="Marzo">Marzo</button>
+            <button value='04' className={styles.month} id="Abril">Abril</button>
+            <button value='05' className={styles.month} id="Mayo">Mayo</button>
+            <button value='06' className={styles.month} id="Junio">Junio</button>
+            <button value='07' className={styles.month} id="Julio">Julio</button>
+            <button value='08' className={styles.month} id="Agosto">Agosto</button>
+            <button value='09' className={styles.month} id="Septiembre">Septiembre</button>
+            <button value='10' className={styles.month} id="Octubre">Octubre</button>
+            <button value='11' className={styles.month} id="Noviembre">Noviembre</button>
+            <button value='12' className={styles.month} id="Diciembre">Diciembre</button>
             </div>
             <div className={styles.annualCard}>
               <button className={styles.annual}>Todos</button>
@@ -240,7 +244,7 @@ export default function ConDatos() {
               <input 
                 type='text' 
                 name='description'
-                // value={input.value.description} 
+                value={input.description} 
                 placeholder='Agrega una descripcion'
                 onChange={handleChange}
                 >
@@ -248,7 +252,7 @@ export default function ConDatos() {
               <input 
                 type='number' 
                 name='amount'
-                // value={input.value.amount} 
+                value={input.amount} 
                 placeholder='Agrega un monto'
                 onChange={handleChange}
                 >

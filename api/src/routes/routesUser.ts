@@ -122,7 +122,7 @@ router.delete("/user/account", async (req: Request, res: Response) => {
     } else {
       await user.Account[key].remove( {"_id": new ObjectId(value._id)})
       await user.save()
-      res.status(200).send(user.Account)
+      res.status(200).send(user)
     }
   }
   catch (err) {
