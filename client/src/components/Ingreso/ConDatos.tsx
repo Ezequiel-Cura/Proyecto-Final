@@ -7,15 +7,15 @@ import { addDato, deleteDato, filterInputByCategory, getAllInputs, inputsFilterB
 
 
 export default function ConDatos() {
-  const { usuario, allInputs, totalInputsMonth } = useAppSelector(state => state.user);
+  const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const [monto, setMonto] = useState<number>(0);
-
   useEffect(() => {
-    dispatch(getAllInputs())
-    dispatch(totalInput())
-  }, [])
+    if (status === 'success'){
+      dispatch(getAllInputs())
+      dispatch(totalInput())
+    }
+  }, [status])
 
   //----------Form-------------
   type keyValue = "extraInput" | "monthlyInput"
@@ -77,7 +77,6 @@ export default function ConDatos() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    console.log({ form })
     e.preventDefault();
     dispatch(addDato(form));
     clearForm();
@@ -86,7 +85,6 @@ export default function ConDatos() {
 
   function handleDelete(event: accountParameter) {
     // event.preventDefault();
-    console.log({event})
     dispatch(deleteDato(event))
   }
   

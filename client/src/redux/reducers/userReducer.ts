@@ -22,17 +22,18 @@ interface User {
 
 const initialState: User = {
   usuario: {
+    _id: '',
+    userName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    
     Account: {
       monthlyInput: [],
       extraInput: [],
       monthlyExpenses: [],
       variableExpenses: []
     },
-    _id: '',
-    userName: '',
-    lastName: '',
-    email: '',
-    password: '',
   },
   status: 'idle',
   allInputs: [],  //Estado de entradas para ordenar o filtrar
@@ -97,13 +98,11 @@ export const addDato: any = createAsyncThunk("user/addIngreso",
 export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
   async (ingreso: any, { rejectWithValue }) => {
     try {
-console.log({ingreso})
       let deleteEntry: any = await axios.delete("/user/account", {
         data: {
           source: ingreso
         }
       });
-      console.log(deleteEntry.data, "deleteeee")
       return deleteEntry.data
     } catch (err: any) {
       return rejectWithValue(err.response.data)
@@ -185,7 +184,6 @@ const reducerSlice = createSlice({
       const allInputsFilter = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
       //                                                                             2022-01-05  === 01
       const inpFilter: Entries[] = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
-      console.log({inpFilter})
       const inpOrder = inpFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
       return {
         ...state,
@@ -195,7 +193,6 @@ const reducerSlice = createSlice({
     inputsOrderByAmount: (state, { payload }) => {
       let currStateInpAmount = current(state)
       const orderInputs: Entries[] = [...currStateInpAmount.allInputs];
-      console.log({payload}, {orderInputs})
       let orderByAmount = payload === 'menorAMayor'
         ? orderInputs.sort((a, b) => a.amount - b.amount)
         : orderInputs.sort((a, b) => b.amount - a.amount)
