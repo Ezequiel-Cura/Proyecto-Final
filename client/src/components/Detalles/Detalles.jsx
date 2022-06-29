@@ -16,12 +16,9 @@ export default function Detalles() {
   };
 
   function calculate() {
-    const ingresos = usuario.Account.extraInput.reduce(
-      (prev, actual) => {
-        return prev + actual.amount
-      },
-      0
-    );
+    const ingresos = usuario.Account.extraInput.reduce((prev, actual) => {
+      return prev + actual.amount;
+    }, 0);
     const gastos = usuario.Account;
     return ingresos;
   }
