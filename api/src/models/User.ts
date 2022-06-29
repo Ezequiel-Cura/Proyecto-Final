@@ -17,8 +17,8 @@ interface IUser {
   email: string,
   password: string,
   avatar?: string,
+  Saving: [Object],
   Account?: any,
-  Saving: savingProps[],
   premium: boolean,
   generateAuthToken: () => any
 }
@@ -66,7 +66,7 @@ const userSchema = new Schema<IUser>({
     }],
 
     // GASTOS
-
+    
     monthlyExpenses: [{
       // Gastos mensuales; incluyen cuotas, servicios, etc; descontados de los ingresos totales cada mes
       date: { type: Date, default: Date.now(), required: true },

@@ -5,11 +5,9 @@ import { useAppSelector } from "redux/hooks";
 
 export default function Detalles() {
   const usuario = useAppSelector((state) => state.user.usuario);
-  console.log(usuario);
-  let border1 = "2px solid white";
-
+  
   const styleBar = {
-    border: border1,
+    border: "2px solid white",
     borderRadius: "10px",
     overflow: "hidden",
     display: "flex",
@@ -19,23 +17,25 @@ export default function Detalles() {
     const ingresos = usuario.Account.extraInput.reduce((prev, actual) => {
       return prev + actual.amount;
     }, 0);
-    const gastos = usuario.Account;
-    return ingresos;
+    const gastos = usuario.Account.variableExpenses.reduce((prev, actual) => {
+      return prev + actual.amount;
+    }, 0);
+    const total = gastos + ingresos
+    const porcentajeGastos = Math.round((gastos * 100)/total)
+    const porcentajeIngreso = 100 - porcentajeGastos
+    return {porcentajeGastos,porcentajeIngreso};
   }
   console.log(calculate());
-  function random() {
-    return Math.floor(Math.random() * 100);
-  }
 
   const incomes = {
     background: "green",
-    width: random() + "%",
+    width: calculate().porcentajeIngreso + "%",
     height: "100px",
   };
 
   const gastos = {
     background: "red",
-    width: random() + 100 + "%",
+    width: calculate().porcentajeGastos + "%",
     height: "100px",
   };
 
@@ -44,10 +44,31 @@ export default function Detalles() {
       <Nav />
       <div className={styles.detalles_wrapper}>
         <h1>Detalles</h1>
+        <div>
+          <div>
+            <select name="" id="">
+              <option value="">Anual</option>
+              <option value="">Mensual</option>
+              <option value="">Diario</option>
+            </select>
+          </div>
+          <div>
+            <div style={{display: "flex"}}>
+              <h5>Ingresos</h5>
+              <h5 style={{marginLeft: "200px"}}>gastos</h5>
+            </div>
+            <div style={styleBar}>
+              <div style={incomes}>{calculate().porcentajeIngreso} </div>
+              <div style={gastos}>{calculate().porcentajeGastos} </div>
+            </div>
+          </div>
+          <div className={styles.seccion_wrapper}>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+          </div>
 
-        <div style={styleBar}>
-          <div style={incomes}>{} </div>
-          <div style={gastos}>{} </div>
         </div>
       </div>
     </div>

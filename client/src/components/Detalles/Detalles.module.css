@@ -2,25 +2,23 @@
 .detalles_wrapper{
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-
-
+  grid-template-rows: 1fr 1fr 7fr;
+  height: 100vh;
+  overflow: scroll;
 }
 
 h1{
   margin: 20px;
 }
 
-
-.fruit_meter {
-  border: 2px solid white;
-  border-radius: 10px;
-  overflow: hidden;
+.seccion_wrapper{
+  margin-top: 40px;
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr ;
-  
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100vh;
 }
-
 
   
 
