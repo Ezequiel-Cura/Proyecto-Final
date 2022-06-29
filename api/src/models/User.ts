@@ -1,4 +1,3 @@
-
 'use strict'
 
 import { Schema, model } from "mongoose"
@@ -17,9 +16,9 @@ interface IUser {
   email: string,
   password: string,
   avatar?: string,
-  premium: boolean,
-  Saving: [Object],
   Account?: any,
+  Saving: savingProps[],
+  premium: boolean,
   generateAuthToken: () => any
 }
 
