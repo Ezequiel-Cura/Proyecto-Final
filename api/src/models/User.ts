@@ -1,8 +1,15 @@
 
 'use strict'
-import { ObjectId } from "mongodb";
-import { Schema, model } from "mongoose"
 
+import { Schema, model } from "mongoose"
+import jwt from "jsonwebtoken"
+
+interface savingProps{
+  name: string,
+  start: string,
+  end?: string,
+  goal: number
+}
 interface IUser {
   _id?: string,
   userName: string,
@@ -10,16 +17,25 @@ interface IUser {
   email: string,
   password: string,
   avatar?: string,
-  Account?: any
+  Account?: any,
+  Saving: savingProps[],
+  premium: boolean,
+  generateAuthToken: () => any
 }
 
-const UserSQLessSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser>({
   userName: { type: String, required: true },
   lastName: String,
   email: { type: String, unique: true, lowercase: true, required: true },
   password: {type: String, required: true},
   avatar: String,
-
+  premium: {type: Boolean, default: false},
+  Saving: [{
+    name: { type: String, required: true },
+    start: { type: Date, required: true, default: Date.now()},
+    end: Date,
+    goal: Number
+  }],
   Account: {
     // La cuenta de cada User tiene 4 props: 
     // 1- Es un arreglo de obj/ingresos mensuales.
@@ -73,20 +89,11 @@ const UserSQLessSchema = new Schema<IUser>({
     }]
   }
 })
-// Andan 
-// {
-//   "userName": "Bon Jovi",
-//   "lastName": "Jovi",
-//   "email": "bon@jovito",
-//   "avatar": "jovitoPic",
-//   "Account": {
-//   "monthlyInput": [{
-//     "date": "",
-//     "description": "Ta caro el gym",
-//     "category": "",
-//     "amount": 5000 }]
-//   }
-// }
 
-export default model<IUser>('UserNoSql-temp', UserSQLessSchema);
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({_id: this._id}, process.env.JWTPRIVATEKEY, {expiresIn:"7d"})
+  return token
+};
+
+export default model<IUser>('user', userSchema);
 

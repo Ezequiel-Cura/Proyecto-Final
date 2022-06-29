@@ -13,10 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const UserNoSql_temp_1 = __importDefault(require("../../databases/models/UserNoSql(temp)"));
+const User_1 = __importDefault(require("../models/User"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const joi_1 = __importDefault(require("joi"));
 const mongodb_1 = require("mongodb");
+const jwt_decode_1 = __importDefault(require("jwt-decode"));
+const authorization_1 = __importDefault(require("../middleware/authorization"));
 const schema = joi_1.default.object({
     firstName: joi_1.default.string().required(),
     lastName: joi_1.default.string().required(),
@@ -32,27 +34,65 @@ const entriesUpdate = (key, value) => {
     variableExpenses
     */
 };
-// Funciona como un get para traer toda la data del usuario, mandar los params por body así:
-// {
-//   "email": "test@test.com", 
-//   "password": "1234"
-// }
 router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const User = yield UserNoSql_temp_1.default.findOne({ email });
-        if (!User)
+        const user = yield User_1.default.findOne({ email });
+        if (!user)
             return res.status(400).send('Usuario inexistente');
-        const passwordCompare = yield bcrypt_1.default.compare(password, User.password);
+        const passwordCompare = yield bcrypt_1.default.compare(password, user.password);
         if (passwordCompare) {
-            return res.status(200).send(User);
+            const { email, userName, lastName, avatar, Account } = user;
+            const token = user.generateAuthToken();
+            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).send({ email, userName, lastName, avatar, Account });
         }
-        else {
-            return res.status(400).send('Contraseña Incorrecta');
-        }
+        res.status(400).send('Contraseña Incorrecta');
     }
     catch (err) {
         res.status(404).send(err);
+    }
+}));
+router.post("/user/googleLogin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email_verified, email, given_name, picture } = (0, jwt_decode_1.default)(req.body.jwt);
+        if (!email_verified)
+            return res.status(403).send("Tu email no esta verificado");
+        if (!email)
+            return res.status(403).send("No tenes gmail? wtf");
+        const password = email + process.env.GOOGLE_SECRET;
+        const salt = yield bcrypt_1.default.genSalt(Number(process.env.SUPER_SECRET_SALT));
+        const passwordHash = yield bcrypt_1.default.hash(password, salt);
+        const user = yield User_1.default.findOne({ email });
+        console.log(user);
+        if (user) {
+            const validPassword = yield bcrypt_1.default.compare(password, user.password);
+            if (!validPassword)
+                return res.status(400).send("La contraseña es incorrecta");
+            const token = user.generateAuthToken();
+            const { userName, lastName, avatar } = user;
+            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).send({ userName, lastName, email, avatar });
+        }
+        else {
+            const newUser = yield new User_1.default({ userName: given_name, email, password: passwordHash, avatar: picture }).save();
+            const token = newUser.generateAuthToken();
+            const { userName, lastName, avatar } = newUser;
+            res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).send({ userName, lastName, email, avatar });
+        }
+    }
+    catch (err) {
+        res.status(500).send(err.message);
+    }
+}));
+router.post("/user/logout", authorization_1.default, (req, res) => {
+    res.clearCookie("access_token").status(200).send({ message: "Successfully logged out" });
+});
+router.get("/user/getUserInfo", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, userName, lastName, avatar } = yield User_1.default.findById(req.userId);
+        res.status(200).send({ email, userName, lastName, avatar });
+    }
+    catch (err) {
+        res.status(404).send(err.message);
     }
 }));
 // Para agregar valores a la cuenta del usuario se mandan así los parámetros en el body:
@@ -64,7 +104,7 @@ router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, funct
 router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
     try {
-        const user = yield UserNoSql_temp_1.default.findById(id);
+        const user = yield User_1.default.findById(id);
         if (!user) {
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
@@ -78,20 +118,40 @@ router.post("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(400).send(err);
     }
 }));
+// Para agregar ahorros se requiere dos parámetros:
+router.post("/user/saving", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, value } = req.body;
+    try {
+        const user = yield User_1.default.findById(id);
+        if (!user) {
+            res.status(404).send(`No se encontró al usuario con id: ${id}`);
+        }
+        else {
+            user.Saving.push(value);
+            yield user.save();
+            res.status(200).send(user);
+        }
+    }
+    catch (err) {
+        res.status(400).send(err);
+    }
+}));
 // Para registrar al usuario:
-router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/user/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, email, password } = req.body;
     try {
         const { error } = schema.validate(req.body);
         if (error)
             return res.status(400).send({ message: error.details[0].message });
-        const userExistCheck = yield UserNoSql_temp_1.default.findOne({ email: email });
+        const userExistCheck = yield User_1.default.findOne({ email });
         if (userExistCheck)
             return res.status(400).send('Email ya registrado');
         const salt = yield bcrypt_1.default.genSalt(Number(process.env.SUPER_SECRET_SALT));
         const hashPass = yield bcrypt_1.default.hash(password, salt);
-        const user = yield UserNoSql_temp_1.default.create({ userName: firstName, lastName, email, password: hashPass });
-        res.status(201).send(`${user} creado exitosamente.`);
+        const user = yield User_1.default.create({ userName: firstName, lastName, email, password: hashPass });
+        const { avatar, Account } = user;
+        const token = user.generateAuthToken();
+        res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(201).send({ userName: firstName, lastName, email, avatar, Account });
     }
     catch (err) {
         res.status(400).send(err.message);
@@ -104,8 +164,8 @@ router.post("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* (
 router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, key, value } = req.body;
     try {
-        const result = yield UserNoSql_temp_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
-        // const result = await UserNoSqlTemp.findOneAndUpdate({_id: id}, { [key]: value }).save();
+        const result = yield User_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
+        // const result = await User.findOneAndUpdate({_id: id}, { [key]: value }).save();
         result
             ? res.status(200).send({ key, value })
             : res.status(304).send(`User with id: ${id} not updated`);
@@ -121,16 +181,17 @@ router.put("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 //     "value": {"_id": "62b8b79f91091d937fe969d7"}
 // }
 router.delete("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, key, value } = req.body;
+    const { id, key, value } = req.body.source;
     try {
-        const user = yield UserNoSql_temp_1.default.findById(id);
+        const user = yield User_1.default.findById(id);
         if (!user) {
+            console.log({ user });
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
             yield user.Account[key].remove({ "_id": new mongodb_1.ObjectId(value._id) });
             yield user.save();
-            res.status(200).send(user.Account);
+            res.status(200).send(user);
         }
     }
     catch (err) {
@@ -139,7 +200,7 @@ router.delete("/user/account", (req, res) => __awaiter(void 0, void 0, void 0, f
 }));
 router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.query;
-    UserNoSql_temp_1.default.findByIdAndDelete(id)
+    User_1.default.findByIdAndDelete(id)
         .then((user) => {
         if (user) {
             res.status(200).send(`Usuario ${user} eliminado`);

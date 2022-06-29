@@ -14,15 +14,30 @@ export default function ConDatos() {
   //const [monto, setMonto] = useState<number>(0);  
 
   //----------Form-------------
-  interface AgregarIngresos { 
-    id: string,  
-    key: string,               //extraInput, monthlyInput
-    value: Value,
-  }
+
+  type keyValue = "extraInput" | "monthlyInput"
+  
   interface Value {
     description: string,
     amount: number,
-    category?: string
+    category?: string,
+    date?: string,
+    _id?: string
+  }
+  interface AgregarIngresos { 
+    id: string,  
+    key: keyValue,             //extraInput, monthlyInput
+    value: Value,
+  }
+
+  interface idUndefined{
+      _id: string | undefined
+  }
+
+  interface accountParameter{
+    id: string,
+    key: keyValue,
+    value: idUndefined
   }
 
   const [input, setInput] = useState<Value>({
@@ -39,21 +54,14 @@ export default function ConDatos() {
   //   }
   // })
 
-  function handleChange(e : any){ 
+  function handleChange(e : React.ChangeEvent<HTMLInputElement>){ 
     setInput({
       ...input,
        [e.target.name] : e.target.value
       })
   }
 
-  // function handleSelectI(e : any){    
-  //   setInput({
-  //     ...input,
-  //     category : e.target.value
-  // })
-  // }
-
-  function handleSelectC(e : any){    
+  function handleSelectC(e : React.ChangeEvent<HTMLSelectElement>){    
     setInput({
       ...input,
       category : e.target.value
@@ -73,28 +81,29 @@ export default function ConDatos() {
       amount: 0,
     });
   }
-  //Envio de form
-  function handleSubmit(e : any){   
+
+  function handleSubmit(e : React.FormEvent<HTMLFormElement>){   
     e.preventDefault();
     console.log(form)
     dispatch(addDato(form));
     clearForm();
   } 
   //----------------------
-
-  function handleDelete(e : any){
-    //e.preventDefault();
-    console.log(e, 'que es eeeee')
-    dispatch(deleteDato(e))
+  
+  function handleOrderAmount( e : React.ChangeEvent<HTMLSelectElement>){
+  // {   "id": "62b7b9f2168812a442797012",
+  //   "key": "extraInput",
+  //   "value": {"_id": "62b8b79f91091d937fe969d7"}
+  // }
   }
 
-  //Para futuros filtros
-  function handleOrderAmount( e : any){
-    e.preventDefault();
-    //dispatch(setUser(e.target.value));
+  function handleDelete(event: accountParameter){
+    // event.preventDefault();
+    console.log({event})
+    dispatch(deleteDato(event))
   }
 
-  function handleOrderDate(e : any){
+  function handleOrderDate(e : React.ChangeEvent<HTMLSelectElement>){
     e.preventDefault();
     //dispatch(filterByDate(e.target.value));
   }
@@ -156,34 +165,18 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              {usuario.Account ? usuario.Account.extraInput.map( (detalles : any) => {
+              { usuario.Account.extraInput.map( (detalles : Value) => {
                 return(
                   <tr>
-                  <th>{detalles.date.split("T")[0]}</th>
+                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
                   <th>{detalles.category ? detalles.category : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
-                  <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
+                  <th><button onClick={ () => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
                 </tr>
                 )
-              }) : (
-                <></>
-              )}
-            {/* Cuando se hace el post  te devuelve otro objeto (el account solo y no su totalidad, entonces se entra de otra manera) */}
-              {usuario.extraInput ? usuario.extraInput.map( (detalles : any) => {
-                return(
-                  <tr>
-                    <th>{detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
-                    <th>{detalles.description}</th>
-                    <th>$ {detalles.amount}</th>
-                    <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
-                  </tr>
-                )
-              }) : (
-                <></>
-              )}
-
+              }) 
+              }
               {usuario.Account ? usuario.Account.monthlyInput.map((detalles : any) => {
                 return (
                   <tr className={styles.monthlyInput}>
@@ -191,7 +184,7 @@ export default function ConDatos() {
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
-                    <th><button onClick={ e => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
+                    <th><button onClick={ () => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
                   </tr>
                 )
               }) : (
@@ -232,13 +225,13 @@ export default function ConDatos() {
                 <option value='extraInput'>Ingreso extra</option>
               </select> */}
               <select onChange={handleSelectC}>
-                <option>Selecciona una categoria</option>
+                <option>Selecciona una categoría</option>
                 <option value='Salario'>Salario</option>
                 <option value='Aguinaldo'>Aguinaldo</option>
                 <option value='Herencia'>Herencia</option>
                 <option value='Changa'>Changa</option>
                 <option value='Regalo'>Regalo</option>
-                <option value='Prestamo'>Prestamo</option>
+                <option value='Prestamo'>Préstamo</option>
                 <option value='Otros'>Otros</option>
               </select>
               <input 
