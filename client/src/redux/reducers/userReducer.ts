@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
+import { isArrayBindingPattern } from "typescript";
 import { number } from "yup";
 
 interface Entries {
@@ -125,11 +126,19 @@ const reducerSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    getAllInputs: (state) => {
+      let currentInputState = current(state)
+      state.allInputs = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
+    },
+    getAllExpenses: (state) => {
+      let currentExpensesState = current(state)
+      state.allExpenses = [...currentExpensesState.usuario.Account.monthlyExpenses, ...currentExpensesState.usuario.Account.variableExpenses]
+    },
     expensesFilterByMonth: (state, { payload }) => {
       const allExpensesFilter = [...state.usuario.Account.monthlyExpenses, ...state.usuario.Account.variableExpenses]
-      //                                                                             2022-01-05  === 01
-      const expFilter = allExpensesFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
-      const expOrder = expFilter.sort((a, b) => a.date.split("-")[2] - b.date.split("-")[2])
+      const expFilter: Entries[] = allExpensesFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
+
+      const expOrder = expFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
       return {
         ...state,
         allExpenses: expOrder
@@ -157,10 +166,12 @@ const reducerSlice = createSlice({
       }
     },
     inputsFilterByMonth: (state, { payload }) => {
+      console.log({payload})
       const allInputsFilter = [...state.usuario.Account.monthlyInput, ...state.usuario.Account.extraInput]
       //                                                                             2022-01-05  === 01
-      const inpFilter = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
-      const inpOrder = inpFilter.sort((a, b) => a.date.split("-")[2] - b.date.split("-")[2])
+      const inpFilter: Entries[] = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
+      console.log({inpFilter})
+      const inpOrder = inpFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
       return {
         ...state,
         allInputs: inpOrder
@@ -271,6 +282,15 @@ const reducerSlice = createSlice({
     },
   }
 })
-export const { inputsFilterByMonth } = reducerSlice.actions;
+export const { 
+  inputsFilterByMonth, 
+  getAllInputs, 
+  getAllExpenses, 
+  inputsOrderByAmount, 
+  expensesFilterByFrequency,
+  expensesOrderByAmount,
+  expensesFilterByMonth,
+  inputsFilterByFrequency
+} = reducerSlice.actions;
 
 export default reducerSlice.reducer;
