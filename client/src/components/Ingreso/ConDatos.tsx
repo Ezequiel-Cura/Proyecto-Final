@@ -10,10 +10,8 @@ export default function ConDatos() {
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const [monto, setMonto] = useState<number>(0);
-
   useEffect(() => {
-    if(status === 'success') {
+    if (status === 'success'){
       dispatch(getAllInputs())
       dispatch(totalInput())
     }
@@ -185,7 +183,7 @@ export default function ConDatos() {
               <button value='12' className={styles.month} id="Diciembre" onClick={(e) => filterByMonth(e)}>Diciembre</button>
             </div>
           </div>
-
+        
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
@@ -197,8 +195,8 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              {allInputs.length > 0 ? allInputs.map((detalles: Value) => {
-                console.log(allInputs, 'Array')
+            {allInputs.length > 0 ? allInputs.map((detalles: Value) => {
+              console.log(detalles)
                 return (
                   <tr className={styles.monthlyInput}>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
@@ -211,7 +209,6 @@ export default function ConDatos() {
               }) 
               : <></>
               }
-
               <tr>
                 <th className={styles.lastBox}></th>
                 <th></th>

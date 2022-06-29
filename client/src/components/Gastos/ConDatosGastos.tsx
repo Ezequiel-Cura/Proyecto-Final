@@ -51,7 +51,6 @@ export default function ConDatos() {
 
   function handleSubmit(e : any){   
     e.preventDefault();
-    console.log(form)
     dispatch(addDato(form));
   } 
   

@@ -28,7 +28,6 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const salt = yield bcrypt_1.default.genSalt(Number(process.env.SUPER_SECRET_SALT));
         const passwordHash = yield bcrypt_1.default.hash(password, salt);
         const user = yield User_1.default.findOne({ email });
-        console.log(user);
         if (user) {
             const validPassword = yield bcrypt_1.default.compare(password, user.password);
             if (!validPassword)

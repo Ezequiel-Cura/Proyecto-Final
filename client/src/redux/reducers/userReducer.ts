@@ -22,17 +22,18 @@ interface User {
 
 const initialState: User = {
   usuario: {
+    _id: '',
+    userName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    
     Account: {
       monthlyInput: [],
       extraInput: [],
       monthlyExpenses: [],
       variableExpenses: [],
     },
-    _id: '',
-    userName: '',
-    lastName: '',
-    email: '',
-    password: '',
   },
   status: 'idle',
   allInputs: [],  //Estado de entradas para ordenar o filtrar
@@ -97,7 +98,6 @@ export const addDato: any = createAsyncThunk("user/addIngreso",
 export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
   async (ingreso: any, { rejectWithValue }) => {
     try {
-
       let deleteEntry: any = await axios.delete("/user/account", {
         data: {
           source: ingreso
@@ -146,7 +146,8 @@ const reducerSlice = createSlice({
       state.totalExpensesMonth = reduceTotalExp
     },
     expensesFilterByMonth: (state, { payload }) => {
-      const allExpensesFilter = [...state.usuario.Account.monthlyExpenses, ...state.usuario.Account.variableExpenses]
+      let curExpState = current(state)
+      const allExpensesFilter = [...curExpState.usuario.Account.monthlyExpenses, ...curExpState.usuario.Account.variableExpenses]
       const expFilter: Entries[] = allExpensesFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
 
       const expOrder = expFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
@@ -156,20 +157,18 @@ const reducerSlice = createSlice({
       }
     },
     expensesFilterByFrequency: (state, { payload }) => {
+      let currExpSta = current(state)
       const expensesByFrequency = payload === 'fijo'
-        ? [...state.usuario.Account.monthlyExpenses]
-        : [...state.usuario.Account.variableExpenses]
+        ? [...currExpSta.usuario.Account.monthlyExpenses]
+        : [...currExpSta.usuario.Account.variableExpenses]
       return {
         ...state,
         allExpenses: expensesByFrequency
       }
     },
     expensesOrderByAmount: (state, { payload }) => {
-      let currentInputState = current(state);
-      const orderExpenses : Entries[] = state.allExpenses.length 
-      ? state.allExpenses
-      : [...state.usuario.Account.monthlyExpenses, ...state.usuario.Account.variableExpenses]
-      console.log(orderExpenses, 'ORDER')
+      let currStateExpAmount = current(state)
+      const orderExpenses: Entries[] = [...currStateExpAmount.allInputs];
       let orderByAmount = payload === 'menorAMayor'
         ? orderExpenses.sort((a, b) => a.amount - b.amount)
         : orderExpenses.sort((a, b) => b.amount - a.amount)
@@ -179,11 +178,11 @@ const reducerSlice = createSlice({
       }
     },
     inputsFilterByMonth: (state, { payload }) => {
-      console.log({payload})
-      const allInputsFilter = [...state.usuario.Account.monthlyInput, ...state.usuario.Account.extraInput]
+
+      let currentInputState = current(state)
+      const allInputsFilter = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
       //                                                                             2022-01-05  === 01
       const inpFilter: Entries[] = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
-      console.log({inpFilter})
       const inpOrder = inpFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
       return {
         ...state,
@@ -319,11 +318,9 @@ export const {
   getAllExpenses, 
   inputsOrderByAmount, 
   expensesFilterByMonth,
-  expensesFilterByFrequency,
   inputsFilterByFrequency,
-  expensesOrderByAmount,
+  filterExpensesByCategory,
   filterInputByCategory,
-  filterExpensesByCategory
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;

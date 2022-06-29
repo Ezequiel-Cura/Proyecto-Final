@@ -54,16 +54,19 @@ const userSchema = new Schema<IUser>({
       description: {type: String, required:true},
       amount: {type: Number, required: true},
       category: String,
-    }],
 
+      source: {type: String, default: 'monthlyInput' }
+    }],
+    
     extraInput: [{
       // Ingresos adicionales, aplicados a demanda del usuario
       date: { type: Date, default: Date.now()},
       description: {type: String, required:true},
       amount: {type: Number, required: true},
       category: String,
+      source: {type: String, default: 'extraInput' }
     }],
-
+    
     // GASTOS
 
     monthlyExpenses: [{
@@ -73,8 +76,9 @@ const userSchema = new Schema<IUser>({
       description: {type: String, required:true},
       amount: {type: Number, required: true},
       category: String,
+      source: {type: String, default: 'monthlyExpenses' }
     }],
-
+    
     variableExpenses: [{
       // Gastos adicionales, se aplican a demanda del usuario 
       // es un array de obj con el registro de todos los gastos del mes, se pushea uno nuevo cada mes
@@ -84,7 +88,8 @@ const userSchema = new Schema<IUser>({
       // id: {type: Schema.Types.ObjectId, default: new ObjectId()},
       category: String,
       description: {type: String, required: true},
-      amount: {type:Number, required: true}
+      amount: {type:Number, required: true},
+      source: {type: String, default: 'variableExpenses' }
     }]
   }
 })
