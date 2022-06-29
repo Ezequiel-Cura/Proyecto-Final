@@ -3,20 +3,22 @@ import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {  addDato, deleteDato, getAllInputs, inputsFilterByMonth } from "redux/reducers/userReducer";
+import { addDato, deleteDato, getAllInputs, inputsFilterByMonth } from "redux/reducers/userReducer";
+
 
 export default function ConDatos() {
-  const { usuario, allInputs } = useAppSelector( state => state.user);
+  const { usuario, allInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const [monto, setMonto] = useState<number>(0);  
+  const [monto, setMonto] = useState<number>(0);
 
   useEffect(() => {
     dispatch(getAllInputs())
   }, [])
+
   //----------Form-------------
   type keyValue = "extraInput" | "monthlyInput"
-  
+
   interface Value {
     description: string,
     amount: number,
@@ -24,47 +26,48 @@ export default function ConDatos() {
     date?: string,
     _id?: string
   }
-  interface AgregarIngresos { 
+  interface AgregarIngresos {
+    id?: string,
     key: keyValue,             //extraInput, monthlyInput
     value: Value,
   }
 
-  interface idUndefined{
-      _id: string | undefined
+  interface idUndefined {
+    _id: string | undefined
   }
 
-  interface accountParameter{
-    id: string,
+  interface accountParameter {
+    id?: string,
     key: keyValue,
     value: idUndefined
   }
 
   const [input, setInput] = useState<Value>({
-      category: '',
-      description: '',
-      amount: 0,
+    category: '',
+    description: '',
+    amount: 0,
   })
-
-  function handleChange(e : React.ChangeEvent<HTMLInputElement>){ 
+  
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
       ...input,
-       [e.target.name] : e.target.value
-      })
+      [e.target.name]: e.target.value
+    })
   }
 
-  function handleSelectC(e : React.ChangeEvent<HTMLSelectElement>){    
+  function handleSelectC(e: React.ChangeEvent<HTMLSelectElement>) {
     setInput({
       ...input,
-      category : e.target.value
-  })
+      category: e.target.value
+    })
   }
 
-  const form : AgregarIngresos = { 
+  const form: AgregarIngresos = {
     key: 'extraInput',
     value: input,
   }
 
-  const clearForm = () =>{
+  const clearForm = () => {
     setInput({
       category: '',
       description: '',
@@ -72,40 +75,39 @@ export default function ConDatos() {
     });
   }
 
-  function handleSubmit(e : React.FormEvent<HTMLFormElement>){   
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    console.log({ form })
     e.preventDefault();
-    console.log(form)
     dispatch(addDato(form));
     clearForm();
-  } 
+  }
   //----------------------
   
   function filterByMonth(e: any) {
-    console.log("e.target.value", e.target.value)
     e.preventDefault();
     dispatch(inputsFilterByMonth(e.target.value))
   }
 
-  function handleOrderAmount( e : React.ChangeEvent<HTMLSelectElement>){
-  // {   "id": "62b7b9f2168812a442797012",
-  //   "key": "extraInput",
-  //   "value": {"_id": "62b8b79f91091d937fe969d7"}
-  // }
+  function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
+    // {   "id": "62b7b9f2168812a442797012",
+    //   "key": "extraInput",
+    //   "value": {"_id": "62b8b79f91091d937fe969d7"}
+    // }
   }
 
-  function handleDelete(event: accountParameter){
+  function handleDelete(event: accountParameter) {
     // event.preventDefault();
     dispatch(deleteDato(event))
   }
 
-  function handleOrderByCategories(e : React.ChangeEvent<HTMLSelectElement>){
+  function handleOrderByCategories(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     //dispatch(filterByDate(e.target.value));
   }
 
   return (
     <div>
-      <Nav/>
+      <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
           <div className={styles.title}>
@@ -131,19 +133,22 @@ export default function ConDatos() {
           </div>
 
           <div className={styles.allMonths}>
-          <div className={styles.monthCard}>
-            <button value='01' className={styles.month} id="Enero" onClick={(e) => filterByMonth(e)}>Enero</button>
-            <button value='02' className={styles.month} id="Febrero" onClick={(e) => filterByMonth(e)}>Febrero</button>
-            <button value='03' className={styles.month} id="Marzo" onClick={(e) => filterByMonth(e)}>Marzo</button>
-            <button value='04' className={styles.month} id="Abril" onClick={(e) => filterByMonth(e)}>Abril</button>
-            <button value='05' className={styles.month} id="Mayo" onClick={(e) => filterByMonth(e)}>Mayo</button>
-            <button value='06' className={styles.month} id="Junio" onClick={(e) => filterByMonth(e)}>Junio</button>
-            <button value='07' className={styles.month} id="Julio" onClick={(e) => filterByMonth(e)}>Julio</button>
-            <button value='08' className={styles.month} id="Agosto" onClick={(e) => filterByMonth(e)}>Agosto</button>
-            <button value='09' className={styles.month} id="Septiembre" onClick={(e) => filterByMonth(e)}>Septiembre</button>
-            <button value='10' className={styles.month} id="Octubre" onClick={(e) => filterByMonth(e)}>Octubre</button>
-            <button value='11' className={styles.month} id="Noviembre" onClick={(e) => filterByMonth(e)}>Noviembre</button>
-            <button value='12' className={styles.month} id="Diciembre" onClick={(e) => filterByMonth(e)}>Diciembre</button>
+            <div className={styles.monthCard}>
+              <button value='01' className={styles.month} id="Enero" onClick={(e) => filterByMonth(e)}>Enero</button>
+              <button value='02' className={styles.month} id="Febrero">Febrero</button>
+              <button value='03' className={styles.month} id="Marzo">Marzo</button>
+              <button value='04' className={styles.month} id="Abril">Abril</button>
+              <button value='05' className={styles.month} id="Mayo">Mayo</button>
+              <button value='06' className={styles.month} id="Junio" onClick={(e) => filterByMonth(e)}>Junio</button>
+              <button value='07' className={styles.month} id="Julio">Julio</button>
+              <button value='08' className={styles.month} id="Agosto">Agosto</button>
+              <button value='09' className={styles.month} id="Septiembre">Septiembre</button>
+              <button value='10' className={styles.month} id="Octubre">Octubre</button>
+              <button value='11' className={styles.month} id="Noviembre">Noviembre</button>
+              <button value='12' className={styles.month} id="Diciembre" onClick={(e) => filterByMonth(e)}>Diciembre</button>
+            </div>
+            <div className={styles.annualCard}>
+              <button className={styles.annual}>Todos</button>
             </div>
           </div>
 
@@ -158,17 +163,17 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              { allInputs.length && allInputs.map( (detalles : Value) => {
-                return(
+              {allInputs.length && allInputs.map((detalles: Value) => {
+                return (
                   <tr>
-                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category : "-"}</th>
-                  <th>{detalles.description}</th>
-                  <th>$ {detalles.amount}</th>
-                  <th><button onClick={ () => handleDelete({id: usuario._id, key: 'extraInput', value: {_id: detalles._id}})}></button></th>
-                </tr>
+                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                    <th><button onClick={() => handleDelete({ id: usuario._id, key: 'extraInput', value: { _id: detalles._id } })}></button></th>
+                  </tr>
                 )
-              }) 
+              })
               }
 
               <tr>
@@ -181,7 +186,7 @@ export default function ConDatos() {
             </tbody>
           </table>
 
-          <Pagination/>
+          <Pagination />
 
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
@@ -200,20 +205,20 @@ export default function ConDatos() {
                 <option value='Prestamo'>Préstamo</option>
                 <option value='Otros'>Otros</option>
               </select>
-              <input 
-                type='text' 
+              <input
+                type='text'
                 name='description'
                 placeholder='Agrega una descripcion'
                 onChange={handleChange}
-                >
+              >
               </input>
-              <input 
-                type='number' 
+              <input
+                type='number'
                 name='amount'
                 placeholder='Agrega un monto'
                 onChange={handleChange}
-                >
-                </input>
+              >
+              </input>
               <button type='submit'>Agregar</button>
             </div>
           </form>
