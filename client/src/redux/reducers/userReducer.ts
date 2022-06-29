@@ -5,7 +5,7 @@ interface User {
   usuario: any   
   status: 'idle' | 'loading' | 'success' | 'failed'
   totalInput: number
-  allingresos: []
+  allInputs: []
   categoryFilterIngreso: [] 
   categoryFilterGastos: [] 
 }
@@ -26,7 +26,7 @@ const initialState: User = {
   },  
   status: 'idle',
   totalInput: 0,
-  allingresos: [], 
+  allInputs: [],
   categoryFilterIngreso: [],
   categoryFilterGastos: [] 
 }
@@ -119,6 +119,12 @@ const reducerSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    getAllInputs (state) {
+
+    },
+    inputsFilterByMonth (state, {payload}){
+
+    },
     totalInput (state, {payload}) {
       let total : number = 0;
       let monto : any = payload.usuario.Account.extraInput.forEach((e: any) => total += parseInt(e.amount))
@@ -132,14 +138,14 @@ const reducerSlice = createSlice({
     //   }
     // },
     categoriesFilterIngresos (state, {payload}) {
-      let categoriesFilterMonthly = state.allingresos.filter( (obj : any) => payload !== obj.monthlyInput.category)
-      let categoriesFilterExtra = state.allingresos.filter( (obj : any) => payload !== obj.extraInput.category)
+      let categoriesFilterMonthly = state.allInputs.filter( (obj : any) => payload !== obj.monthlyInput.category)
+      let categoriesFilterExtra = state.allInputs.filter( (obj : any) => payload !== obj.extraInput.category)
       let todo : any = categoriesFilterMonthly.concat(categoriesFilterExtra)
       state.categoryFilterIngreso = todo
     },
     categoriesFilterGastos (state, {payload}) {
-      let categoriesFilterMonthly = state.allingresos.filter( (obj : any) => payload !== obj.monthlyExpenses.category)
-      let categoriesFilterVariable = state.allingresos.filter( (obj : any) => payload !== obj.variableExpenses.category)
+      let categoriesFilterMonthly = state.allInputs.filter( (obj : any) => payload !== obj.monthlyExpenses.category)
+      let categoriesFilterVariable = state.allInputs.filter( (obj : any) => payload !== obj.variableExpenses.category)
       let todo : any = categoriesFilterMonthly.concat(categoriesFilterVariable)
       state.categoryFilterGastos = todo
     },
@@ -227,5 +233,5 @@ const reducerSlice = createSlice({
     },
   }
 })
-export const {totalInput} = reducerSlice.actions
+export const {totalInput, getAllInputs, inputsFilterByMonth} = reducerSlice.actions
 export default reducerSlice.reducer
