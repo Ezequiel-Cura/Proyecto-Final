@@ -5,6 +5,9 @@ interface User {
   usuario: any   
   status: 'idle' | 'loading' | 'success' | 'failed'
   totalInput: number
+  allingresos: []
+  categoryFilterIngreso: [] 
+  categoryFilterGastos: [] 
 }
 
 const initialState: User = {
@@ -13,7 +16,7 @@ const initialState: User = {
       monthlyInput: [],
       extraInput: [],
       monthlyExpenses: [],
-      variableExpenses: []
+      variableExpenses: [],
     },
     _id: '',
     userName: '',
@@ -22,7 +25,10 @@ const initialState: User = {
     password: '',
   },  
   status: 'idle',
-  totalInput: 0
+  totalInput: 0,
+  allingresos: [], 
+  categoryFilterIngreso: [],
+  categoryFilterGastos: [] 
 }
 
 export const registerUser : any = createAsyncThunk("user/registerUser", 
@@ -115,9 +121,28 @@ const reducerSlice = createSlice({
   reducers: {
     totalInput (state, {payload}) {
       let total : number = 0;
-      let monto = payload.usuario.Account.extraInput.forEach((e: any) => total += parseInt(e.amount))
+      let monto : any = payload.usuario.Account.extraInput.forEach((e: any) => total += parseInt(e.amount))
       state.totalInput = monto
-    }
+    },
+    // totalExpenses: (state) => {
+    //   let totalExpensesAmount: number = state.allExpenses.reduce( (acc: any, entrie: any) =>  acc += entrie.amount )
+    //   return {
+    //     ...state,
+    //     totalExpensesMonth: totalExpensesAmount
+    //   }
+    // },
+    categoriesFilterIngresos (state, {payload}) {
+      let categoriesFilterMonthly = state.allingresos.filter( (obj : any) => payload !== obj.monthlyInput.category)
+      let categoriesFilterExtra = state.allingresos.filter( (obj : any) => payload !== obj.extraInput.category)
+      let todo : any = categoriesFilterMonthly.concat(categoriesFilterExtra)
+      state.categoryFilterIngreso = todo
+    },
+    categoriesFilterGastos (state, {payload}) {
+      let categoriesFilterMonthly = state.allingresos.filter( (obj : any) => payload !== obj.monthlyExpenses.category)
+      let categoriesFilterVariable = state.allingresos.filter( (obj : any) => payload !== obj.variableExpenses.category)
+      let todo : any = categoriesFilterMonthly.concat(categoriesFilterVariable)
+      state.categoryFilterGastos = todo
+    },
   },
   extraReducers: {
     [registerUser.pending]: (state) => {

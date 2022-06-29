@@ -8,10 +8,6 @@ import {  addDato, deleteDato } from "redux/reducers/userReducer";
 export default function ConDatos() {
   const { usuario, totalInput } = useAppSelector( state => state.user );
   const dispatch = useAppDispatch();
-  console.log(totalInput, 'total input')
-
-  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-  //const [monto, setMonto] = useState<number>(0);  
 
   //----------Form-------------
 
@@ -45,14 +41,6 @@ export default function ConDatos() {
       description: '',
       amount: 0,
   })
-
-  // const [form, setForm] = useState<AgregarIngresos>({ ------------------Ver como o unir dos estados (uno dentro del otro) o que 
-  //   id: "62b77fc6cf92600dadcd1918",
-  //   key: "",
-  //   input : {
-  //     category
-  //   }
-  // })
 
   function handleChange(e : React.ChangeEvent<HTMLInputElement>){ 
     setInput({
@@ -99,7 +87,6 @@ export default function ConDatos() {
 
   function handleDelete(event: accountParameter){
     // event.preventDefault();
-    console.log({event})
     dispatch(deleteDato(event))
   }
 
