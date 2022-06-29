@@ -9,6 +9,7 @@ import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAm
 export default function ConDatos() {
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  console.log(usuario, 'usuario')
 
   useEffect(() => {
     if (status === 'success'){
@@ -83,26 +84,27 @@ export default function ConDatos() {
     })
   }
 
-  // const form: AgregarIngresos = {
-  //   key: selectKey.keyInput,
-  //   value: input,
-  // }
-
   const form: AgregarIngresos = {
-    key: 'monthlyInput',
+    key: selectKey.keyInput,
     value: input,
   }
+
+  // const form: AgregarIngresos = {
+  //   key: 'extraInput',
+  //   value: input,
+  // }
 
   const clearForm = () => {
     setInput({
       category: '',
       description: '',
       amount: 0,
+      date: ''
     });
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    console.log(form)
+    console.log(form, 'foooorm')
     e.preventDefault();
     dispatch(addDato(form));
     clearForm();
@@ -196,7 +198,24 @@ export default function ConDatos() {
             </thead>
             <tbody>
             {allInputs.length > 0 ? allInputs.map((detalles: Value) => {
-              console.log(detalles)
+              //Erik agrego la propiedad "Source" pero no se agrega en lo que viene
+              // detalles.source === 'monthlyInput' 
+              // ? (<tr className={styles.monthlyInput}>
+              //   <th>{detalles.date && detalles.date.split("T")[0]}</th>
+              //   <th>{detalles.category ? detalles.category : "-"}</th>
+              //   <th>{detalles.description}</th>
+              //   <th>$ {detalles.amount}</th>
+              //   <th><button onClick={() => handleDelete({ id: usuario._id, key: 'monthlyInput', value: { _id: detalles._id } })}></button></th>
+              // </tr>)
+              // : (
+              //   <tr>
+              //       <th>{detalles.date && detalles.date.split("T")[0]}</th>
+              //       <th>{detalles.category ? detalles.category : "-"}</th>
+              //       <th>{detalles.description}</th>
+              //       <th>$ {detalles.amount}</th>
+              //       <th><button onClick={() => handleDelete({ id: usuario._id, key: 'monthlyInput', value: { _id: detalles._id } })}></button></th>
+              //     </tr>
+              // )
                 return (
                   <tr className={styles.monthlyInput}>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
@@ -225,12 +244,12 @@ export default function ConDatos() {
             <div className={styles.form}>
               <select onChange={handleSelectI}>
                 <option>Selecciona el tipo</option>
-                <option value='fijo'>Ingreso fijo</option>
-                <option value='extra'>Ingreso extra</option>
+                <option value='monthlyInput'>Ingreso fijo</option>
+                <option value='extraInput'>Ingreso extra</option>
               </select>
 
               {
-                selectKey.keyInput === 'fijo' 
+                selectKey.keyInput === 'monthlyInput' 
                 ? (<select onChange={handleSelectC}>
                     <option>Selecciona una categoría</option>
                     <option value='Salario'>Salario</option>
