@@ -7,7 +7,9 @@ import { addDato, deleteDato, filterInputByCategory, getAllInputs, inputsFilterB
 
 
 export default function ConDatos() {
-  const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
+  const { usuario, allInputs, totalInputsMonth, status, } = useAppSelector(state => state.user);
+  const {monthlyInput, extraInput} = useAppSelector(state => state.user.usuario.Account)
+  
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -172,6 +174,7 @@ export default function ConDatos() {
             </thead>
             <tbody>
             {allInputs.length > 0 ? allInputs.map((detalles: Value) => {
+              console.log(detalles)
                 return (
                   <tr>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
