@@ -1,15 +1,33 @@
 import styles from "./ConDatos.module.css";
+import stylesPag from "./Pagination.module.css"
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
-import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput } from "redux/reducers/userReducer";
+//-------------------------
+// import Button from '@mui/material/Button';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import IconButton from '@mui/material/IconButton';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
+// import TableCell from '@mui/material/TableCell';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TableFooter from '@mui/material/TableFooter';
+// import TableRow from '@mui/material/TableRow';
+// import Paper from '@mui/material/Paper';
+// import TablePagination from '@mui/material/TablePagination';
+// import { useTheme } from '@mui/material/styles';
+// import Box from '@mui/material/Box';
+// import FirstPageIcon from '@mui/icons-material/FirstPage';
+// import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+// import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+// import LastPageIcon from '@mui/icons-material/LastPage';
 
 
 export default function ConDatos() {
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-  console.log(usuario, 'usuario')
 
   useEffect(() => {
     if (status === 'success'){
@@ -50,7 +68,6 @@ export default function ConDatos() {
     category: '',
     description: '',
     amount: 0,
-    date: ''
   })
 
   //---------------------------
@@ -137,6 +154,47 @@ export default function ConDatos() {
     dispatch(inputsFilterByFrequency(e.target.value))
   }
 
+  //Paginado---------------------------------------------------------------
+  const [page, setPage] = useState(1);
+  const [inputsPerPage, setinputsPerPage] = useState(6);
+
+  const [pageLimit, setPageLimit] = useState(10);
+  const [maxPageLimit, setMaxPageLimit] = useState(10);
+  const [minPageLimit, setMinPageLimit] = useState(0);
+
+  const pageNumber = [];
+    for(let i = 1; i <= Math.ceil(allInputs.length/inputsPerPage); i++){
+      pageNumber.push(i)
+  }
+
+  const indice = pageNumber && pageNumber.map(pag => {
+    if(pag <= maxPageLimit  && pag > minPageLimit){  
+      return <button className={pag === page ? stylesPag.active : styles.normal} onClick={() => setPage(pag)}>{pag}</button>
+    } else return null; 
+  })
+
+  const handlePrevButton = () => {
+    setPage((prev) => prev === 1 ? prev : prev - 1); 
+      if(page !== 1 && (page - 1) % pageLimit === 0){
+        setMaxPageLimit(maxPageLimit - pageLimit);
+        setMinPageLimit(minPageLimit - pageLimit);
+    }
+  }
+
+  const handleNextButton = () => {
+    setPage((next) => next === pageNumber.length ? next : next + 1 );   
+      if(page + 1 > maxPageLimit){
+        setMaxPageLimit(maxPageLimit + pageLimit);
+        setMinPageLimit(minPageLimit + pageLimit);
+    }
+  }
+
+  // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setinputsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
+
+  //---------------------------------------------------------------
   return (
     <div>
       <Nav />
@@ -189,15 +247,15 @@ export default function ConDatos() {
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
+                <th></th>
                 <th>Fecha</th>
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
-            {allInputs.length > 0 ? allInputs.map((detalles: Value) => {
+            {allInputs.length > 0 ? allInputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
               //Erik agrego la propiedad "Source" pero no se agrega en lo que viene
               // detalles.source === 'monthlyInput' 
               // ? (<tr className={styles.monthlyInput}>
@@ -216,13 +274,14 @@ export default function ConDatos() {
               //       <th><button onClick={() => handleDelete({ id: usuario._id, key: 'monthlyInput', value: { _id: detalles._id } })}></button></th>
               //     </tr>
               // )
+                console.log(allInputs, 'Allinputs')
                 return (
-                  <tr className={styles.monthlyInput}>
+                  <tr>
+                    <th><button onClick={() => handleDelete({ id: usuario._id, key: 'extraInput', value: { _id: detalles._id } })}></button></th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
-                    <th><button onClick={() => handleDelete({ id: usuario._id, key: 'extraInput', value: { _id: detalles._id } })}></button></th>
                   </tr>
                 )
               }) 
@@ -232,13 +291,72 @@ export default function ConDatos() {
                 <th className={styles.lastBox}></th>
                 <th></th>
                 <th></th>
+                <th></th>
                 <th className={styles.totalAmount}><b>Total: ${totalInputsMonth}</b></th>
-                <th className={styles.vacia}></th>
               </tr>
             </tbody>
-          </table>
+          </table> 
+          
+          <div className={stylesPag.wrapperPag}>
+            <button className={page <= 1 ? stylesPag.disabledPrev : stylesPag.paginationPrev } onClick={() => handlePrevButton()}>Prev</button>
+            {indice}
+            <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext } onClick={() => handleNextButton()}>Next</button>
+          </div>
 
-          <Pagination />
+        {/* //----------------------------------------------------------------------- */}
+        {/* <TableContainer component={Paper} className={styles.table}>
+          <Table stickyHeader sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead className={styles.head}>
+              <TableRow>
+                <TableCell align="center">nn</TableCell>
+                <TableCell align="center">Fecha</TableCell>
+                <TableCell align="center">Categoria</TableCell>
+                <TableCell align="center">Descripción</TableCell>
+                <TableCell align="center">Monto</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allInputs.length > 0 ? allInputs.slice(page * inputsPerPage, page * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+                return (
+                  <TableRow>
+                    <TableCell align="center"><IconButton aria-label="delete" onClick={() => handleDelete({ id: usuario._id, key: 'extraInput', value: { _id: detalles._id } })}>
+                      <DeleteIcon fontSize="inherit"/>
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align="center">{detalles.date && detalles.date.split("T")[0]}</TableCell>
+                    <TableCell align="center">{detalles.category ? detalles.category : "-"}</TableCell>
+                    <TableCell align="center">{detalles.description}</TableCell>
+                    <TableCell align="center">$ {detalles.amount}</TableCell>
+                  </TableRow>
+                )
+              }) 
+              : <TableCell></TableCell>
+              }
+              <TableRow>
+                <TableCell className={styles.lastBox}></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell align="center" className={styles.totalAmount}><b>Total: ${totalInputsMonth}</b></TableCell>
+              </TableRow>
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 15]}
+                  component="div"
+                  count={allInputs.length}
+                  rowsPerPage={inputsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer> */}
+
+          {/* //----------------------------------------------------------------------- */}
 
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
