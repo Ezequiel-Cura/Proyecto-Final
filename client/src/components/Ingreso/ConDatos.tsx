@@ -3,7 +3,7 @@ import stylesPag from "./Pagination.module.css"
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory } from "redux/reducers/userReducer";
+import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory, deleteCategory } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
@@ -121,8 +121,29 @@ export default function ConDatos() {
   function handleSubmitCategory(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log(formCategory)
-    dispatch(addCategory(formCategory))
+    dispatch(deleteCategory(formCategory))
   }
+
+  //----------------------------------->Form DELETE categorias
+
+  const [formCategoryDelete, setFormCategoryDelete] = useState<category>({
+    key: 'CategoriesInputs',
+    value: ''
+  })
+
+  function handleChangeCategoryDelete(e: any){
+    setFormCategoryDelete({
+      ...formCategoryDelete,
+      value: e.target.value
+    })
+  }
+
+  function handleSubmitCategoryDelete(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(formCategoryDelete)
+    dispatch(deleteCategory(formCategoryDelete))
+  }
+  //-----------------------------------------
 
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
@@ -367,9 +388,21 @@ export default function ConDatos() {
                   onChange={handleChangeCategory}
                   >
               </input>
-              <button>Crear</button>
+              <button type='submit'>Crear</button>
           </div>
           </form>
+          <div>
+            <form onSubmit={handleSubmitCategoryDelete}>
+              <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
+                {usuario.CategoriesInputs.length > 0
+                ? usuario.CategoriesInputs.map((category: string) =>
+                  (<option value={category}>{category}</option>))
+                : (<option value="Otros">Otros</option>)
+                }
+              </select>
+              <button type='submit'>Delete</button>
+            </form>
+          </div>
           </div>
         </div>
       </div>
