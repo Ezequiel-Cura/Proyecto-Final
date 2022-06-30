@@ -21,10 +21,15 @@ h1{
 }
 
 .primer_wrapper{
+  width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+  .totales{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr, 1fr, 1fr;
+  }
 
 h1{
   color: #92b0c4;
