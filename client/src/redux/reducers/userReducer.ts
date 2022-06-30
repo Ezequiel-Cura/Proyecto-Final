@@ -115,6 +115,7 @@ export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
 export const addCategory: any = createAsyncThunk("user/addCategory",
   async (ingreso, { rejectWithValue }) => {
     try {
+      console.log(ingreso, 'reduce')
       const { data } = await axios.post(`/user/category`, ingreso)
       return data
     } catch (err: any) {
@@ -146,6 +147,11 @@ export const uploadImage: any = createAsyncThunk("user/uploadImage",
     const { data } = await axios.put("/user", { id: info.id, key: "avatar", value: result.data.url })
     return data
   })
+
+  //getAllInputs -----> modifica allInputs
+  //getAllExpenses ---> modifica allExpenses
+  //totalInput -------> 
+
 
 
 const reducerSlice = createSlice({
