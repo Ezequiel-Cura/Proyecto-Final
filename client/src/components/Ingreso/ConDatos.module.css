@@ -186,6 +186,9 @@
     color: rgb(142, 140, 140);
     background-color: #1f1f1f;
 }
+.amount{
+    width: 80px;
+}
 
 .form button {
     padding: 12px;
@@ -201,5 +204,10 @@
 
 .form button:hover {
     background-color: rgb(118, 189, 3) ;
+}
+
+.inputCreated {
+    border: 1px solid rgb(118, 189, 3);
+    background-color: #08a4e2;
 }
 
