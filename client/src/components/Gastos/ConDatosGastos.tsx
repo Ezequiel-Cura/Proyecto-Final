@@ -158,6 +158,7 @@ export default function ConDatos() {
               <option>Ordenar por categoria</option>
               <option value='Alimentos'>Alimentos</option>
               <option value='Gimnasio'>Gimnasio</option>
+              <option value='Transporte'>Transporte</option>
               <option value='Salud'>Salud</option>
               <option value='Viaje'>Viaje</option>
               <option value='Ocio'>Ocio</option>

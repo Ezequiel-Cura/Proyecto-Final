@@ -172,6 +172,7 @@ export default function ConDatos() {
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
+            {/* //------------------------------- */}
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               {
@@ -179,6 +180,7 @@ export default function ConDatos() {
                 ? usuario.CategoriesInputs.map( (category: string) => ( <option value={category}>{category}</option>))
                 : <option value="Otros"></option>
               }
+            {/* //------------------------------- */}
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
