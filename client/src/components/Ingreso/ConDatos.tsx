@@ -4,13 +4,14 @@ import Nav from "../Nav/Nav";
 import Pagination from './Pagination';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addDato, deleteDato, filterInputByCategory, getAllInputs, inputsFilterByFrequency, inputsFilterByMonth, inputsOrderByAmount, totalInput } from "redux/reducers/userReducer";
+import { string } from "yup";
 
 
 export default function ConDatos() {
   const { usuario, allInputs, totalInputsMonth } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const [monto, setMonto] = useState<number>(0);
+  // const [monto, setMonto] = useState<number>(0);
 
   useEffect(() => {
     dispatch(getAllInputs())

@@ -87,6 +87,7 @@ export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
 export const addDato: any = createAsyncThunk("user/addIngreso",
   async (ingreso, { rejectWithValue }) => {
     try {
+      console.log({ingreso})
       const { data } = await axios.post(`/user/account`, ingreso)
       return data
     } catch (err: any) {
