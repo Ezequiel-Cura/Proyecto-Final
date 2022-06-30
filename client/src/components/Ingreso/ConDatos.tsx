@@ -174,13 +174,11 @@ export default function ConDatos() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-              <option value='Salario'>Salario</option>
-              <option value='Aguinaldo'>Aguinaldo</option>
-              <option value='Herencia'>Herencia</option>
-              <option value='Changa'>Changa</option>
-              <option value='Regalo'>Regalo</option>
-              <option value='Prestamo'>Préstamo</option>
-              <option value='Otros'>Otros</option>
+              {
+                usuario.CategoriesInputs.length > 0 
+                ? usuario.CategoriesInputs.map( (category: string) => ( <option value={category}>{category}</option>))
+                : <option value="Otros"></option>
+              }
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
