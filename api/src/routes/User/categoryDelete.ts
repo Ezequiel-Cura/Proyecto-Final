@@ -11,13 +11,12 @@ router.delete("/", authorization, async (req: any, res: Response) => {
   const {key, value} = req.body.source
   const id = req.userId
   try{
-    const user = await User.findById(id)
+    const user: any = await User.findById(id)
     if(!user){
      res.status(404).send(`No se encontró al usuario con id: ${id}`)
     } else {
       const {email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs} = user
-      await user.Account[key].remove( {"_id": new ObjectId(value._id)})
-      await user.save()
+      await user[key].remove( {"_id": new ObjectId(value._id)}).save()
       res.status(200).send({email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs})
     }
   }

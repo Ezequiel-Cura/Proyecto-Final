@@ -1,16 +1,14 @@
 import React from 'react';
-import Nav from "../Nav/Nav";
 import ConDatos from "./ConDatos";
 import SinDatos from './SinDatos';
-
 import { useAppSelector } from "../../redux/hooks";
 
 export default function Ingreso() {
+  const { allInputs } = useAppSelector(state => state.user);
 
   return (
     <div>
-      <Nav/>
-      <SinDatos/>
+      { allInputs.length > 0 ? <ConDatos/> : <SinDatos/>}
     </div>
   )
-  }
+}

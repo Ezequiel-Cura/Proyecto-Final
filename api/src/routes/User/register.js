@@ -35,9 +35,9 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const salt = yield bcrypt_1.default.genSalt(Number(process.env.SUPER_SECRET_SALT));
         const hashPass = yield bcrypt_1.default.hash(password, salt);
         const user = yield User_1.default.create({ userName: firstName, lastName, email, password: hashPass });
-        const { avatar, Account } = user;
+        const { avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user;
         const token = user.generateAuthToken();
-        res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(201).send({ userName: firstName, lastName, email, avatar, Account });
+        res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(201).send({ userName: firstName, lastName, email, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
     }
     catch (err) {
         res.status(400).send(err.message);

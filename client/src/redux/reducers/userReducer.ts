@@ -12,7 +12,7 @@ interface Entries {
   end?: string
 }
 interface User {
-  usuario: any   //any
+  usuario: any   
   status: 'idle' | 'loading' | 'success' | 'failed'
   allInputs: Entries[] | [],
   allExpenses: Entries[] | [],
@@ -22,24 +22,26 @@ interface User {
 
 const initialState: User = {
   usuario: {
-    Account: {
-      monthlyInput: [],
-      extraInput: [],
-      monthlyExpenses: [],
-      variableExpenses: []
-    },
     _id: '',
     userName: '',
     lastName: '',
     email: '',
     password: '',
+    Saving: [],
+    CategoriesExpenses: [],
+    CategoriesInputs: [],
+    Account: {
+      monthlyInput: [],
+      extraInput: [],
+      monthlyExpenses: [],
+      variableExpenses: [],
+    },
   },
   status: 'idle',
   allInputs: [],  //Estado de entradas para ordenar o filtrar
   allExpenses: [], //Estado de gastos para ordenar o filtrar
   totalExpensesMonth: 0,
   totalInputsMonth: 0
-
 }
 
 export const registerUser: any = createAsyncThunk("user/registerUser",
@@ -87,7 +89,7 @@ export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
 export const addDato: any = createAsyncThunk("user/addIngreso",
   async (ingreso, { rejectWithValue }) => {
     try {
-      console.log({ingreso})
+      console.log(ingreso, 'reducer')
       const { data } = await axios.post(`/user/account`, ingreso)
       return data
     } catch (err: any) {
@@ -98,13 +100,11 @@ export const addDato: any = createAsyncThunk("user/addIngreso",
 export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
   async (ingreso: any, { rejectWithValue }) => {
     try {
-console.log({ingreso})
       let deleteEntry: any = await axios.delete("/user/account", {
         data: {
           source: ingreso
         }
       });
-      console.log(deleteEntry.data, "deleteeee")
       return deleteEntry.data
     } catch (err: any) {
       return rejectWithValue(err.response.data)
@@ -112,7 +112,6 @@ console.log({ingreso})
   }
 )
 
-//-----------------------------------------
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
   async (info: any) => {
     let formData = new FormData();
@@ -186,7 +185,6 @@ const reducerSlice = createSlice({
       const allInputsFilter = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
       //                                                                             2022-01-05  === 01
       const inpFilter: Entries[] = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
-      console.log({inpFilter})
       const inpOrder = inpFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
       return {
         ...state,
@@ -196,7 +194,6 @@ const reducerSlice = createSlice({
     inputsOrderByAmount: (state, { payload }) => {
       let currStateInpAmount = current(state)
       const orderInputs: Entries[] = [...currStateInpAmount.allInputs];
-      console.log({payload}, {orderInputs})
       let orderByAmount = payload === 'menorAMayor'
         ? orderInputs.sort((a, b) => a.amount - b.amount)
         : orderInputs.sort((a, b) => b.amount - a.amount)
@@ -209,9 +206,11 @@ const reducerSlice = createSlice({
       let currentInputFrequency = current(state);
       let monthly = currentInputFrequency.usuario.Account.monthlyInput
       let extra = currentInputFrequency.usuario.Account.extraInput
+
       const inputsByFrequency = payload === 'fijo'
-        ? monthly
-        : extra
+        ? monthly       
+        : extra   
+
       return {
         ...state,
         allInputs: inputsByFrequency
@@ -315,17 +314,17 @@ const reducerSlice = createSlice({
 })
 export const { 
   inputsFilterByMonth, 
+  totalInput,
+  totalExpenses,
   getAllInputs, 
   getAllExpenses, 
   inputsOrderByAmount, 
-  expensesFilterByFrequency,
   expensesOrderByAmount,
   expensesFilterByMonth,
+  expensesFilterByFrequency,
   inputsFilterByFrequency,
   filterExpensesByCategory,
   filterInputByCategory,
-  totalInput,
-  totalExpenses
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;
