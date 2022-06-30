@@ -35,6 +35,7 @@ const userSchema = new mongoose_1.Schema({
                 description: { type: String, required: true },
                 amount: { type: Number, required: true },
                 category: String,
+                source: { type: String, default: 'monthlyInput' }
             }],
         extraInput: [{
                 // Ingresos adicionales, aplicados a demanda del usuario
@@ -42,6 +43,7 @@ const userSchema = new mongoose_1.Schema({
                 description: { type: String, required: true },
                 amount: { type: Number, required: true },
                 category: String,
+                source: { type: String, default: 'extraInput' }
             }],
         // GASTOS
         monthlyExpenses: [{
@@ -51,6 +53,7 @@ const userSchema = new mongoose_1.Schema({
                 description: { type: String, required: true },
                 amount: { type: Number, required: true },
                 category: String,
+                source: { type: String, default: 'monthlyExpenses' }
             }],
         variableExpenses: [{
                 // Gastos adicionales, se aplican a demanda del usuario 
@@ -60,7 +63,8 @@ const userSchema = new mongoose_1.Schema({
                 // id: {type: Schema.Types.ObjectId, default: new ObjectId()},
                 category: String,
                 description: { type: String, required: true },
-                amount: { type: Number, required: true }
+                amount: { type: Number, required: true },
+                source: { type: String, default: 'variableExpenses' }
             }]
     }
 });
