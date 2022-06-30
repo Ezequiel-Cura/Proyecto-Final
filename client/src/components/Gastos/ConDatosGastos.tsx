@@ -26,7 +26,8 @@ export default function ConDatos() {
     amount: number,
     category?: string,
     date?: string,
-    _id?: string
+    _id?: string,
+    source?: string 
   }
 
   const [input, setInput] = useState<Value>({
@@ -75,8 +76,6 @@ export default function ConDatos() {
   } 
 
   function handleDelete(event: any) {
-    // event.preventDefault();
-    console.log(event)
     dispatch(deleteDato(event))
   }
   
@@ -98,6 +97,11 @@ export default function ConDatos() {
   function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     dispatch(expensesFilterByFrequency(e.target.value))
+  }
+
+  function handleRefresh(e: any){
+    e.preventDefault();
+    dispatch(getAllExpenses())
   }
 
   //Paginado---------------------------------------------------------------
@@ -145,12 +149,12 @@ export default function ConDatos() {
           </div>
 
           <div className={styles.selectsOrder}>
-            <select onChange={(e) => handleOrderAmount(e)}>
+            <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option>Ordenar por monto</option>
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select onChange={(e) => handleOrderByCategories(e)}>
+            <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               <option value='Alimentos'>Alimentos</option>
               <option value='Gimnasio'>Gimnasio</option>
@@ -161,7 +165,7 @@ export default function ConDatos() {
               <option value='Combustible'>Combustible</option>
               <option value='Otros'>Otros</option>
             </select>
-            <select onChange={(e) => handleOrderByFrequency(e)}>
+            <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
               <option value='fijo'>Gasto Fijo</option>
               <option value='variable'>Gasto Variable</option>
@@ -183,6 +187,9 @@ export default function ConDatos() {
               <button value='11' className={styles.months} id="Noviembre" onClick={(e) => filterByMonth(e)}>Noviembre</button>
               <button value='12' className={styles.months} id="Diciembre" onClick={(e) => filterByMonth(e)}>Diciembre</button>
             </div>
+            <div className={styles.annualCard}>
+              <button className={styles.annual} onClick={handleRefresh}>Refresh</button>
+            </div>
           </div>
 
           <table className={styles.table}>
@@ -198,13 +205,23 @@ export default function ConDatos() {
             <tbody>
             {allExpenses.length > 0 ? allExpenses.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
                 return (
-                  <tr>
-                    <th><button onClick={() => handleDelete({ id: usuario._id, key: 'variableExpenses', value: { _id: detalles._id } })}></button></th>
+                  detalles.source === 'monthlyExpenses' 
+                  ? (<tr className={styles.monthlyInput}>
+                    <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
-                </tr>
+                  </tr>)
+                  : (
+                    <tr>
+                    <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
+                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                  </tr>
+                  )
                 )
               }) 
               : <></>
