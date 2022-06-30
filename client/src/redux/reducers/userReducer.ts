@@ -112,6 +112,31 @@ export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
   }
 )
 
+export const addCategory: any = createAsyncThunk("user/addCategory",
+  async (ingreso, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(`/user/category`, ingreso)
+      return data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  })
+
+  export const deleteCategory: any = createAsyncThunk("user/deleteCategory",
+  async (ingreso: any, { rejectWithValue }) => {
+    try {
+      let deleteEntry: any = await axios.delete("/user/category", {
+        data: {
+          source: ingreso
+        }
+      });
+      return deleteEntry.data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
   async (info: any) => {
     let formData = new FormData();

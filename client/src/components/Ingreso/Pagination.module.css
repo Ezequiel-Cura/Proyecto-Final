@@ -20,6 +20,7 @@
 
 .wrapperPag button:hover {
     background-color: rgb(118, 189, 3) ;
+    color: aliceblue;
 }
 
 .wrapperPag .active {
