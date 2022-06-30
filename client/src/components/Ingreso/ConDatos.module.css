@@ -174,8 +174,10 @@
     color: white;
 }
 
-.form input .inputCreated {
+.form .inputCreated {
+    color: white;
     border: 1px solid rgb(118, 189, 3);
+    background-color: rgb(118, 189, 3);
 }
 
 .form select {
@@ -206,8 +208,4 @@
     background-color: rgb(118, 189, 3) ;
 }
 
-.inputCreated {
-    border: 1px solid rgb(118, 189, 3);
-    background-color: #08a4e2;
-}
 

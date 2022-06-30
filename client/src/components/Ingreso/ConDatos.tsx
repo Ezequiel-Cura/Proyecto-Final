@@ -91,7 +91,12 @@ export default function ConDatos() {
       category: '',
       description: '',
       amount: 0,
+      date: ''
     })
+    setSelectKey({
+      keyInput: ''
+    })
+    
   }
 
   function handleDelete(event: accountParameter) {
@@ -262,13 +267,13 @@ export default function ConDatos() {
 
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
-              <select onChange={handleSelectI}>
+              <select value={selectKey.keyInput} onChange={handleSelectI}>
                 <option>Selecciona el tipo</option>
                 <option value='monthlyInput'>Ingreso fijo</option>
                 <option value='extraInput'>Ingreso extra</option>
               </select>
               {
-                <select onChange={handleSelectC}>
+                <select value={input.category} onChange={handleSelectC}>
                   <option>Selecciona una categoría</option>
                   {usuario.CategoriesInputs.length > 0
                     ? usuario.CategoriesInputs.map((category: string) =>
@@ -291,14 +296,17 @@ export default function ConDatos() {
               <input
                 type='text'
                 name='description'
+                value={input.description}
                 placeholder='Agrega una descripción'
                 onChange={handleChange}
               >
               </input>
+              <label>$</label>
               <input
                 type='number'
                 name='amount'
                 min='0'
+                value={input.amount}
                 placeholder='Monto'
                 onChange={handleChange}
                 className={styles.amount}
@@ -307,6 +315,7 @@ export default function ConDatos() {
               <input
                 type='date'
                 name='date'
+                value={input.date}
                 placeholder='Agrega una fecha'
                 onChange={handleChange}
               >
