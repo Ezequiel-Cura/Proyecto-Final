@@ -3,11 +3,14 @@ import Nav from "components/Nav/Nav";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 import styles from "./Detalles.module.css";
 import { useAppSelector } from "redux/hooks";
+
+// ICONOS
 import carrito from "../multimedia/cart.png";
 import viaje from "../multimedia/travel.png";
 import salud from "../multimedia/medic.png";
 import combustible from "../multimedia/car.png";
 import ocio from "../multimedia/ocio.png";
+import lock from "../multimedia/lock.png"
 
 //CONTROLADORES
 import {totalAlimentos,
@@ -135,9 +138,10 @@ export default function Detalles() {
               <img src={ocio} alt="LOL" />{" "}
               <span>Gastos en Ocio totales = ${totalOcio(usuario)}</span>
             </div>
-            <div>
-              <div>
-                
+            <div className={styles.blocked_wrapper}>
+              <div className={styles.blocked}>
+                <img src={lock} alt="" />
+                    
               </div>
             </div>
           </div>
