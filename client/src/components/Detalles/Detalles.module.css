@@ -20,6 +20,20 @@ h1{
   height: 100vh;
 }
 
-  
+.primer_wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
- 
+h1{
+  color: #92b0c4;
+}
+
+.hol{
+  color: #e27b7b;
+  color: #cfc4c4;
+  color: #96db99;
+  color: #92b0c4;
+  color: #d4ca8e;
+}
