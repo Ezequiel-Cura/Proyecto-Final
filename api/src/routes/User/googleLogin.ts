@@ -19,13 +19,13 @@ router.post("/", async (req: Request, res: Response) => {
         const validPassword = await bcrypt.compare(password, user.password)
         if (!validPassword) return res.status(400).send("La contraseña es incorrecta")
         const token = user.generateAuthToken()
-        const {userName, lastName, avatar, Account} = user
-        return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({userName, lastName, email, avatar, Account})
+        const {userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs} = user
+        return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({userName, lastName, email, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs})
     } else {
         const newUser: any = await new User({userName: given_name, email, password: passwordHash, avatar: picture}).save()
         const token = newUser.generateAuthToken()
-        const {userName, lastName, avatar, Account} = newUser
-        res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({userName, lastName, email, avatar, Account})
+        const {userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs} = newUser
+        res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({userName, lastName, email, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs})
     }
   } catch (err: any) {
     res.status(500).send(err.message)

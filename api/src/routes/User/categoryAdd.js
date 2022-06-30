@@ -13,16 +13,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const User_1 = __importDefault(require("../../models/User"));
 const authorization_1 = __importDefault(require("../../middleware/authorization"));
+const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { key, value } = req.body;
     try {
-        const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = yield User_1.default.findById(req.userId);
-        res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
+        const user = yield User_1.default.findById(req.userId);
+        if (!user) {
+            res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
+        }
+        else {
+            const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user;
+            yield user[key].push(value).save();
+            res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
+        }
     }
     catch (err) {
-        res.status(404).send(err.message);
+        res.status(400).send(err);
     }
 }));
 exports.default = router;

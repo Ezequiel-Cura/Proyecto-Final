@@ -24,10 +24,10 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
             res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
         }
         else {
-            const { email, userName, lastName, avatar, Account } = user;
+            const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user;
             yield user.Account[key].push(value);
             yield user.save();
-            res.status(200).send({ email, userName, lastName, avatar, Account });
+            res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
         }
     }
     catch (err) {

@@ -12,7 +12,7 @@ interface Entries {
   end?: string
 }
 interface User {
-  usuario: any   //any
+  usuario: any   
   status: 'idle' | 'loading' | 'success' | 'failed'
   allInputs: Entries[] | [],
   allExpenses: Entries[] | [],
@@ -27,12 +27,14 @@ const initialState: User = {
     lastName: '',
     email: '',
     password: '',
-    
+    Saving: [],
+    CategoriesExpenses: [],
+    CategoriesInputs: [],
     Account: {
       monthlyInput: [],
       extraInput: [],
       monthlyExpenses: [],
-      variableExpenses: []
+      variableExpenses: [],
     },
   },
   status: 'idle',
@@ -40,7 +42,6 @@ const initialState: User = {
   allExpenses: [], //Estado de gastos para ordenar o filtrar
   totalExpensesMonth: 0,
   totalInputsMonth: 0
-
 }
 
 export const registerUser: any = createAsyncThunk("user/registerUser",
@@ -88,6 +89,7 @@ export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
 export const addDato: any = createAsyncThunk("user/addIngreso",
   async (ingreso, { rejectWithValue }) => {
     try {
+      console.log(ingreso, 'reducer')
       const { data } = await axios.post(`/user/account`, ingreso)
       return data
     } catch (err: any) {
@@ -110,7 +112,6 @@ export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
   }
 )
 
-//-----------------------------------------
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
   async (info: any) => {
     let formData = new FormData();
@@ -205,9 +206,11 @@ const reducerSlice = createSlice({
       let currentInputFrequency = current(state);
       let monthly = currentInputFrequency.usuario.Account.monthlyInput
       let extra = currentInputFrequency.usuario.Account.extraInput
+
       const inputsByFrequency = payload === 'fijo'
-        ? monthly
-        : extra
+        ? monthly       
+        : extra   
+
       return {
         ...state,
         allInputs: inputsByFrequency
@@ -311,17 +314,17 @@ const reducerSlice = createSlice({
 })
 export const { 
   inputsFilterByMonth, 
+  totalInput,
+  totalExpenses,
   getAllInputs, 
   getAllExpenses, 
   inputsOrderByAmount, 
-  expensesFilterByFrequency,
   expensesOrderByAmount,
   expensesFilterByMonth,
+  expensesFilterByFrequency,
   inputsFilterByFrequency,
   filterExpensesByCategory,
   filterInputByCategory,
-  totalInput,
-  totalExpenses
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;
