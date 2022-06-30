@@ -18,8 +18,8 @@ interface IUser {
   avatar?: string,
   Account?: any,
   Saving: savingProps[],
-  CategoriesExpenses?: string[],
-  CategoriesInputs?: string[],
+  CategoriesExpenses: string[],
+  CategoriesInputs: string[],
   premium: boolean,
   generateAuthToken: () => any
 }
