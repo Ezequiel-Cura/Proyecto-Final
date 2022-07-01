@@ -3,7 +3,7 @@ import stylesPag from "./Pagination.module.css"
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput } from "redux/reducers/userReducer";
+import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory, deleteCategory } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
@@ -39,12 +39,12 @@ export default function ConDatos() {
     key: string | undefined,
     value: idUndefined
   }
-  //-----------------------
 
   const [input, setInput] = useState<Value>({
     category: '',
     description: '',
     amount: 0,
+    date: '',
   })
 
   interface keySelect {
@@ -83,6 +83,7 @@ export default function ConDatos() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
+    console.log(form, 'form')
     dispatch(addDato(form));
     // if(input.category === "Crear"){
     //   dispatch(createCategory(category))
@@ -96,8 +97,53 @@ export default function ConDatos() {
     setSelectKey({
       keyInput: ''
     })
-    
   }
+
+  //-------------------------------->Form de categorias
+  interface category {
+    id?: string,
+    key: string | undefined,
+    value: string
+  }
+
+  const [formCategory, setFormCategory] = useState<category>({
+    key: 'CategoriesInputs',
+    value: ''
+  })
+
+  function handleChangeCategory(e: React.ChangeEvent<HTMLInputElement>){
+    setFormCategory({
+      ...formCategory,
+      value: e.target.value
+    })
+  }
+
+  function handleSubmitCategory(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(formCategory)
+    dispatch(deleteCategory(formCategory))
+  }
+
+  //----------------------------------->Form DELETE categorias
+
+  const [formCategoryDelete, setFormCategoryDelete] = useState<category>({
+    key: 'CategoriesInputs',
+    value: ''
+  })
+
+  function handleChangeCategoryDelete(e: any){
+    setFormCategoryDelete({
+      ...formCategoryDelete,
+      value: e.target.value
+    })
+  }
+
+  function handleSubmitCategoryDelete(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(formCategoryDelete)
+    dispatch(deleteCategory(formCategoryDelete))
+  }
+  //-----------------------------------------
 
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
@@ -130,7 +176,7 @@ export default function ConDatos() {
 
   //Paginado---------------------------------------------------------------
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(6);
+  const [inputsPerPage, setinputsPerPage] = useState(5);
 
   const [pageLimit, setPageLimit] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
@@ -171,9 +217,6 @@ export default function ConDatos() {
           <div className={styles.title}>
             <h1>Tus Ingresos </h1>
           </div>
-          {/* <Button variant="contained" color="secondary" onClick={handleRefresh()}>
-  REFRESH
-</Button> */}
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option>Ordenar por monto</option>
@@ -264,7 +307,8 @@ export default function ConDatos() {
             {indice}
             <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
           </div>
-
+          
+          <div className={styles.wrapperForms}>
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
               <select value={selectKey.keyInput} onChange={handleSelectI}>
@@ -272,7 +316,17 @@ export default function ConDatos() {
                 <option value='monthlyInput'>Ingreso fijo</option>
                 <option value='extraInput'>Ingreso extra</option>
               </select>
-              {
+
+              <select value={input.category} onChange={handleSelectC}>
+                <option>Selecciona una categoría</option>
+                {usuario.CategoriesInputs.length > 0
+                  ? usuario.CategoriesInputs.map((category: string) =>
+                    (<option value={category}>{category}</option>))
+                  : (<option value="Otros">Otros</option>)
+                  }
+              </select>
+              
+              {/* {
                 <select value={input.category} onChange={handleSelectC}>
                   <option>Selecciona una categoría</option>
                   {usuario.CategoriesInputs.length > 0
@@ -282,17 +336,18 @@ export default function ConDatos() {
                   }
                   <option value="Crear">Crear</option>
                 </select>
-              }
-              {
+              } */}
+
+              {/* {
                 input.category === "Crear"
                 && <input 
                     className={styles.inputCreated}
                     type="text" 
-                    name= "created"
+                    name= "category"
                     placeholder='Crea una categoria'
                     onChange={handleChange}
                     />
-              }
+              } */}
               <input
                 type='text'
                 name='description'
@@ -323,6 +378,32 @@ export default function ConDatos() {
               <button type='submit'>Agregar</button>
             </div>
           </form>
+          <form onSubmit={handleSubmitCategory}>
+          <div className={styles.form2}>
+            <label>Elige las categorias por default o crea una: </label>
+              <input
+                  type='text'
+                  name='value'
+                  placeholder='Agrega el nombre'
+                  onChange={handleChangeCategory}
+                  >
+              </input>
+              <button type='submit'>Crear</button>
+          </div>
+          </form>
+          <div>
+            <form onSubmit={handleSubmitCategoryDelete}>
+              <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
+                {usuario.CategoriesInputs.length > 0
+                ? usuario.CategoriesInputs.map((category: string) =>
+                  (<option value={category}>{category}</option>))
+                : (<option value="Otros">Otros</option>)
+                }
+              </select>
+              <button type='submit'>Delete</button>
+            </form>
+          </div>
+          </div>
         </div>
       </div>
     </div>

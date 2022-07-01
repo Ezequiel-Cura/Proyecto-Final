@@ -154,6 +154,11 @@
     background-color: #555555;
 }
 
+.wrapperForms {
+    display: flex;
+    flex-direction: column;
+}
+
 .form{
     position: relative;
     display: flex;
@@ -208,4 +213,38 @@
     background-color: rgb(118, 189, 3) ;
 }
 
+.form2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    background-color: #003459;
+    border-radius: 20px;
+}
 
+.form2 button {
+    padding: 12px;
+    margin-right: 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color: #333333;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.form2 button:hover {
+    background-color: rgb(118, 189, 3) ;
+}
+
+.form2 input {
+    padding: 10px;
+    margin-right: 20px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background: none;
+    color: white;
+}
