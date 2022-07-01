@@ -100,7 +100,7 @@ export function totalViajes(usuario: any) {
   export function totalOther(usuario: any){
     
     const extras2 = usuario.Account.variableExpenses.filter(
-      (e: any) => e.category === "Otro")
+      (e: any) => e.category === "Otros")
     
       const total2 = extras2.reduce((prev: any, actual: any) => {
         return prev + actual.amount;
@@ -108,7 +108,7 @@ export function totalViajes(usuario: any) {
     
     
     const extras1 = usuario.Account.monthlyExpenses.filter(
-      (e: any) => e.category === "Otro")
+      (e: any) => e.category === "Otros")
       
       const total1 = extras1.reduce((prev: any, actual: any) => {
         return prev + actual.amount;
