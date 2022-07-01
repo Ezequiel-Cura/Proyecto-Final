@@ -13,23 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const router = (0, express_1.Router)();
-const admin_1 = __importDefault(require("../../middleware/admin"));
-const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
-router.put("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const router = (0, express_1.Router)();
+router.put("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, key, value } = req.body;
     try {
-        const { id, key, value } = req.body;
-        if (key !== "role" && key !== "premium")
-            return res.status(401).send("You can't change this my dude");
-        if (value !== "user" && value !== "admin" && value !== "true" && value !== "false")
-            return res.status(401).send("You can't change this value my dude");
-        yield User_1.default.updateOne({ _id: id }, { [key]: value });
-        const user = yield User_1.default.findById(id);
-        res.status(200).send(user);
+        const result = yield User_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
+        // const result = await User.findOneAndUpdate({_id: id}, { [key]: value }).save();
+        result
+            ? res.status(200).send({ key, value })
+            : res.status(304).send(`User with id: ${id} not updated`);
     }
-    catch (err) {
-        res.status(500).send(err.message);
+    catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
     }
 }));
 exports.default = router;

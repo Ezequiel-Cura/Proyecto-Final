@@ -11,7 +11,6 @@ const userSchema = new mongoose_1.Schema({
     email: { type: String, unique: true, lowercase: true, required: true },
     password: { type: String, required: true },
     avatar: String,
-    role: { type: String, default: "user" },
     premium: { type: Boolean, default: false },
     Saving: [{
             name: { type: String, required: true },
