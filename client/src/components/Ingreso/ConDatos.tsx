@@ -9,6 +9,8 @@ export default function ConDatos() {
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
+
+
   useEffect(() => {
     if (status === 'success') {
       dispatch(getAllInputs())
@@ -45,7 +47,7 @@ export default function ConDatos() {
     description: '',
     amount: 0,
     date: '',
-  })
+  });
 
   interface keySelect {
     keyInput: string

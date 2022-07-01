@@ -156,14 +156,11 @@ export default function ConDatos() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-              <option value='Alimentos'>Alimentos</option>
-              <option value='Gimnasio'>Gimnasio</option>
-              <option value='Salud'>Salud</option>
-              <option value='Viaje'>Viaje</option>
-              <option value='Ocio'>Ocio</option>
-              <option value='Alquiler'>Alquiler</option>
-              <option value='Combustible'>Combustible</option>
-              <option value='Otros'>Otros</option>
+              {
+                usuario.CategoriesExpenses.length > 0
+                  ? usuario.CategoriesExpenses.map((category: string) => (<option value={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</option>))
+                  : <option value="Otros"></option>
+              }
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
