@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { ObjectId } from "mongodb";
+
 import authorization from "../../middleware/authorization";
 import User from "../../models/User";
 
@@ -20,16 +20,22 @@ router.delete("/", authorization, async (req: any, res: Response) => {
       if (key === 'CategoriesExpenses') {
 
         const index = user.CategoriesExpenses.indexOf(value)
+        if(index < 0){
+          res.status(404).send("La categoría que quieres eliminar no se encontró")
+        } else{
         user.CategoriesExpenses.splice(index, 1)
         await user.save()
         res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs })
-     
+        }
       } else if (key === 'CategoriesInputs') {
-        
         const indexIn = user.CategoriesInputs.indexOf(value)
-        user.CategoriesExpenses.splice(indexIn, 1)
-        await user.save()
-        res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs })
+        if(indexIn < 0){
+          res.status(404).send("La categoría que quieres eliminar no se encontró")
+        } else{
+          user.CategoriesInputs.splice(indexIn, 1)
+          await user.save()
+          res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs })
+        }
       }
     }
   }
@@ -39,4 +45,4 @@ router.delete("/", authorization, async (req: any, res: Response) => {
   }
 });
 
-export default router
+export default router;

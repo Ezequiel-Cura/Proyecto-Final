@@ -13,6 +13,7 @@ import accountDelete from './accountDelete'
 import deleteUser from './deleteUser'
 import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
+import savingsDelete from './savingsDelete'
 
 
 router.use('/user/login', login)
@@ -26,6 +27,7 @@ router.use('/user/register', register)
 router.use('/user', userUpdate)
 router.use('/user/account', accountDelete)
 router.use('/user/category', categoryDelete)
+router.use('/user/saving', savingsDelete)
 router.use('/user', deleteUser)
 
 

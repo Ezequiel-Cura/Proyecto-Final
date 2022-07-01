@@ -3,13 +3,6 @@
 import { Schema, model } from "mongoose"
 import jwt from "jsonwebtoken"
 
-interface savingProps{
-  name: string,
-  start: string,
-  end?: string,
-  goal: number,
-  currency: string
-}
 interface IUser {
   _id?: string,
   userName: string,
@@ -18,7 +11,7 @@ interface IUser {
   password: string,
   avatar?: string,
   Account?: any,
-  Saving: savingProps[],
+  Saving: any,
   CategoriesExpenses: string[],
   CategoriesInputs: string[],
   premium: boolean,
