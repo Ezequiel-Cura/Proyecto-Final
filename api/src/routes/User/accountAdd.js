@@ -20,6 +20,7 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
     const { key, value } = req.body;
     try {
         const user = yield User_1.default.findById(req.userId);
+        console.log(user);
         if (!user) {
             res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
         }
