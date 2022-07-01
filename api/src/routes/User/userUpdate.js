@@ -13,19 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.put("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, key, value } = req.body;
+router.put("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield User_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
-        // const result = await User.findOneAndUpdate({_id: id}, { [key]: value }).save();
+        const { key, value } = req.body;
+        const result = yield User_1.default.updateOne({ _id: req.userId }, { $set: { [key]: value } });
+        const user = yield User_1.default.findById(req.userId).select({ avatar: 1 });
         result
-            ? res.status(200).send({ key, value })
-            : res.status(304).send(`User with id: ${id} not updated`);
+            ? res.status(200).send({ key, value: user.avatar })
+            : res.status(304).send("Failed update");
     }
     catch (error) {
-        console.error(error.message);
         res.status(400).send(error.message);
     }
 }));

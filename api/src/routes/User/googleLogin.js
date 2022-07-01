@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const router = (0, express_1.Router)();
 const jwt_decode_1 = __importDefault(require("jwt-decode"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const User_1 = __importDefault(require("../../models/User"));
-const router = (0, express_1.Router)();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email_verified, email, given_name, picture } = (0, jwt_decode_1.default)(req.body.jwt);
@@ -33,15 +33,11 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (!validPassword)
                 return res.status(400).send("La contraseña es incorrecta");
             const token = user.generateAuthToken();
-            const { userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user;
-            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).send({ userName, lastName, email, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
+            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).end();
         }
-        else {
-            const newUser = yield new User_1.default({ userName: given_name, email, password: passwordHash, avatar: picture }).save();
-            const token = newUser.generateAuthToken();
-            const { userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = newUser;
-            res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).send({ userName, lastName, email, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
-        }
+        const newUser = yield new User_1.default({ userName: given_name, email, password: passwordHash, avatar: picture }).save();
+        const token = newUser.generateAuthToken();
+        res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).end();
     }
     catch (err) {
         res.status(500).send(err.message);

@@ -40,7 +40,7 @@ function submitImage() {
                     {
                         image ? null : <p style={{userSelect: "none", position: "absolute"}}>Suelta tu imagen aquí</p>
                     }
-                    <AvatarEditor ref={handleCropImage} border={image ? 3 : 0} width={300} color={[255, 255, 255, 0.9]} image={image} className={styles.avatarEditor} style={image ? {cursor: "grab", borderRadius: "4px"} : {cursor: "default"}}/>
+                    <AvatarEditor ref={handleCropImage} border={image ? 3 : 0} width={200} color={[255, 255, 255, 0.9]} image={image} className={styles.avatarEditor} style={image ? {cursor: "grab", borderRadius: "4px"} : {cursor: "default"}}/>
                 </div>
                 )}
             </Dropzone>

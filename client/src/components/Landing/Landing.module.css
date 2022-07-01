@@ -70,17 +70,13 @@
     justify-content: center;
     align-items: center;
 }
-.buttonContainer{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-}
 
 .errorMessage {
     text-align: center;
     color: red;
 }
 .button {
+    justify-self: center;
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 10rem;
@@ -121,6 +117,9 @@
 .button:hover:before {
     width: 100%;
   }
+.googleLogin {
+    justify-self: center;
+}
 
     @media (max-width: 1400px) {
         .textWelcome{
@@ -172,7 +171,7 @@
         }
         .formContainer{
             padding: 2px;
-            width: calc(100% - 4px)
+            width: 100%
         }
         .button {
             width: 80%;

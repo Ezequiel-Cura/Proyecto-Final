@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Nav from 'components/Nav/Nav'
 import styles from "./Profile.module.css"
 import { useAppSelector } from 'redux/hooks'
-import imagePlaceholderWide from "assets/imagePlaceholderWide.jpg"
+import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import ImageEditor from './utils/ImageEditor'
 
 interface Profile {
@@ -25,18 +25,16 @@ export default function Profile() {
                 <h2>modifica o elimina datos</h2>
             </div>
             <div className={styles.infoWrapper}>
-                <img src={usuario.avatar ? usuario.avatar : imagePlaceholderWide} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
+                <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
                 <div className={styles.infoContainer}>
-                    <h3>Nombre del usuario: {usuario.userName} {usuario.lastName}</h3>
-                    <h3>Email: {usuario.email}</h3>
-                    <div>
-                    <h3>Cuentas: </h3>
-                    <h3>Cuenta 1</h3>
-                    </div>
-                    <div>
-                    <h3>Cuentas compartidas: </h3>
-                    <h3>Cuentas compartidas :D</h3>
-                    </div>
+                    <label htmlFor="firstName">Nombre del usuario: </label>
+                    <input id='firstName' disabled type='text' placeholder={usuario.userName}/>
+                    <label htmlFor="lastName">Apellido del usuario: </label>
+                    <input id='lastName' disabled type='text' placeholder={usuario.lastName}></input>
+                    <label htmlFor="email">Email: </label>
+                    <input id='email' disabled type='text' placeholder={usuario.email}></input>
+                    <label htmlFor="password">Password: </label>
+                    <input id='password' type='password' disabled placeholder='password'></input>
                 </div>
             </div>
         </div>

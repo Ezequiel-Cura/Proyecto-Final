@@ -1,21 +1,19 @@
-import { Router, Request, Response } from "express";
+import { Router, Response } from "express";
+import authorization from "../../middleware/authorization";
 import User from "../../models/User";
 
 
 const router = Router()
 
-router.put("/", async (req: Request, res: Response) => {
-  const {id, key, value} = req.body
-
+router.put("/", authorization, async (req: any, res: Response) => {
   try {
-      const result = await User.updateOne({_id: id}, { $set: { [key]: value} });
-      // const result = await User.findOneAndUpdate({_id: id}, { [key]: value }).save();
-
+      const {key, value} = req.body
+      const result = await User.updateOne({_id: req.userId}, { $set: { [key]: value} })
+      const user: any = await User.findById(req.userId).select({avatar: 1}) 
       result
-          ? res.status(200).send({key, value})
-          : res.status(304).send(`User with id: ${id} not updated`);
+          ? res.status(200).send({key, value: user.avatar})
+          : res.status(304).send("Failed update");
   } catch (error: any) {
-      console.error(error.message);
       res.status(400).send(error.message);
   }
 });

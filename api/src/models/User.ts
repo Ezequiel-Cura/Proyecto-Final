@@ -3,13 +3,13 @@
 import { Schema, model } from "mongoose"
 import jwt from "jsonwebtoken"
 
-interface savingProps{
+export interface savingProps{
   name: string,
   start: string,
   end?: string,
   goal: number
 }
-interface IUser {
+export interface IUser {
   _id?: string,
   userName: string,
   lastName?: string,
