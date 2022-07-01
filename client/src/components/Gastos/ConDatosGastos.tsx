@@ -106,9 +106,9 @@ export default function ConDatos() {
 
   //Paginado---------------------------------------------------------------
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(6);
+  const [inputsPerPage, ] = useState(6);
 
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, ] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 

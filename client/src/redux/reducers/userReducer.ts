@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 interface Entries {
@@ -134,7 +134,7 @@ export const addCategory: any = createAsyncThunk("user/addCategory",
     }
   }
 )
-export const addSaving: any = createAsyncThunk("user/addCategory",
+export const addSaving: any = createAsyncThunk("user/addSaving",
   async (ingreso, { rejectWithValue }) => {
     try {
 
@@ -146,7 +146,7 @@ export const addSaving: any = createAsyncThunk("user/addCategory",
     }
   })
 
-  export const deleteSaving: any = createAsyncThunk("user/deleteCategory",
+  export const deleteSaving: any = createAsyncThunk("user/deleteSaving",
   async (ingreso: any, { rejectWithValue }) => {
     try {
       let deleteEntry: any = await axios.delete("/user/saving", {

@@ -1,10 +1,11 @@
 import Nav from 'components/Nav/Nav'
-import React, { useEffect } from 'react'
+// import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
 
 export default function Saves() {
 
-  const { usuario, status } = useAppSelector( state => state.user);
+  const { usuario } = useAppSelector( state => state.user);
   const dispatch = useAppDispatch();
 
   interface SavingUser{
@@ -14,6 +15,12 @@ export default function Saves() {
     goal: number,
     place: string,
     currency: string,
+  }
+  function createSaving(){
+    dispatch(addSaving())
+  }
+  function handleDelete(){
+    dispatch(deleteSaving())
   }
   return (
     <div>
