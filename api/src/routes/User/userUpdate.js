@@ -13,25 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { key, value } = req.body;
+router.put("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, key, value } = req.body;
     try {
-        const user = yield User_1.default.findById(req.userId);
-        if (!user) {
-            res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
-        }
-        else {
-            const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user;
-            yield user.Account[key].push(value);
-            yield user.save();
-            res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
-        }
+        const result = yield User_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
+        // const result = await User.findOneAndUpdate({_id: id}, { [key]: value }).save();
+        result
+            ? res.status(200).send({ key, value })
+            : res.status(304).send(`User with id: ${id} not updated`);
     }
-    catch (err) {
-        res.status(400).send(err);
+    catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
     }
 }));
 exports.default = router;

@@ -21,7 +21,8 @@ interface IUser {
   CategoriesExpenses: string[],
   CategoriesInputs: string[],
   premium: boolean,
-  generateAuthToken: () => any
+  generateAuthToken: () => any,
+  role: string,
 }
 
 const userSchema = new Schema<IUser>({
