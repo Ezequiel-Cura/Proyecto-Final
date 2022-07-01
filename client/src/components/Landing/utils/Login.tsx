@@ -28,7 +28,8 @@ export default function Login() {
     
     function handleGoogleLogin(response: any) {
     dispatch(googleLogin(response.credential))
-    .then(()=> {
+    .then((resp: any)=> {
+        if (resp.error) return
         navigate("/home")
         window.location.reload()
     })}
@@ -41,11 +42,7 @@ export default function Login() {
         }
         </div>
         <Formik
-        initialValues={{
-            email: "",
-            password: "",
-            message: ""
-        }}
+        initialValues={{ email: "", password: "", message: "" }}
         validationSchema={SigninSchema}
         onSubmit = {(({email, password}, {setFieldError}) => {
         return dispatch(loginUser({email, password}))

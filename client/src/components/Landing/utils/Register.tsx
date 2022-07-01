@@ -44,11 +44,9 @@ export default function Register() {
         onSubmit={(values, {setFieldError}) => {
           return dispatch(registerUser(values))
           .then((resp: any) => {
-            if (resp.error) return setFieldError("email", resp.payload)
-            if (localStorage.getItem("logged")){
+              if (resp.error) return setFieldError("email", resp.payload)
               navigate("/home")
               window.location.reload()
-            }
           })}}>
         {() => (
             <Form className={styles.form}>

@@ -23,11 +23,12 @@ export default function Profile() {
     const [errorMsg, setErrorMsg] = useState("")
 
     useEffect(()=>{
-        setState({...state, 
-            firstName: usuario.firstName as string,
-            lastName: usuario.lastName as string,
-            email: usuario.email as string
-        })
+    setState({
+        firstName: usuario.firstName,
+        lastName: usuario.lastName,
+        email: usuario.email,
+        password: ""
+    })
     },[usuario])
 
     function handleChange(event : React.ChangeEvent<HTMLInputElement>) {
@@ -99,7 +100,6 @@ export default function Profile() {
         })
     }
 
-
   return (
     <div className={styles.wrapper}>
         <Nav/>
@@ -113,29 +113,31 @@ export default function Profile() {
                 { errorMsg && <h1 className={styles.msg}>{msg}</h1>}
                 <div className={styles.separator}>
                 <label htmlFor="firstName" style={{width: "250px"}}>Nombre del usuario: </label>
-                <input id='firstName' name='firstName' disabled={firstNameDisabled} type='text' placeholder="Tu nombre" value={state.firstName} onChange={handleChange}/>
+                <input id='firstName' name='firstName' disabled={firstNameDisabled} type='text' placeholder="Tu nombre" value={state.firstName || ""} onChange={handleChange}/>
                 <button className={styles.edit} onClick={() => setFirstNameDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                 { !firstNameDisabled && <button className={styles.update} onClick={updateFirstName}><i className='material-icons'>done</i></button>}
                 </div>
                 <div className={styles.separator}>
                 <label htmlFor="lastName" style={{width: "250px"}}>Apellido del usuario: </label>
-                <input id='lastName' name="lastName" disabled={lastNameDisabled} type='text' placeholder="Tu apellido" value={state.lastName} onChange={handleChange} />
+                <input id='lastName' name="lastName" disabled={lastNameDisabled} type='text' placeholder="Tu apellido" value={state.lastName || ""} onChange={handleChange} />
                 <button className={styles.edit} onClick={() => setLastNameDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                 { !lastNameDisabled && <button className={styles.update} onClick={updateLastName}><i className='material-icons'>done</i></button>}
                 </div>
                 <div className={styles.separator}>
                 <label htmlFor="email" style={{width: "250px"}}>Email: </label>
-                <input id='email' name="email" disabled={emailDisabled} type='text' placeholder="Tu email" value={state.email} onChange={handleChange} />
+                <input id='email' name="email" disabled={emailDisabled} type='text' placeholder="Tu email" value={state.email || ""} onChange={handleChange} />
                 <button className={styles.edit} onClick={() => setEmailDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                 { !emailDisabled && <button className={styles.update} onClick={updateEmail}><i className='material-icons'>done</i></button>}
                 </div>
                 <div className={styles.separator}>
                 <label htmlFor="password" style={{width: "250px"}}>Password: </label>
-                <input id='password' name='password' disabled={passwordDisabled} type='password' placeholder='Tu contraseña nueva' value={state.password} onChange={handleChange} />
+                <input id='password' name='password' disabled={passwordDisabled} type='password' placeholder='Tu contraseña nueva' value={state.password || ""} onChange={handleChange} />
                 <button className={styles.edit} onClick={() => setPasswordDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                 { !passwordDisabled && <button className={styles.update} onClick={updatePassword}><i className='material-icons'>done</i></button>}
                 </div>
-                <span style={{color: "darksalmon", fontSize: "1rem", padding: "5px 0px"}}>Ten en cuenta que si te conectas con google y cambias tu contraseña no podras loguearte automaticamente</span>
+                <span style={{color: "darksalmon", fontSize: "1rem", padding: "5px 0px"}}>
+                    Ten en cuenta que si te conectas con google y cambias tu contraseña no podras loguearte y tendras que comunicarte con soporte
+                </span>
             </div>
         </div>
     </div>
