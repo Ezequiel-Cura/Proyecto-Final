@@ -6,8 +6,8 @@ const router = Router()
 
 router.get("/", authorization, async (req: any, res: Response) => {
   try {
-    const {email, userName, lastName, avatar, Account} : any = await User.findById(req.userId)
-    res.status(200).send({email, userName, lastName, avatar, Account})
+    const {email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs} : any = await User.findById(req.userId)
+    res.status(200).send({email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs})
   } catch (err: any) {
     res.status(404).send(err.message)
   }

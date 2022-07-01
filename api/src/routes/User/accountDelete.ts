@@ -15,10 +15,10 @@ router.delete("/", authorization, async (req: any, res: Response) => {
     if(!user){
      res.status(404).send(`No se encontró al usuario con id: ${id}`)
     } else {
-      const {email, userName, lastName, avatar, Account} = user
+      const {email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs} = user
       await user.Account[key].remove( {"_id": new ObjectId(value._id)})
       await user.save()
-      res.status(200).send({email, userName, lastName, avatar, Account})
+      res.status(200).send({email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs})
     }
   }
   catch (err) {

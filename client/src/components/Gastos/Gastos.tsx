@@ -1,16 +1,23 @@
 import Nav from 'components/Nav/Nav';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ConDatosGastos from "./ConDatosGastos";
 import SinDatosGastos from "./SinDatosGastos";
-
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getAllExpenses } from 'redux/reducers/userReducer';
 
 export default function Gastos() {
+  const { allExpenses, status } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    if (status === 'success'){
+      dispatch(getAllExpenses())
+    }
+  }, [status])
+  
   return (
     <div>
-        <Nav/>
-        <SinDatosGastos/>
+        { allExpenses.length > 0 ? <ConDatosGastos/> : <SinDatosGastos/> }
     </div>
   )
 }
