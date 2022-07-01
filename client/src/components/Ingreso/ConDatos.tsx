@@ -6,10 +6,9 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory, deleteCategory } from "redux/reducers/userReducer";
 
 export default function ConDatos() {
+  
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-
-
 
   useEffect(() => {
     if (status === 'success') {

@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-
 interface Entries {
   _id?: string,
   description: string,

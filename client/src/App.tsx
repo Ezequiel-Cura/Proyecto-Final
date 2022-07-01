@@ -12,6 +12,8 @@ import ConDatosGastos from 'components/Gastos/ConDatosGastos';
 import Detalles from 'components/Detalles/Detalles';
 import { useAppDispatch } from 'redux/hooks';
 import { getUserInfo } from 'redux/reducers/userReducer';
+import SavesLanding from 'components/Saves/SavesLanding';
+import Saves from 'components/Saves/Saves';
 
 function App() {
   const dispatch = useAppDispatch()
@@ -28,6 +30,8 @@ function App() {
       <Route path='/home/ingresos/add' element={<ConDatos/>}/>
       <Route path='/home/gastos' element={<Gastos/>}/>
       <Route path='/home/gastos/add' element={<ConDatosGastos/>}/>
+      <Route path='/home/saving' element={<SavesLanding/>}/>
+      <Route path='/home/saving/add' element={<Saves/>}/>
       <Route path='/home/detalles' element={<Detalles/>}/>
     </Routes>
   );

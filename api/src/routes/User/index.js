@@ -17,7 +17,6 @@ const accountDelete_1 = __importDefault(require("./accountDelete"));
 const deleteUser_1 = __importDefault(require("./deleteUser"));
 const categoryAdd_1 = __importDefault(require("./categoryAdd"));
 const categoryDelete_1 = __importDefault(require("./categoryDelete"));
-<<<<<<< HEAD
 const savingsDelete_1 = __importDefault(require("./savingsDelete"));
 router.use('/user/login', login_1.default);
 router.use('/user/googleLogin', googleLogin_1.default);
@@ -32,18 +31,4 @@ router.use('/user/account', accountDelete_1.default);
 router.use('/user/category', categoryDelete_1.default);
 router.use('/user/saving', savingsDelete_1.default);
 router.use('/user', deleteUser_1.default);
-=======
-router.use('/login', login_1.default);
-router.use('/googleLogin', googleLogin_1.default);
-router.use('/logout', logout_1.default);
-router.use('/getUserInfo', getUserInfo_1.default);
-router.use('/account', accountAdd_1.default);
-router.use('/category', categoryAdd_1.default);
-router.use('/saving', savings_1.default);
-router.use('/register', register_1.default);
-router.use('/', userUpdate_1.default);
-router.use('/account', accountDelete_1.default);
-router.use('/category', categoryDelete_1.default);
-router.use('/', deleteUser_1.default);
->>>>>>> ed179bcd66bdc473e8b85fea1f947d48a7b057e7
 exports.default = router;
