@@ -10,7 +10,7 @@ import viaje from "../multimedia/travel.png";
 import salud from "../multimedia/medic.png";
 import combustible from "../multimedia/car.png";
 import ocio from "../multimedia/ocio.png";
-import lock from "../multimedia/lock.png"
+import lock from "../multimedia/lock.png";
 
 //CONTROLADORES
 import {totalAlimentos,
@@ -18,13 +18,10 @@ import {totalAlimentos,
   totalOcio,
   totalSalud,
   totalViajes,
-  
 } from "./Controladores"
 
 export default function Detalles() {
   const usuario = useAppSelector((state) => state.user.usuario);
-
-  const [input,setInput] = useState("")
 
   const styleBar = {
     border: "2px solid white",
@@ -37,11 +34,23 @@ export default function Detalles() {
       console.log(prev, actual);
       return prev + actual.amount;
     }, 0);
+    const ingresosFijos = usuario?.Account.monthlyInput.reduce((prev,actual)=>{
+      return prev + actual.amount
+    },0)
+
+
     const gastos = usuario?.Account.variableExpenses.reduce((prev, actual) => {
       return prev + actual.amount;
     }, 0);
-    const total = gastos + ingresos;
-    const porcentajeGastos = Math.round((gastos * 100) / total);
+    const gastosFijos = usuario?.Account.monthlyExpenses.reduce((prev,actual)=>{
+      return prev + actual.amount
+    },0)
+
+    const totalGastos = gastos + gastosFijos;
+    const totalIngresos = ingresos + ingresosFijos
+
+    const total = totalGastos + totalIngresos;
+    const porcentajeGastos = Math.round((totalGastos * 100) / total);
     const porcentajeIngreso = 100 - porcentajeGastos;
     return { porcentajeGastos, porcentajeIngreso };
   }
@@ -89,13 +98,6 @@ export default function Detalles() {
       <div className={styles.detalles_wrapper}>
         <h1>Detalles</h1>
         <div>
-          <div>
-            <select name="" id="">
-              <option value="">Anual</option>
-              <option value="">Mensual</option>
-              <option value="">Diario</option>
-            </select>
-          </div>
           <div>
             <div style={{ display: "flex" }}>
               <h5>Ingresos</h5>

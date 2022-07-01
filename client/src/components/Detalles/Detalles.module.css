@@ -4,7 +4,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 7fr;
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
 }
 
 h1{
@@ -31,9 +31,7 @@ h1{
     grid-template-rows: 1fr 1fr 1fr, 1fr, 1fr;
   }
 
-h1{
-  color: #92b0c4;
-}
+
 
 .hol{
   color: #e27b7b;

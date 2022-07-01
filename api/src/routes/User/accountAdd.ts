@@ -9,7 +9,6 @@ router.post("/", authorization, async (req: any, res: Response) => {
   const { key, value } = req.body
   try {
     const user = await User.findById(req.userId)
-    console.log(user)
     if (!user) {
       res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
     } else {
