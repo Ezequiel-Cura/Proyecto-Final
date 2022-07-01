@@ -14,27 +14,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const User_1 = __importDefault(require("../../models/User"));
-const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const router = (0, express_1.Router)();
-router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id, key, value } = req.body;
     try {
-        const user = yield User_1.default.findById(req.userId).select({
-            _id: 0,
-            firstName: 1,
-            lastName: 1,
-            avatar: 1,
-            premium: 1,
-            role: 1,
-            savings: 1,
-            fees: 1,
-            monthly: 1,
-            extra: 1,
-            categories: 1
-        });
-        res.status(200).send(user);
+        const result = yield User_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
+        // const result = await User.findOneAndUpdate({_id: id}, { [key]: value }).save();
+        result
+            ? res.status(200).send({ key, value })
+            : res.status(304).send(`User with id: ${id} not updated`);
     }
-    catch (err) {
-        res.status(404).send(err.message);
+    catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
     }
 }));
 exports.default = router;

@@ -26,10 +26,9 @@ router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
-            const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user;
-            yield user.Account[key].remove({ "_id": new mongodb_1.ObjectId(value._id) });
+            yield user[key].remove({ "_id": new mongodb_1.ObjectId(value._id) });
             yield user.save();
-            res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
+            res.status(200).send("Removed");
         }
     }
     catch (err) {

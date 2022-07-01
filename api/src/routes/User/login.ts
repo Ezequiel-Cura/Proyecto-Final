@@ -12,9 +12,9 @@ router.post("/", async (req: Request, res: Response) => {
     if (!user) return res.status(400).send('Usuario inexistente')
     const passwordCompare = await bcrypt.compare(password, user.password)
     if (passwordCompare) {
-      const {email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs} = user
+      const {firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories} = user
       const token = user.generateAuthToken()
-      return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs})
+      return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories})
     }
     res.status(400).send('Contraseña Incorrecta')
   } catch (err) {
