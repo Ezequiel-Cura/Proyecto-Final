@@ -7,7 +7,8 @@ interface savingProps{
   name: string,
   start: string,
   end?: string,
-  goal: number
+  goal: number,
+  currency: string
 }
 interface IUser {
   _id?: string,
@@ -36,7 +37,8 @@ const userSchema = new Schema<IUser>({
     start: { type: Date, required: true, default: Date.now()},
     end: Date,
     goal: Number,
-    place: String
+    place: String,
+    currency: { type: String, required: true, default: "Peso Argentino" },
   }],
   CategoriesExpenses: { type: [String], default: ["Alimentos", "Transporte", "Gimnasio", "Salud", "Viaje", "Ocio", "Alquiler", "Combustible", "Deuda", "Impuestos", "Otros" ]},
   CategoriesInputs: { type: [String], default: ["Herencia", "Salario", "Regalo", "Aguinaldo", "Changa", "Préstamo", "Otros"]},
