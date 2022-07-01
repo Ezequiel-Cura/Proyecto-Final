@@ -18,7 +18,7 @@ import {totalAlimentos,
   totalOcio,
   totalSalud,
   totalViajes,
-  calculate
+  
 } from "./Controladores"
 
 export default function Detalles() {
@@ -32,24 +32,33 @@ export default function Detalles() {
     overflow: "hidden",
     display: "flex",
   };
+  function calculate() {
+    const ingresos = usuario?.Account.extraInput.reduce((prev, actual) => {
+      console.log(prev, actual);
+      return prev + actual.amount;
+    }, 0);
+    const gastos = usuario?.Account.variableExpenses.reduce((prev, actual) => {
+      return prev + actual.amount;
+    }, 0);
+    const total = gastos + ingresos;
+    const porcentajeGastos = Math.round((gastos * 100) / total);
+    const porcentajeIngreso = 100 - porcentajeGastos;
+    return { porcentajeGastos, porcentajeIngreso };
+  }
 
   const incomes = {
     background: "green",
-    width: calculate(usuario).porcentajeIngreso + "%",
+    width: calculate().porcentajeIngreso + "%",
     height: "100px",
   };
 
   const gastos = {
     background: "red",
-    width: calculate(usuario).porcentajeGastos + "%",
+    width: calculate().porcentajeGastos + "%",
     height: "100px",
   };
 
-  function handleInput(){
-
-  }
-
-   const data1 = () => {
+  const data1 = () => {
     const gastos = usuario.Account.variableExpenses.reduce((prev, actual) => {
       return prev + actual.amount;
     }, 0);
@@ -141,7 +150,7 @@ export default function Detalles() {
             <div className={styles.blocked_wrapper}>
               <div className={styles.blocked}>
                 <img src={lock} alt="" />
-                    
+                <span>Compra premium para mas detalles</span>
               </div>
             </div>
           </div>
@@ -151,39 +160,3 @@ export default function Detalles() {
   );
 }
 
-// npm install @mui/icons-material
-
-// npm i @types/mui
-
-// npm i @types/material-ui
-
-// data1.forEach((elem,i)=>{
-//   let fijo = elem
-
-//   for(let j = i + 1; j < data1.length;j++ ){
-
-//     console.log("Fijo " + fijo.name + "--------- elem " + data1[j].name)
-//     if(fijo.name === data1[j].name){
-//        return nuevoArray.push({
-//         name: fijo.name,
-//         value: fijo.value + data1[j].value
-//       })
-//     }else{
-//       // 6 5 1 5 8
-//       // i j
-
-//       //[6]
-//       return nuevoArray.push({
-//         name:fijo.name,
-//         value: fijo.value
-//       })
-
-//     }
-
-// var randomColor = "#000000".replace(/0/g, function () {
-//   return (~~(Math.random() * 16)).toString(16);
-// });
-
-//   }
-
-// })
