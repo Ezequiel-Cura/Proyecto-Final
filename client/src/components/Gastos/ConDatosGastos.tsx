@@ -247,25 +247,14 @@ export default function ConDatos() {
                 <option value='variableExpenses'>Gasto Variable</option>
               </select>
 
-              {
-                selectKey.keyInput === 'monthlyExpenses'
-                ? <select onChange={handleSelectC}>
-                  <option>Selecciona una categoria</option>
-                  <option value='Gimnasio'>Gimnasio</option>
-                  <option value='Alquiler'>Alquiler</option>
-                  <option value='Otros'>Otros</option>
-                  </select>
-                  : (<select onChange={handleSelectC}>
-                    <option>Selecciona una categoría</option>
-                    <option value='Alimentos'>Alimentos</option>
-                    <option value='Gimnasio'>Gimnasio</option>
-                    <option value='Salud'>Salud</option>
-                    <option value='Viaje'>Viaje</option>
-                    <option value='Ocio'>Ocio</option>
-                    <option value='Combustible'>Combustible</option>
-                    <option value='Otros'>Otros</option>
-                  </select>)
-              }
+              <select value={input.category} onChange={handleSelectC}>
+                <option>Selecciona una categoría</option>
+                {usuario.CategoriesExpenses.length > 0
+                  ? usuario.CategoriesExpenses.map((category: string) =>
+                    (<option value={category}>{category}</option>))
+                  : (<option value="Otros">Otros</option>)
+                  }
+              </select>
 
               <input 
                 type='text' 

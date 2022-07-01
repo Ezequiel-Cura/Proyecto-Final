@@ -13,16 +13,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const User_1 = __importDefault(require("../../models/User"));
-const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const router = (0, express_1.Router)();
-router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const admin_1 = __importDefault(require("../../middleware/admin"));
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
+const User_1 = __importDefault(require("../../models/User"));
+router.put("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs, role } = yield User_1.default.findById(req.userId);
-        res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs, role });
+        const { id, key, value } = req.body;
+        if (key !== "role" && key !== "premium")
+            return res.status(401).send("You can't change this my dude");
+        if (value !== "user" && value !== "admin" && value !== "true" && value !== "false")
+            return res.status(401).send("You can't change this value my dude");
+        yield User_1.default.updateOne({ _id: id }, { [key]: value });
+        const user = yield User_1.default.findById(id);
+        res.status(200).send(user);
     }
     catch (err) {
-        res.status(404).send(err.message);
+        res.status(500).send(err.message);
     }
 }));
 exports.default = router;
