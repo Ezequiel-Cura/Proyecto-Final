@@ -1,7 +1,7 @@
 .wrapperPag {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     padding: 5px;
 }
 
@@ -20,4 +20,23 @@
 
 .wrapperPag button:hover {
     background-color: rgb(118, 189, 3) ;
+    color: aliceblue;
+}
+
+.wrapperPag .active {
+    color: rgb(118, 189, 3);
+    border: 1px solid rgb(118, 189, 3);
+    background-color:#555555;
+}
+
+.disabledPrev {
+    opacity: 0.3;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.disabledNext {
+    opacity: 0.3;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }

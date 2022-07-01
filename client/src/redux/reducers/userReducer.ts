@@ -12,7 +12,7 @@ interface Entries {
   end?: string
 }
 interface User {
-  usuario: any   //any
+  usuario: any   
   status: 'idle' | 'loading' | 'success' | 'failed'
   allInputs: Entries[] | [],
   allExpenses: Entries[] | [],
@@ -27,12 +27,14 @@ const initialState: User = {
     lastName: '',
     email: '',
     password: '',
-    
+    Saving: [],
+    CategoriesExpenses: [],
+    CategoriesInputs: [],
     Account: {
       monthlyInput: [],
       extraInput: [],
       monthlyExpenses: [],
-      variableExpenses: []
+      variableExpenses: [],
     },
   },
   status: 'idle',
@@ -40,7 +42,6 @@ const initialState: User = {
   allExpenses: [], //Estado de gastos para ordenar o filtrar
   totalExpensesMonth: 0,
   totalInputsMonth: 0
-
 }
 
 export const registerUser: any = createAsyncThunk("user/registerUser",
@@ -88,6 +89,7 @@ export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
 export const addDato: any = createAsyncThunk("user/addIngreso",
   async (ingreso, { rejectWithValue }) => {
     try {
+      console.log(ingreso, 'reducer')
       const { data } = await axios.post(`/user/account`, ingreso)
       return data
     } catch (err: any) {
@@ -110,7 +112,33 @@ export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
   }
 )
 
-//-----------------------------------------
+export const addCategory: any = createAsyncThunk("user/addCategory",
+  async (ingreso, { rejectWithValue }) => {
+    try {
+      console.log(ingreso, 'reduce')
+      const { data } = await axios.post(`/user/category`, ingreso)
+      console.log(data, "DATAAAA")
+      return data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  })
+
+  export const deleteCategory: any = createAsyncThunk("user/deleteCategory",
+  async (ingreso: any, { rejectWithValue }) => {
+    try {
+      let deleteEntry: any = await axios.delete("/user/category", {
+        data: {
+          source: ingreso
+        }
+      });
+      return deleteEntry.data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
   async (info: any) => {
     let formData = new FormData();
@@ -120,6 +148,11 @@ export const uploadImage: any = createAsyncThunk("user/uploadImage",
     const { data } = await axios.put("/user", { id: info.id, key: "avatar", value: result.data.url })
     return data
   })
+
+  //getAllInputs -----> modifica allInputs
+  //getAllExpenses ---> modifica allExpenses
+  //totalInput -------> 
+
 
 
 const reducerSlice = createSlice({
@@ -205,9 +238,11 @@ const reducerSlice = createSlice({
       let currentInputFrequency = current(state);
       let monthly = currentInputFrequency.usuario.Account.monthlyInput
       let extra = currentInputFrequency.usuario.Account.extraInput
+
       const inputsByFrequency = payload === 'fijo'
-        ? monthly
-        : extra
+        ? monthly       
+        : extra   
+
       return {
         ...state,
         allInputs: inputsByFrequency
@@ -307,21 +342,41 @@ const reducerSlice = createSlice({
     [uploadImage.rejected]: (state) => {
       state.status = "failed"
     },
+    [addCategory.pending]: (state) => {
+      state.status = "loading"
+    },
+    [addCategory.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [addCategory.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [deleteCategory.pending]: (state) => {
+      state.status = "loading"
+    },
+    [deleteCategory.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [deleteCategory.rejected]: (state) => {
+      state.status = "failed"
+    },
   }
 })
 export const { 
   inputsFilterByMonth, 
+  totalInput,
+  totalExpenses,
   getAllInputs, 
   getAllExpenses, 
   inputsOrderByAmount, 
-  expensesFilterByFrequency,
   expensesOrderByAmount,
   expensesFilterByMonth,
+  expensesFilterByFrequency,
   inputsFilterByFrequency,
   filterExpensesByCategory,
   filterInputByCategory,
-  totalInput,
-  totalExpenses
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;

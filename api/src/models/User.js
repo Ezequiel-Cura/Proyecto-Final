@@ -16,8 +16,11 @@ const userSchema = new mongoose_1.Schema({
             name: { type: String, required: true },
             start: { type: Date, required: true, default: Date.now() },
             end: Date,
-            goal: Number
+            goal: Number,
+            place: String
         }],
+    CategoriesExpenses: { type: [String], default: ["Alimentos", "Transporte", "Gimnasio", "Salud", "Viaje", "Ocio", "Alquiler", "Combustible", "Deuda", "Impuestos", "Otros"] },
+    CategoriesInputs: { type: [String], default: ["Herencia", "Salario", "Regalo", "Aguinaldo", "Changa", "Préstamo", "Otros"] },
     Account: {
         // La cuenta de cada User tiene 4 props: 
         // 1- Es un arreglo de obj/ingresos mensuales.
