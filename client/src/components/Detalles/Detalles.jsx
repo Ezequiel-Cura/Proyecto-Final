@@ -11,6 +11,9 @@ import salud from "../multimedia/medic.png";
 import combustible from "../multimedia/car.png";
 import ocio from "../multimedia/ocio.png";
 import lock from "../multimedia/lock.png";
+import dumbell from "../multimedia/dumbell.png";
+import taxes from "../multimedia/taxes.png";
+import box from "../multimedia/other.png";
 
 //CONTROLADORES
 import {
@@ -19,6 +22,9 @@ import {
   totalOcio,
   totalSalud,
   totalViajes,
+  totalAlquiler,
+  totalGimnasio,
+  totalOther,
 } from "./Controladores";
 
 export default function Detalles() {
@@ -55,8 +61,6 @@ export default function Detalles() {
     const porcentajeIngreso = 100 - porcentajeGastos;
     return { porcentajeGastos, porcentajeIngreso };
   }
-
-  function handleInput() {}
 
   const data1 = () => {
     const gastos = usuario.Account.variableExpenses.reduce((prev, actual) => {
@@ -101,7 +105,7 @@ export default function Detalles() {
           </div>
           <div className={styles.seccion_wrapper}>
             <div className={styles.primer_wrapper}>
-              <PieChart width={400} height={400}>
+              <PieChart width={500} height={400}>
                 <Pie
                   data={data1()}
                   dataKey="value"
@@ -139,6 +143,16 @@ export default function Detalles() {
               </span>
               <img src={ocio} alt="LOL" />{" "}
               <span>Gastos en Ocio totales = ${totalOcio(usuario)}</span>
+              <img src={dumbell} alt="LOL" />{" "}
+              <span>
+                Gastos en Gimnasio totales = $ {totalGimnasio(usuario)}
+              </span>
+              <img src={taxes} alt="LOL" />{" "}
+              <span>
+                Gastos en Alquileres totales = $ {totalAlquiler(usuario)}
+              </span>
+              <img src={box} alt="LOL" />{" "}
+              <span>Otros gastos totales = $ {totalOther(usuario)}</span>
             </div>
             <div className={styles.blocked_wrapper}>
               <div className={styles.blocked}>
