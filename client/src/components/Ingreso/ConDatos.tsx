@@ -325,29 +325,7 @@ export default function ConDatos() {
                   : (<option value="Otros">Otros</option>)
                   }
               </select>
-              
-              {/* {
-                <select value={input.category} onChange={handleSelectC}>
-                  <option>Selecciona una categoría</option>
-                  {usuario.CategoriesInputs.length > 0
-                    ? usuario.CategoriesInputs.map((category: string) =>
-                      (<option value={category}>{category}</option>))
-                    : (<option value="Otros">Otros</option>)
-                  }
-                  <option value="Crear">Crear</option>
-                </select>
-              } */}
 
-              {/* {
-                input.category === "Crear"
-                && <input 
-                    className={styles.inputCreated}
-                    type="text" 
-                    name= "category"
-                    placeholder='Crea una categoria'
-                    onChange={handleChange}
-                    />
-              } */}
               <input
                 type='text'
                 name='description'
