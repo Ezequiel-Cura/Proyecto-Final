@@ -1,7 +1,23 @@
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { isArrayBindingPattern } from "typescript";
-import { number } from "yup";
+
+import { registerUser } from '../modules/registerUser'
+
+import { loginUser } from '../modules/loginUser'
+
+import { googleLogin } from '../modules/googleLogin'
+
+import { logout } from '../modules/logout'
+
+import { getUserInfo } from '../modules/getUserInfo'
+
+import { addDato } from '../modules/addDato'
+
+import { deleteDato } from '../modules/deleteDato'
+
+import { addCategory } from '../modules/addCategory'
+
+import { deleteCategory } from '../modules/deleteCategory'
 
 interface Entries {
   _id?: string,
@@ -23,19 +39,20 @@ interface User {
 const initialState: User = {
   usuario: {
     _id: '',
-    userName: '',
+    firstName: '',
     lastName: '',
     email: '',
     password: '',
-    Saving: [],
-    CategoriesExpenses: [],
-    CategoriesInputs: [],
-    Account: {
-      monthlyInput: [],
-      extraInput: [],
-      monthlyExpenses: [],
-      variableExpenses: [],
+    savings: [],
+    
+    monthly: {
+      input: [],
+      output: []
     },
+    extra: {
+      input:[],
+      output:[]
+    }
   },
   status: 'idle',
   allInputs: [],  //Estado de entradas para ordenar o filtrar
@@ -44,100 +61,7 @@ const initialState: User = {
   totalInputsMonth: 0
 }
 
-export const registerUser: any = createAsyncThunk("user/registerUser",
-  async (user, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post("/user/register", user)
-      localStorage.setItem("logged", "true")
-      return data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
 
-export const loginUser: any = createAsyncThunk("user/loginUser",
-  async (user, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post("/user/login", user)
-      localStorage.setItem("logged", "true")
-      return data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-export const googleLogin: any = createAsyncThunk("user/googleLogin",
-  async (jwt) => {
-    const { data } = await axios.post("/user/googleLogin", { jwt: jwt })
-    localStorage.setItem("logged", "true")
-    return data
-  })
-
-export const logout: any = createAsyncThunk("user/logout",
-  async () => {
-    await axios.post("/user/logout")
-    localStorage.removeItem("logged")
-  })
-
-export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
-  async () => {
-    const { data } = await axios.get("/user/getUserInfo")
-    return data
-  })
-
-//-----------------------------------------
-export const addDato: any = createAsyncThunk("user/addIngreso",
-  async (ingreso, { rejectWithValue }) => {
-    try {
-      console.log(ingreso, 'reducer')
-      const { data } = await axios.post(`/user/account`, ingreso)
-      return data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
-  async (ingreso: any, { rejectWithValue }) => {
-    try {
-      let deleteEntry: any = await axios.delete("/user/account", {
-        data: {
-          source: ingreso
-        }
-      });
-      return deleteEntry.data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  }
-)
-
-export const addCategory: any = createAsyncThunk("user/addCategory",
-  async (ingreso, { rejectWithValue }) => {
-    try {
-      console.log(ingreso, 'reduce')
-      const { data } = await axios.post(`/user/category`, ingreso)
-      console.log(data, "DATAAAA")
-      return data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-  export const deleteCategory: any = createAsyncThunk("user/deleteCategory",
-  async (ingreso: any, { rejectWithValue }) => {
-    try {
-      let deleteEntry: any = await axios.delete("/user/category", {
-        data: {
-          source: ingreso
-        }
-      });
-      return deleteEntry.data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  }
-)
 
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
   async (info: any) => {
@@ -380,3 +304,4 @@ export const {
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;
+
