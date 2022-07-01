@@ -13,16 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const User_1 = __importDefault(require("../../models/User"));
+const admin_1 = __importDefault(require("../../middleware/admin"));
 const authorization_1 = __importDefault(require("../../middleware/authorization"));
+const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs, role } = yield User_1.default.findById(req.userId);
-        res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs, role });
+        const allUsers = yield User_1.default.find({}).select({ "userName": 1, "lastName": 1, "email": 1, "role": 1, "premium": 1 });
+        res.status(200).send(allUsers);
     }
     catch (err) {
-        res.status(404).send(err.message);
+        res.status(500).send(err.message);
     }
 }));
 exports.default = router;
