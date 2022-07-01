@@ -7,7 +7,6 @@ import User from "../../models/User";
 router.put("/", [authorization, admin], async (req: any, res: any) => {
     try {
         const { id, key, value } = req.body
-        console.log("typeof: ", typeof(value))
         if (key !== "role" && key !== "premium") return res.status(401).send("You can't change this my dude")
         if (value !== "user" && value !== "admin" && value !== "true" && value !== "false") return res.status(401).send("You can't change this value my dude")
         await User.updateOne({_id: id}, {[key]: value})
