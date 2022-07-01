@@ -45,8 +45,10 @@ export default function Register() {
           return dispatch(registerUser(values))
           .then((resp: any) => {
             if (resp.error) return setFieldError("email", resp.payload)
-            navigate("/home")
-            window.location.reload()
+            if (localStorage.getItem("logged")){
+              navigate("/home")
+              window.location.reload()
+            }
           })}}>
         {() => (
             <Form className={styles.form}>
@@ -64,10 +66,8 @@ export default function Register() {
                 <Link to="/" state={{registered: true}} style={{marginLeft: "3px", textDecoration: 'none', color: "var(--btn-color)"}}>Inicia Sesión</Link>
               </div>
             </div>
-            <div className={styles.buttonContainer}>
-              <button type="submit" className={styles.button}>Registrarme</button>
-            </div>
-            <div id="signInDiv"/>
+            <button type="submit" className={styles.button}>Registrarme</button>
+            <div id="signInDiv" className={styles.googleLogin}/>
           </Form>
         )}
       </Formik> 

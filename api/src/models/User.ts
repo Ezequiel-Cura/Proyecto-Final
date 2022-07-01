@@ -11,7 +11,7 @@ export interface savingProps{
 }
 export interface IUser {
   _id?: string,
-  userName: string,
+  firstName: string,
   lastName?: string,
   email: string,
   password: string,
@@ -26,11 +26,12 @@ export interface IUser {
 }
 
 const userSchema = new Schema<IUser>({
-  userName: { type: String, required: true },
+  firstName: { type: String, required: true },
   lastName: String,
   email: { type: String, unique: true, lowercase: true, required: true },
   password: {type: String, required: true},
   avatar: String,
+  role: { type: String, default: "user" },
   premium: {type: Boolean, default: false},
   Saving: [{
     name: { type: String, required: true },

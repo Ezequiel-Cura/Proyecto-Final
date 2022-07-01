@@ -19,7 +19,7 @@ router.post("/", async (req: Request, res: Response) => {
         const token = user.generateAuthToken()
         return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).end()
     }
-    const newUser: any = await new User({userName: given_name, email, password: passwordHash, avatar: picture}).save()
+    const newUser: any = await new User({firstName: given_name, email, password: passwordHash, avatar: picture}).save()
     const token = newUser.generateAuthToken()
     res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).end()
   } catch (err: any) {

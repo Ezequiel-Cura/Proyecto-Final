@@ -1,17 +1,11 @@
 .wrapper {
     height: 100vh;
-}
-h3 {
-    margin: 4px 0px;
+    display: grid;
+    grid-template-columns: 178px 1fr;
 }
 
-.profileWrapper {
-    height: 100%;
-    background-color: rgb(83, 83, 83);
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    justify-content: center;
-    justify-items: center;
+h3 {
+    margin: 4px 0px;
 }
 
 .cuentaWrapper {
@@ -25,6 +19,12 @@ h3 {
 }
 
 .infoWrapper {
+    height: 100%;
+    background-color: rgb(83, 83, 83);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-content: center;
+    justify-items: center;
     background-color: #393c38;
     display: grid;
     grid-template-columns: 1fr;
@@ -46,4 +46,49 @@ h3 {
 .profilePic {
     height: 100%;
     cursor: pointer;
+}
+
+input {
+    background-color: white;
+    width: 100%;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.separator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit {
+    border-radius: 50%;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: #454545;
+    cursor: pointer;
+    margin: 4px;
+}
+
+.update {
+    border-radius: 50%;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: #454545;
+    cursor: pointer;
+    margin: 4px;
+}
+
+.msg {
+    align-self: center;
+    margin: 0px;
+    padding: 5px 10px;
+    width: calc(100% - 20px);
+    background-color: rgb(28, 202, 28);
+    color: rgb(249, 255, 249);
+    text-align: center;
 }

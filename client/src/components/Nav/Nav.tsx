@@ -15,7 +15,7 @@ const {usuario} = useAppSelector(({user}) => user)
         <div className={styles.image_wrapper}>
             <Link to="/profile">
                 <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} className={styles.image_container}alt="foto de perfil"/>
-                {usuario ? <span>{usuario.userName} </span> : null}
+                {usuario ? <span>{usuario.firstName} </span> : null}
             </Link>
         </div>
         <div className={styles.items_wrapper}>

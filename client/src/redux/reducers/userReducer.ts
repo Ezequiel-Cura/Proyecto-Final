@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
+import { info } from "console";
 
 interface Entries {
   _id?: string,
@@ -21,7 +22,7 @@ interface User {
 const initialState: User = {
   usuario: {
     _id: '',
-    userName: '',
+    firstName: '',
     lastName: '',
     email: '',
     password: '',
@@ -80,6 +81,22 @@ export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
     return data
   })
 
+export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo", 
+async (info: any)=> {
+  const {data} = await axios.put("/user/update", info)
+  return data
+})
+
+export const uploadImage: any = createAsyncThunk("user/uploadImage",
+  async (info: any) => {
+    let formData = new FormData();
+    formData.append("file", info.img)
+    formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)
+    const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload", formData, { withCredentials: false })
+    const {data} = await axios.put("/user/update", { key: "avatar", value: result.data.url })
+    return data
+})
+
 //-----------------------------------------
 export const addDato: any = createAsyncThunk("user/addIngreso",
   async (ingreso, { rejectWithValue }) => {
@@ -134,16 +151,6 @@ export const addCategory: any = createAsyncThunk("user/addCategory",
   }
 )
 
-export const uploadImage: any = createAsyncThunk("user/uploadImage",
-  async (info: any) => {
-    let formData = new FormData();
-    formData.append("file", info.img)
-    formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)
-    const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload", formData, { withCredentials: false })
-    const { data } = await axios.put("/user/update", { id: info.id, key: "avatar", value: result.data.url })
-    console.log(data)
-    return data
-  })
 
   //getAllInputs -----> modifica allInputs
   //getAllExpenses ---> modifica allExpenses
@@ -304,6 +311,17 @@ const reducerSlice = createSlice({
     [getUserInfo.rejected]: (state) => {
       state.status = "failed"
     },
+    [updatePersonalInfo.pending]: (state) => {
+      state.status = "loading"
+    },
+    [updatePersonalInfo.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.usuario[payload.key] = payload.value
+    },
+    [updatePersonalInfo.rejected]: (state) => {
+      state.status = "failed"
+    },
+
     //---------------------------------------------------------
     [addDato.pending]: (state) => {
       state.status = "loading"
