@@ -1,8 +1,8 @@
 import styles from "./Landing.module.css"
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect } from 'react';
-import Login from "./Login";
-import Register from "./Register";
+import Login from "./utils/Login";
+import Register from "./utils/Register";
 
 
 export default function Landing() {

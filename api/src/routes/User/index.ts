@@ -23,10 +23,10 @@ router.use('/account', accountAdd)
 router.use('/category', categoryAdd)
 router.use('/saving', savings)
 router.use('/register', register)
-router.use('/', userUpdate)
+router.use('/update', userUpdate)
 router.use('/account', accountDelete)
 router.use('/category', categoryDelete)
-router.use('/', deleteUser)
+router.use('/delete', deleteUser)
 
 
 export default router

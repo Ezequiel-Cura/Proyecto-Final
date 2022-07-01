@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { isArrayBindingPattern } from "typescript";
-import { number } from "yup";
+import { info } from "console";
 
 interface Entries {
   _id?: string,
@@ -23,7 +22,7 @@ interface User {
 const initialState: User = {
   usuario: {
     _id: '',
-    userName: '',
+    firstName: '',
     lastName: '',
     email: '',
     password: '',
@@ -47,9 +46,8 @@ const initialState: User = {
 export const registerUser: any = createAsyncThunk("user/registerUser",
   async (user, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/user/register", user)
+      await axios.post("/user/register", user)
       localStorage.setItem("logged", "true")
-      return data
     } catch (err: any) {
       return rejectWithValue(err.response.data)
     }
@@ -58,9 +56,8 @@ export const registerUser: any = createAsyncThunk("user/registerUser",
 export const loginUser: any = createAsyncThunk("user/loginUser",
   async (user, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post("/user/login", user)
+      await axios.post("/user/login", user)
       localStorage.setItem("logged", "true")
-      return data
     } catch (err: any) {
       return rejectWithValue(err.response.data)
     }
@@ -68,9 +65,8 @@ export const loginUser: any = createAsyncThunk("user/loginUser",
 
 export const googleLogin: any = createAsyncThunk("user/googleLogin",
   async (jwt) => {
-    const { data } = await axios.post("/user/googleLogin", { jwt: jwt })
+    await axios.post("/user/googleLogin", { jwt: jwt })
     localStorage.setItem("logged", "true")
-    return data
   })
 
 export const logout: any = createAsyncThunk("user/logout",
@@ -84,6 +80,22 @@ export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
     const { data } = await axios.get("/user/getUserInfo")
     return data
   })
+
+export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo", 
+async (info: any)=> {
+  const {data} = await axios.put("/user/update", info)
+  return data
+})
+
+export const uploadImage: any = createAsyncThunk("user/uploadImage",
+  async (info: any) => {
+    let formData = new FormData();
+    formData.append("file", info.img)
+    formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)
+    const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload", formData, { withCredentials: false })
+    const {data} = await axios.put("/user/update", { key: "avatar", value: result.data.url })
+    return data
+})
 
 //-----------------------------------------
 export const addDato: any = createAsyncThunk("user/addIngreso",
@@ -139,15 +151,6 @@ export const addCategory: any = createAsyncThunk("user/addCategory",
   }
 )
 
-export const uploadImage: any = createAsyncThunk("user/uploadImage",
-  async (info: any) => {
-    let formData = new FormData();
-    formData.append("file", info.img)
-    formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)
-    const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload", formData, { withCredentials: false })
-    const { data } = await axios.put("/user", { id: info.id, key: "avatar", value: result.data.url })
-    return data
-  })
 
   //getAllInputs -----> modifica allInputs
   //getAllExpenses ---> modifica allExpenses
@@ -265,9 +268,8 @@ const reducerSlice = createSlice({
     [registerUser.pending]: (state) => {
       state.status = "loading"
     },
-    [registerUser.fulfilled]: (state, { payload }) => {
+    [registerUser.fulfilled]: (state) => {
       state.status = "success"
-      state.usuario = payload
     },
     [registerUser.rejected]: (state) => {
       state.status = "failed"
@@ -275,9 +277,8 @@ const reducerSlice = createSlice({
     [loginUser.pending]: (state) => {
       state.status = "loading"
     },
-    [loginUser.fulfilled]: (state, { payload }) => {
+    [loginUser.fulfilled]: (state) => {
       state.status = "success"
-      state.usuario = payload
     },
     [loginUser.rejected]: (state) => {
       state.status = "failed"
@@ -285,9 +286,8 @@ const reducerSlice = createSlice({
     [googleLogin.pending]: (state) => {
       state.status = "loading"
     },
-    [googleLogin.fulfilled]: (state, { payload }) => {
+    [googleLogin.fulfilled]: (state) => {
       state.status = "success"
-      state.usuario = payload
     },
     [googleLogin.rejected]: (state) => {
       state.status = "failed"
@@ -311,6 +311,17 @@ const reducerSlice = createSlice({
     [getUserInfo.rejected]: (state) => {
       state.status = "failed"
     },
+    [updatePersonalInfo.pending]: (state) => {
+      state.status = "loading"
+    },
+    [updatePersonalInfo.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.usuario[payload.key] = payload.value
+    },
+    [updatePersonalInfo.rejected]: (state) => {
+      state.status = "failed"
+    },
+
     //---------------------------------------------------------
     [addDato.pending]: (state) => {
       state.status = "loading"
