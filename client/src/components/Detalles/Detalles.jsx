@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import Nav from "components/Nav/Nav";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 import styles from "./Detalles.module.css";
 import { useAppSelector } from "redux/hooks";
+import SearchBar from "components/SearchBar/SearchBar";
 
 // ICONOS
 import carrito from "../multimedia/cart.png";
@@ -10,21 +10,19 @@ import viaje from "../multimedia/travel.png";
 import salud from "../multimedia/medic.png";
 import combustible from "../multimedia/car.png";
 import ocio from "../multimedia/ocio.png";
-import lock from "../multimedia/lock.png"
+import lock from "../multimedia/lock.png";
 
 //CONTROLADORES
-import {totalAlimentos,
+import {
+  totalAlimentos,
   totalCombustible,
   totalOcio,
   totalSalud,
   totalViajes,
-  calculate
-} from "./Controladores"
+} from "./Controladores";
 
 export default function Detalles() {
   const usuario = useAppSelector((state) => state.user.usuario);
-
-  const [input,setInput] = useState("")
 
   const styleBar = {
     border: "2px solid white",
@@ -45,15 +43,26 @@ export default function Detalles() {
     height: "100px",
   };
 
-  function handleInput(){
-
+  function calculate() {
+    const ingresos = usuario?.Account.extraInput.reduce((prev, actual) => {
+      return prev + actual.amount;
+    }, 0);
+    const gastos = usuario?.Account.variableExpenses.reduce((prev, actual) => {
+      return prev + actual.amount;
+    }, 0);
+    const total = gastos + ingresos;
+    const porcentajeGastos = Math.round((gastos * 100) / total);
+    const porcentajeIngreso = 100 - porcentajeGastos;
+    return { porcentajeGastos, porcentajeIngreso };
   }
 
-   const data1 = () => {
+  function handleInput() {}
+
+  const data1 = () => {
     const gastos = usuario.Account.variableExpenses.reduce((prev, actual) => {
       return prev + actual.amount;
     }, 0);
-    console.log(gastos)
+    console.log(gastos);
     let data1 = usuario?.Account.variableExpenses.reduce((c, v) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
@@ -62,15 +71,15 @@ export default function Detalles() {
     for (const key in data1) {
       data.push({
         name: key,
-        value: Math.round((data1[key] * 100)/gastos) ,
-        unit:"%"
-      })
+        value: Math.round((data1[key] * 100) / gastos),
+        unit: "%",
+      });
     }
     return data;
-  }
-  const labelFormatter = ({value})=>{
-    return value + "%"
-  }
+  };
+  const labelFormatter = ({ value }) => {
+    return value + "%";
+  };
   console.log(usuario.Account ? data1() : null);
 
   const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e"];
@@ -80,13 +89,6 @@ export default function Detalles() {
       <div className={styles.detalles_wrapper}>
         <h1>Detalles</h1>
         <div>
-          <div>
-            <select name="" id="">
-              <option value="">Anual</option>
-              <option value="">Mensual</option>
-              <option value="">Diario</option>
-            </select>
-          </div>
           <div>
             <div style={{ display: "flex" }}>
               <h5>Ingresos</h5>
@@ -98,50 +100,49 @@ export default function Detalles() {
             </div>
           </div>
           <div className={styles.seccion_wrapper}>
-            
-              <div className={styles.primer_wrapper}>
-                <PieChart width={400} height={400} >
-                  <Pie
-                    data={data1()}
-                    dataKey="value"
-                    nameKey={"name"}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={150}                  
-                    label={labelFormatter}
-                  >
-                    {data1().map((entry, index) => {
-                      return <Cell key={`cell-${index}`} fill={colors[index]}  />;
-                    })}
-                  </Pie>
-                  <Tooltip  />
-                  <Legend />
-                  
-                </PieChart>
-              </div>
-            
+            <div className={styles.primer_wrapper}>
+              <PieChart width={400} height={400}>
+                <Pie
+                  data={data1()}
+                  dataKey="value"
+                  nameKey={"name"}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={150}
+                  label={labelFormatter}
+                >
+                  {data1().map((entry, index) => {
+                    return <Cell key={`cell-${index}`} fill={colors[index]} />;
+                  })}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </div>
+
             <div>
-              <input type="text" />                                  
-              <div>
-                
-              </div>
+              <SearchBar />
             </div>
             <div className={styles.totales}>
               <img src={carrito} alt="LOL" />{" "}
-              <span> Gastos de Alimentos totales = ${totalAlimentos(usuario)} </span>
+              <span>
+                {" "}
+                Gastos de Alimentos totales = ${totalAlimentos(usuario)}{" "}
+              </span>
               <img src={viaje} alt="LOL" />{" "}
               <span> Gastos de Viajes totales = ${totalViajes(usuario)} </span>
               <img src={salud} alt="LOL" />{" "}
               <span> Gastos de Salud totales = ${totalSalud(usuario)} </span>
               <img src={combustible} alt="LOL" />{" "}
-              <span>Gastos de Combustible totales = ${totalCombustible(usuario)}</span>
+              <span>
+                Gastos de Combustible totales = ${totalCombustible(usuario)}
+              </span>
               <img src={ocio} alt="LOL" />{" "}
               <span>Gastos en Ocio totales = ${totalOcio(usuario)}</span>
             </div>
             <div className={styles.blocked_wrapper}>
               <div className={styles.blocked}>
                 <img src={lock} alt="" />
-                    
               </div>
             </div>
           </div>
