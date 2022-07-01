@@ -41,11 +41,28 @@ export default function Detalles() {
       console.log(prev, actual);
       return prev + actual.amount;
     }, 0);
+    const ingresosFijos = usuario?.Account.monthlyInput.reduce(
+      (prev, actual) => {
+        return prev + actual.amount;
+      },
+      0
+    );
+
     const gastos = usuario?.Account.variableExpenses.reduce((prev, actual) => {
       return prev + actual.amount;
     }, 0);
-    const total = gastos + ingresos;
-    const porcentajeGastos = Math.round((gastos * 100) / total);
+    const gastosFijos = usuario?.Account.monthlyExpenses.reduce(
+      (prev, actual) => {
+        return prev + actual.amount;
+      },
+      0
+    );
+
+    const totalGastos = gastos + gastosFijos;
+    const totalIngresos = ingresos + ingresosFijos;
+
+    const total = totalGastos + totalIngresos;
+    const porcentajeGastos = Math.round((totalGastos * 100) / total);
     const porcentajeIngreso = 100 - porcentajeGastos;
     return { porcentajeGastos, porcentajeIngreso };
   }
