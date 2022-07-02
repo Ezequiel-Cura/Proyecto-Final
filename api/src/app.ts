@@ -17,7 +17,7 @@ server.use(cookieparser());
 server.use(morgan("dev"));
 server.use(cors(
   {
-    origin: 'http://localhost:3000', 
+    origin: process.env.FRONT_URL || 'http://localhost:3000', 
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     allowedHeaders: ['Accept', 'Content-Type'],
     credentials: true
