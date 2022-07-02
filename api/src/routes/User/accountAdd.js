@@ -13,19 +13,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { key, value } = req.body;
+// router.post("/", authorization, async (req: any, res: Response) => {
+router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { frequency, key, value } = req.body;
+    const date = `${new Date().getMonth() + 1}-${new Date().getFullYear()}`;
+    // const id = req.userId
+    const id = "62c0a45f6ffc62c777c647de";
     try {
-        const user = yield User_1.default.findById(req.userId);
+        const user = yield User_1.default.findById(id);
         if (!user)
             return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
-        yield user[key].push(value).save();
-        res.status(200).send({ key, value: user[key] });
+        if (frequency === "monthly") {
+            yield user[frequency][key].push(value);
+            yield user.save();
+            res.status(200).send(user);
+        }
+        // else{
+        //   const accountUpdate = user.extra[key].findById(value._id)
+        // }
     }
     catch (err) {
+        console.log(err);
         res.status(400).send(err);
     }
 }));
