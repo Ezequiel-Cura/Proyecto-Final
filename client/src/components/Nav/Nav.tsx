@@ -39,9 +39,16 @@ const {usuario} = useAppSelector(({user}) => user)
                     <h4>Detalles</h4>
                 </div>
             </Link>
+            {usuario.role === "admin" &&
+            <Link to="/admin/controlPanel">
+                <div>   
+                    <h4>Panel de Control</h4>
+                </div>
+            </Link>
+            }
         </div>
-        <button onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
-            Logout
+        <button className={styles.logout} onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
+            Salir
         </button>
     </div>
   )
