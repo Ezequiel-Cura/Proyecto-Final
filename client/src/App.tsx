@@ -13,6 +13,7 @@ import Detalles from 'components/Detalles/Detalles';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { getUserInfo } from 'redux/reducers/userReducer';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
+import LostPage from 'components/LostPage/LostPage';
 
 export interface IMyProps {
   logged?: boolean
@@ -37,6 +38,7 @@ function App() {
       <Route path='/home/gastos' element={<ProtectedRoute logged={logged}><Gastos/></ProtectedRoute>}/>
       <Route path='/home/gastos/add' element={<ProtectedRoute logged={logged}><ConDatosGastos/></ProtectedRoute>}/>
       <Route path='/home/detalles' element={<ProtectedRoute logged={logged}><Detalles/></ProtectedRoute>}/>
+      <Route path="*" element={<LostPage/>}/>
     </Routes>
   );
 }
