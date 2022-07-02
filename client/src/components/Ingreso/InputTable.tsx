@@ -1,12 +1,13 @@
+import React, { useEffect, useState } from 'react';
 import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
-import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+
+//Actions
 import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory, deleteCategory } from "redux/reducers/userReducer";
 
 export default function InputTable() {
-  
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
@@ -16,6 +17,8 @@ export default function InputTable() {
       dispatch(totalInput())
     }
   }, [status])
+
+  //Typescript
   interface Value {
     description: string,
     amount: number,
@@ -30,7 +33,7 @@ export default function InputTable() {
     value: Value,
   }
 
-  //Delete:-----------------
+  //Delete
   interface idUndefined {
     _id: string | undefined
   }
@@ -41,6 +44,10 @@ export default function InputTable() {
     value: idUndefined
   }
 
+  interface keySelect {
+    keyInput: string
+  }
+
   const [input, setInput] = useState<Value>({
     category: '',
     description: '',
@@ -48,13 +55,14 @@ export default function InputTable() {
     date: '',
   });
 
-  interface keySelect {
-    keyInput: string
-  }
-
   const [selectKey, setSelectKey] = useState<keySelect>({
     keyInput: '',
   })
+
+  const form: AgregarIngresos = {
+    key: selectKey.keyInput,
+    value: input,
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
@@ -63,32 +71,25 @@ export default function InputTable() {
     })
   }
 
-  function handleSelectI(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
       ...selectKey,
       keyInput: e.target.value
     })
   }
 
-  function handleSelectC(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
     setInput({
       ...input,
       category: e.target.value
     })
   }
 
-  const form: AgregarIngresos = {
-    key: selectKey.keyInput,
-    value: input,
-  }
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+  //Form
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) { 
     e.preventDefault();
     console.log(form, 'form')
     dispatch(addDato(form));
-    // if(input.category === "Crear"){
-    //   dispatch(createCategory(category))
-    // }
     setInput({
       category: '',
       description: '',
@@ -100,7 +101,7 @@ export default function InputTable() {
     })
   }
 
-  //-------------------------------->Form de categorias
+  //Form de categorias
   interface category {
     id?: string,
     key: string | undefined,
@@ -125,8 +126,7 @@ export default function InputTable() {
     dispatch(deleteCategory(formCategory))
   }
 
-  //----------------------------------->Form DELETE categorias
-
+  //Form DELETE categorias
   const [formCategoryDelete, setFormCategoryDelete] = useState<category>({
     key: 'CategoriesInputs',
     value: ''
@@ -144,8 +144,9 @@ export default function InputTable() {
     console.log(formCategoryDelete)
     dispatch(deleteCategory(formCategoryDelete))
   }
-  //-----------------------------------------
 
+
+  //Selects/button
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
   }
@@ -175,7 +176,7 @@ export default function InputTable() {
     dispatch(getAllInputs())
   }
 
-  //Paginado---------------------------------------------------------------
+  //Paginado
   const [page, setPage] = useState(1);
   const [inputsPerPage, setinputsPerPage] = useState(5);
 
@@ -312,13 +313,13 @@ export default function InputTable() {
           <div className={styles.wrapperForms}>
           <form onSubmit={handleSubmit}>
             <div className={styles.form}>
-              <select value={selectKey.keyInput} onChange={handleSelectI}>
+              <select value={selectKey.keyInput} onChange={handleSelectInputs}>
                 <option>Selecciona el tipo</option>
                 <option value='monthlyInput'>Ingreso fijo</option>
                 <option value='extraInput'>Ingreso extra</option>
               </select>
 
-              <select value={input.category} onChange={handleSelectC}>
+              <select value={input.category} onChange={handleSelectCategories}>
                 <option>Selecciona una categoría</option>
                 {usuario.CategoriesInputs.length > 0
                   ? usuario.CategoriesInputs.map((category: string) =>
