@@ -167,7 +167,7 @@ export default function Detalles() {
                     return <Cell key={`cell-${index}`} fill={colors[index]} />;
                   })}
                 </Pie>
-                <Tooltip />
+                <Tooltip payload={data1()}/>
                 <Legend />
               </PieChart>
             </div>
