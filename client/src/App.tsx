@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 // COMPONENTS
@@ -14,30 +14,36 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { getUserInfo } from 'redux/reducers/userReducer';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
 import LostPage from 'components/LostPage/LostPage';
-
-export interface IMyProps {
-  logged?: boolean
-}
+import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
 
 function App() {
   const dispatch = useAppDispatch()
-  const usuario = useAppSelector((({user}) => user))
-  const [logged, setLogged] = useState(false)
+  const { usuario } = useAppSelector((({user}) => user))
+  console.log("role: ", usuario.role === "admin")
+  const [logged, setLogged] = useState(true)
 
   useEffect(()=> {
-    if(localStorage.getItem("logged")) dispatch(getUserInfo()).then(() => setLogged(true))
+    if(localStorage.getItem("logged")) dispatch(getUserInfo())
+    else setLogged(false)
   },[])
 
   return (
     <Routes>
       <Route path="/" element={<Landing/>}/>
-      <Route path='/home' element={<ProtectedRoute logged={logged}><Home/></ProtectedRoute>}/>
-      <Route path='/profile' element={<ProtectedRoute logged={logged}><Profile/></ProtectedRoute>} />
-      <Route path='/home/ingresos' element={<ProtectedRoute logged={logged}><Ingreso/></ProtectedRoute>}/>
-      <Route path='/home/ingresos/add' element={<ProtectedRoute logged={logged}><ConDatos/></ProtectedRoute>}/>
-      <Route path='/home/gastos' element={<ProtectedRoute logged={logged}><Gastos/></ProtectedRoute>}/>
-      <Route path='/home/gastos/add' element={<ProtectedRoute logged={logged}><ConDatosGastos/></ProtectedRoute>}/>
-      <Route path='/home/detalles' element={<ProtectedRoute logged={logged}><Detalles/></ProtectedRoute>}/>
+      <Route element={<ProtectedRoute isAllowed={logged}/>}>
+        <Route path='/home' element={<Home/>}/>
+        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/home/ingresos' element={<Ingreso/>}/>
+        <Route path='/home/ingresos/add' element={<ConDatos/>}/>
+        <Route path='/home/gastos' element={<Gastos/>}/>
+        <Route path='/home/gastos/add' element={<ConDatosGastos/>}/>
+        <Route path='/home/detalles' element={<Detalles/>}/>
+      </Route>
+      <Route path='/admin/controlPanel' element={
+      <ProtectedRoute isAllowed={logged && usuario.role === "admin"}>
+        <ControlPanel/>
+      </ProtectedRoute>
+      }/>
       <Route path="*" element={<LostPage/>}/>
     </Routes>
   );

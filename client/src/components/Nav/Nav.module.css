@@ -48,4 +48,5 @@
     width: min-content;
     align-self: center;
     color: white;
+    cursor: pointer;
 }
