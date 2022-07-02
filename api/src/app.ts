@@ -15,15 +15,14 @@ server.use(bodyparser.urlencoded({extended: true}));
 server.use(bodyparser.json());
 server.use(cookieparser());
 server.use(morgan("dev"));
-server.use(cors(
-  {
-    origin: ['https://proyecto-final-lime-beta.vercel.app'], 
-    methods: ['GET', 'PUT', 'POST', 'DELETE'],
-    allowedHeaders: ['Accept', 'Content-Type'],
-    credentials: true
-  }
-))
 
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', `${process.env.FRONT_URL}`); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  next();
+});
 
 server.get("/ping", (req: Request, res: Response) => {
     res.status(200).send("pong")
