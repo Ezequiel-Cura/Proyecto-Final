@@ -18,8 +18,20 @@ const authorization_1 = __importDefault(require("../../middleware/authorization"
 const router = (0, express_1.Router)();
 router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, firstName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs, role } = yield User_1.default.findById(req.userId);
-        res.status(200).send({ email, firstName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs, role });
+        const user = yield User_1.default.findById(req.userId).select({
+            _id: 0,
+            firstName: 1,
+            lastName: 1,
+            avatar: 1,
+            premium: 1,
+            role: 1,
+            savings: 1,
+            fees: 1,
+            monthly: 1,
+            extra: 1,
+            categories: 1
+        });
+        res.status(200).send(user);
     }
     catch (err) {
         res.status(404).send(err.message);

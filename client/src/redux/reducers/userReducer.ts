@@ -1,6 +1,48 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { info } from "console";
+
+import { registerUser } from '../modules/registerUser'
+
+import { loginUser } from '../modules/loginUser'
+
+import { googleLogin } from '../modules/googleLogin'
+
+import { logout } from '../modules/logout'
+
+import { getUserInfo } from '../modules/getUserInfo'
+
+import { addDato } from '../modules/addDato'
+
+import { deleteDato } from '../modules/deleteDato'
+
+import { addCategory } from '../modules/addCategory'
+
+import { deleteCategory } from '../modules/deleteCategory'
+
+export const addSaving: any = createAsyncThunk("user/addSaving",
+  async (ingreso, { rejectWithValue }) => {
+    try {
+
+      const { data } = await axios.post("/user/savings", ingreso)
+
+      return data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  })
+
+  export const deleteSaving: any = createAsyncThunk("user/deleteSaving",
+  async (ingreso: any, { rejectWithValue }) => {
+    try {
+      let deleteEntry: any = await axios.delete("/user/savings", {
+        data: ingreso
+      });
+      return deleteEntry.data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
 
 interface Entries {
   _id?: string,
@@ -11,7 +53,7 @@ interface Entries {
   end?: string
 }
 interface User {
-  usuario: any   
+  usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
   allInputs: Entries[] | [],
   allExpenses: Entries[] | [],
@@ -26,15 +68,16 @@ const initialState: User = {
     lastName: '',
     email: '',
     password: '',
-    Saving: [],
-    CategoriesExpenses: [],
-    CategoriesInputs: [],
-    Account: {
-      monthlyInput: [],
-      extraInput: [],
-      monthlyExpenses: [],
-      variableExpenses: [],
+    savings: [],
+
+    monthly: {
+      input: [],
+      output: []
     },
+    extra: {
+      input: [],
+      output: []
+    }
   },
   status: 'idle',
   allInputs: [],  //Estado de entradas para ordenar o filtrar
@@ -43,142 +86,20 @@ const initialState: User = {
   totalInputsMonth: 0
 }
 
-export const registerUser: any = createAsyncThunk("user/registerUser",
-  async (user, { rejectWithValue }) => {
-    try {
-      await axios.post("/user/register", user)
-      localStorage.setItem("logged", "true")
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-export const loginUser: any = createAsyncThunk("user/loginUser",
-  async (user, { rejectWithValue }) => {
-    try {
-      await axios.post("/user/login", user)
-      localStorage.setItem("logged", "true")
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-export const googleLogin: any = createAsyncThunk("user/googleLogin",
-  async (jwt) => {
-    await axios.post("/user/googleLogin", { jwt: jwt })
-    localStorage.setItem("logged", "true")
-  })
-
-export const logout: any = createAsyncThunk("user/logout",
-  async () => {
-    await axios.post("/user/logout")
-    localStorage.removeItem("logged")
-  })
-
-export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
-  async () => {
-    const { data } = await axios.get("/user/getUserInfo")
-    return data
-  })
-
-export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo", 
-async (info: any)=> {
-  const {data} = await axios.put("/user/update", info)
-  return data
-})
+//getAllInputs -----> modifica allInputs
+//getAllExpenses ---> modifica allExpenses
+//totalInput -------> 
 
 export const uploadImage: any = createAsyncThunk("user/uploadImage",
   async (info: any) => {
     let formData = new FormData();
     formData.append("file", info.img)
     formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)
-    const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload", formData, { withCredentials: false })
-    const {data} = await axios.put("/user/update", { key: "avatar", value: result.data.url })
+    const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload",
+      formData, { withCredentials: false });
+    const { data } = await axios.put("/user", { id: info.id, key: "avatar", value: result.data.url });
     return data
-})
-
-//-----------------------------------------
-export const addDato: any = createAsyncThunk("user/addIngreso",
-  async (ingreso, { rejectWithValue }) => {
-    try {
-
-      const { data } = await axios.post(`/user/account`, ingreso)
-      return data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
-  async (ingreso: any, { rejectWithValue }) => {
-    try {
-      let deleteEntry: any = await axios.delete("/user/account", {
-        data: {
-          source: ingreso
-        }
-      });
-      return deleteEntry.data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  }
-)
-
-export const addCategory: any = createAsyncThunk("user/addCategory",
-  async (ingreso, { rejectWithValue }) => {
-    try {
-
-      const { data } = await axios.post(`/user/category`, ingreso)
-
-      return data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-  export const deleteCategory: any = createAsyncThunk("user/deleteCategory",
-  async (ingreso: any, { rejectWithValue }) => {
-    try {
-      let deleteEntry: any = await axios.delete("/user/category", {
-        data: ingreso
-      });
-      return deleteEntry.data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  }
-)
-export const addSaving: any = createAsyncThunk("user/addSaving",
-  async (ingreso, { rejectWithValue }) => {
-    try {
-
-      const { data } = await axios.post(`/user/saving`, ingreso)
-
-      return data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  })
-
-  export const deleteSaving: any = createAsyncThunk("user/deleteSaving",
-  async (ingreso: any, { rejectWithValue }) => {
-    try {
-      let deleteEntry: any = await axios.delete("/user/saving", {
-        data: ingreso
-      });
-      return deleteEntry.data
-    } catch (err: any) {
-      return rejectWithValue(err.response.data)
-    }
-  }
-)
-
-
-  //getAllInputs -----> modifica allInputs
-  //getAllExpenses ---> modifica allExpenses
-  //totalInput -------> 
-
-
+  });
 
 const reducerSlice = createSlice({
   name: "user",
@@ -195,13 +116,13 @@ const reducerSlice = createSlice({
     totalInput: (state) => {
       let curAllInputState = current(state);
       let reduceTotal = 0
-      curAllInputState.allInputs.forEach( entrie => reduceTotal+= entrie.amount)
+      curAllInputState.allInputs.forEach(entrie => reduceTotal += entrie.amount)
       state.totalInputsMonth = reduceTotal
     },
     totalExpenses: (state) => {
       let curAllInputState = current(state);
       let reduceTotalExp = 0
-      curAllInputState.allExpenses.forEach( entrie => reduceTotalExp+= entrie.amount)
+      curAllInputState.allExpenses.forEach(entrie => reduceTotalExp += entrie.amount)
       state.totalExpensesMonth = reduceTotalExp
     },
     expensesFilterByMonth: (state, { payload }) => {
@@ -265,24 +186,24 @@ const reducerSlice = createSlice({
       let extra = currentInputFrequency.usuario.Account.extraInput
 
       const inputsByFrequency = payload === 'fijo'
-        ? monthly       
-        : extra   
+        ? monthly
+        : extra
 
       return {
         ...state,
         allInputs: inputsByFrequency
       }
     },
-    filterInputByCategory (state, {payload}) {
+    filterInputByCategory(state, { payload }) {
       let currentInputState = current(state)
       let allEntriesOfInputs = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
-      let filterInputByCategory = allEntriesOfInputs.filter( (obj : Entries) => payload === obj.category)
+      let filterInputByCategory = allEntriesOfInputs.filter((obj: Entries) => payload === obj.category)
       state.allInputs = filterInputByCategory
     },
-    filterExpensesByCategory (state, {payload}) {
+    filterExpensesByCategory(state, { payload }) {
       let curExpState = current(state)
       const allEntriesOfExpenses = [...curExpState.usuario.Account.monthlyExpenses, ...curExpState.usuario.Account.variableExpenses]
-      let filterExpenseByCategory = allEntriesOfExpenses.filter( (obj : Entries) => payload === obj.category)
+      let filterExpenseByCategory = allEntriesOfExpenses.filter((obj: Entries) => payload === obj.category)
       state.allExpenses = filterExpenseByCategory
     },
   },
@@ -333,16 +254,16 @@ const reducerSlice = createSlice({
     [getUserInfo.rejected]: (state) => {
       state.status = "failed"
     },
-    [updatePersonalInfo.pending]: (state) => {
-      state.status = "loading"
-    },
-    [updatePersonalInfo.fulfilled]: (state, { payload }) => {
-      state.status = "success"
-      state.usuario[payload.key] = payload.value
-    },
-    [updatePersonalInfo.rejected]: (state) => {
-      state.status = "failed"
-    },
+    // [updatePersonalInfo.pending]: (state) => {
+    //   state.status = "loading"
+    // },
+    // [updatePersonalInfo.fulfilled]: (state, { payload }) => {
+    //   state.status = "success"
+    //   state.usuario[payload.key] = payload.value
+    // },
+    // [updatePersonalInfo.rejected]: (state) => {
+    //   state.status = "failed"
+    // },
 
     //---------------------------------------------------------
     [addDato.pending]: (state) => {
@@ -417,13 +338,13 @@ const reducerSlice = createSlice({
     },
   }
 })
-export const { 
-  inputsFilterByMonth, 
+export const {
+  inputsFilterByMonth,
   totalInput,
   totalExpenses,
-  getAllInputs, 
-  getAllExpenses, 
-  inputsOrderByAmount, 
+  getAllInputs,
+  getAllExpenses,
+  inputsOrderByAmount,
   expensesOrderByAmount,
   expensesFilterByMonth,
   expensesFilterByFrequency,
@@ -433,3 +354,4 @@ export const {
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;
+

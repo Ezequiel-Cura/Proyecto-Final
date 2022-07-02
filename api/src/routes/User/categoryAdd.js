@@ -20,22 +20,13 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
     const { key, value } = req.body;
     const id = req.userId;
     try {
-        const user = yield User_1.default.findById(id).select({ _id: 0, email: 1, firstName: 1, lastName: 1, avatar: 1, Account: 1, Saving: 1, premium: 1, CategoriesExpenses: 1, CategoriesInputs: 1 });
+        const user = yield User_1.default.findById(id);
         if (!user)
             return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
-        if (key === "CategoriesExpenses") {
-            user.CategoriesExpenses.push(value);
-            yield user.save();
-            return res.status(200).send(user);
-        }
-        else if (key === "CategoriesInputs") {
-            user.CategoriesInputs.push(value);
-            yield user.save();
-            res.status(200).send(user);
-        }
+        yield user.categories.push(value).save();
+        res.status(200).send({ key, value: user[key] });
     }
     catch (err) {
-        console.log("ERROR:--->", err);
         res.status(400).send(err);
     }
 }));

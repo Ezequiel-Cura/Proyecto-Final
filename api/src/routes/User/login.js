@@ -24,8 +24,9 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).send('Usuario inexistente');
         const passwordCompare = yield bcrypt_1.default.compare(password, user.password);
         if (passwordCompare) {
+            const { firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories } = user;
             const token = user.generateAuthToken();
-            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).end();
+            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).send({ firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories });
         }
         res.status(400).end();
     }

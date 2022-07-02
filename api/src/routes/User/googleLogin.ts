@@ -17,7 +17,13 @@ router.post("/", async (req: Request, res: Response) => {
         const validPassword = await bcrypt.compare(password, user.password)
         if (!validPassword) return res.status(400).send("La contraseña es incorrecta")
         const token = user.generateAuthToken()
-        return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).end()
+        const {firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories} = user
+        return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories})
+    } else {
+        const newUser: any = await new User({userName: given_name, email, password: passwordHash, avatar: picture}).save()
+        const token = newUser.generateAuthToken()
+        const {firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories} = newUser
+        res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).send({firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories})
     }
     const newUser: any = await new User({firstName: given_name, email, password: passwordHash, avatar: picture}).save()
     const token = newUser.generateAuthToken()

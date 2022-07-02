@@ -23,7 +23,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
-            user.Saving.push(value);
+            user.savings.push(value);
             yield user.save();
             res.status(200).send(user);
         }
