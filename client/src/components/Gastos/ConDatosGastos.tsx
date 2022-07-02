@@ -203,7 +203,7 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-            {allOutputs.length > 0 ?allOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+            {allOutputs.length > 0 ?allOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
                   detalles.source === 'monthlyExpenses' 
                   ? (<tr className={styles.monthlyInput}>

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllExpenses } from 'redux/reducers/userReducer';
 
 export default function Gastos() {
-  const { allExpenses, status } = useAppSelector(state => state.user);
+  const { allOutputs, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function Gastos() {
   
   return (
     <div>
-        { allExpenses.length > 0 ? <ConDatosGastos/> : <SinDatosGastos/> }
+        { allOutputs.length > 0 ? <ConDatosGastos/> : <SinDatosGastos/> }
     </div>
   )
 }
