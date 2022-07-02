@@ -91,6 +91,7 @@ const userSchema = new Schema<IUser>({
         name: String,
         category: String,
         amount: Number,
+        description: String
       }]
     }],
   },
