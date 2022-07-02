@@ -17,7 +17,7 @@ server.use(cookieparser());
 server.use(morgan("dev"));
 server.use(cors(
   {
-    origin: "https://proyecto-final-lime-beta.vercel.app", 
+    origin: ['https://proyecto-final-lime-beta.vercel.app'], 
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     allowedHeaders: ['Accept', 'Content-Type'],
     credentials: true
