@@ -33,4 +33,4 @@ router.post("/", authorization, async (req: any, res: Response) => {
 
 });
 
-export default router
+export default router;

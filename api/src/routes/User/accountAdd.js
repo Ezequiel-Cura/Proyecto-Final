@@ -13,14 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-// router.post("/", authorization, async (req: any, res: Response) => {
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // router.post("/", async (req: any, res: Response) => {
     const { frequency, key, value } = req.body;
     const date = `${new Date().getMonth() + 1}-${new Date().getFullYear()}`;
-    // const id = req.userId
-    const id = "62c0a45f6ffc62c777c647de";
+    const id = req.userId;
+    // const id = "62c0a45f6ffc62c777c647de"
     try {
         const user = yield User_1.default.findById(id);
         if (!user)
@@ -30,9 +31,12 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             yield user.save();
             res.status(200).send(user);
         }
-        // else{
-        //   const accountUpdate = user.extra[key].findById(value._id)
-        // }
+        else {
+            // const accountUpdate = user.extra[key].findById(value._id) No entiendo lo del date
+            yield user[frequency][key].entries.push(value);
+            yield user.save();
+            res.status(200).send(user);
+        }
     }
     catch (err) {
         console.log(err);
