@@ -16,7 +16,7 @@ const User_1 = __importDefault(require("../models/User"));
 const admin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield User_1.default.findById(req.userId);
-        if (user.role !== "admin")
+        if (user.role !== 'admin')
             return res.status(403).send("User is not an admin");
         next();
     }

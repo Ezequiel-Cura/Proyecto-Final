@@ -29,7 +29,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).send(err.message);
     }
 }));
 exports.default = router;

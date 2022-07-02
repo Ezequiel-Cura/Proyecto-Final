@@ -12,24 +12,21 @@ router.post("/", authorization, async (req: any, res: Response) => {
   const id = req.userId
 
   try {
-    const user = await User.findById(id)
+    const user = await User.findById(id).select({_id: 0, email: 1, firstName: 1, lastName: 1, avatar: 1, Account: 1, Saving: 1, premium: 1, CategoriesExpenses: 1, CategoriesInputs: 1})
 
-    if (!user) {
-      res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
-    } else {
-      const { email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user
+    if (!user) return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
+    
+    if (key === "CategoriesExpenses") {
+
+      user.CategoriesExpenses.push(value)
+      await user.save()
+      return res.status(200).send(user)
+    
+    } else if (key === "CategoriesInputs") {
       
-      if (key === "CategoriesExpenses") {
-
-        user.CategoriesExpenses.push(value)
-        await user.save()
-        res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs })
-     
-      } else if (key === "CategoriesInputs") {
-        user.CategoriesInputs.push(value)
-        await user.save()
-        res.status(200).send({ email, userName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs })
-      }
+      user.CategoriesInputs.push(value)
+      await user.save()
+      res.status(200).send(user)
     }
   }
   catch (err) {

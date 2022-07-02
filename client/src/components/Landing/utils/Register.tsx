@@ -1,8 +1,8 @@
-import React from 'react'
-import styles from "./Landing.module.css"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import React, { useEffect } from 'react'
+import styles from "../Landing.module.css"
+import { Link, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { registerUser } from "redux/reducers/userReducer"
+import { googleLogin, registerUser } from "redux/reducers/userReducer"
 import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
 
@@ -15,21 +15,39 @@ export default function Register() {
     password: Yup.string().min(4, "Tu contraseña es muy corta").max(30, "wtf re largo eso").required("dale amigo q onda no tenes contraseña")
   });
   const dispatch = useAppDispatch()
+  useEffect(()=>{
+    /* global google */
+    google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_ID,
+        callback: handleGoogleLogin
+        })
+    google.accounts.id.renderButton(
+        document.getElementById("signInDiv"),
+        {width: "100%",longtitle: true,theme: 'dark'}
+        )
+    },[])
+    
+    function handleGoogleLogin(response: any) {
+    dispatch(googleLogin(response.credential))
+    .then(()=> {
+      navigate("/home")
+      window.location.reload()
+    })}
   return (
     <div  className={styles.formContainer}>
-       <div className={styles.textContainer}>
-          <h3>Bienvenido! Registrate</h3>
-        </div>
+      <div className={styles.textContainer}>
+        <h3>Bienvenido! Registrate</h3>
+      </div>
       <Formik 
         initialValues={{firstName: "", lastName: "", email: "", password: ""}}
         validationSchema={SignupSchema}
         onSubmit={(values, {setFieldError}) => {
           return dispatch(registerUser(values))
           .then((resp: any) => {
-            if (resp.error) return setFieldError("email", resp.payload)
-            navigate("/home");
-          })}
-      }>
+              if (resp.error) return setFieldError("email", resp.payload)
+              navigate("/home")
+              window.location.reload()
+          })}}>
         {() => (
             <Form className={styles.form}>
             <Field className={styles.input}name="firstName" type="text" placeholder="Nombre"/>
@@ -46,9 +64,8 @@ export default function Register() {
                 <Link to="/" state={{registered: true}} style={{marginLeft: "3px", textDecoration: 'none', color: "var(--btn-color)"}}>Inicia Sesión</Link>
               </div>
             </div>
-            <div className={styles.buttonContainer}>
-              <button type="submit" className={styles.button}>Registrarme</button>
-            </div>
+            <button type="submit" className={styles.button}>Registrarme</button>
+            <div id="signInDiv" className={styles.googleLogin}/>
           </Form>
         )}
       </Formik> 
