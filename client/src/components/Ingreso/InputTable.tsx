@@ -1,11 +1,11 @@
-import styles from "./ConDatos.module.css";
+import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory, deleteCategory } from "redux/reducers/userReducer";
 
-export default function ConDatos() {
+export default function InputTable() {
   
   const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();

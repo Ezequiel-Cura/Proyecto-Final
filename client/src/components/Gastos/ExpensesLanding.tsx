@@ -1,18 +1,18 @@
-import styles from "./Ingreso.module.css";
+import styles from "../Ingreso/Input.module.css";
 import React from 'react';
-import img from "../../assets/ingreso.svg";
+import img from "../../assets/imgExpenses.svg";
 import { Link } from "react-router-dom";
 import Nav from "components/Nav/Nav";
 
-export default function SinDatos() {
+export default function ExpensesLanding() {
     return (
       <div className={styles.wrapperAllIngreso}>
         <Nav/>
         <div className={styles.wrapperText}>
-          <h1>Comienza a administrar tus <b>ingresos</b></h1>
+          <h1>Comienza a controlar tus <b>gastos</b></h1>
           <div className={styles.wrapperLink}>
             <p>Crea una nueva plantilla ahora!</p>
-            <Link to="/home/ingresos/add">
+            <Link to="/home/gastos/add">
               <button>+</button>
             </Link>
           </div>
