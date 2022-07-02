@@ -11,7 +11,7 @@
     "server": "tsnd --respawn ./src/index.ts",
     "compile": "tsc && node app.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run compile\"",
-    "start":"tsnd --respawn ./src/index.ts"
+    "start": "nodemon -L ./src/index.js"
   },
   "author": "",
   "license": "ISC",
