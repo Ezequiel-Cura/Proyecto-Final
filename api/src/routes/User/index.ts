@@ -1,6 +1,5 @@
 import { Router } from "express";
 const router = Router()
-
 import register from './register'
 import login from './login'
 import googleLogin from './googleLogin'
