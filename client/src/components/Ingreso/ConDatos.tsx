@@ -86,9 +86,7 @@ export default function ConDatos() {
     e.preventDefault();
     console.log(form, 'form')
     dispatch(addDato(form));
-    // if(input.category === "Crear"){
-    //   dispatch(createCategory(category))
-    // }
+
     setInput({
       category: '',
       description: '',

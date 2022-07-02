@@ -19,7 +19,7 @@ const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.get("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allUsers = yield User_1.default.find({}).select({ "userName": 1, "lastName": 1, "email": 1, "role": 1, "premium": 1 });
+        const allUsers = yield User_1.default.find({}).select({ firstName: 1, lastName: 1, email: 1, role: 1, premium: 1 });
         res.status(200).send(allUsers);
     }
     catch (err) {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import styles from "./Landing.module.css"
+import styles from "../Landing.module.css"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { googleLogin, loginUser } from "redux/reducers/userReducer"
@@ -28,9 +28,11 @@ export default function Login() {
     
     function handleGoogleLogin(response: any) {
     dispatch(googleLogin(response.credential))
-    .then(()=> navigate("/home"))
-    }
-
+    .then((resp: any)=> {
+        if (resp.error) return
+        navigate("/home")
+        window.location.reload()
+    })}
 
   return (
     <div className={styles.formContainer}>
@@ -40,21 +42,16 @@ export default function Login() {
         }
         </div>
         <Formik
-        initialValues={{
-            email: "",
-            password: "",
-            message: ""
-        }}
+        initialValues={{ email: "", password: "", message: "" }}
         validationSchema={SigninSchema}
         onSubmit = {(({email, password}, {setFieldError}) => {
         return dispatch(loginUser({email, password}))
             .then((resp: any)=> {
                 if (resp.error) return setFieldError("message", resp.payload)
                 navigate("/home")
-            })
-        })
-        }>
-            {({isSubmitting}) => (
+                window.location.reload()
+            })})}>
+            {() => (
                 <Form className={styles.form}>
                     <Field className={styles.input} style={{padding: "10px 20px"}} name="email" type="text" placeholder="Email"/>
                     <ErrorMessage className={styles.errorMessage} name="email" component="span"/>
@@ -62,18 +59,13 @@ export default function Login() {
                     <ErrorMessage className={styles.errorMessage} name="password" component="span"/>
                     <ErrorMessage className={styles.errorMessage} name="message" component="span"/>
                     <div className={styles.buttons}>
-                    {
-                        state.message ? <h4 style={{color: "rgba(3, 224, 21, 1)"}}>Esta es la mejor aplicación para controlar tus finanzas que vas a encontrar 💸</h4> :  
                         <div style={{display: "flex", marginTop: "2px", flexDirection: "row", alignItems: "top"}}>
                             <h4 style={{margin: "0px"}}>No tienes cuenta?</h4>
                             <Link to="/" state={{registered: false}} style={{marginLeft: "3px", color: "var(--btn-color)"}}>Registrate</Link>
                         </div>
-                    }
                     </div>
-                    <div className={styles.buttonContainer}>
-                        <button type="submit" className={styles.button}>Conectate</button>
-                        <button id="signInDiv"></button>
-                    </div>
+                    <button type="submit" className={styles.button}>Conectate</button>
+                    <div id="signInDiv" className={styles.googleLogin}/>
                 </Form>
             )}
         </Formik>

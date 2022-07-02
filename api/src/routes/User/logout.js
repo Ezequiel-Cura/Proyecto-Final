@@ -7,6 +7,6 @@ const express_1 = require("express");
 const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const router = (0, express_1.Router)();
 router.post("/", authorization_1.default, (req, res) => {
-    res.clearCookie("access_token").status(200).send({ message: "Successfully logged out" });
+    res.clearCookie("access_token").status(200).end();
 });
 exports.default = router;
