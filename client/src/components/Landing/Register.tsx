@@ -2,7 +2,7 @@ import React from 'react'
 import styles from "./Landing.module.css"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { registerUser } from "redux/reducers/userReducer"
+import { registerUser } from "redux/modules/registerUser"
 import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
 

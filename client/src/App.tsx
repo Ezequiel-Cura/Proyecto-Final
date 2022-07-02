@@ -11,7 +11,7 @@ import Gastos from 'components/Gastos/Gastos';
 import ConDatosGastos from 'components/Gastos/ConDatosGastos';
 import Detalles from 'components/Detalles/Detalles';
 import { useAppDispatch } from 'redux/hooks';
-import { getUserInfo } from 'redux/reducers/userReducer';
+import { getUserInfo } from 'redux/modules/getUserInfo';
 
 function App() {
   const dispatch = useAppDispatch()

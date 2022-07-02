@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import styles from "./Nav.module.css"
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
-import { logout } from 'redux/reducers/userReducer'
+import { logout } from 'redux/modules/logout'
 
 
 export default function Nav() {
