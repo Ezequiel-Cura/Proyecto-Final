@@ -89,6 +89,7 @@ const userSchema = new Schema<IUser>({
       entries: [{
         date: { type:Date, default: Date.now() },
         name: String,
+        description: String,
         category: String,
         amount: Number,
       }]
