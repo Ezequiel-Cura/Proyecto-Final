@@ -38,7 +38,6 @@ export default function Detalles() {
   };
   function calculate() {
     const ingresos = usuario?.Account.extraInput.reduce((prev, actual) => {
-      console.log(prev, actual);
       return prev + actual.amount;
     }, 0);
     const ingresosFijos = usuario?.Account.monthlyInput.reduce(
@@ -83,27 +82,59 @@ export default function Detalles() {
     const gastos = usuario.Account.variableExpenses.reduce((prev, actual) => {
       return prev + actual.amount;
     }, 0);
-    console.log(gastos);
+    const gastosFijos = usuario?.Account.monthlyExpenses.reduce(
+      (prev, actual) => {
+        return prev + actual.amount;
+      },
+      0
+    );
+    const total = gastos + gastosFijos
+    console.log(total)
     let data1 = usuario?.Account.variableExpenses.reduce((c, v) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
     }, {});
+    let data2 = usuario?.Account.monthlyExpenses.reduce((c, v) => {
+      c[v.category] = (c[v.category] || 0) + v.amount;
+      return c;
+    }, {})
+  
     const data = [];
+
     for (const key in data1) {
       data.push({
         name: key,
-        value: Math.round((data1[key] * 100) / gastos),
+        value: Math.round((data1[key] * 100) / total),
         unit: "%",
       });
     }
-    return data;
+    for (const key in data2) {
+      data.push({
+        name: key,
+        value: Math.round((data2[key] * 100) / total),
+        unit: "%",
+      })
+    }
+    const ulData = data.reduce((c, v) => {
+      c[v.name] = (c[v.name] || 0) + v.value;
+      return c;
+    }, {})
+    const elData = []
+    for (const key in ulData) {
+     elData.push({
+        name: key,
+        value: ulData[key],
+        unit: "%",
+     })
+    }
+    return elData;
   };
   const labelFormatter = ({ value }) => {
     return value + "%";
   };
-  console.log(usuario.Account ? data1() : null);
-
-  const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e"];
+  
+ 
+  const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e","#7fffd4","#a864ca"];
   return (
     <div>
       <Nav />
