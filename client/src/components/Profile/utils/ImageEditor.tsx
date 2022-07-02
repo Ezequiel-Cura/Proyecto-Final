@@ -24,6 +24,7 @@ function handleCropImage(editor: any) {
 }
 
 function submitImage() {
+    if (image === "") return setImageEditor(false)
     const img = avatarEditor.getImageScaledToCanvas().toDataURL()
     dispatch(uploadImage({img, id: usuario._id}))
     setImageEditor(false)
@@ -40,13 +41,13 @@ function submitImage() {
                     {
                         image ? null : <p style={{userSelect: "none", position: "absolute"}}>Suelta tu imagen aquí</p>
                     }
-                    <AvatarEditor ref={handleCropImage} border={image ? 3 : 0} width={300} color={[255, 255, 255, 0.9]} image={image} className={styles.avatarEditor} style={image ? {cursor: "grab", borderRadius: "4px"} : {cursor: "default"}}/>
+                    <AvatarEditor ref={handleCropImage} border={image ? 3 : 0} width={200} color={[255, 255, 255, 0.9]} image={image} className={styles.avatarEditor} style={image ? {cursor: "grab", borderRadius: "4px"} : {cursor: "default"}}/>
                 </div>
                 )}
             </Dropzone>
         <div className={styles.bottomAvatarEditorContainer}>
         <input className={styles.imageInput} accept=".jpg, .jpeg, .png" type="file" multiple={false} onChange={handleImage}/>
-        <button className="btn" style={{width: "30%"}} onClick={submitImage}>Aceptar</button>
+        <button className={styles.acceptButton} style={{width: "30%"}} onClick={submitImage}>Aceptar</button>
         </div>
         <button className={styles.closeButton} onClick={() => setImageEditor(false)}><i className='material-icons'>close</i></button>
     </div>
