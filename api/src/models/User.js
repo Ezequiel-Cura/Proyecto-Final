@@ -64,6 +64,7 @@ const userSchema = new mongoose_1.Schema({
                         description: String,
                         category: String,
                         amount: Number,
+                        description: String
                     }]
             }],
     },
