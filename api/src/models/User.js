@@ -17,7 +17,8 @@ const userSchema = new mongoose_1.Schema({
             name: { type: String, required: true },
             start: { type: Date, required: true, default: Date.now() },
             end: Date,
-            amount: Number,
+            goal: Number,
+            currentAmount: Number,
             depositPlace: String,
             currency: { type: String, required: true, default: "Peso Argentino" },
         }],
@@ -60,6 +61,7 @@ const userSchema = new mongoose_1.Schema({
                 entries: [{
                         date: { type: Date, default: Date.now() },
                         name: String,
+                        description: String,
                         category: String,
                         amount: Number,
                     }]

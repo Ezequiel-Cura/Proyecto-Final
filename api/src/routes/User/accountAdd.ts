@@ -5,8 +5,9 @@ import User from "../../models/User";
 
 const router = Router()
 
-router.post("/", authorization, async (req: any, res: Response) => {
-  const { key, value } = req.body
+router.post("/", /*authorization,*/ async (req: any, res: Response) => {
+  const { frequency, key, value } = req.body
+  const id = '62c09ab0d2011cc8fa898e6c'
   try {
     const user: any = await User.findById(req.userId)
     if (!user) return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)

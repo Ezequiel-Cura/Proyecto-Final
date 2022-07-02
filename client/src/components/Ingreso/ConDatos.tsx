@@ -3,7 +3,7 @@ import stylesPag from "./Pagination.module.css"
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, } from "redux/reducers/userReducer";
+import { getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, getCurrentMonthInput, } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
 import {addCategory} from 'redux/modules/addCategory'
@@ -20,6 +20,7 @@ export default function ConDatos() {
       dispatch(totalInput())
     }
   }, [status])
+  
   interface Value {
     description: string,
     amount: number,
