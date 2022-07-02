@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import styles from "../Landing.module.css"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { googleLogin, loginUser } from "redux/reducers/userReducer"
+import { googleLogin } from './../../../redux/modules/googleLogin'
+import { loginUser } from './../../../redux/modules/loginUser'
 import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
 

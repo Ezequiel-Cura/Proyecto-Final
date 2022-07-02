@@ -8,4 +8,3 @@ async (jwt) => {
   localStorage.setItem("logged", "true")
   return data
 })
-

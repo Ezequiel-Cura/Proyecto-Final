@@ -3,10 +3,13 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {  addDato, deleteDato, filterExpensesByCategory, getAllExpenses, expensesFilterByFrequency, expensesFilterByMonth, expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
+import { filterExpensesByCategory, getAllExpenses, expensesFilterByFrequency, expensesFilterByMonth, expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
+import {addDato} from 'redux/modules/addDato'
+import {deleteDato} from 'redux/modules/deleteDato'
+
 
 export default function ConDatos() {
-   const { usuario, allExpenses, totalExpensesMonth, status } = useAppSelector( state => state.user);
+   const { usuario, allOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -113,7 +116,7 @@ export default function ConDatos() {
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-    for(let i = 1; i <= Math.ceil(allExpenses.length/inputsPerPage); i++){
+    for(let i = 1; i <= Math.ceil(allOutputs.length/inputsPerPage); i++){
       pageNumber.push(i)
   }
 
@@ -200,7 +203,7 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-            {allExpenses.length > 0 ? allExpenses.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+            {allOutputs.length > 0 ?allOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
                 return (
                   detalles.source === 'monthlyExpenses' 
                   ? (<tr className={styles.monthlyInput}>
