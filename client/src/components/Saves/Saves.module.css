@@ -1,0 +1,94 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapperAll {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    background-color: rgb(61, 26, 95);
+}
+
+.title {
+    width: 100%;
+    color: #D2D2D2;
+    font-weight: lighter;
+}
+
+.wrapperAllSaves {
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+}
+
+.wrapperSave {
+    display: flex;
+    flex-direction: row;
+    width: 1000px;
+    height: 150px;
+    border-radius: 20px;
+    background-color: #C6EC59;
+}
+
+.name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: #C6EC59;
+}
+.name h1 {
+    color: white;
+    font-size: 3.1rem;
+    font-weight: lighter;
+}
+
+.name p {
+    font-weight: lighter;
+    font-size: 1.2rem;
+}
+
+.wrapperTable{
+    width: 75%;
+    border-radius: 20px;
+    background-color: #333333;
+}
+
+.wrapperNewSave {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 700px;
+    border-radius: 20px;
+    background-color: #00BFA6;
+}
+
+.wrapperNewSave button {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    width: 57px;
+    height: 56px;
+    color: #00BFA6;
+    font-size: 40px;
+    border: none;
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.wrapperNewSave button:hover {
+    font-weight: bold;
+    color: white;
+    border-color:rgb(118, 189, 3) ;
+    background-color: rgb(118, 189, 3) ;
+}
