@@ -1,12 +1,10 @@
 import { Router } from "express";
+import User from './User';
+import Admin from "./Admin"
 
- const router = Router()
-// Backup:
-// import routeUserNoSql from '../../backup/routeUserNoSql'
-// router.use('/test', routeUserNoSql)
+const router = Router()
 
-import routesUser from './routesUser';
-
- router.use("/", routesUser)
+router.use("/user", User)
+router.use("/admin", Admin)
 
 export default router

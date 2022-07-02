@@ -1,12 +1,16 @@
 import styles from "./Landing.module.css"
-import { useLocation } from "react-router-dom";
-import React from 'react';
-import Login from "./Login";
-import Register from "./Register";
+import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import Login from "./utils/Login";
+import Register from "./utils/Register";
 
 
 export default function Landing() {
   const {state} : any = useLocation()
+  const navigate = useNavigate()
+  useEffect(() => {
+    if(localStorage.getItem("logged")) navigate("/home")
+  },[])
   return (
     <div className={styles.wrapper}>
       <div className={styles.welcome}>

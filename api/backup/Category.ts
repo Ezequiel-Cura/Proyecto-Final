@@ -7,7 +7,7 @@ interface ICategory{
 }
 
 const CategorySchema = new Schema<ICategory>({
-    name: {type: String, required: true}  
+    name: {type: String, required: true}
 })
 
 

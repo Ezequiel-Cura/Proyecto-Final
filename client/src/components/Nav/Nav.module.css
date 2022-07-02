@@ -38,3 +38,15 @@
     background-color: lightslategray;
     border-radius: 30px;
 }
+
+.logout {
+    background-color: #00BFA6;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    letter-spacing: 1.5px;
+    width: min-content;
+    align-self: center;
+    color: white;
+    cursor: pointer;
+}
