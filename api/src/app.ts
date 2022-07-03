@@ -8,25 +8,19 @@ import cors from "cors"
 // Initializations
 
 connectDB()
- const server: Application = express()
-server.set("port", process.env.PORT || 3001)
-
+const server: Application = express()
 server.use(bodyparser.urlencoded({extended: true}));
 server.use(bodyparser.json());
 server.use(cookieparser());
 server.use(morgan("dev"));
-
-server.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', process.env.FRONT_URL || "http://localhost:3000/"); // update to match the domain you will make the request from
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  next();
-});
-
-server.get("/ping", (req: Request, res: Response) => {
-    res.status(200).send("pong")
-})
+server.use(cors(
+  {
+    origin: ["http://localhost:3000", process.env.FRONT_URL, process.env.FRONT_URL1, process.env.FRONT_URL2 ],
+    methods: ["POST", "PUT", "GET", "DELETE"],
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+    credentials: true
+  }
+))
 
 server.use('/', router);
 
