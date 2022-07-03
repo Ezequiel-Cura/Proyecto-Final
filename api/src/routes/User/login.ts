@@ -13,7 +13,7 @@ router.post("/", async (req: Request, res: Response) => {
     const passwordCompare = await bcrypt.compare(password, user.password)
     if (passwordCompare) {
       const token = user.generateAuthToken()
-      return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(200).end()
+      return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true, sameSite:"none", secure: process.env.NODE_ENV === "production" ? true : false}).status(200).end()
     }
     res.status(400).end()
   } catch (err: any) {

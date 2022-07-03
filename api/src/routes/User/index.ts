@@ -13,7 +13,6 @@ import deleteUser from './deleteUser'
 import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
 
-
 router.use('/login', login)
 router.use('/googleLogin', googleLogin)
 router.use('/logout', logout)
@@ -26,6 +25,5 @@ router.use('/update', userUpdate)
 router.use('/account', accountDelete)
 router.use('/category', categoryDelete)
 router.use('/delete', deleteUser)
-
 
 export default router
