@@ -7,17 +7,17 @@ export default function Home() {
   const usuario = useAppSelector((state)=> state.user.usuario)
   console.log(usuario.userName)
   const datos = ()=>{
-    const ingresosFijos = usuario.Account.monthlyInput.reduce((prev:any, actual:any) => {
+    const ingresosFijos = usuario?.Account?.monthlyInput.reduce((prev:any, actual:any) => {
       return prev + actual.amount;
     }, 0);
-    const ingresos =  usuario.Account.extraInput.reduce((prev:any, actual:any) => {
+    const ingresos =  usuario?.Account?.extraInput.reduce((prev:any, actual:any) => {
       return prev + actual.amount;
     }, 0);
     const allInputs = ingresosFijos + ingresos
-    const gastosFijos =  usuario.Account.monthlyExpenses.reduce((prev:any, actual:any) => {
+    const gastosFijos =  usuario?.Account?.monthlyExpenses.reduce((prev:any, actual:any) => {
       return prev + actual.amount;
     }, 0);
-    const gastos = usuario.Account.variableExpenses.reduce((prev:any, actual:any) => {
+    const gastos = usuario?.Account?.variableExpenses.reduce((prev:any, actual:any) => {
       return prev + actual.amount;
     }, 0);
     const allGastos = gastos + gastosFijos
