@@ -25,7 +25,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const passwordCompare = yield bcrypt_1.default.compare(password, user.password);
         if (passwordCompare) {
             const token = user.generateAuthToken();
-            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: "none", secure: process.env.NODE_ENV === "production" ? true : false }).status(200).end();
+            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false }).status(200).end();
         }
         res.status(400).end();
     }
