@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { info } from "console";
 
 interface Entries {
   _id?: string,
@@ -27,6 +26,8 @@ const initialState: User = {
     email: '',
     password: '',
     Saving: [],
+    premium : null,
+    role : "",
     CategoriesExpenses: [],
     CategoriesInputs: [],
     Account: {
@@ -98,6 +99,7 @@ export const uploadImage: any = createAsyncThunk("user/uploadImage",
 })
 
 //-----------------------------------------
+
 export const addDato: any = createAsyncThunk("user/addIngreso",
   async (ingreso, { rejectWithValue }) => {
     try {

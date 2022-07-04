@@ -1,6 +1,6 @@
 import server from "./app"
 
-server.listen(server.get("port"), () => {
-    console.log("Server on port", server.get("port"))
+server.listen(process.env.PORT || 3001, () => {
+    console.log("Server on port", process.env.PORT || 3001)
 })
 

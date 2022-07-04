@@ -5,15 +5,15 @@ import { useAppSelector } from "redux/hooks";
 import SearchBar from "components/SearchBar/SearchBar";
 
 // ICONOS
-import carrito from "../multimedia/cart.png";
-import viaje from "../multimedia/travel.png";
-import salud from "../multimedia/medic.png";
-import combustible from "../multimedia/car.png";
-import ocio from "../multimedia/ocio.png";
-import lock from "../multimedia/lock.png";
-import dumbell from "../multimedia/dumbell.png";
-import taxes from "../multimedia/taxes.png";
-import box from "../multimedia/other.png";
+import carrito from "assets/cart.png";
+import viaje from "assets/travel.png";
+import salud from "assets/medic.png";
+import combustible from "assets/car.png";
+import ocio from "assets/ocio.png";
+import lock from "assets/lock.png";
+import dumbell from "assets/dumbell.png";
+import taxes from "assets/taxes.png";
+import box from "assets/other.png";
 
 //CONTROLADORES
 import {
@@ -136,7 +136,7 @@ export default function Detalles() {
  
   const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e","#7fffd4","#a864ca"];
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Nav />
       <div className={styles.detalles_wrapper}>
         <h1>Detalles</h1>
@@ -167,7 +167,7 @@ export default function Detalles() {
                     return <Cell key={`cell-${index}`} fill={colors[index]} />;
                   })}
                 </Pie>
-                <Tooltip />
+                <Tooltip payload={data1()}/>
                 <Legend />
               </PieChart>
             </div>

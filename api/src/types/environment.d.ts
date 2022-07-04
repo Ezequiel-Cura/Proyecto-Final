@@ -9,7 +9,10 @@ declare global {
       USER_COLLECTION_NAME: string,
       SUPER_SECRET_SALT: number,
       JWTPRIVATEKEY: string,
-      GOOGLE_SECRET: string
+      GOOGLE_SECRET: string,
+      FRONT_URL: string,
+      FRONT_URL1: string,
+      FRONT_URL2: string,
     }
   }
 }

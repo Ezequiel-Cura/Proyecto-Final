@@ -29,7 +29,9 @@ export default function Saves() {
   
   return (
     <div>
-      <Nav />
+      <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
+        <Nav />
+      </div>
       <div className={style.background}>
         <div className={style.wrapperAll}>
           <div className={style.title}>

@@ -212,7 +212,7 @@ export default function InputTable() {
   }
 
   return (
-    <div>
+    <div style={{display: "grid", gridTemplateColumns: "178px 1fr"}}>
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>

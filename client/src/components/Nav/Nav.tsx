@@ -34,7 +34,11 @@ const {usuario} = useAppSelector(({user}) => user)
                     <h4>Gastos</h4>
                 </div>
             </Link>
+<<<<<<< HEAD
             <Link to="/home/saving">    
+=======
+            <Link to="/home/saving">
+>>>>>>> 5d127028dbf7816e82c7a4deebb194805d6e592e
                 <div>
                     <h4>Ahorros</h4>
                 </div>
@@ -44,10 +48,17 @@ const {usuario} = useAppSelector(({user}) => user)
                     <h4>Detalles</h4>
                 </div>
             </Link>
+            {usuario.role === "admin" &&
+            <Link to="/admin/controlPanel">
+                <div>   
+                    <h4>Panel de Control</h4>
+                </div>
+            </Link>
+            }
         </div>
-        <button onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
-            Logout
-        </button>
+            <button className={styles.logout} onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
+                Salir
+            </button>
     </div>
   )
 }

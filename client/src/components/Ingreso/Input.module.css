@@ -1,7 +1,6 @@
 .wrapperAllIngreso{
-    display: flex;
-    flex-direction: row;
-    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 178px 1fr;
 }
 
 .wrapperText {
@@ -55,17 +54,12 @@
     background-color: rgb(118, 189, 3) ;
 }
 
-.wrapperImage {
-    width: 50%;
+.img {
+    position: relative;
+    width: 150px;
     padding: 20px;
-    display: flex;
-    align-content: center;
 }
 
-.wrapperImage img {
-    width: 100%;
-    padding: 20px;
-}
 
 @media screen and (max-width:1300px)  {
     .wrapperText{
