@@ -1,4 +1,7 @@
-
+.wrapper {
+    display: grid;
+    grid-template-columns: 178px 1fr;
+  }
 .text_wrapper{
     display: grid;
     grid-template-columns: 1fr;
