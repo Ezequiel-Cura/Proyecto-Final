@@ -15,6 +15,11 @@ import { getUserInfo } from 'redux/reducers/userReducer';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
 import LostPage from 'components/LostPage/LostPage';
 import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
+import Novedades from 'components/Novedades/Novedades';
+import SavesLanding from 'components/Saves/SavesLanding';
+import Saves from 'components/Saves/Saves';
+
+
 
 function App() {
   const dispatch = useAppDispatch()
@@ -37,10 +42,14 @@ function App() {
         <Route path='/home/gastos' element={<Gastos/>}/>
         <Route path='/home/gastos/add' element={<ConDatosGastos/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
+        <Route path="/home/novedades" element={<Novedades/>} />
+        <Route path='/home/saving' element={<SavesLanding/>}/>
+        <Route path='/home/saving/add' element={<Saves/>}/>
       </Route>
       <Route path='/admin' element={<ProtectedRoute isAllowed={logged && usuario.role === "admin"}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
       </Route>
+      
       <Route path="*" element={<LostPage/>}/>
     </Routes>
   );

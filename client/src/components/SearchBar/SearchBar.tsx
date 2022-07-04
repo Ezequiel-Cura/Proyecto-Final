@@ -19,6 +19,8 @@ export default function SearchBar(){
   function handleClick(e: React.SyntheticEvent){
     e.preventDefault()
    setFiltrado (Account.variableExpenses.filter((e: any) => e.description === input))
+   setFiltrado (Account.monthlyExpenses.filter((e: any) => e.description === input))
+
     console.log(filtrado)
   }
 
@@ -49,7 +51,7 @@ return(
           <span>${e.amount}</span>
         </div>
       ))
-    : <span>holitas</span>
+    : <span>BuScA tUs gAsToS</span>
     }
       </div>
     </div>
