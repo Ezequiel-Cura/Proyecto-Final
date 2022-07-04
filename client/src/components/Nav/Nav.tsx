@@ -34,11 +34,7 @@ const {usuario} = useAppSelector(({user}) => user)
                     <h4>Gastos</h4>
                 </div>
             </Link>
-<<<<<<< HEAD
-            <Link to="/home/saving">    
-=======
             <Link to="/home/saving">
->>>>>>> 5d127028dbf7816e82c7a4deebb194805d6e592e
                 <div>
                     <h4>Ahorros</h4>
                 </div>

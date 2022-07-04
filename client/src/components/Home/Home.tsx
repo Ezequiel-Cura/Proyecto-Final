@@ -49,12 +49,7 @@ export default function Home() {
             </Link>
           </div>
           <div>
-<<<<<<< HEAD
-
-            <Link to="/home/saving">
-=======
             <Link to="/home">
->>>>>>> 5d127028dbf7816e82c7a4deebb194805d6e592e
               <div className={styles.ahorros_link}>
                   <h2>AHORROS</h2>
                   <span>Monto actual: ${} </span>

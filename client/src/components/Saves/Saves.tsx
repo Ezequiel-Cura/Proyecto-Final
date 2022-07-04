@@ -28,10 +28,8 @@ export default function Saves() {
   const [open, setOpen] = useState<boolean>(false);
   
   return (
-    <div>
-      <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
+    <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
         <Nav />
-      </div>
       <div className={style.background}>
         <div className={style.wrapperAll}>
           <div className={style.title}>
