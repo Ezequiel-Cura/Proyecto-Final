@@ -17,26 +17,47 @@ const authorization_1 = __importDefault(require("../../middleware/authorization"
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // router.post("/", async (req: any, res: Response) => {
+    // const id = "62c0a45f6ffc62c777c647de" --- Hardcoded id for testing purposes (comment "authorization" above)
+    // const accountUpdate = user.extra[key].findById(value._id) No entiendo lo del date
     const { frequency, key, value } = req.body;
-    const date = `${new Date().getMonth() + 1}-${new Date().getFullYear()}`;
     const id = req.userId;
-    // const id = "62c0a45f6ffc62c777c647de"
     try {
+        // Check presence of user 
         const user = yield User_1.default.findById(id);
         if (!user)
             return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
+        //---------------------------------
+        // should frequency be monthly, simply push the entry
         if (frequency === "monthly") {
-            yield user[frequency][key].push(value);
+            yield user.monthly[key].push(value);
             yield user.save();
-            res.status(200).send(user);
+            console.log(user.monthly);
+            return res.status(200).send(user);
         }
-        else {
-            // const accountUpdate = user.extra[key].findById(value._id) No entiendo lo del date
-            yield user[frequency][key].entries.push(value);
+        //---------------------------------
+        // If not, search by date (mm-yyyy) and push the entry to the object
+        //---------------------------------
+        //Get date from request to find in arrays or create a new object
+        const dateSplit = value.date.split('-'); // Separate date into [yyyy, mm, dd]
+        const targetDate = `${dateSplit[0]}-${dateSplit[1]}`; //transform date into format mm-yyyy
+        const foundObj = user.extra[key].filter((e) => e.date === targetDate); // filter extra array by target date
+        if (foundObj.length === 0) {
+            // Create new entry if not existing
+            const newEntry = {
+                date: targetDate,
+                entries: [value]
+            };
+            yield user.extra[key].push(newEntry);
             yield user.save();
-            res.status(200).send(user);
+            return res.status(200).send(user);
         }
+        //---------------------------------
+        // Search index of target Date
+        const targetIndex = user.extra[key].map((e) => e.date).indexOf(targetDate);
+        yield user.extra[key][targetIndex].entries.push(value);
+        yield user.save();
+        res.status(200).send(user);
+        //---------------------------------
     }
     catch (err) {
         console.log(err);

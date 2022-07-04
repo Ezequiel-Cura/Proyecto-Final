@@ -31,6 +31,7 @@ export default function ConDatos() {
   }
   interface AgregarIngresos {
     id?: string,
+    frequency: string,
     key: string,
     value: Value,
   }
@@ -83,7 +84,8 @@ export default function ConDatos() {
   }
 
   const form: AgregarIngresos = {
-    key: selectKey.keyInput,
+    frequency: selectKey.keyInput,
+    key: 'input',
     value: input,
   }
 

@@ -17,17 +17,17 @@ import savingsDelete from './savingsDelete'
 
 
 router.use('/login', login)
+router.use('/register', register)
 router.use('/googleLogin', googleLogin)
 router.use('/logout', logout)
 router.use('/getUserInfo', getUserInfo)
-router.use('/account', accountAdd)
-router.use('/category', categoryAdd)
-router.use('/savings', savings)
-router.use('/register', register)
 router.use('/update', userUpdate)
-router.use('/account', accountDelete)
-router.use('/category', categoryDelete)
 router.use('/delete', deleteUser)
+router.use('/account', accountAdd)
+router.use('/account', accountDelete)
+router.use('/category', categoryAdd)
+router.use('/category', categoryDelete)
+router.use('/savings', savings)
 
 
 export default router

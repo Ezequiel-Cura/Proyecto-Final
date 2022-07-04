@@ -31,40 +31,37 @@ const userSchema = new mongoose_1.Schema({
         }],
     monthly: {
         input: [{
-                start: Date,
+                date: { type: String, required: true },
                 end: Date,
-                name: String,
+                description: String,
                 category: String,
                 amount: Number,
             }],
         output: [{
                 start: Date,
                 end: Date,
-                name: String,
+                description: String,
                 category: String,
                 amount: Number,
             }]
     },
     extra: {
         input: [{
-                date: Date,
+                date: String,
                 entries: [{
                         date: { type: Date, default: Date.now() },
-                        name: String,
                         description: String,
                         category: String,
                         amount: Number,
                     }]
             }],
         output: [{
-                date: Date,
+                date: String,
                 entries: [{
                         date: { type: Date, default: Date.now() },
-                        name: String,
                         description: String,
                         category: String,
                         amount: Number,
-                        description: String
                     }]
             }],
     },

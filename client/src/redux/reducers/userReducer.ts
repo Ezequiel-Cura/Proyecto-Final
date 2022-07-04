@@ -103,13 +103,10 @@ const reducerSlice = createSlice({
       state.allInputs = month + extra
     },
 
-    getCurrentMonthInput: (state, {payload} ) => {
-      const month = state.usuario.monthly.input
+    renderInput: (state) => {
       
-      const thisMonth = new Date().getMonth()
-      console.log(thisMonth)
-      const extra = state.usuario.extra.input.filter()
     },
+    
 
     getAllExpenses: (state) => {
       // let currentExpensesState = current(state)
@@ -362,7 +359,7 @@ export const {
   totalInput,
   totalExpenses,
   getAllInputs,
-  getCurrentMonthInput,
+  renderInput,
   getAllExpenses,
   inputsOrderByAmount,
   expensesOrderByAmount,
