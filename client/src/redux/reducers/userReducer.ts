@@ -36,7 +36,7 @@ interface Entries {
 interface User {
   usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
-  renderInputs: []
+  renderInputs: any
   allInputs: Entries[] | [],
   allOutputs: Entries[] | [],
   totalExpensesMonth: number,
@@ -103,8 +103,12 @@ const reducerSlice = createSlice({
       state.allInputs = month + extra
     },
 
-    renderInput: (state) => {
-      
+
+    renderInput: (state, { payload }) => {
+      const month = state.usuario.monthly.input
+      const extra = state.usuario.extra.input.filter((e:any) => e.date === payload)
+      state.renderInputs = [...month, ...extra]
+      console.log(current(state).renderInputs)
     },
     
 

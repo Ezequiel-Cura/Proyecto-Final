@@ -38,7 +38,7 @@ const userSchema = new mongoose_1.Schema({
                 amount: Number,
             }],
         output: [{
-                start: Date,
+                date: { type: String, required: true },
                 end: Date,
                 description: String,
                 category: String,

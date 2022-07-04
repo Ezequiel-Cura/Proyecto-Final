@@ -3,7 +3,7 @@ import stylesPag from "./Pagination.module.css"
 import React, { useEffect, useState } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllInputs, /*inputsFilterByMonth,*/ inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput} from "redux/reducers/userReducer";
+import { getAllInputs, /*inputsFilterByMonth,*/ inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, renderInput} from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 import { addCategory } from 'redux/modules/addCategory'
@@ -11,12 +11,14 @@ import { deleteCategory } from 'redux/modules/deleteCategory'
 
 export default function ConDatos() {
 
-  const { usuario, allInputs, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
+  const { usuario, allInputs, totalInputsMonth, status, renderInputs} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+
+  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
-      dispatch(getAllInputs())
+      dispatch(renderInput(date))
       dispatch(totalInput())
     }
   }, [status])

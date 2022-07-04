@@ -64,7 +64,7 @@ const userSchema = new Schema<IUser>({
     }],
 
     output: [{
-      start: Date,
+      date: {type: String, required: true},
       end: Date,
       description: String,
       category: String,
