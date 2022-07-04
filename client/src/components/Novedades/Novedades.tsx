@@ -10,7 +10,7 @@ export default function Novedades() {
     },[])
 
   return (
-    <div>
+    <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
         <Nav/>
         <h1 className={styles.nove_h1}>Ultimas noticias</h1>
         <div>
