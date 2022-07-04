@@ -18,14 +18,14 @@ const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // router.post("/", async (req: any, res: Response) => {
-    const { frequency, type, name } = req.body;
-    const id = req.userId;
+    const { id, value } = req.body;
+    // const id = req.userId
     // const id = "62c0a45f6ffc62c777c647de"
     try {
         const user = yield User_1.default.findById(id);
         if (!user)
             return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
-        yield user.categories.push({ frequency, type, name });
+        yield user.categories.push(value);
         yield user.save();
         res.status(200).send(user);
     }
