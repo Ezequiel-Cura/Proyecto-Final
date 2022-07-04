@@ -1,7 +1,10 @@
 import Nav from 'components/Nav/Nav'
 // import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
+import { addSaving } from 'redux/modules/addSaving';
+import { deleteSaving } from 'redux/modules/deleteSaving';
+// import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
+
 
 export default function Saves() {
 

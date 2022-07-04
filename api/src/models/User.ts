@@ -58,7 +58,7 @@ const userSchema = new Schema<IUser>({
     input: [{
       start: Date,
       end: Date,
-      name: String,
+      descritpion: String,
       category: String,
       amount: Number,
     }],
@@ -66,7 +66,7 @@ const userSchema = new Schema<IUser>({
     output: [{
       start: Date,
       end: Date,
-      name: String,
+      description: String,
       category: String,
       amount: Number,
     }]
@@ -77,7 +77,6 @@ const userSchema = new Schema<IUser>({
       date: Date,
       entries: [{
         date: { type:Date, default: Date.now() },
-        name: String,
         description: String,
         category: String,
         amount: Number,
@@ -88,7 +87,6 @@ const userSchema = new Schema<IUser>({
       date: Date,
       entries: [{
         date: { type:Date, default: Date.now() },
-        name: String,
         description: String,
         category: String,
         amount: Number,

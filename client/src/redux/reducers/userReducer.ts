@@ -41,6 +41,7 @@ interface User {
   allOutputs: Entries[] | [],
   totalExpensesMonth: number,
   totalInputsMonth: number
+
 }
 
 const initialState: User = {
@@ -59,7 +60,8 @@ const initialState: User = {
     extra: {
       input: [],
       output: []
-    }
+    },
+    categories: []
   },
   status: 'idle',
   renderInputs: [],
@@ -67,6 +69,7 @@ const initialState: User = {
   allOutputs: [], //Estado de gastos para ordenar o filtrar
   totalExpensesMonth: 0,
   totalInputsMonth: 0
+
 }
 
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo", 
@@ -95,7 +98,7 @@ const reducerSlice = createSlice({
       // state.allInputs = [...currentInputState.usuario.monthly.input, ...currentInputState.usuario.extra.input]
       
       const month = state.usuario.monthly.input
-      const extra = state.usuario.extra.input?.reduce((prev:any, curr:any) => prev.concat(curr.entries))
+      const extra = state.usuario.extra.input
 
       state.allInputs = month + extra
     },
@@ -134,17 +137,17 @@ const reducerSlice = createSlice({
       state.totalExpensesMonth = reduceTotalExp
     },
 
-    expensesFilterByMonth: (state, { payload }) => {
-      let curExpState = current(state)
-      const allExpensesFilter = [...curExpState.usuario.Account.monthlyExpenses, ...curExpState.usuario.Account.variableExpenses]
-      const expFilter: Entries[] = allExpensesFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
+    // expensesFilterByMonth: (state, { payload }) => {
+    //   let curExpState = current(state)
+    //   const allExpensesFilter = [...curExpState.usuario.Account.monthlyExpenses, ...curExpState.usuario.Account.variableExpenses]
+    //   const expFilter: Entries[] = allExpensesFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
 
-      const expOrder = expFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
-      return {
-        ...state,
-        allExpenses: expOrder
-      }
-    },
+    //   const expOrder = expFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
+    //   return {
+    //     ...state,
+    //     allExpenses: expOrder
+    //   }
+    // },
 
     expensesFilterByFrequency: (state, { payload }) => {
       let currExpSta = current(state)
@@ -169,19 +172,19 @@ const reducerSlice = createSlice({
       }
     },
 
-    inputsFilterByMonth: (state, { payload }) => {
+    // inputsFilterByMonth: (state, { payload }) => {
 
-      let currentInputState = current(state)
-      const allInputsFilter = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
-      //                                                                             2022-01-05  === 01
-      const inpFilter: Entries[] = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
-      const inpOrder = inpFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
-      return {
-        ...state,
-        allInputs: inpOrder
-      }
-    },
-
+    //   let currentInputState = current(state)
+    //   const allInputsFilter = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
+    //   //                                                                             2022-01-05  === 01
+    //   const inpFilter: Entries[] = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
+    //   const inpOrder = inpFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
+    //   return {
+    //     ...state,
+    //     allInputs: inpOrder
+    //   }
+    // },
+    
     inputsOrderByAmount: (state, { payload }) => {
       let currStateInpAmount = current(state)
       const orderInputs: Entries[] = [...currStateInpAmount.allInputs];
@@ -355,7 +358,7 @@ const reducerSlice = createSlice({
   }
 })
 export const {
-  inputsFilterByMonth,
+  // inputsFilterByMonth,
   totalInput,
   totalExpenses,
   getAllInputs,
@@ -363,7 +366,7 @@ export const {
   getAllExpenses,
   inputsOrderByAmount,
   expensesOrderByAmount,
-  expensesFilterByMonth,
+  // expensesFilterByMonth,
   expensesFilterByFrequency,
   inputsFilterByFrequency,
   filterExpensesByCategory,
