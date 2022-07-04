@@ -1,8 +1,3 @@
-
-
-
-
-
 export function totalViajes(usuario: any) {
     const extras = usuario.Account.variableExpenses.filter(
       (e: any) => e.category === "Viaje"

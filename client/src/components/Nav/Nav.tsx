@@ -47,9 +47,9 @@ const {usuario} = useAppSelector(({user}) => user)
             </Link>
             }
         </div>
-        <button className={styles.logout} onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
-            Salir
-        </button>
+            <button className={styles.logout} onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
+                Salir
+            </button>
     </div>
   )
 }

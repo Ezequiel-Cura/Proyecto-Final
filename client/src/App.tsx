@@ -19,7 +19,6 @@ import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
 function App() {
   const dispatch = useAppDispatch()
   const { usuario } = useAppSelector((({user}) => user))
-  console.log("role: ", usuario.role === "admin")
   const [logged, setLogged] = useState(true)
 
   useEffect(()=> {
@@ -39,11 +38,9 @@ function App() {
         <Route path='/home/gastos/add' element={<ConDatosGastos/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
       </Route>
-      <Route path='/admin/controlPanel' element={
-      <ProtectedRoute isAllowed={logged && usuario.role === "admin"}>
-        <ControlPanel/>
-      </ProtectedRoute>
-      }/>
+      <Route path='/admin' element={<ProtectedRoute isAllowed={logged && usuario.role === "admin"}/>}>
+        <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
+      </Route>
       <Route path="*" element={<LostPage/>}/>
     </Routes>
   );
