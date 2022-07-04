@@ -30,7 +30,7 @@ export default function Saves() {
     amount: number
   }
   const [open, setOpen] = useState<boolean>(false);
-  
+
   // Shows or hide the Drawer
   // const handleToggle = () => setShowForm(!showForm);
 
@@ -87,9 +87,9 @@ export default function Saves() {
                 </table>
               </div>
             </div>
-          
-          {/* EJEMPLO */}
-          <div id='amount2' className={style.wrapperSave}>
+
+            {/* EJEMPLO */}
+            <div id='amount2' className={style.wrapperSave}>
               <div id='amount2' className={style.name}>
                 {/* <h1>Nombre: <br/>{s.name}</h1> */}
                 <div className={style.divP}>
@@ -122,9 +122,9 @@ export default function Saves() {
                 </table>
               </div>
             </div>
-          
-            
-          </div> 
+
+
+          </div>
           {/* ))
            : <h1>Todavia no creaste un ahorro</h1>
           } */}
@@ -141,12 +141,12 @@ export default function Saves() {
           <button onClick={() => setOpen(true)}>
             Crear nuevo monto
             <PopUp
-            open={open} 
-            setOpen={setOpen}
-            // onClick={() => setOpen(true)}
-            title="Completa para agregar un nuevo monto!"
+              open={open}
+              setOpen={setOpen}
+              // onClick={() => setOpen(true)}
+              title="Completa para agregar un nuevo monto!"
             >
-              <SavesCreate/>
+              <SavesCreate />
             </PopUp>
           </button>
 

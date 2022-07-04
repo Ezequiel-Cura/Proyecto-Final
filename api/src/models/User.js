@@ -33,14 +33,14 @@ const userSchema = new mongoose_1.Schema({
         input: [{
                 start: Date,
                 end: Date,
-                name: String,
+                descritpion: String,
                 category: String,
                 amount: Number,
             }],
         output: [{
                 start: Date,
                 end: Date,
-                name: String,
+                description: String,
                 category: String,
                 amount: Number,
             }]
@@ -50,7 +50,6 @@ const userSchema = new mongoose_1.Schema({
                 date: Date,
                 entries: [{
                         date: { type: Date, default: Date.now() },
-                        name: String,
                         description: String,
                         category: String,
                         amount: Number,
@@ -60,11 +59,9 @@ const userSchema = new mongoose_1.Schema({
                 date: Date,
                 entries: [{
                         date: { type: Date, default: Date.now() },
-                        name: String,
                         description: String,
                         category: String,
                         amount: Number,
-                        description: String
                     }]
             }],
     },

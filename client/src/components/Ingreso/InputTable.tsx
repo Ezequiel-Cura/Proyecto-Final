@@ -214,7 +214,7 @@ export default function InputTable() {
   }
 
   return (
-    <div>
+    <div style={{display: "grid", gridTemplateColumns: "178px 1fr"}}>
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
@@ -317,13 +317,13 @@ export default function InputTable() {
           <div className={styles.wrapperForms}>
             <form onSubmit={handleSubmit}>
               <div className={styles.form}>
-                <select value={selectKey.keyInput} onChange={handleSelectI}>
+                <select value={selectKey.keyInput} onChange={handleSelectInputs}>
                   <option>Selecciona el tipo</option>
                   <option value='monthly'>Ingreso fijo</option>
                   <option value='extra'>Ingreso extra</option>
                 </select>
 
-                <select value={input.category} onChange={handleSelectC}>
+                <select value={input.category} onChange={handleSelectCategories}>
                   <option>Selecciona una categoría</option>
                   {usuario.categories.length > 0
                     ? usuario.categories.map((category: string) =>

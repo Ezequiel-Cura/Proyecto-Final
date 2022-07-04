@@ -34,7 +34,7 @@ const {usuario} = useAppSelector(({user}) => user)
                     <h4>Gastos</h4>
                 </div>
             </Link>
-            <Link to="/home/saving">    
+            <Link to="/home/saving">
                 <div>
                     <h4>Ahorros</h4>
                 </div>

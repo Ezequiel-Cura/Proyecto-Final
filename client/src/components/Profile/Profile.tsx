@@ -39,13 +39,13 @@ export default function Profile() {
         dispatch(updatePersonalInfo({key: "firstName", value: state.firstName}))
         .then(() => {
             setFirstNameDisabled(true)
-            setMsg("firstName updated Successfully")
+            setMsg("Tu nombre fue actualizado")
             setTimeout(() => {
                 setMsg("")
             }, 4000);
         })
         .catch(() => {
-            setErrorMsg("Couldn't update firstName")
+            setErrorMsg("No se pudo actualizar")
             setTimeout(() => {
                 setErrorMsg("")
             }, 4000);
@@ -55,13 +55,13 @@ export default function Profile() {
         dispatch(updatePersonalInfo({key: "lastName", value: state.lastName}))
         .then(() => {
             setLastNameDisabled(true)
-            setMsg("lastName updated Successfully")
+            setMsg("Tu apellido fue actualizado")
             setTimeout(() => {
                 setMsg("")
             }, 4000);
         })
         .catch(() => {
-            setErrorMsg("Couldn't update lastName")
+            setErrorMsg("No se pudo actualizar")
             setTimeout(() => {
                 setErrorMsg("")
             }, 4000);
@@ -71,13 +71,13 @@ export default function Profile() {
         dispatch(updatePersonalInfo({key: "email", value: state.email}))
         .then(() => {
             setEmailDisabled(true)
-            setMsg("email updated Successfully")
+            setMsg("Tu email fue actualizado")
             setTimeout(() => {
                 setMsg("")
             }, 4000);
         })
         .catch(() => {
-            setErrorMsg("Couldn't update email")
+            setErrorMsg("No se pudo actualizar")
             setTimeout(() => {
                 setErrorMsg("")
             }, 4000);
@@ -87,13 +87,13 @@ export default function Profile() {
         dispatch(updatePersonalInfo({key: "password", value: state.password}))
         .then(() => {
             setPasswordDisabled(true)
-            setMsg("password updated Successfully")
+            setMsg("Tu contraseña fue actualizada")
             setTimeout(() => {
                 setMsg("")
             }, 4000);
         })
         .catch(() => {
-            setErrorMsg("Couldn't update password")
+            setErrorMsg("No se pudo actualizar")
             setTimeout(() => {
                 setErrorMsg("")
             }, 4000);
