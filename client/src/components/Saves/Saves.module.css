@@ -9,20 +9,26 @@
 .wrapperAll {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 1200px;
-    background-color: rgb(61, 26, 95);
 }
 
 .title {
     width: 100%;
     color: #D2D2D2;
+}
+
+.title h1 {
     font-weight: lighter;
+    font-size: 3rem;
 }
 
 .wrapperAllSaves {
     display: flex;
-    flex-direction: row;
-    width: 1000px;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
 }
 
 .wrapperSave {
@@ -30,24 +36,31 @@
     flex-direction: row;
     width: 1000px;
     height: 150px;
-    border-radius: 20px;
-    background-color: #C6EC59;
+    border-radius: 30px;
+    margin: 30px;
 }
+
+.wrapperSave:global(#amount1){background-color: #C6EC59;}
+.wrapperSave:global(#amount2){background-color: #68A2FA;}
 
 .name {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 25%;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    background-color: #C6EC59;
 }
-.name h1 {
-    color: white;
-    font-size: 3.1rem;
-    font-weight: lighter;
+
+.name:global(#amount1){background-color: #C6EC59;}
+.name:global(#amount2){background-color: #68A2FA;}
+
+.divP {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    padding: 15px 5px 5px 30px;
 }
 
 .name p {
@@ -55,10 +68,63 @@
     font-size: 1.2rem;
 }
 
+.divH1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    color: white;
+    font-size: 1.8rem;
+}
+
+.name h1 {
+    font-weight: lighter;
+}
+
+
 .wrapperTable{
     width: 75%;
     border-radius: 20px;
     background-color: #333333;
+}
+
+.wrapperTable button {
+    position: absolute;
+    border: none;
+    font-size: larger;
+    font-weight: lighter;
+    color: rgb(0, 0, 0);
+    background-color: #333333;
+}
+
+.table {
+    width: 97%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+.table thead th {
+    padding: 18px;
+    font-weight: lighter;
+    font-size: 1.5rem;
+    color: #00BFA6;
+    border-bottom: 1px solid white;
+}
+
+.divAmount {
+    display: flex;
+    justify-content: center;
+}
+
+.amount {
+    width: 110px;
+    height: 30px;
+    border-radius: 20px;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    background-color: #00BFA6;
 }
 
 .wrapperNewSave {
@@ -67,7 +133,10 @@
     justify-content: center;
     align-items: center;
     width: 700px;
+    height: 60px;
+    border: none;
     border-radius: 20px;
+    color: white;
     background-color: #00BFA6;
 }
 
