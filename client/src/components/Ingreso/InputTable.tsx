@@ -3,7 +3,7 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllInputs, /*inputsFilterByMonth,*/ inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput } from "redux/reducers/userReducer";
+import { /*inputsFilterByMonth,*/ /*inputsOrderByAmount,*/ inputsFilterByFrequency, /*filterInputByCategory,*/ totalInput, renderInput} from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 import { addCategory } from 'redux/modules/addCategory'
@@ -11,12 +11,14 @@ import { deleteCategory } from 'redux/modules/deleteCategory'
 
 export default function InputTable() {
 
-  const { usuario, allInputs, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
+  const { usuario, totalInputsMonth, status, renderInputs} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+
+  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
-      dispatch(getAllInputs())
+      dispatch(renderInput(date))
       dispatch(totalInput())
     }
   }, [status])
@@ -160,12 +162,12 @@ export default function InputTable() {
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(inputsOrderByAmount(e.target.value))
+    // dispatch(inputsOrderByAmount(e.target.value))
   }
 
   function handleOrderByCategories(e: any) {
     e.preventDefault();
-    dispatch(filterInputByCategory(e.target.value));
+    // dispatch(filterInputByCategory(e.target.value));
   }
 
   function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -175,7 +177,7 @@ export default function InputTable() {
 
   function handleRefresh(e: any) {
     e.preventDefault();
-    dispatch(getAllInputs())
+    dispatch(renderInput(date))
   }
 
   //Paginado
@@ -187,7 +189,7 @@ export default function InputTable() {
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-  for (let i = 1; i <= allInputs.length && Math.ceil(allInputs.length / inputsPerPage); i++) {
+  for (let i = 1; i <= renderInput.length && Math.ceil(renderInput.length / inputsPerPage); i++) {
     pageNumber.push(i)
   }
 

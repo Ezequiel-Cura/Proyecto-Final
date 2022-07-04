@@ -3,18 +3,18 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { filterExpensesByCategory, getAllExpenses, expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
+import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
 
 
 export default function ExpensesTable() {
-   const { usuario, allOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
+   const { usuario, renderOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (status === 'success'){
-      dispatch(getAllExpenses())
+      // dispatch(getAllExpenses())
       dispatch(totalExpenses())
     }
   }, [status])
@@ -94,7 +94,7 @@ export default function ExpensesTable() {
 
   function handleOrderByCategories(e: any) {
     e.preventDefault();
-    dispatch(filterExpensesByCategory(e.target.value));
+    // dispatch(filterExpensesByCategory(e.target.value));
   }
 
   function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -104,7 +104,7 @@ export default function ExpensesTable() {
 
   function handleRefresh(e: any){
     e.preventDefault();
-    dispatch(getAllExpenses())
+    // dispatch(getAllExpenses())
   }
 
   //Paginado---------------------------------------------------------------
@@ -116,7 +116,7 @@ export default function ExpensesTable() {
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-    for(let i = 1; i <= Math.ceil(allOutputs.length/inputsPerPage); i++){
+    for(let i = 1; i <= Math.ceil(renderOutputs.length/inputsPerPage); i++){
       pageNumber.push(i)
   }
 
@@ -202,7 +202,7 @@ export default function ExpensesTable() {
               </tr>
             </thead>
             <tbody>
-            {allOutputs.length > 0 ?allOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: any) => {
+            {renderOutputs.length > 0 ?renderOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
                   detalles.source === 'monthlyExpenses' 
                   ? (<tr className={styles.monthlyInput}>

@@ -99,7 +99,7 @@ const userSchema = new Schema<IUser>({
     type: {
       type: String,
       enum: ['input', 'output'],
-      required: true}
+      required: true},
   }]
 })
 
