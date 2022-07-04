@@ -31,9 +31,9 @@ const userSchema = new mongoose_1.Schema({
         }],
     monthly: {
         input: [{
-                start: Date,
+                date: { type: String, required: true },
                 end: Date,
-                descritpion: String,
+                description: String,
                 category: String,
                 amount: Number,
             }],
@@ -47,7 +47,7 @@ const userSchema = new mongoose_1.Schema({
     },
     extra: {
         input: [{
-                date: Date,
+                date: String,
                 entries: [{
                         date: { type: Date, default: Date.now() },
                         description: String,
@@ -56,7 +56,7 @@ const userSchema = new mongoose_1.Schema({
                     }]
             }],
         output: [{
-                date: Date,
+                date: String,
                 entries: [{
                         date: { type: Date, default: Date.now() },
                         description: String,

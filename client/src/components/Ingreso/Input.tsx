@@ -1,11 +1,11 @@
 import React, { useEffect }  from 'react';
-import ConDatos from "./InputTable";
 import InputLanding from './InputLanding';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllInputs, getCurrentMonthInput } from 'redux/reducers/userReducer';
+import { getAllInputs } from 'redux/reducers/userReducer';
+import InputTable from './InputTable';
 
 export default function Input() {
-  const { allInputs, status } = useAppSelector(state => state.user);
+  const { renderInputs, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function Input() {
 
   return (
     <div>
-      { allInputs.length > 0 ? <ConDatos/> : <InputLanding/>}
+      { renderInputs.length > 0 ? <InputTable/> : <InputLanding/> }
     </div>
   )
 }

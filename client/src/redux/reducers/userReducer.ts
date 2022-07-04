@@ -25,18 +25,17 @@ import { deleteSaving } from '../modules/deleteSaving'
 
 import { info } from "console";
 interface Entries {
-  _id?: string,
-  start?: string,
-  end?: string,
-  date?: string,
-  name: string,
+  date: string,
+  end?:string,
+  description: string,
   category: string,
   amount: number
 }
 interface User {
   usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
-  renderInputs: []
+  renderInputs: Entries[] | [],
+  renderOutputs: Entries[] | [],
   allInputs: Entries[] | [],
   allOutputs: Entries[] | [],
   totalExpensesMonth: number,
@@ -65,6 +64,7 @@ const initialState: User = {
   },
   status: 'idle',
   renderInputs: [],
+  renderOutputs: [],
   allInputs: [],  //Estado de entradas para ordenar o filtrar
   allOutputs: [], //Estado de gastos para ordenar o filtrar
   totalExpensesMonth: 0,
@@ -94,22 +94,22 @@ const reducerSlice = createSlice({
   initialState,
   reducers: {
     getAllInputs: (state) => {
-      // let currentInputState = current(state)
-      // state.allInputs = [...currentInputState.usuario.monthly.input, ...currentInputState.usuario.extra.input]
-      
-      const month = state.usuario.monthly.input
-      const extra = state.usuario.extra.input
-
-      state.allInputs = month + extra
+      try {
+        let currentInputState = current(state)
+        // state.allInputs = [...currentInputState.usuario.monthly.input, ...currentInputState.usuario.extra.input]
+        const month = [...currentInputState.usuario.monthly.input]
+        const extra = [...currentInputState.usuario.extra.input]
+        state.allInputs = [...month, ...extra]
+      } catch (error) {
+        console.log(error)
+      }
     },
 
-    getCurrentMonthInput: (state, {payload} ) => {
-      const month = state.usuario.monthly.input
-      
-      const thisMonth = new Date().getMonth()
-      console.log(thisMonth)
-      const extra = state.usuario.extra.input.filter()
+    renderInput: (state) => {
+      let currentInput = current(state)
+      state.renderInputs = [...currentInput.allInputs]
     },
+    
 
     getAllExpenses: (state) => {
       // let currentExpensesState = current(state)
@@ -133,7 +133,7 @@ const reducerSlice = createSlice({
     totalExpenses: (state) => {
       let curAllInputState = current(state);
       let reduceTotalExp = 0
-      curAllInputState.allOutputs.forEach( entrie => reduceTotalExp+= entrie.amount)
+      // curAllInputState.allOutputs.forEach( entrie => reduceTotalExp+= entrie.amount)
       state.totalExpensesMonth = reduceTotalExp
     },
 
@@ -164,8 +164,8 @@ const reducerSlice = createSlice({
       let currStateExpAmount = current(state)
       const orderExpenses: Entries[] = [...currStateExpAmount.allInputs];
       let orderByAmount = payload === 'menorAMayor'
-        ? orderExpenses.sort((a, b) => a.amount - b.amount)
-        : orderExpenses.sort((a, b) => b.amount - a.amount)
+        // ? orderExpenses.sort((a, b) => a.amount - b.amount)
+        // : orderExpenses.sort((a, b) => b.amount - a.amount)
       return {
         ...state,
         allExpenses: orderByAmount
@@ -189,8 +189,8 @@ const reducerSlice = createSlice({
       let currStateInpAmount = current(state)
       const orderInputs: Entries[] = [...currStateInpAmount.allInputs];
       let orderByAmount = payload === 'menorAMayor'
-        ? orderInputs.sort((a, b) => a.amount - b.amount)
-        : orderInputs.sort((a, b) => b.amount - a.amount)
+        // ? orderInputs.sort((a, b) => a.amount - b.amount)
+        // : orderInputs.sort((a, b) => b.amount - a.amount)
       return {
         ...state,
         allInputs: orderByAmount
@@ -362,7 +362,7 @@ export const {
   totalInput,
   totalExpenses,
   getAllInputs,
-  getCurrentMonthInput,
+  renderInput,
   getAllExpenses,
   inputsOrderByAmount,
   expensesOrderByAmount,

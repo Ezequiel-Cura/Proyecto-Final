@@ -3,7 +3,7 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllInputs, /*inputsFilterByMonth,*/ inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, getCurrentMonthInput, } from "redux/reducers/userReducer";
+import { getAllInputs, /*inputsFilterByMonth,*/ inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput } from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 import { addCategory } from 'redux/modules/addCategory'
@@ -23,15 +23,15 @@ export default function InputTable() {
 
   //Typescript
   interface Value {
+    date: string,
+    end?: string,
     description: string,
-    amount: number,
-    category?: string,
-    date?: string,
-    _id?: string,
-    source?: string
+    category: string,
+    amount: number
   }
   interface AgregarIngresos {
     id?: string,
+    frequency: string,
     key: string,
     value: Value,
   }
@@ -62,11 +62,6 @@ export default function InputTable() {
     keyInput: '',
   })
 
-  const form: AgregarIngresos = {
-    key: selectKey.keyInput,
-    value: input,
-  }
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
       ...input,
@@ -88,8 +83,13 @@ export default function InputTable() {
     })
   }
 
-  //Form
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) { 
+  const form: AgregarIngresos = {
+    frequency: selectKey.keyInput,
+    key: 'input',
+    value: input,
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
     dispatch(addDato(form));
     setInput({
@@ -231,11 +231,11 @@ export default function InputTable() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-              {
+              {/* {
                 usuario.categories.length > 0
                   ? usuario.categories.map((category: string) => (<option value={category}>{category}</option>))
                   : <option value="Otros"></option>
-              }
+              } */}
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
@@ -275,26 +275,15 @@ export default function InputTable() {
               </tr>
             </thead>
             <tbody>
-              {renderInputs.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+              {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                  detalles.source === 'monthlyInput'
-                    ? (<tr className={styles.monthlyInput}>
+                <tr className={styles.monthlyInput}>
                       <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
                       <th>{detalles.date && detalles.date.split("T")[0]}</th>
                       <th>{detalles.category ? detalles.category : "-"}</th>
                       <th>{detalles.description}</th>
                       <th>$ {detalles.amount}</th>
                     </tr>)
-                    : (
-                      <tr>
-                        <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
-                        <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                        <th>{detalles.category ? detalles.category : "-"}</th>
-                        <th>{detalles.description}</th>
-                        <th>$ {detalles.amount}</th>
-                      </tr>
-                    )
-                )
               })
                 : <></>
               }
