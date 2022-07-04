@@ -61,6 +61,7 @@ const userSchema = new mongoose_1.Schema({
                 entries: [{
                         date: { type: Date, default: Date.now() },
                         name: String,
+                        description: String,
                         category: String,
                         amount: Number,
                         description: String

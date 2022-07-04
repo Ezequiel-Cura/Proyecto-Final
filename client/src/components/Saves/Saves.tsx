@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import style from './Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
+import { addSaving } from 'redux/modules/addSaving';
+import { deleteSaving } from 'redux/modules/deleteSaving';
 import Drawer from '@mui/material/Drawer';
 import SavesCreate from './SavesCreate';
 import Box from '@mui/material/Box';

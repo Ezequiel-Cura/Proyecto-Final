@@ -20,18 +20,6 @@ router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0,
     try {
         const user = yield User_1.default.findById(req.userId).select({
             _id: 0,
-<<<<<<< HEAD
-            firstName: 1,
-            lastName: 1,
-            avatar: 1,
-            premium: 1,
-            role: 1,
-            savings: 1,
-            fees: 1,
-            monthly: 1,
-            extra: 1,
-            categories: 1
-=======
             email: 1,
             firstName: 1,
             lastName: 1,
@@ -42,7 +30,6 @@ router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0,
             CategoriesExpenses: 1,
             CategoriesInputs: 1,
             role: 1
->>>>>>> 9e8750e9cd9aa2f376de2dfc645fa8ac0dd30a3b
         });
         res.status(200).send(user);
     }
