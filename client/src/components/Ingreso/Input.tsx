@@ -1,5 +1,5 @@
 import React, { useEffect }  from 'react';
-import ConDatos from "./InputTable";
+import InputTable from "./InputTable";
 import InputLanding from './InputLanding';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllInputs } from 'redux/reducers/userReducer';
@@ -16,7 +16,7 @@ export default function Input() {
 
   return (
     <div>
-      { allInputs.length > 0 ? <ConDatos/> : <InputLanding/>}
+      { allInputs.length > 0 ? <InputTable/> : <InputLanding/>}
     </div>
   )
 }

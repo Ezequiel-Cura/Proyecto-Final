@@ -24,12 +24,8 @@ router.post("/", async (req: Request, res: Response) => {
     const hashPass = await bcrypt.hash(password, salt)
     const user = await User.create({firstName, lastName, email, password: hashPass})
     const token = user.generateAuthToken()
-<<<<<<< HEAD
-    res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false}).status(201).end()
-=======
 
     res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(201).send()
->>>>>>> f3fcb0253129c168c1b300de87ae693348318d74
   } catch (err: any) {
     res.status(400).send(err.message)
   }

@@ -9,7 +9,7 @@ import { deleteDato } from 'redux/modules/deleteDato'
 import { addCategory } from 'redux/modules/addCategory'
 import { deleteCategory } from 'redux/modules/deleteCategory'
 
-export default function ConDatos() {
+export default function InputTable() {
 
   const { usuario, allInputs, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
