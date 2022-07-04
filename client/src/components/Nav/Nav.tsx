@@ -34,6 +34,11 @@ const {usuario} = useAppSelector(({user}) => user)
                     <h4>Gastos</h4>
                 </div>
             </Link>
+            <Link to="/home/saving">
+                <div>
+                    <h4>Ahorros</h4>
+                </div>
+            </Link>
             <Link to="/home/detalles">
                 <div>
                     <h4>Detalles</h4>
@@ -47,9 +52,9 @@ const {usuario} = useAppSelector(({user}) => user)
             </Link>
             }
         </div>
-        <button className={styles.logout} onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
-            Salir
-        </button>
+            <button className={styles.logout} onClick={()=> dispatch(logout()).then(()=>navigate("/", {state: {registered: true}})).then(()=>window.location.reload())}>
+                Salir
+            </button>
     </div>
   )
 }

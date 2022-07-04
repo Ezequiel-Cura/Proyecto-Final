@@ -1,11 +1,12 @@
 .Nav_wrapper{
-    float: left;
+    /* float: left; */
     height: calc(100vh - 12px);
     width: 150px;
     padding: 6px 14px;
     background-color: #2E332C;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 .image_wrapper{
     display: flex;
@@ -23,9 +24,6 @@
     height: 100px;
     border-radius: 20%;
     object-fit: cover;
-}
-.items_wrapper{
-    margin: 70px 0 200px 0;
 }
 .items_wrapper div{
     display: flex;
@@ -46,7 +44,7 @@
     border-radius: 12px;
     letter-spacing: 1.5px;
     width: min-content;
-    align-self: center;
     color: white;
     cursor: pointer;
+    align-self: center;
 }

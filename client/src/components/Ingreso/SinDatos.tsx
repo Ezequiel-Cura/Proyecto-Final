@@ -15,10 +15,8 @@ export default function SinDatos() {
             <Link to="/home/ingresos/add">
               <button>+</button>
             </Link>
+          <img className={styles.img} src={img} alt="not found"/>
           </div>
-        </div>
-        <div className={styles.wrapperImage}>
-          <img src={img} alt="not found"/>
         </div>
       </div>
     )
