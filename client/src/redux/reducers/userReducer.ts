@@ -36,8 +36,6 @@ interface User {
   status: 'idle' | 'loading' | 'success' | 'failed'
   renderInputs: Entries[] | [],
   renderOutputs: Entries[] | [],
-  allInputs: Entries[] | [],
-  allOutputs: Entries[] | [],
   totalExpensesMonth: number,
   totalInputsMonth: number
 
@@ -63,10 +61,8 @@ const initialState: User = {
     categories: []
   },
   status: 'idle',
-  renderInputs: [],
-  renderOutputs: [],
-  allInputs: [],  //Estado de entradas para ordenar o filtrar
-  allOutputs: [], //Estado de gastos para ordenar o filtrar
+  renderInputs: [], //Estado de entradas para ordenar o filtrar
+  renderOutputs: [], //Estado de gastos para ordenar o filtrar
   totalExpensesMonth: 0,
   totalInputsMonth: 0
 
