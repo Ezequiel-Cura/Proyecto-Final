@@ -18,7 +18,8 @@ const userSchema = new mongoose_1.Schema({
             start: { type: Date, required: true, default: Date.now() },
             end: Date,
             goal: Number,
-            place: String
+            place: String,
+            currency: { type: String, required: true, default: "Peso Argentino" },
         }],
     CategoriesExpenses: { type: [String], default: ["Alimentos", "Transporte", "Gimnasio", "Salud", "Viaje", "Ocio", "Alquiler", "Combustible", "Deuda", "Impuestos", "Otros"] },
     CategoriesInputs: { type: [String], default: ["Herencia", "Salario", "Regalo", "Aguinaldo", "Changa", "Préstamo", "Otros"] },

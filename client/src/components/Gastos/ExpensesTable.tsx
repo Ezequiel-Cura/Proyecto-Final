@@ -1,11 +1,11 @@
-import styles from "../Ingreso/ConDatos.module.css";
+import styles from "../Ingreso/Tables.module.css";
 import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {  addDato, deleteDato, filterExpensesByCategory, getAllExpenses, expensesFilterByFrequency, expensesFilterByMonth, expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
 
-export default function ConDatos() {
+export default function ExpensesTable() {
    const { usuario, allExpenses, totalExpensesMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
@@ -106,9 +106,9 @@ export default function ConDatos() {
 
   //Paginado---------------------------------------------------------------
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(6);
+  const [inputsPerPage, ] = useState(6);
 
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, ] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
@@ -155,14 +155,11 @@ export default function ConDatos() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-              <option value='Alimentos'>Alimentos</option>
-              <option value='Gimnasio'>Gimnasio</option>
-              <option value='Salud'>Salud</option>
-              <option value='Viaje'>Viaje</option>
-              <option value='Ocio'>Ocio</option>
-              <option value='Alquiler'>Alquiler</option>
-              <option value='Combustible'>Combustible</option>
-              <option value='Otros'>Otros</option>
+              {
+                usuario.CategoriesExpenses.length > 0
+                  ? usuario.CategoriesExpenses.map((category: string) => (<option value={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</option>))
+                  : <option value="Otros"></option>
+              }
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
