@@ -1,9 +1,11 @@
 import { Router } from "express";
 const router = Router()
 import getAllUsers from "./getAllUsers"
-import makeAdmin from "./makeAdmin"
+import changeRole from "./changeRole"
+import changePremium from "./changePremium"
 
 router.use("/getAllUsers", getAllUsers)
-router.use("/makeAdmin", makeAdmin)
+router.use("/changeRole", changeRole)
+router.use("/changePremium", changePremium)
 
 export default router

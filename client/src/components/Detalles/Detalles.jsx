@@ -136,7 +136,7 @@ export default function Detalles() {
  
   const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e","#7fffd4","#a864ca"];
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Nav />
       <div className={styles.detalles_wrapper}>
         <h1>Detalles</h1>

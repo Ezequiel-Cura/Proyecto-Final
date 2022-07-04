@@ -140,9 +140,8 @@ export default function ConDatos() {
   }
   
   return (
-    <div>
-      <Nav/>
       <div className={styles.background}>
+      <Nav/>
         <div className={styles.wrapperAllIngreso}>
           <div className={styles.title}>
             <h1>Tus Gastos </h1>
@@ -285,6 +284,5 @@ export default function ConDatos() {
           </form>
         </div>
       </div>
-    </div>
   )
 }

@@ -25,15 +25,13 @@ export default function Home() {
   }
   console.log(datos().allGastos)
   return (
-    <div className={styles.home_wrapper}>
+    <div className={styles.wrapper}>
       <Nav/>
       <div className={styles.text_wrapper}>
-
         <div className={styles.title_wrapper}>
           <h1>Administra tus finanzas</h1>
         </div>
         <div className={styles.links_wrapper}>
-
           <div >
               <Link to="/home/ingresos">
                 <div className={styles.ingresoLink}>
@@ -42,7 +40,6 @@ export default function Home() {
                 </div>
               </Link>
           </div>
-
           <div>
             <Link to="/home/gastos">
               <div className={styles.gastos_link}>
@@ -51,9 +48,7 @@ export default function Home() {
               </div>
             </Link>
           </div>
-
           <div>
-
             <Link to="/home">
               <div className={styles.ahorros_link}>
                   <h2>AHORROS</h2>
@@ -61,7 +56,6 @@ export default function Home() {
               </div>
             </Link>
           </div>
-
           <div>
               <Link to="/home/detalles">
                 <div className={styles.detalles_link}>
