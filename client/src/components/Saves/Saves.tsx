@@ -2,24 +2,13 @@ import React, { useState } from 'react';
 import style from './Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addSaving } from 'redux/modules/addSaving';
-import { deleteSaving } from 'redux/modules/deleteSaving';
-import Drawer from '@mui/material/Drawer';
+// import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
 import SavesCreate from './SavesCreate';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import PopUp from './PopUp';
 
 export default function Saves() {
-
   const { usuario } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-
-  const [showForm, setShowForm] = useState<boolean>(false)
-
-
   interface SavingUser {
     name: string,
     start: string,
@@ -29,20 +18,13 @@ export default function Saves() {
     currency: string,
     amount: number
   }
+
+  //Modal
   const [open, setOpen] = useState<boolean>(false);
-
-  // Shows or hide the Drawer
-  // const handleToggle = () => setShowForm(!showForm);
-
-  // Closes the drawer
-  // const handleClose = () => setShowForm(false);
-
-  // function handleDelete() {
-  //   dispatch(deleteSaving())
-  // }
+  
   return (
-    <div>
-      <Nav />
+    <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
+        <Nav />
       <div className={style.background}>
         <div className={style.wrapperAll}>
           <div className={style.title}>
@@ -87,9 +69,9 @@ export default function Saves() {
                 </table>
               </div>
             </div>
-
-            {/* EJEMPLO */}
-            <div id='amount2' className={style.wrapperSave}>
+          
+          {/* EJEMPLO */}
+          <div id='amount2' className={style.wrapperSave}>
               <div id='amount2' className={style.name}>
                 {/* <h1>Nombre: <br/>{s.name}</h1> */}
                 <div className={style.divP}>
@@ -122,33 +104,16 @@ export default function Saves() {
                 </table>
               </div>
             </div>
+          </div> 
 
-
-          </div>
-          {/* ))
-           : <h1>Todavia no creaste un ahorro</h1>
-          } */}
-          {/* <div className={style.wrapperNewSave}>
-            <p>Agregar nueva casilla de ahorro</p>
-            <button onClick={handleToggle}>+</button>
-            {showForm &&
-              <div id="Card1" onClick={handleClose}>
-                <SavesCreate/>
-              </div>
-            }
-          </div> */}
-
-          <button onClick={() => setOpen(true)}>
-            Crear nuevo monto
-            <PopUp
-              open={open}
-              setOpen={setOpen}
-              // onClick={() => setOpen(true)}
-              title="Completa para agregar un nuevo monto!"
-            >
-              <SavesCreate />
-            </PopUp>
-          </button>
+          <button className={style.wrapperNewSave} onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro</button>
+          <PopUp
+            open={open} 
+            setOpen={setOpen}
+            onClick={() => setOpen(open)}
+            title="Completa para agregar una casilla de ahorro!">
+            <SavesCreate/>
+          </PopUp>
 
         </div>
       </div>

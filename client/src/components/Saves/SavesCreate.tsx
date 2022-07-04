@@ -6,7 +6,7 @@ import { addSaving } from 'redux/modules/addSaving';
 export default function SavesCreate() {
 
   const dispatch = useAppDispatch();
-  const { usuario } = useAppSelector(state => state.user);
+  const { usuario, status } = useAppSelector(state => state.user);
 
   interface SavingUser {
     name: string,
@@ -46,7 +46,8 @@ export default function SavesCreate() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-      <input
+              <label>Nombre de la casilla: </label>
+              <input
                 type='text'
                 name='name'
                 value={input.name}
@@ -54,6 +55,7 @@ export default function SavesCreate() {
                 onChange={handleChange}
               >
               </input>
+              <label>Fecha de inicio: </label>
               <input
                 type='date'
                 name='end'
@@ -62,7 +64,16 @@ export default function SavesCreate() {
                 onChange={handleChange}
               >
               </input>
-              <label>$</label>
+              <label>Descripcion: </label>
+              <input
+                type='text'
+                name='description'
+                value={input.end}
+                placeholder='Agrega una descripcion'
+                onChange={handleChange}
+              >
+              </input>
+              <label>Meta: $ </label>
               <input
                 type='number'
                 name='goal'
@@ -74,6 +85,10 @@ export default function SavesCreate() {
               </input>
               <button type='submit'>Agregar</button>
       </form>
+      {status === 'success' 
+      ? <p>Se agrego! Vuelve a Ahorros</p>
+      : <p>Hubo algun problema, intentalo mas tarde</p>
+      }
     </div>
   )
 }
