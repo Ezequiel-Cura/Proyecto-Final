@@ -25,20 +25,17 @@ import { deleteSaving } from '../modules/deleteSaving'
 
 
 interface Entries {
-  _id?: string,
-  start?: string,
-  end?: string,
-  date?: string,
-  name: string,
+  date: string,
+  end?:string,
+  description: string,
   category: string,
   amount: number
 }
 interface User {
   usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
-  renderInputs: []
-  allInputs: Entries[] | [],
-  allOutputs: Entries[] | [],
+  renderInputs: Entries[] | []
+  renderOutputs: Entries[] | []
   totalExpensesMonth: number,
   totalInputsMonth: number
 
@@ -65,8 +62,7 @@ const initialState: User = {
   },
   status: 'idle',
   renderInputs: [],
-  allInputs: [],  //Estado de entradas para ordenar o filtrar
-  allOutputs: [], //Estado de gastos para ordenar o filtrar
+  renderOutputs: [],
   totalExpensesMonth: 0,
   totalInputsMonth: 0
 
@@ -93,30 +89,37 @@ const reducerSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    getAllInputs: (state) => {
-      // let currentInputState = current(state)
-      // state.allInputs = [...currentInputState.usuario.monthly.input, ...currentInputState.usuario.extra.input]
-      
+    // getAllInputs: (state) => {
+    //   try {
+    //     let currentInputState = current(state)
+    //     // state.allInputs = [...currentInputState.usuario.monthly.input, ...currentInputState.usuario.extra.input]
+    //     const month = [...currentInputState.usuario.monthly.input]
+    //     const extra = [...currentInputState.usuario.extra.input]
+    //     state.allInputs = [...month, ...extra]
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // },
+
+    // getAllExpenses: (state) => {
+    //   // let currentExpensesState = current(state)
+    //   // state.allOutputs = [...currentExpensesState.usuario.Account.monthlyExpenses, ...currentExpensesState.usuario.Account.variableExpenses]
+
+    //   const month = state.usuario.monthly.output
+    //   const extra = state.usuario.extra.output?.reduce((prev:any, curr:any) => prev.concat(curr.entries))
+
+    //   state.allOutputs = month + extra
+    // },
+
+
+    renderInput: (state, { payload }) => {
       const month = state.usuario.monthly.input
-      const extra = state.usuario.extra.input
-
-      state.allInputs = month + extra
-    },
-
-    renderInput: (state) => {
-      
+      const extra = state.usuario.extra.input.filter((e:any) => e.date === payload)
+      state.renderInputs = [...month, ...extra]
+      console.log(current(state).renderInputs)
     },
     
 
-    getAllExpenses: (state) => {
-      // let currentExpensesState = current(state)
-      // state.allOutputs = [...currentExpensesState.usuario.Account.monthlyExpenses, ...currentExpensesState.usuario.Account.variableExpenses]
-
-      const month = state.usuario.monthly.output
-      const extra = state.usuario.extra.output?.reduce((prev:any, curr:any) => prev.concat(curr.entries))
-
-      state.allOutputs = month + extra
-    },
 
     totalInput: (state) => {
       // let State = current(state);
@@ -130,7 +133,7 @@ const reducerSlice = createSlice({
     totalExpenses: (state) => {
       let curAllInputState = current(state);
       let reduceTotalExp = 0
-      curAllInputState.allOutputs.forEach( entrie => reduceTotalExp+= entrie.amount)
+      // curAllInputState.allOutputs.forEach( entrie => reduceTotalExp+= entrie.amount)
       state.totalExpensesMonth = reduceTotalExp
     },
 
@@ -159,10 +162,10 @@ const reducerSlice = createSlice({
 
     expensesOrderByAmount: (state, { payload }) => {
       let currStateExpAmount = current(state)
-      const orderExpenses: Entries[] = [...currStateExpAmount.allInputs];
+      const orderExpenses: Entries[] = [...currStateExpAmount.renderInputs];
       let orderByAmount = payload === 'menorAMayor'
-        ? orderExpenses.sort((a, b) => a.amount - b.amount)
-        : orderExpenses.sort((a, b) => b.amount - a.amount)
+        // ? orderExpenses.sort((a, b) => a.amount - b.amount)
+        // : orderExpenses.sort((a, b) => b.amount - a.amount)
       return {
         ...state,
         allExpenses: orderByAmount
@@ -182,17 +185,17 @@ const reducerSlice = createSlice({
     //   }
     // },
     
-    inputsOrderByAmount: (state, { payload }) => {
-      let currStateInpAmount = current(state)
-      const orderInputs: Entries[] = [...currStateInpAmount.allInputs];
-      let orderByAmount = payload === 'menorAMayor'
-        ? orderInputs.sort((a, b) => a.amount - b.amount)
-        : orderInputs.sort((a, b) => b.amount - a.amount)
-      return {
-        ...state,
-        allInputs: orderByAmount
-      }
-    },
+    // inputsOrderByAmount: (state, { payload }) => {
+    //   let currStateInpAmount = current(state)
+    //   const orderInputs: Entries[] = [...currStateInpAmount.allInputs];
+    //   let orderByAmount = payload === 'menorAMayor'
+    //     // ? orderInputs.sort((a, b) => a.amount - b.amount)
+    //     // : orderInputs.sort((a, b) => b.amount - a.amount)
+    //   return {
+    //     ...state,
+    //     allInputs: orderByAmount
+    //   }
+    // },
 
     inputsFilterByFrequency: (state, { payload }) => {
       let currentInputFrequency = current(state);
@@ -209,19 +212,19 @@ const reducerSlice = createSlice({
       }
     },
 
-    filterInputByCategory (state, {payload}) {
-      let currentInputState = current(state)
-      let allEntriesOfInputs = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
-      let filterInputByCategory = allEntriesOfInputs.filter((obj: Entries) => payload === obj.category)
-      state.allInputs = filterInputByCategory
-    },
+    // filterInputByCategory (state, {payload}) {
+    //   let currentInputState = current(state)
+    //   let allEntriesOfInputs = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
+    //   let filterInputByCategory = allEntriesOfInputs.filter((obj: Entries) => payload === obj.category)
+    //   state.allInputs = filterInputByCategory
+    // },
 
-    filterExpensesByCategory (state, {payload}) {
-      let curExpState = current(state)
-      const allEntriesOfExpenses = [...curExpState.usuario.Account.monthlyExpenses, ...curExpState.usuario.Account.variableExpenses]
-      let filterExpenseByCategory = allEntriesOfExpenses.filter( (obj : Entries) => payload === obj.category)
-      state.allOutputs = filterExpenseByCategory
-    },
+    // filterExpensesByCategory (state, {payload}) {
+    //   let curExpState = current(state)
+    //   const allEntriesOfExpenses = [...curExpState.usuario.Account.monthlyExpenses, ...curExpState.usuario.Account.variableExpenses]
+    //   let filterExpenseByCategory = allEntriesOfExpenses.filter( (obj : Entries) => payload === obj.category)
+    //   state.allOutputs = filterExpenseByCategory
+    // },
   },
   extraReducers: {
     [registerUser.pending]: (state) => {
@@ -358,16 +361,16 @@ export const {
   // inputsFilterByMonth,
   totalInput,
   totalExpenses,
-  getAllInputs,
+  // getAllInputs,
   renderInput,
-  getAllExpenses,
-  inputsOrderByAmount,
+  // getAllExpenses,
+  // inputsOrderByAmount,
   expensesOrderByAmount,
   // expensesFilterByMonth,
   expensesFilterByFrequency,
   inputsFilterByFrequency,
-  filterExpensesByCategory,
-  filterInputByCategory,
+  // filterExpensesByCategory,
+  // filterInputByCategory,
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;

@@ -2,8 +2,6 @@
 
 import { Schema, model } from "mongoose"
 import jwt from "jsonwebtoken"
-import { ObjectId } from "mongodb"
-import { TypeOfTag } from "typescript"
 
 interface IUser {
   firstName: string
@@ -20,11 +18,9 @@ interface IUser {
   monthly: Array<object>
   extra: Array<object>
 
-  categories: Array<object>
+  categories: Array<object>,
   generateAuthToken: () => any
 }
-
-
 
 const userSchema = new Schema<IUser>({
   firstName: { type: String, required: true },
@@ -56,7 +52,7 @@ const userSchema = new Schema<IUser>({
 
   monthly: {
     input: [{
-      date: {type: String, required: true},
+      date: {type: String, required: true, default: Date.now()},
       end: Date,
       description: String,
       category: String,
@@ -64,7 +60,7 @@ const userSchema = new Schema<IUser>({
     }],
 
     output: [{
-      start: Date,
+      date: {type: String, required: true, default: Date.now()},
       end: Date,
       description: String,
       category: String,
@@ -103,7 +99,7 @@ const userSchema = new Schema<IUser>({
     type: {
       type: String,
       enum: ['input', 'output'],
-      required: true}
+      required: true},
   }]
 })
 

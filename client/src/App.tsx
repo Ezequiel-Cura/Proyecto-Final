@@ -11,11 +11,11 @@ import Expenses from 'components/Gastos/Expenses';
 import ExpensesTable from 'components/Gastos/ExpensesTable';
 import Detalles from 'components/Detalles/Detalles';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { getUserInfo } from 'redux/modules/getUserInfo';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
 import LostPage from 'components/LostPage/LostPage';
 import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
 import Novedades from 'components/Novedades/Novedades';
-import { getUserInfo } from 'redux/modules/getUserInfo';
 import SavesLanding from 'components/Saves/SavesLanding';
 import Saves from 'components/Saves/Saves';
 
@@ -43,8 +43,6 @@ function App() {
         <Route path='/home/gastos/add' element={<ExpensesTable/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
         <Route path="/home/novedades" element={<Novedades/>} />
-        <Route path='/home/saving' element={<SavesLanding/>}/>
-        <Route path='/home/saving/add' element={<Saves/>}/>
       </Route>
       <Route path='/admin' element={<ProtectedRoute isAllowed={logged && usuario.role === "admin"}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>

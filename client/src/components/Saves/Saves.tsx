@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import style from './Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+<<<<<<< HEAD
 import SavesCreate from './SavesCreate';
 import PopUp from './PopUp';
 import { addSaving } from 'redux/modules/addSaving';
 import { deleteSaving } from 'redux/modules/deleteSaving';
 
+=======
+// import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
+import SavesCreate from './SavesCreate';
+import PopUp from './PopUp';
+>>>>>>> 630b41b7de7b531417ca8de11cf3ea8269511058
 
 export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);

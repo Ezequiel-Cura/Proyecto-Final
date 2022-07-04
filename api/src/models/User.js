@@ -31,14 +31,14 @@ const userSchema = new mongoose_1.Schema({
         }],
     monthly: {
         input: [{
-                date: { type: String, required: true },
+                date: { type: String, required: true, default: Date.now() },
                 end: Date,
                 description: String,
                 category: String,
                 amount: Number,
             }],
         output: [{
-                start: Date,
+                date: { type: String, required: true, default: Date.now() },
                 end: Date,
                 description: String,
                 category: String,
@@ -76,7 +76,7 @@ const userSchema = new mongoose_1.Schema({
                 type: String,
                 enum: ['input', 'output'],
                 required: true
-            }
+            },
         }]
 });
 userSchema.methods.generateAuthToken = function () {
