@@ -1,6 +1,6 @@
-import styles from "./ConDatos.module.css";
-import stylesPag from "./Pagination.module.css"
 import React, { useEffect, useState } from 'react';
+import styles from "./Tables.module.css";
+import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllInputs, /*inputsFilterByMonth,*/ inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, renderInput} from "redux/reducers/userReducer";
@@ -9,7 +9,7 @@ import { deleteDato } from 'redux/modules/deleteDato'
 import { addCategory } from 'redux/modules/addCategory'
 import { deleteCategory } from 'redux/modules/deleteCategory'
 
-export default function ConDatos() {
+export default function InputTable() {
 
   const { usuario, allInputs, totalInputsMonth, status, renderInputs} = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
@@ -23,13 +23,13 @@ export default function ConDatos() {
     }
   }, [status])
 
+  //Typescript
   interface Value {
+    date: string,
+    end?: string,
     description: string,
-    amount: number,
-    category?: string,
-    date?: string,
-    _id?: string,
-    source?: string
+    category: string,
+    amount: number
   }
   interface AgregarIngresos {
     id?: string,
@@ -38,7 +38,7 @@ export default function ConDatos() {
     value: Value,
   }
 
-  //Delete:-----------------
+  //Delete
   interface idUndefined {
     _id: string | undefined
   }
@@ -49,16 +49,16 @@ export default function ConDatos() {
     value: idUndefined
   }
 
+  interface keySelect {
+    keyInput: string
+  }
+
   const [input, setInput] = useState<Value>({
     category: '',
     description: '',
     amount: 0,
     date: '',
   });
-
-  interface keySelect {
-    keyInput: string
-  }
 
   const [selectKey, setSelectKey] = useState<keySelect>({
     keyInput: '',
@@ -71,14 +71,14 @@ export default function ConDatos() {
     })
   }
 
-  function handleSelectI(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
       ...selectKey,
       keyInput: e.target.value
     })
   }
 
-  function handleSelectC(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
     setInput({
       ...input,
       category: e.target.value
@@ -94,7 +94,6 @@ export default function ConDatos() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
     dispatch(addDato(form));
-
     setInput({
       category: '',
       description: '',
@@ -106,7 +105,7 @@ export default function ConDatos() {
     })
   }
 
-  //-------------------------------->Form de categorias
+  //Form de categorias
   interface category {
     id?: string,
     key: string | undefined,
@@ -131,8 +130,7 @@ export default function ConDatos() {
     dispatch(deleteCategory(formCategory))
   }
 
-  //----------------------------------->Form DELETE categorias
-
+  //Form DELETE categorias
   const [formCategoryDelete, setFormCategoryDelete] = useState<category>({
     key: 'CategoriesInputs',
     value: ''
@@ -150,8 +148,9 @@ export default function ConDatos() {
     console.log(formCategoryDelete)
     dispatch(deleteCategory(formCategoryDelete))
   }
-  //-----------------------------------------
 
+
+  //Selects/button
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
   }
@@ -181,7 +180,7 @@ export default function ConDatos() {
     dispatch(getAllInputs())
   }
 
-  //Paginado---------------------------------------------------------------
+  //Paginado
   const [page, setPage] = useState(1);
   const [inputsPerPage, setinputsPerPage] = useState(5);
 
@@ -217,7 +216,7 @@ export default function ConDatos() {
   }
 
   return (
-    <div>
+    <div style={{display: "grid", gridTemplateColumns: "178px 1fr"}}>
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
@@ -234,11 +233,11 @@ export default function ConDatos() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-              {
+              {/* {
                 usuario.categories.length > 0
                   ? usuario.categories.map((category: string) => (<option value={category}>{category}</option>))
                   : <option value="Otros"></option>
-              }
+              } */}
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
@@ -278,26 +277,15 @@ export default function ConDatos() {
               </tr>
             </thead>
             <tbody>
-              {renderInputs.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+              {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                  detalles.source === 'monthlyInput'
-                    ? (<tr className={styles.monthlyInput}>
+                <tr className={styles.monthlyInput}>
                       <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
                       <th>{detalles.date && detalles.date.split("T")[0]}</th>
                       <th>{detalles.category ? detalles.category : "-"}</th>
                       <th>{detalles.description}</th>
                       <th>$ {detalles.amount}</th>
                     </tr>)
-                    : (
-                      <tr>
-                        <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
-                        <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                        <th>{detalles.category ? detalles.category : "-"}</th>
-                        <th>{detalles.description}</th>
-                        <th>$ {detalles.amount}</th>
-                      </tr>
-                    )
-                )
               })
                 : <></>
               }
@@ -320,13 +308,13 @@ export default function ConDatos() {
           <div className={styles.wrapperForms}>
             <form onSubmit={handleSubmit}>
               <div className={styles.form}>
-                <select value={selectKey.keyInput} onChange={handleSelectI}>
+                <select value={selectKey.keyInput} onChange={handleSelectInputs}>
                   <option>Selecciona el tipo</option>
                   <option value='monthly'>Ingreso fijo</option>
                   <option value='extra'>Ingreso extra</option>
                 </select>
 
-                <select value={input.category} onChange={handleSelectC}>
+                <select value={input.category} onChange={handleSelectCategories}>
                   <option>Selecciona una categoría</option>
                   {usuario.categories.length > 0
                     ? usuario.categories.map((category: string) =>

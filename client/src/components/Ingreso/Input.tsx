@@ -1,11 +1,11 @@
 import React, { useEffect }  from 'react';
-import ConDatos from "./ConDatos";
-import SinDatos from './SinDatos';
+import InputLanding from './InputLanding';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllInputs } from 'redux/reducers/userReducer';
+import InputTable from './InputTable';
 
-export default function Ingreso() {
-  const { allInputs, status } = useAppSelector(state => state.user);
+export default function Input() {
+  const { renderInputs, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function Ingreso() {
 
   return (
     <div>
-      { allInputs.length > 0 ? <ConDatos/> : <SinDatos/>}
+      { renderInputs.length > 0 ? <InputTable/> : <InputLanding/> }
     </div>
   )
 }

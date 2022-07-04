@@ -31,7 +31,6 @@ export default function Login() {
     dispatch(googleLogin(response.credential))
     .then((resp: any)=> {
         if (resp.error) return
-        navigate("/home")
         window.location.reload()
     })}
 
@@ -49,7 +48,6 @@ export default function Login() {
         return dispatch(loginUser({email, password}))
             .then((resp: any)=> {
                 if (resp.error) return setFieldError("message", resp.payload)
-                navigate("/home")
                 window.location.reload()
             })})}>
             {() => (

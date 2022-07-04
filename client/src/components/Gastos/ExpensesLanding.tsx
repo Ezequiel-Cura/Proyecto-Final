@@ -1,10 +1,10 @@
-import styles from "../Ingreso/Ingreso.module.css";
+import styles from "../Ingreso/Input.module.css";
 import React from 'react';
-import img from "../../assets/gastos.svg";
+import img from "../../assets/imgExpenses.svg";
 import { Link } from "react-router-dom";
 import Nav from "components/Nav/Nav";
 
-export default function SinDatos() {
+export default function ExpensesLanding() {
     return (
       <div className={styles.wrapperAllIngreso}>
         <Nav/>
@@ -15,10 +15,8 @@ export default function SinDatos() {
             <Link to="/home/gastos/add">
               <button>+</button>
             </Link>
+          <img className={styles.img} src={img} alt="not found"/>
           </div>
-        </div>
-        <div className={styles.wrapperImage}>
-          <img src={img} alt="not found"/>
         </div>
       </div>
     )

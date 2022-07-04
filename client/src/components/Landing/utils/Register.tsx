@@ -30,10 +30,7 @@ export default function Register() {
     
     function handleGoogleLogin(response: any) {
     dispatch(googleLogin(response.credential))
-    .then(()=> {
-      navigate("/home")
-      window.location.reload()
-    })}
+    .then(()=> window.location.reload())}
   return (
     <div  className={styles.formContainer}>
       <div className={styles.textContainer}>
@@ -46,7 +43,6 @@ export default function Register() {
           return dispatch(registerUser(values))
           .then((resp: any) => {
               if (resp.error) return setFieldError("email", resp.payload)
-              navigate("/home")
               window.location.reload()
           })}}>
         {() => (

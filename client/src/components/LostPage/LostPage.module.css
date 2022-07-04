@@ -1,0 +1,24 @@
+.wrapper {
+    height: 100vh;
+    background-image: url("assets/lostPage.png");
+    background-color: #FFFFFF;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin: 0px;
+}
+
+.btn {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: Transparent;
+    color: black;
+    font-size: 2rem;
+}

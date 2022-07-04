@@ -1,6 +1,5 @@
 import { Router } from "express";
 const router = Router()
-
 import register from './register'
 import login from './login'
 import googleLogin from './googleLogin'
@@ -15,7 +14,6 @@ import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
 import savingsDelete from './savingsDelete'
 
-
 router.use('/login', login)
 router.use('/register', register)
 router.use('/googleLogin', googleLogin)
@@ -28,6 +26,5 @@ router.use('/account', accountDelete)
 router.use('/category', categoryAdd)
 router.use('/category', categoryDelete)
 router.use('/savings', savings)
-
 
 export default router

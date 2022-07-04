@@ -16,7 +16,8 @@ router.post("/", authorization, async (req: any, res: Response) => {
 
     if (!user) return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
 
-    await user.categories.push(value).save()
+    await user.categories.push(value)
+    await user.save()
     res.status(200).send({key, value: user[key]})
 
   }
