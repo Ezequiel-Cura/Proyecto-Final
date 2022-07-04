@@ -12,6 +12,7 @@ import accountDelete from './accountDelete'
 import deleteUser from './deleteUser'
 import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
+import savingsDelete from './savingsDelete'
 
 router.use('/login', login)
 router.use('/googleLogin', googleLogin)

@@ -103,7 +103,7 @@ export const uploadImage: any = createAsyncThunk("user/uploadImage",
 export const addDato: any = createAsyncThunk("user/addIngreso",
   async (ingreso, { rejectWithValue }) => {
     try {
-      console.log(ingreso, 'reducer')
+
       const { data } = await axios.post(`/user/account`, ingreso)
       return data
     } catch (err: any) {
@@ -129,9 +129,9 @@ export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
 export const addCategory: any = createAsyncThunk("user/addCategory",
   async (ingreso, { rejectWithValue }) => {
     try {
-      console.log(ingreso, 'reduce')
+
       const { data } = await axios.post(`/user/category`, ingreso)
-      console.log(data, "DATAAAA")
+
       return data
     } catch (err: any) {
       return rejectWithValue(err.response.data)
@@ -142,9 +142,31 @@ export const addCategory: any = createAsyncThunk("user/addCategory",
   async (ingreso: any, { rejectWithValue }) => {
     try {
       let deleteEntry: any = await axios.delete("/user/category", {
-        data: {
-          source: ingreso
-        }
+        data: ingreso
+      });
+      return deleteEntry.data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+export const addSaving: any = createAsyncThunk("user/addSaving",
+  async (ingreso, { rejectWithValue }) => {
+    try {
+
+      const { data } = await axios.post(`/user/saving`, ingreso)
+
+      return data
+    } catch (err: any) {
+      return rejectWithValue(err.response.data)
+    }
+  })
+
+  export const deleteSaving: any = createAsyncThunk("user/deleteSaving",
+  async (ingreso: any, { rejectWithValue }) => {
+    try {
+      let deleteEntry: any = await axios.delete("/user/saving", {
+        data: ingreso
       });
       return deleteEntry.data
     } catch (err: any) {
@@ -373,6 +395,26 @@ const reducerSlice = createSlice({
       state.usuario = payload
     },
     [deleteCategory.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [addSaving.pending]: (state) => {
+      state.status = "loading"
+    },
+    [addSaving.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [addSaving.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [deleteSaving.pending]: (state) => {
+      state.status = "loading"
+    },
+    [deleteSaving.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.usuario = payload
+    },
+    [deleteSaving.rejected]: (state) => {
       state.status = "failed"
     },
   }
