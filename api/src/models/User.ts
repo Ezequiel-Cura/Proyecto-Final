@@ -22,8 +22,6 @@ interface IUser {
   generateAuthToken: () => any
 }
 
-
-
 const userSchema = new Schema<IUser>({
   firstName: { type: String, required: true },
   lastName: String,

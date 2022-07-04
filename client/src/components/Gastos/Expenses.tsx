@@ -17,7 +17,7 @@ export default function Expenses() {
   
   return (
     <div>
-        {/* { allOutputs.length > 0 ? <ConDatosGastos/> : <SinDatosGastos/> } */}
+        {/* { allOutputs.length > 0 ? <ExpensesTable/> : <ExpensesLanding/> } */}
     </div>
   )
 }
