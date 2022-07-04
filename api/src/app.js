@@ -13,19 +13,15 @@ const cors_1 = __importDefault(require("cors"));
 // Initializations
 (0, db_1.connectDB)();
 const server = (0, express_1.default)();
-server.set("port", process.env.PORT || 3001);
 server.use(body_parser_1.default.urlencoded({ extended: true }));
 server.use(body_parser_1.default.json());
 server.use((0, cookie_parser_1.default)());
 server.use((0, morgan_1.default)("dev"));
 server.use((0, cors_1.default)({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'PUT', 'POST', 'DELETE'],
-    allowedHeaders: ['Accept', 'Content-Type'],
+    origin: ["http://localhost:3000", process.env.FRONT_URL, process.env.FRONT_URL1, process.env.FRONT_URL2],
+    methods: ["POST", "PUT", "GET", "DELETE"],
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
     credentials: true
 }));
-server.get("/ping", (req, res) => {
-    res.status(200).send("pong");
-});
 server.use('/', routes_1.default);
 exports.default = server;

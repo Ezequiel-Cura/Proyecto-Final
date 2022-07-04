@@ -1,6 +1,5 @@
 import { Router } from "express";
 const router = Router()
-
 import register from './register'
 import login from './login'
 import googleLogin from './googleLogin'
@@ -13,20 +12,19 @@ import accountDelete from './accountDelete'
 import deleteUser from './deleteUser'
 import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
+import savingsDelete from './savingsDelete'
 
-
-router.use('/user/login', login)
-router.use('/user/googleLogin', googleLogin)
-router.use('/user/logout', logout)
-router.use('/user/getUserInfo', getUserInfo)
-router.use('/user/account', accountAdd)
-router.use('/user/category', categoryAdd)
-router.use('/user/saving', savings)
-router.use('/user/register', register)
-router.use('/user', userUpdate)
-router.use('/user/account', accountDelete)
-router.use('/user/category', categoryDelete)
-router.use('/user', deleteUser)
-
+router.use('/login', login)
+router.use('/googleLogin', googleLogin)
+router.use('/logout', logout)
+router.use('/getUserInfo', getUserInfo)
+router.use('/account', accountAdd)
+router.use('/category', categoryAdd)
+router.use('/saving', savings)
+router.use('/register', register)
+router.use('/update', userUpdate)
+router.use('/account', accountDelete)
+router.use('/category', categoryDelete)
+router.use('/delete', deleteUser)
 
 export default router

@@ -6,18 +6,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userSchema = new mongoose_1.Schema({
-    userName: { type: String, required: true },
+    firstName: { type: String, required: true },
     lastName: String,
     email: { type: String, unique: true, lowercase: true, required: true },
     password: { type: String, required: true },
     avatar: String,
+    role: { type: String, default: "user" },
     premium: { type: Boolean, default: false },
     Saving: [{
             name: { type: String, required: true },
             start: { type: Date, required: true, default: Date.now() },
             end: Date,
             goal: Number,
-            place: String
+            place: String,
+            currency: { type: String, required: true, default: "Peso Argentino" },
         }],
     CategoriesExpenses: { type: [String], default: ["Alimentos", "Transporte", "Gimnasio", "Salud", "Viaje", "Ocio", "Alquiler", "Combustible", "Deuda", "Impuestos", "Otros"] },
     CategoriesInputs: { type: [String], default: ["Herencia", "Salario", "Regalo", "Aguinaldo", "Changa", "Préstamo", "Otros"] },

@@ -1,0 +1,76 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 178px 1fr;
+}
+.detalles_wrapper{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 7fr;
+  height: 100vh;
+  overflow: auto;
+}
+
+h1{
+  margin: 20px;
+}
+
+.seccion_wrapper{
+  margin-top: 40px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100vh;
+}
+
+.primer_wrapper{
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  .totales{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr, 1fr, 1fr;
+  }
+
+
+
+.hol{
+  /* VARIABLES GUARDADAS PARA EL PIE CHARTS
+   */
+  color: #e27b7b;
+  color: #cfc4c4;
+  color: #96db99;
+  color: #92b0c4;
+  color: #d4ca8e;
+  color: #7fffd4;
+  color: #a864ca;
+  
+}
+
+.blocked_wrapper{
+  width: 100%;
+}
+
+.blocked{
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: .5;
+  border-radius: 5px;
+}
+.blocked:hover{
+  opacity: .8;
+}
+
+.blocked span{
+  margin: 10px;
+  color: black;
+  font-weight: bolder;
+  font-size: larger;
+}

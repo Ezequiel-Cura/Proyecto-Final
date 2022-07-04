@@ -13,6 +13,24 @@
     justify-items: center;
     align-items: center;
 }
+.imageInput {
+   width: min-content;
+   background-color: #090909;
+   color: #a11414;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.acceptButton {
+   border-radius: 10px;
+   width: min-content;
+   padding: 5px 10px;
+   background-color: none;
+   cursor: pointer;
+   text-transform: uppercase;
+   background-color:#696969;
+   color: white;
+}
 
 .closeButton {
     position: absolute;
@@ -43,7 +61,7 @@
     align-self: center;
     justify-self: center;
     text-align: center;
-    width: 300px;
+    width: 200px;
     height: 200px;
     border: 3px dashed #eeeeee;
     border-radius: 4px;

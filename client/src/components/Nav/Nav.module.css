@@ -1,11 +1,12 @@
 .Nav_wrapper{
-    float: left;
+    /* float: left; */
     height: calc(100vh - 12px);
     width: 150px;
     padding: 6px 14px;
     background-color: #2E332C;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 .image_wrapper{
     display: flex;
@@ -24,9 +25,6 @@
     border-radius: 20%;
     object-fit: cover;
 }
-.items_wrapper{
-    margin: 70px 0 200px 0;
-}
 .items_wrapper div{
     display: flex;
     justify-content: center;
@@ -37,4 +35,16 @@
 .items_wrapper div:hover{
     background-color: lightslategray;
     border-radius: 30px;
+}
+
+.logout {
+    background-color: #00BFA6;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    letter-spacing: 1.5px;
+    width: min-content;
+    color: white;
+    cursor: pointer;
+    align-self: center;
 }
