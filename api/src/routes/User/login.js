@@ -26,7 +26,11 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (passwordCompare) {
             const { firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories } = user;
             const token = user.generateAuthToken();
+<<<<<<< HEAD
             return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true }).status(200).send({ firstName, lastName, avatar, premium, role, savings, fees, monthly, extra, categories });
+=======
+            return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false }).status(200).end();
+>>>>>>> 9e8750e9cd9aa2f376de2dfc645fa8ac0dd30a3b
         }
         res.status(400).end();
     }

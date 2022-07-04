@@ -1,0 +1,24 @@
+.wrapper {
+    height: 100vh;
+    background-color: grey;
+    display: grid;
+    grid-template-columns: 178px 1fr;
+    overflow: auto;
+}
+
+.tableWrapper {
+    height: calc(100vh- 10vh);
+    background-color: black;
+    padding: 5% 5% 0px 5%;
+    cursor: default;
+}
+
+table {
+    background-color: grey;
+    width: 100%;
+    max-height: 100%;
+    overflow: auto;
+}
+td {
+    padding: 5px 0px;
+}
