@@ -3,18 +3,19 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { /*inputsFilterByMonth,*/ /*inputsOrderByAmount,*/ inputsFilterByFrequency, /*filterInputByCategory,*/ totalInput, renderInput} from "redux/reducers/userReducer";
+import { /*inputsFilterByMonth,*/ /*inputsOrderByAmount,*/ inputsFilterByFrequency, /*filterInputByCategory,*/ totalInput, renderInput } from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
-import { addCategory } from 'redux/modules/addCategory'
+// import { addCategory } from 'redux/modules/addCategory'
 import { deleteCategory } from 'redux/modules/deleteCategory'
+import { Category } from '@mui/icons-material';
 
 export default function InputTable() {
 
-  const { usuario, totalInputsMonth, status, renderInputs} = useAppSelector(state => state.user);
+  const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`)
+  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
@@ -24,6 +25,15 @@ export default function InputTable() {
   }, [status])
 
   //Typescript
+
+  interface Category {
+    name: string,
+    frequency: string,
+    type: string,
+    _id: {
+      $oid: string
+    }
+  }
   interface Value {
     date: string,
     end?: string,
@@ -216,7 +226,7 @@ export default function InputTable() {
   }
 
   return (
-    <div style={{display: "grid", gridTemplateColumns: "178px 1fr"}}>
+    <div style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
@@ -233,11 +243,16 @@ export default function InputTable() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-              {/* {
-                usuario.categories.length > 0
-                  ? usuario.categories.map((category: string) => (<option value={category}>{category}</option>))
-                  : <option value="Otros"></option>
-              } */}
+              {
+                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map(undefinedCategory => {
+                  return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                })
+              }
+              {
+                usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
+                  return (<option value={category.name}>{category.name}</option>)
+              })
+              }
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
@@ -279,13 +294,13 @@ export default function InputTable() {
             <tbody>
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                <tr className={styles.monthlyInput}>
-                      <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
-                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                      <th>{detalles.category ? detalles.category : "-"}</th>
-                      <th>{detalles.description}</th>
-                      <th>$ {detalles.amount}</th>
-                    </tr>)
+                  <tr className={styles.monthlyInput}>
+                    <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
+                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                  </tr>)
               })
                 : <></>
               }
@@ -314,15 +329,30 @@ export default function InputTable() {
                   <option value='extra'>Ingreso extra</option>
                 </select>
 
-                {/* <select value={input.category} onChange={handleSelectCategories}>
+                <select value={input.category} onChange={handleSelectCategories}>
                   <option>Selecciona una categoría</option>
-                  {usuario.categories.length > 0
-                    ? usuario.categories.map((category: string) =>
-                      (<option value={category}>{category}</option>))
-                    : (<option value="Otros">Otros</option>)
+                  {
+                    selectKey.keyInput ?
+                      selectKey.keyInput === 'monthly'
+                        ? ['Salario', 'Préstamo', 'Otros'].map(montInput => {
+                          return (<option value={montInput}>{montInput}</option>)
+                        })
+                        : ['Changa', 'Herencia', 'Encontrado', 'Préstamo', 'Otros'].map(extraInput => {
+                          return (<option value={extraInput}>{extraInput}</option>)
+                        })
+                      : ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map(undefinedCategory => {
+                        return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                      })
                   }
-                </select> */}
-
+                  {selectKey.keyInput === 'monthly'
+                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category) => {
+                      return (<option value={montInput.name}>{montInput.name}</option>)
+                    })
+                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category) => {
+                      return (<option value={extraInput.name}>{extraInput.name}</option>)
+                    })
+                  }
+                </select>
                 <input
                   type='text'
                   name='description'
@@ -367,16 +397,16 @@ export default function InputTable() {
               </div>
             </form>
             <div>
-              {/* <form onSubmit={handleSubmitCategoryDelete}>
+              <form onSubmit={handleSubmitCategoryDelete}>
                 <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
-                  {usuario.categories.length > 0
+                  {/* {usuario.categories.length > 0
                     ? usuario.categories.map((category: string) =>
                       (<option value={category}>{category}</option>))
                     : (<option value="Otros">Otros</option>)
-                  }
+                  } */}
                 </select>
                 <button type='submit'>Delete</button>
-              </form> */}
+              </form>
             </div>
           </div>
         </div>
