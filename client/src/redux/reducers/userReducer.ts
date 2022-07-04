@@ -23,7 +23,7 @@ import { addSaving } from '../modules/addSaving'
 
 import { deleteSaving } from '../modules/deleteSaving'
 
-
+import { info } from "console";
 interface Entries {
   _id?: string,
   start?: string,

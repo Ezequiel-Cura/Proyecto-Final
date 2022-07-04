@@ -2,8 +2,6 @@
 
 import { Schema, model } from "mongoose"
 import jwt from "jsonwebtoken"
-import { ObjectId } from "mongodb"
-import { TypeOfTag } from "typescript"
 
 interface IUser {
   firstName: string
@@ -20,7 +18,7 @@ interface IUser {
   monthly: Array<object>
   extra: Array<object>
 
-  categories: Array<object>
+  categories: Array<object>,
   generateAuthToken: () => any
 }
 

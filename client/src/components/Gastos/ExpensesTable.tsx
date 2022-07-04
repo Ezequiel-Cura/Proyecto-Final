@@ -1,4 +1,4 @@
-import styles from "../Ingreso/ConDatos.module.css";
+import styles from "../Ingreso/Tables.module.css";
 import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
@@ -8,7 +8,7 @@ import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
 
 
-export default function ConDatos() {
+export default function ExpensesTable() {
    const { usuario, allOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 

@@ -5,10 +5,10 @@ import { Route, Routes } from 'react-router-dom';
 import Home from 'components/Home/Home';
 import Landing from 'components/Landing/Landing';
 import Profile from 'components/Profile/Profile';
-import Ingreso from 'components/Ingreso/Ingreso';
-import ConDatos from 'components/Ingreso/ConDatos';
-import Gastos from 'components/Gastos/Gastos';
-import ConDatosGastos from 'components/Gastos/ConDatosGastos';
+import Input from 'components/Ingreso/Input';
+import InputTable from 'components/Ingreso/InputTable';
+import Expenses from 'components/Gastos/Expenses';
+import ExpensesTable from 'components/Gastos/ExpensesTable';
 import Detalles from 'components/Detalles/Detalles';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { getUserInfo } from 'redux/modules/getUserInfo';
@@ -34,10 +34,10 @@ function App() {
       <Route element={<ProtectedRoute isAllowed={logged}/>}>
         <Route path='/home' element={<Home/>}/>
         <Route path='/profile' element={<Profile/>}/>
-        <Route path='/home/ingresos' element={<Ingreso/>}/>
-        <Route path='/home/ingresos/add' element={<ConDatos/>}/>
-        <Route path='/home/gastos' element={<Gastos/>}/>
-        <Route path='/home/gastos/add' element={<ConDatosGastos/>}/>
+        <Route path='/home/ingresos' element={<Input/>}/>
+        <Route path='/home/ingresos/add' element={<InputTable/>}/>
+        <Route path='/home/gastos' element={<Expenses/>}/>
+        <Route path='/home/gastos/add' element={<ExpensesTable/>}/>
         <Route path='/home/saving' element={<SavesLanding/>}/>
       <Route path='/home/saving/add' element={<Saves/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
