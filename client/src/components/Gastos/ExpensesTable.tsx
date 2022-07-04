@@ -155,23 +155,11 @@ export default function ExpensesTable() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-<<<<<<< HEAD:client/src/components/Gastos/ConDatosGastos.tsx
-              <option value='Alimentos'>Alimentos</option>
-              <option value='Gimnasio'>Gimnasio</option>
-              <option value='Transporte'>Transporte</option>
-              <option value='Salud'>Salud</option>
-              <option value='Viaje'>Viaje</option>
-              <option value='Ocio'>Ocio</option>
-              <option value='Alquiler'>Alquiler</option>
-              <option value='Combustible'>Combustible</option>
-              <option value='Otros'>Otros</option>
-=======
               {
                 usuario.CategoriesExpenses.length > 0
                   ? usuario.CategoriesExpenses.map((category: string) => (<option value={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</option>))
                   : <option value="Otros"></option>
               }
->>>>>>> d92abe80d2a118705ae7463fd5d64630606a4468:client/src/components/Gastos/ExpensesTable.tsx
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
