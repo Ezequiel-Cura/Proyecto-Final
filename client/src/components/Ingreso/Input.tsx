@@ -1,22 +1,23 @@
 import React, { useEffect }  from 'react';
 import InputLanding from './InputLanding';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllInputs } from 'redux/reducers/userReducer';
+import { renderInput } from 'redux/reducers/userReducer';
 import InputTable from './InputTable';
 
 export default function Input() {
-  const { renderInputs, status } = useAppSelector(state => state.user);
+  const { status, renderInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
 
   useEffect(() => {
     if (status === 'success'){
-      dispatch(getAllInputs())
+      dispatch(renderInput(date))
     }
-  }, [status])
+  }, [dispatch])
 
   return (
     <div>
-      { renderInputs.length > 0 ? <InputTable/> : <InputLanding/> }
+      <InputTable/>
     </div>
   )
 }

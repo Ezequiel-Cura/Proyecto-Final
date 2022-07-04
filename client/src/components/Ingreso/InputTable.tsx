@@ -314,14 +314,14 @@ export default function InputTable() {
                   <option value='extra'>Ingreso extra</option>
                 </select>
 
-                <select value={input.category} onChange={handleSelectCategories}>
+                {/* <select value={input.category} onChange={handleSelectCategories}>
                   <option>Selecciona una categoría</option>
                   {usuario.categories.length > 0
                     ? usuario.categories.map((category: string) =>
                       (<option value={category}>{category}</option>))
                     : (<option value="Otros">Otros</option>)
                   }
-                </select>
+                </select> */}
 
                 <input
                   type='text'
@@ -367,7 +367,7 @@ export default function InputTable() {
               </div>
             </form>
             <div>
-              <form onSubmit={handleSubmitCategoryDelete}>
+              {/* <form onSubmit={handleSubmitCategoryDelete}>
                 <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
                   {usuario.categories.length > 0
                     ? usuario.categories.map((category: string) =>
@@ -376,7 +376,7 @@ export default function InputTable() {
                   }
                 </select>
                 <button type='submit'>Delete</button>
-              </form>
+              </form> */}
             </div>
           </div>
         </div>

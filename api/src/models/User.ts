@@ -52,7 +52,7 @@ const userSchema = new Schema<IUser>({
 
   monthly: {
     input: [{
-      date: {type: String, required: true, default: Date.now()},
+      date: {type: String, required: true},
       end: Date,
       description: String,
       category: String,
@@ -60,7 +60,7 @@ const userSchema = new Schema<IUser>({
     }],
 
     output: [{
-      date: {type: String, required: true, default: Date.now()},
+      date: {type: String, required: true},
       end: Date,
       description: String,
       category: String,
@@ -72,7 +72,7 @@ const userSchema = new Schema<IUser>({
     input: [{
       date: String,
       entries: [{
-        date: { type:Date, default: Date.now() },
+        date: { type:Date },
         description: String,
         category: String,
         amount: Number,
@@ -82,7 +82,7 @@ const userSchema = new Schema<IUser>({
     output: [{
       date: String,
       entries: [{
-        date: { type:Date, default: Date.now() },
+        date: { type:Date },
         description: String,
         category: String,
         amount: Number,
