@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import style from './Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
-import Drawer from '@mui/material/Drawer';
 import SavesCreate from './SavesCreate';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import PopUp from './PopUp';
+import { addSaving } from 'redux/modules/addSaving';
+import { deleteSaving } from 'redux/modules/deleteSaving';
+
 
 export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);

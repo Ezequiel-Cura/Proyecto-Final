@@ -16,13 +16,20 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     const { error } = schema.validate(req.body)
     if(error) return res.status(400).send({message: error.details[0].message})
+
     const userExistCheck = await User.findOne({email})
     if (userExistCheck) return res.status(400).send('Email ya registrado')
+
     const salt = await bcrypt.genSalt(Number(process.env.SUPER_SECRET_SALT))
     const hashPass = await bcrypt.hash(password, salt)
-    const user = await User.create({firstName: firstName, lastName, email, password: hashPass})
+    const user = await User.create({firstName, lastName, email, password: hashPass})
     const token = user.generateAuthToken()
+<<<<<<< HEAD
     res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false}).status(201).end()
+=======
+
+    res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true}).status(201).send()
+>>>>>>> f3fcb0253129c168c1b300de87ae693348318d74
   } catch (err: any) {
     res.status(400).send(err.message)
   }

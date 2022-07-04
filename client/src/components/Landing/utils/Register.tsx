@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import styles from "../Landing.module.css"
 import { Link, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { googleLogin, registerUser } from "redux/reducers/userReducer"
+import { registerUser } from "redux/modules/registerUser"
 import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
+import { googleLogin } from 'redux/modules/googleLogin'
 
 export default function Register() {
   const navigate = useNavigate()

@@ -3,12 +3,15 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getAllInputs, /*inputsFilterByMonth,*/ inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput} from "redux/reducers/userReducer";
+import { addDato } from 'redux/modules/addDato'
+import { deleteDato } from 'redux/modules/deleteDato'
+import { addCategory } from 'redux/modules/addCategory'
+import { deleteCategory } from 'redux/modules/deleteCategory'
 
-//Actions
-import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory, deleteCategory } from "redux/reducers/userReducer";
+export default function ConDatos() {
 
-export default function InputTable() {
-  const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
+  const { usuario, allInputs, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -18,7 +21,6 @@ export default function InputTable() {
     }
   }, [status])
 
-  //Typescript
   interface Value {
     description: string,
     amount: number,
@@ -29,6 +31,7 @@ export default function InputTable() {
   }
   interface AgregarIngresos {
     id?: string,
+    frequency: string,
     key: string,
     value: Value,
   }
@@ -59,10 +62,10 @@ export default function InputTable() {
     keyInput: '',
   })
 
-  const form: AgregarIngresos = {
-    key: selectKey.keyInput,
-    value: input,
-  }
+  // const form: AgregarIngresos = {
+  //   key: selectKey.keyInput,
+  //   value: input,
+  // }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
@@ -85,10 +88,14 @@ export default function InputTable() {
     })
   }
 
-  //Form
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) { 
+  const form: AgregarIngresos = {
+    frequency: selectKey.keyInput,
+    key: 'input',
+    value: input,
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-    console.log(form, 'form')
     dispatch(addDato(form));
     setInput({
       category: '',
@@ -113,7 +120,7 @@ export default function InputTable() {
     value: ''
   })
 
-  function handleChangeCategory(e: React.ChangeEvent<HTMLInputElement>){
+  function handleChangeCategory(e: React.ChangeEvent<HTMLInputElement>) {
     setFormCategory({
       ...formCategory,
       value: e.target.value
@@ -132,7 +139,7 @@ export default function InputTable() {
     value: ''
   })
 
-  function handleChangeCategoryDelete(e: any){
+  function handleChangeCategoryDelete(e: any) {
     setFormCategoryDelete({
       ...formCategoryDelete,
       value: e.target.value
@@ -151,10 +158,10 @@ export default function InputTable() {
     dispatch(deleteDato(event))
   }
 
-  function filterByMonth(e: any) {
-    e.preventDefault();
-    dispatch(inputsFilterByMonth(e.target.value))
-  }
+  // function filterByMonth(e: any) {
+  //   e.preventDefault();
+  //   dispatch(inputsFilterByMonth(e.target.value))
+  // }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
@@ -185,7 +192,7 @@ export default function InputTable() {
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-  for (let i = 1; i <= Math.ceil(allInputs.length / inputsPerPage); i++) {
+  for (let i = 1; i <= allInputs.length && Math.ceil(allInputs.length / inputsPerPage); i++) {
     pageNumber.push(i)
   }
 
@@ -216,9 +223,11 @@ export default function InputTable() {
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
+
           <div className={styles.title}>
             <h1>Tus Ingresos </h1>
           </div>
+
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option>Ordenar por monto</option>
@@ -229,8 +238,8 @@ export default function InputTable() {
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               {
-                usuario.CategoriesInputs.length > 0
-                  ? usuario.CategoriesInputs.map((category: string) => (<option value={category}>{category}</option>))
+                usuario.categories.length > 0
+                  ? usuario.categories.map((category: string) => (<option value={category}>{category}</option>))
                   : <option value="Otros"></option>
               }
             {/* //------------------------------- */}
@@ -244,18 +253,18 @@ export default function InputTable() {
 
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
-              <button value='01' className={styles.month} id="Enero" onClick={(e) => filterByMonth(e)}>Enero</button>
-              <button value='02' className={styles.month} id="Febrero" onClick={(e) => filterByMonth(e)}>Febrero</button>
-              <button value='03' className={styles.month} id="Marzo" onClick={(e) => filterByMonth(e)}>Marzo</button>
-              <button value='04' className={styles.month} id="Abril" onClick={(e) => filterByMonth(e)}>Abril</button>
-              <button value='05' className={styles.month} id="Mayo" onClick={(e) => filterByMonth(e)}>Mayo</button>
-              <button value='06' className={styles.month} id="Junio" onClick={(e) => filterByMonth(e)}>Junio</button>
-              <button value='07' className={styles.month} id="Julio" onClick={(e) => filterByMonth(e)}>Julio</button>
-              <button value='08' className={styles.month} id="Agosto" onClick={(e) => filterByMonth(e)}>Agosto</button>
-              <button value='09' className={styles.month} id="Septiembre" onClick={(e) => filterByMonth(e)}>Septiembre</button>
-              <button value='10' className={styles.month} id="Octubre" onClick={(e) => filterByMonth(e)}>Octubre</button>
-              <button value='11' className={styles.month} id="Noviembre" onClick={(e) => filterByMonth(e)}>Noviembre</button>
-              <button value='12' className={styles.month} id="Diciembre" onClick={(e) => filterByMonth(e)}>Diciembre</button>
+              <button value='01' className={styles.month} id="Enero" /*onClick={(e) => filterByMonth(e)}*/>Enero</button>
+              <button value='02' className={styles.month} id="Febrero" /*onClick={(e) => filterByMonth(e)}*/>Febrero</button>
+              <button value='03' className={styles.month} id="Marzo" /*onClick={(e) => filterByMonth(e)}*/>Marzo</button>
+              <button value='04' className={styles.month} id="Abril" /*onClick={(e) => filterByMonth(e)}*/>Abril</button>
+              <button value='05' className={styles.month} id="Mayo" /*onClick={(e) => filterByMonth(e)}*/>Mayo</button>
+              <button value='06' className={styles.month} id="Junio" /*onClick={(e) => filterByMonth(e)}*/>Junio</button>
+              <button value='07' className={styles.month} id="Julio" /*onClick={(e) => filterByMonth(e)}*/>Julio</button>
+              <button value='08' className={styles.month} id="Agosto" /*onClick={(e) => filterByMonth(e)}*/>Agosto</button>
+              <button value='09' className={styles.month} id="Septiembre" /*onClick={(e) => filterByMonth(e)}*/>Septiembre</button>
+              <button value='10' className={styles.month} id="Octubre" /*onClick={(e) => filterByMonth(e)}*/>Octubre</button>
+              <button value='11' className={styles.month} id="Noviembre" /*onClick={(e) => filterByMonth(e)}*/>Noviembre</button>
+              <button value='12' className={styles.month} id="Diciembre" /*onClick={(e) => filterByMonth(e)}*/>Diciembre</button>
             </div>
             <div className={styles.annualCard}>
               <button className={styles.annual} onClick={handleRefresh}>Refresh</button>
@@ -273,7 +282,7 @@ export default function InputTable() {
               </tr>
             </thead>
             <tbody>
-              {allInputs.length > 0 ? allInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+              {renderInputs.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
                 return (
                   detalles.source === 'monthlyInput'
                     ? (<tr className={styles.monthlyInput}>
@@ -311,80 +320,80 @@ export default function InputTable() {
             {indice}
             <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
           </div>
-          
+
           <div className={styles.wrapperForms}>
-          <form onSubmit={handleSubmit}>
-            <div className={styles.form}>
-              <select value={selectKey.keyInput} onChange={handleSelectInputs}>
-                <option>Selecciona el tipo</option>
-                <option value='monthlyInput'>Ingreso fijo</option>
-                <option value='extraInput'>Ingreso extra</option>
-              </select>
+            <form onSubmit={handleSubmit}>
+              <div className={styles.form}>
+                <select value={selectKey.keyInput} onChange={handleSelectInputs}>
+                  <option>Selecciona el tipo</option>
+                  <option value='monthly'>Ingreso fijo</option>
+                  <option value='extra'>Ingreso extra</option>
+                </select>
 
-              <select value={input.category} onChange={handleSelectCategories}>
-                <option>Selecciona una categoría</option>
-                {usuario.CategoriesInputs.length > 0
-                  ? usuario.CategoriesInputs.map((category: string) =>
-                    (<option value={category}>{category}</option>))
-                  : (<option value="Otros">Otros</option>)
+                <select value={input.category} onChange={handleSelectCategories}>
+                  <option>Selecciona una categoría</option>
+                  {usuario.categories.length > 0
+                    ? usuario.categories.map((category: string) =>
+                      (<option value={category}>{category}</option>))
+                    : (<option value="Otros">Otros</option>)
                   }
-              </select>
+                </select>
 
-              <input
-                type='text'
-                name='description'
-                value={input.description}
-                placeholder='Agrega una descripción'
-                onChange={handleChange}
-              >
-              </input>
-              <label>$</label>
-              <input
-                type='number'
-                name='amount'
-                min='0'
-                value={input.amount}
-                placeholder='Monto'
-                onChange={handleChange}
-                className={styles.amount}
-              >
-              </input>
-              <input
-                type='date'
-                name='date'
-                value={input.date}
-                placeholder='Agrega una fecha'
-                onChange={handleChange}
-              >
-              </input>
-              <button type='submit'>Agregar</button>
-            </div>
-          </form>
-          <form onSubmit={handleSubmitCategory}>
-          <div className={styles.form2}>
-            <label>Elige las categorias por default o crea una: </label>
-              <input
+                <input
+                  type='text'
+                  name='description'
+                  value={input.description}
+                  placeholder='Agrega una descripción'
+                  onChange={handleChange}
+                >
+                </input>
+                <label>$</label>
+                <input
+                  type='number'
+                  name='amount'
+                  min='0'
+                  value={input.amount}
+                  placeholder='Monto'
+                  onChange={handleChange}
+                  className={styles.amount}
+                >
+                </input>
+                <input
+                  type='date'
+                  name='date'
+                  value={input.date}
+                  placeholder='Agrega una fecha'
+                  onChange={handleChange}
+                >
+                </input>
+                <button type='submit'>Agregar</button>
+              </div>
+            </form>
+            <form onSubmit={handleSubmitCategory}>
+              <div className={styles.form2}>
+                <label>Elige las categorias por default o crea una: </label>
+                <input
                   type='text'
                   name='value'
                   placeholder='Agrega el nombre'
                   onChange={handleChangeCategory}
-                  >
-              </input>
-              <button type='submit'>Crear</button>
-          </div>
-          </form>
-          <div>
-            <form onSubmit={handleSubmitCategoryDelete}>
-              <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
-                {usuario.CategoriesInputs.length > 0
-                ? usuario.CategoriesInputs.map((category: string) =>
-                  (<option value={category}>{category}</option>))
-                : (<option value="Otros">Otros</option>)
-                }
-              </select>
-              <button type='submit'>Delete</button>
+                >
+                </input>
+                <button type='submit'>Crear</button>
+              </div>
             </form>
-          </div>
+            <div>
+              <form onSubmit={handleSubmitCategoryDelete}>
+                <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
+                  {usuario.categories.length > 0
+                    ? usuario.categories.map((category: string) =>
+                      (<option value={category}>{category}</option>))
+                    : (<option value="Otros">Otros</option>)
+                  }
+                </select>
+                <button type='submit'>Delete</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

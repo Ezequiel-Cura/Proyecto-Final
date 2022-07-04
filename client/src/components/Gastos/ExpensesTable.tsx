@@ -3,10 +3,13 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {  addDato, deleteDato, filterExpensesByCategory, getAllExpenses, expensesFilterByFrequency, expensesFilterByMonth, expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
+import { filterExpensesByCategory, getAllExpenses, expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
+import {addDato} from 'redux/modules/addDato'
+import {deleteDato} from 'redux/modules/deleteDato'
+
 
 export default function ExpensesTable() {
-   const { usuario, allExpenses, totalExpensesMonth, status } = useAppSelector( state => state.user);
+   const { usuario, allOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -79,10 +82,10 @@ export default function ExpensesTable() {
     dispatch(deleteDato(event))
   }
   
-  function filterByMonth(e: any) {
-    e.preventDefault();
-    dispatch(expensesFilterByMonth(e.target.value))
-  }
+  // function filterByMonth(e: any) {
+  //   e.preventDefault();
+  //   dispatch(expensesFilterByMonth(e.target.value))
+  // }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
@@ -113,7 +116,7 @@ export default function ExpensesTable() {
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-    for(let i = 1; i <= Math.ceil(allExpenses.length/inputsPerPage); i++){
+    for(let i = 1; i <= Math.ceil(allOutputs.length/inputsPerPage); i++){
       pageNumber.push(i)
   }
 
@@ -170,18 +173,18 @@ export default function ExpensesTable() {
 
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
-            <button value='01' className={styles.months} id="Enero" onClick={(e) => filterByMonth(e)}>Enero</button>
-              <button value='02' className={styles.months} id="Febrero" onClick={(e) => filterByMonth(e)}>Febrero</button>
-              <button value='03' className={styles.months} id="Marzo" onClick={(e) => filterByMonth(e)}>Marzo</button>
-              <button value='04' className={styles.months} id="Abril" onClick={(e) => filterByMonth(e)}>Abril</button>
-              <button value='05' className={styles.months} id="Mayo" onClick={(e) => filterByMonth(e)}>Mayo</button>
-              <button value='06' className={styles.months} id="Junio" onClick={(e) => filterByMonth(e)}>Junio</button>
-              <button value='07' className={styles.months} id="Julio" onClick={(e) => filterByMonth(e)}>Julio</button>
-              <button value='08' className={styles.months} id="Agosto" onClick={(e) => filterByMonth(e)}>Agosto</button>
-              <button value='09' className={styles.months} id="Septiembre"onClick={(e) => filterByMonth(e)}>Septiembre</button>
-              <button value='10' className={styles.months} id="Octubre" onClick={(e) => filterByMonth(e)}>Octubre</button>
-              <button value='11' className={styles.months} id="Noviembre" onClick={(e) => filterByMonth(e)}>Noviembre</button>
-              <button value='12' className={styles.months} id="Diciembre" onClick={(e) => filterByMonth(e)}>Diciembre</button>
+            <button value='01' className={styles.months} id="Enero" /* onClick={(e) => filterByMonth(e)}*/>Enero</button>
+              <button value='02' className={styles.months} id="Febrero" /* onClick={(e) => filterByMonth(e)}*/>Febrero</button>
+              <button value='03' className={styles.months} id="Marzo" /* onClick={(e) => filterByMonth(e)}*/>Marzo</button>
+              <button value='04' className={styles.months} id="Abril" /* onClick={(e) => filterByMonth(e)}*/>Abril</button>
+              <button value='05' className={styles.months} id="Mayo" /* onClick={(e) => filterByMonth(e)}*/>Mayo</button>
+              <button value='06' className={styles.months} id="Junio" /* onClick={(e) => filterByMonth(e)}*/>Junio</button>
+              <button value='07' className={styles.months} id="Julio" /* onClick={(e) => filterByMonth(e)}*/>Julio</button>
+              <button value='08' className={styles.months} id="Agosto" /* onClick={(e) => filterByMonth(e)}*/>Agosto</button>
+              <button value='09' className={styles.months} id="Septiembre"/* onClick={(e) => filterByMonth(e)}*/>Septiembre</button>
+              <button value='10' className={styles.months} id="Octubre" /* onClick={(e) => filterByMonth(e)}*/>Octubre</button>
+              <button value='11' className={styles.months} id="Noviembre" /* onClick={(e) => filterByMonth(e)}*/>Noviembre</button>
+              <button value='12' className={styles.months} id="Diciembre" /* onClick={(e) => filterByMonth(e)}*/>Diciembre</button>
             </div>
             <div className={styles.annualCard}>
               <button className={styles.annual} onClick={handleRefresh}>Refresh</button>
@@ -199,7 +202,7 @@ export default function ExpensesTable() {
               </tr>
             </thead>
             <tbody>
-            {allExpenses.length > 0 ? allExpenses.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+            {allOutputs.length > 0 ?allOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
                   detalles.source === 'monthlyExpenses' 
                   ? (<tr className={styles.monthlyInput}>

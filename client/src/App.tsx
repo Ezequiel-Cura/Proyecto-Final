@@ -11,11 +11,11 @@ import Expenses from 'components/Gastos/Expenses';
 import ExpensesTable from 'components/Gastos/ExpensesTable';
 import Detalles from 'components/Detalles/Detalles';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { getUserInfo } from 'redux/reducers/userReducer';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
 import LostPage from 'components/LostPage/LostPage';
 import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
 import Novedades from 'components/Novedades/Novedades';
+import { getUserInfo } from 'redux/modules/getUserInfo';
 import SavesLanding from 'components/Saves/SavesLanding';
 import Saves from 'components/Saves/Saves';
 

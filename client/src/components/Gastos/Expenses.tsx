@@ -1,12 +1,12 @@
 import Nav from 'components/Nav/Nav';
 import React, { useEffect } from 'react';
-import ConDatosGastos from "./ExpensesTable";
+import ExpensesTable from "./ExpensesTable";
 import ExpensesLanding from "./ExpensesLanding";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllExpenses } from 'redux/reducers/userReducer';
 
 export default function Expenses() {
-  const { allExpenses, status } = useAppSelector(state => state.user);
+  const { allOutputs, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function Expenses() {
   
   return (
     <div>
-        { allExpenses.length > 0 ? <ConDatosGastos/> : <ExpensesLanding/> }
+        { allOutputs.length > 0 ? <ExpensesTable/> : <ExpensesLanding/> }
     </div>
   )
 }

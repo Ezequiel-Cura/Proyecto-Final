@@ -24,7 +24,7 @@ router.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
-            user.Saving.remove({ "_id": new mongodb_1.ObjectId(value._id) });
+            user.savings.remove({ "_id": new mongodb_1.ObjectId(value._id) });
             yield user.save();
             res.status(200).send(user);
         }

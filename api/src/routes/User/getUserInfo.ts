@@ -6,19 +6,20 @@ const router = Router()
 
 router.get("/", authorization, async (req: any, res: Response) => {
   try {
-    const user : any = await User.findById(req.userId).select({
-      _id: 0, 
-      email: 1, 
+    
+    const user: any = await User.findById(req.userId).select({
+      _id: 0,
       firstName: 1, 
-      lastName: 1, 
-      avatar: 1, 
-      Account: 1, 
-      Saving: 1, 
-      premium: 1, 
-      CategoriesExpenses: 1, 
-      CategoriesInputs: 1, 
-      role: 1
-    })
+      lastName : 1, 
+      avatar : 1, 
+      premium : 1, 
+      role : 1, 
+      savings : 1, 
+      fees : 1, 
+      monthly : 1, 
+      extra : 1, 
+      categories : 1})
+
     res.status(200).send(user)
   } catch (err: any) {
     res.status(404).send(err.message)
@@ -26,3 +27,5 @@ router.get("/", authorization, async (req: any, res: Response) => {
 })
 
 export default router
+
+
