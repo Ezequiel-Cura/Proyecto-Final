@@ -24,7 +24,8 @@ export default function SearchBar(){
 
 return(
     <div>
-     <input
+     <input 
+        style={{width: "90%"}}
         type="text"
         placeholder="Busca gastos por su descripción!.."
         onChange={(e) => inputChange(e)}
