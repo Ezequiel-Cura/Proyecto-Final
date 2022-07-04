@@ -90,37 +90,13 @@ const reducerSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // getAllInputs: (state) => {
-    //   try {
-    //     let currentInputState = current(state)
-    //     // state.allInputs = [...currentInputState.usuario.monthly.input, ...currentInputState.usuario.extra.input]
-    //     const month = [...currentInputState.usuario.monthly.input]
-    //     const extra = [...currentInputState.usuario.extra.input]
-    //     state.allInputs = [...month, ...extra]
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },
-
-    // getAllExpenses: (state) => {
-    //   // let currentExpensesState = current(state)
-    //   // state.allOutputs = [...currentExpensesState.usuario.Account.monthlyExpenses, ...currentExpensesState.usuario.Account.variableExpenses]
-
-    //   const month = state.usuario.monthly.output
-    //   const extra = state.usuario.extra.output?.reduce((prev:any, curr:any) => prev.concat(curr.entries))
-
-    //   state.allOutputs = month + extra
-    // },
-
-
     renderInput: (state, { payload }) => {
+      console.log({payload})
       const month = state.usuario.monthly.input
       const extra = state.usuario.extra.input.filter((e:any) => e.date === payload)
       state.renderInputs = [...month, ...extra]
       console.log(current(state).renderInputs)
     },
-    
-
 
     totalInput: (state) => {
       // let State = current(state);

@@ -6,26 +6,27 @@ import User from "../../models/User";
 
 const router = Router()
 
-// router.post("/", authorization, async (req: any, res: Response) => {
-  router.post("/", async (req: any, res: Response) => {
-  const { key, value } = req.body
-  // const id = req.userId
-  const id = ""
+router.post("/", authorization, async (req: any, res: Response) => {
+  // router.post("/", async (req: any, res: Response) => {
 
+  const {frequency, type, name} = req.body
+
+  const id = req.userId
+  // const id = "62c0a45f6ffc62c777c647de"
   try {
-    const user:any = await User.findById(id)
+    const user = await User.findById(id)
 
     if (!user) return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
 
-    await user.categories.push(value)
+    await user.categories.push({frequency, type, name})
     await user.save()
-    res.status(200).send({key, value: user[key]})
+    res.status(200).send(user)
 
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
-
 });
 
 export default router;

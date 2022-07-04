@@ -18,7 +18,7 @@ interface IUser {
   monthly: Array<object>
   extra: Array<object>
 
-  categories: Array<object>,
+  categories: any,
   generateAuthToken: () => any
 }
 
@@ -52,7 +52,7 @@ const userSchema = new Schema<IUser>({
 
   monthly: {
     input: [{
-      date: {type: String, required: true, default: Date.now()},
+      date: {type: String, required: true},
       end: Date,
       description: String,
       category: String,
@@ -60,7 +60,7 @@ const userSchema = new Schema<IUser>({
     }],
 
     output: [{
-      date: {type: String, required: true, default: Date.now()},
+      date: {type: String, required: true},
       end: Date,
       description: String,
       category: String,

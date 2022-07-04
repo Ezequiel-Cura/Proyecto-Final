@@ -21,7 +21,6 @@ router.post("/", authorization, async (req: any, res: Response) => {
 		if (frequency === "monthly") {
 			await user.monthly[key].push(value)
 			await user.save()
-			console.log(user.monthly)
 			return res.status(200).send(user)
 		}
 		//---------------------------------
@@ -40,9 +39,10 @@ router.post("/", authorization, async (req: any, res: Response) => {
 				date: targetDate,
 				entries: [value]
 			}
-
+			console.log({newEntry})
 			await user.extra[key].push(newEntry)
 			await user.save()
+			console.log({user})
 			return res.status(200).send(user)
 		}
 		//---------------------------------
