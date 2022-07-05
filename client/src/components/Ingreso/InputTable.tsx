@@ -211,10 +211,12 @@ export default function InputTable() {
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
 
+          {/* Title */}
           <div className={styles.title}>
             <h1>Tus Ingresos </h1>
           </div>
 
+          {/* Order Selector */}
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option>Ordenar por monto</option>
@@ -241,6 +243,7 @@ export default function InputTable() {
             </select>
           </div>
 
+          {/* Months Selector */}
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
               {
@@ -256,6 +259,7 @@ export default function InputTable() {
             </div>
           </div>
 
+          {/* Table */}
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
@@ -288,12 +292,14 @@ export default function InputTable() {
             </tbody>
           </table>
 
+          {/* Pagination */}
           <div className={stylesPag.wrapperPag}>
             <button className={page <= 1 ? stylesPag.disabledPrev : stylesPag.paginationPrev} onClick={() => handlePrevButton()}>Prev</button>
             {indice}
             <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
           </div>
 
+          {/* Forms */}
           <div className={styles.wrapperForms}>
             <form onSubmit={handleSubmit}>
               <div className={styles.form}>
@@ -327,6 +333,7 @@ export default function InputTable() {
                     })
                   }
                 </select>
+
                 <input
                   type='text'
                   name='description'
@@ -335,6 +342,7 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
+
                 <label>$</label>
                 <input
                   type='number'
@@ -346,6 +354,7 @@ export default function InputTable() {
                   className={styles.amount}
                 >
                 </input>
+
                 <input
                   type='date'
                   name='date'
