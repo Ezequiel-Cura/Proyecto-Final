@@ -12,6 +12,8 @@ router.post("/", async (req: Request, res: Response) => {
     const password = email + process.env.GOOGLE_SECRET
     const salt = await bcrypt.genSalt(Number(process.env.SUPER_SECRET_SALT))
     const passwordHash = await bcrypt.hash(password, salt)
+    
+    
     const user = await User.findOne({email})
     if (user) {
         const validPassword = await bcrypt.compare(password, user.password)

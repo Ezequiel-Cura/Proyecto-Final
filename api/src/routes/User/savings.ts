@@ -12,7 +12,7 @@ router.post("/", async (req: Request, res: Response) => {
    if(!user){
     res.status(404).send(`No se encontró al usuario con id: ${id}`)
    } else {
-    user.Saving.push(value)
+    user.savings.push(value)
     await user.save()
     res.status(200).send(user)
    }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
+import { addSaving } from 'redux/modules/addSaving';
+// import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
 
 export default function SavesCreate() {
 

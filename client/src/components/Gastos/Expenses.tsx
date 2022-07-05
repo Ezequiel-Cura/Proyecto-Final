@@ -1,23 +1,22 @@
 import Nav from 'components/Nav/Nav';
 import React, { useEffect } from 'react';
-import ConDatosGastos from "./ExpensesTable";
 import ExpensesLanding from "./ExpensesLanding";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllExpenses } from 'redux/reducers/userReducer';
+import ExpensesTable from './ExpensesTable';
 
 export default function Expenses() {
-  const { allExpenses, status } = useAppSelector(state => state.user);
+  const { renderOutputs, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (status === 'success'){
-      dispatch(getAllExpenses())
+      // dispatch()
     }
   }, [status])
   
   return (
     <div>
-        { allExpenses.length > 0 ? <ConDatosGastos/> : <ExpensesLanding/> }
+        { renderOutputs.length > 0 ? <ExpensesTable/> : <ExpensesLanding/> }
     </div>
   )
 }

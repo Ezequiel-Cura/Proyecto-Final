@@ -4,7 +4,7 @@ import styles from "./Profile.module.css"
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import ImageEditor from './utils/ImageEditor'
-import { updatePersonalInfo } from 'redux/reducers/userReducer'
+import { updatePersonalInfo } from '../../redux/reducers/userReducer'
 
 interface Profile {
     setImageEditor: () => Boolean

@@ -16,7 +16,7 @@ router.delete("/", async (req: any, res: Response) => {
     if (!user) {
       res.status(404).send(`No se encontró al usuario con id: ${id}`)
     } else {
-        user.Saving.remove( {"_id": new ObjectId(value._id)})
+        user.savings.remove( {"_id": new ObjectId(value._id)})
         await user.save()
         res.status(200).send(user)
       }
