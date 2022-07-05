@@ -53,8 +53,8 @@ interface Entries {
 interface User {
   usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
-  renderInputs: Entries[] | []
-  renderOutputs: Entries[] | []
+  renderInputs: Entries[] | [],
+  renderOutputs: Entries[] | [],
   totalExpensesMonth: number,
   totalInputsMonth: number
 
@@ -93,8 +93,9 @@ const reducerSlice = createSlice({
   initialState,
   reducers: {
     renderInput: (state, { payload }) => {
+      console.log({payload})
       const month = state.usuario.monthly.input || []
-      const extraIndex = state.usuario.extra.input.map((e:any) => e.date).indexOf(payload) || 0
+      const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
       
       state.renderInputs = [...month, ...state.usuario.extra.input[0].entries]
       console.log(extraIndex)
@@ -109,15 +110,20 @@ const reducerSlice = createSlice({
       // state.totalInputsMonth = state.allInputs.reduce((prev: any, curr: any) => prev = prev + curr.amount)
     },
 
-    totalExpenses: (state) => {
-      let curAllInputState = current(state);
-      let reduceTotalExp = 0
-      // curAllInputState.allOutputs.forEach( entrie => reduceTotalExp+= entrie.amount)
-      state.totalExpensesMonth = reduceTotalExp
+    renderOutput: (state, { payload }) => {
+      try{
+        const month = state.usuario.monthly.output || []
+      const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
+      console.log(extraIndex)
+      if(extraIndex < 0){
+       state.renderOutputs = [...month]
+      } else{
+        state.renderOutputs = [...month, ...state.usuario.extra.output[0].entries]
+      }
+    }catch(error){
+        console.log(error)
+      }
     },
-
-
-
     expensesFilterByFrequency: (state, { payload }) => {
       let currExpSta = current(state)
       const expensesByFrequency = payload === 'fijo'
@@ -365,7 +371,7 @@ const reducerSlice = createSlice({
 export const {
   // inputsFilterByMonth,
   totalInput,
-  totalExpenses,
+  renderOutput,
   // getAllInputs,
   renderInput,
   // getAllExpenses,

@@ -66,7 +66,7 @@ export default function InputTable() {
     keyInput: '',
   })
 
-  const [openCategory, setOpenCategory] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
@@ -83,6 +83,7 @@ export default function InputTable() {
   }
 
   function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
+    console.log(e.target.value, 'categorrrrri')
     setInput({
       ...input,
       category: e.target.value
@@ -327,20 +328,6 @@ export default function InputTable() {
                       return (<option value={extraInput.name}>{extraInput.name}</option>)
                     })
                   }
-                  {
-                    input.category === 'Otros' 
-                    ? (<div>
-                      <button onClick={() => setOpenCategory(!openCategory)}>Agregar una nueva casilla de ahorro</button>
-                    <PopUp
-                      open={openCategory} 
-                      setOpen={setOpenCategory}
-                      onClick={() => setOpenCategory(openCategory)}
-                      title="Completa para agregar una categoría!">
-                      <CategoryCreate/>
-                    </PopUp>
-                    </div> )
-                    : <><h1>mmm</h1></>
-                  }
                 </select>
                 <input
                   type='text'
@@ -372,6 +359,19 @@ export default function InputTable() {
                 <button type='submit'>Agregar</button>
               </div>
             </form>
+            {
+                    input.category === 'Otros' 
+                    && (<div>
+                      <button onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro</button>
+                    <PopUp
+                      open={open} 
+                      setOpen={setOpen}
+                      onClick={() => setOpen(open)}
+                      title="Completa para agregar una categoría!">
+                      <CategoryCreate/>
+                    </PopUp>
+                    </div> )
+                  }
           </div>
         </div>
       </div>

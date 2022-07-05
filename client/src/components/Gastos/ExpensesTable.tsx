@@ -3,25 +3,29 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
+import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, renderOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
+import PopUp from "components/Saves/PopUp";
+import CategoryCreate from "components/Category/CategoryCreate";
 
 
 export default function ExpensesTable() {
    const { usuario, renderOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
-  useEffect(() => {
+   const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
+  
+   useEffect(() => {
     if (status === 'success'){
-      // dispatch(getAllExpenses())
-      dispatch(totalExpenses())
+      dispatch(renderOutput(date))
     }
   }, [status])
 
   interface AgregarGastos { 
     id?: string,  
-    key: string,               //monthlyExpenses, variableExpenses
+    frequency: string,               //monthlyExpenses, variableExpenses
+    key: string,
     value: Value,
   }
   interface Value {
@@ -49,11 +53,11 @@ export default function ExpensesTable() {
   })
 
   interface keySelect {
-    keyInput: string
+    frequency: string
   }
 
   const [selectKey, setSelectKey] = useState<keySelect>({
-    keyInput: '', 
+    frequency: '',
   })
 
   function handleChange(e : React.ChangeEvent<HTMLInputElement>){ 
@@ -66,8 +70,7 @@ export default function ExpensesTable() {
   function handleSelectI(e : React.ChangeEvent<HTMLSelectElement>){    
     console.log(e.target.value)
     setSelectKey({
-      ...selectKey,
-      keyInput: e.target.value
+      frequency: e.target.value
     })
   }
 
@@ -79,13 +82,25 @@ export default function ExpensesTable() {
   }
 
   const form : AgregarGastos = {
-    key: selectKey.keyInput,
+    frequency: selectKey.frequency,
+    key: 'output',
     value: input,
   }
+
+  const [open, setOpen] = useState<boolean>(false);
 
   function handleSubmit(e : React.FormEvent<HTMLFormElement>){   
     e.preventDefault();
     dispatch(addDato(form));
+    setInput({
+      category: '',
+      description: '',
+      amount: 0,
+      date: ''
+    })
+    setSelectKey({
+      frequency: ''
+    })
   } 
 
   function handleDelete(event: any) {
@@ -169,7 +184,7 @@ export default function ExpensesTable() {
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               {
-                ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Alquiler', 'Otros'].map(undefinedCategory => {
+                ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler', 'Otros'].map(undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                 })
               }
@@ -181,8 +196,8 @@ export default function ExpensesTable() {
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
-              <option value='fijo'>Gasto Fijo</option>
-              <option value='variable'>Gasto Variable</option>
+              <option value='monthly'>Gasto Fijo</option>
+              <option value='extra'>Gasto Variable</option>
             </select>
           </div>
 
@@ -245,26 +260,26 @@ export default function ExpensesTable() {
             <div className={styles.form}>
               <select onChange={handleSelectI}>
                 <option>Selecciona el tipo</option>
-                <option value='monthlyExpenses'>Gasto fijo</option>
-                <option value='variableExpenses'>Gasto Variable</option>
+                <option value='monthly'>Gasto fijo</option>
+                <option value='extra'>Gasto Variable</option>
               </select>
 
               <select value={input.category} onChange={handleSelectC}>
                 <option>Selecciona una categoría</option>
                   {
-                    selectKey.keyInput ?
-                      selectKey.keyInput === 'monthlyExpenses'
+                    selectKey.frequency ?
+                      selectKey.frequency === 'monthly'
                         ? ['Transporte', 'Alquiler', 'Deuda','Impuestos', 'Otros'].map(montOutput => {
                           return (<option value={montOutput}>{montOutput}</option>)
                         })
                         : ['Regalo', 'Super', 'Transporte', 'Otros'].map(extraOutput => {
                           return (<option value={extraOutput}>{extraOutput}</option>)
                         })
-                      : ['Impuestos', 'Transporte', 'Alquiler', 'Deuda', 'Otros'].map(undefinedCategory => {
+                      : ['Impuestos', 'Transporte', 'Alquiler', 'Deuda', 'Ocio', 'Regalo', 'Super', 'Otros'].map(undefinedCategory => {
                         return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                       })
                   }
-                  {selectKey.keyInput === 'monthlyExpenses'
+                  {selectKey.frequency === 'monthly'
                     ? usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
                       return (<option value={montOutput.name}>{montOutput.name}</option>)
                     })
@@ -297,6 +312,19 @@ export default function ExpensesTable() {
               <button type='submit'>Agregar</button>
             </div>
           </form>
+          {
+                    input.category === 'Otros' 
+                    && (<div>
+                      <button onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro</button>
+                    <PopUp
+                      open={open} 
+                      setOpen={setOpen}
+                      onClick={() => setOpen(open)}
+                      title="Completa para agregar una categoría!">
+                      <CategoryCreate/>
+                    </PopUp>
+                    </div> )
+                  }
         </div>
       </div>
   )

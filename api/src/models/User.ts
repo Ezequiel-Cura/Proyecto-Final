@@ -70,7 +70,7 @@ const userSchema = new Schema<IUser>({
 
   extra: {
     input: [{
-      date: String,
+      date: String, 
       entries: [{
         date: { type:Date, default: Date.now() },
         description: String,
