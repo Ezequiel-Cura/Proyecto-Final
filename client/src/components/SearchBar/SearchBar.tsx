@@ -18,10 +18,10 @@ export default function SearchBar(){
   
   function handleClick(e: React.SyntheticEvent){
     e.preventDefault()
-   setFiltrado (Account.variableExpenses.filter((e: any) => e.description === input))
-   setFiltrado (Account.monthlyExpenses.filter((e: any) => e.description === input))
+   setFiltrado (...(filtrado as []), Account.variableExpenses.filter((e: any) => e.description === input.trim()))
+   setFiltrado (...(filtrado as []) ,Account.monthlyExpenses.filter((e: any) => e.description === input.trim()))
 
-    console.log(filtrado)
+    console.log(filtrado) 
   }
 
 return(

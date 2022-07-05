@@ -3,18 +3,20 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { /*inputsFilterByMonth,*/ /*inputsOrderByAmount,*/ inputsFilterByFrequency, /*filterInputByCategory,*/ totalInput, renderInput} from "redux/reducers/userReducer";
+import { /*inputsFilterByMonth,*/ /*inputsOrderByAmount,*/ inputsFilterByFrequency, /*filterInputByCategory,*/ totalInput, renderInput } from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
-import { addCategory } from 'redux/modules/addCategory'
+// import { addCategory } from 'redux/modules/addCategory'
 import { deleteCategory } from 'redux/modules/deleteCategory'
+import PopUp from 'components/Saves/PopUp';
+import CategoryCreate from 'components/Category/CategoryCreate';
 
 export default function InputTable() {
 
-  const { usuario, totalInputsMonth, status, renderInputs} = useAppSelector(state => state.user);
+  const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`)
+  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
@@ -64,6 +66,8 @@ export default function InputTable() {
     keyInput: '',
   })
 
+  const [open, setOpen] = useState<boolean>(false);
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
       ...input,
@@ -79,6 +83,7 @@ export default function InputTable() {
   }
 
   function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
+    console.log(e.target.value, 'categorrrrri')
     setInput({
       ...input,
       category: e.target.value
@@ -106,48 +111,34 @@ export default function InputTable() {
   }
 
   //Form de categorias
-  interface category {
-    id?: string,
-    key: string | undefined,
-    value: string
-  }
 
-  const [formCategory, setFormCategory] = useState<category>({
-    key: 'CategoriesInputs',
-    value: ''
-  })
-
-  function handleChangeCategory(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormCategory({
-      ...formCategory,
-      value: e.target.value
-    })
-  }
-
-  function handleSubmitCategory(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log(formCategory)
-    dispatch(deleteCategory(formCategory))
+  interface Category {
+    name: string,
+    frequency: string,
+    type: string,
+    _id: {
+      $oid: string
+    }
   }
 
   //Form DELETE categorias
-  const [formCategoryDelete, setFormCategoryDelete] = useState<category>({
-    key: 'CategoriesInputs',
-    value: ''
-  })
+  // const [formCategoryDelete, setFormCategoryDelete] = useState<Category>({
+  //   key: 'CategoriesInputs',
+  //   value: ''
+  // })
 
-  function handleChangeCategoryDelete(e: any) {
-    setFormCategoryDelete({
-      ...formCategoryDelete,
-      value: e.target.value
-    })
-  }
+  // function handleChangeCategoryDelete(e: any) {
+  //   setFormCategoryDelete({
+  //     ...formCategoryDelete,
+  //     value: e.target.value
+  //   })
+  // }
 
-  function handleSubmitCategoryDelete(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log(formCategoryDelete)
-    dispatch(deleteCategory(formCategoryDelete))
-  }
+  // function handleSubmitCategoryDelete(e: React.FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   console.log(formCategoryDelete)
+  //   dispatch(deleteCategory(formCategoryDelete))
+  // }
 
 
   //Selects/button
@@ -216,7 +207,7 @@ export default function InputTable() {
   }
 
   return (
-    <div style={{display: "grid", gridTemplateColumns: "178px 1fr"}}>
+    <div style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
@@ -234,11 +225,16 @@ export default function InputTable() {
             {/* //------------------------------- */}
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
-              {/* {
-                usuario.categories.length > 0
-                  ? usuario.categories.map((category: string) => (<option value={category}>{category}</option>))
-                  : <option value="Otros"></option>
-              } */}
+              {
+                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map(undefinedCategory => {
+                  return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                })
+              }
+              {
+                usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
+                  return (<option value={category.name}>{category.name}</option>)
+              })
+              }
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
@@ -249,18 +245,13 @@ export default function InputTable() {
 
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
-              <button value='01' className={styles.month} id="Enero" /*onClick={(e) => filterByMonth(e)}*/>Enero</button>
-              <button value='02' className={styles.month} id="Febrero" /*onClick={(e) => filterByMonth(e)}*/>Febrero</button>
-              <button value='03' className={styles.month} id="Marzo" /*onClick={(e) => filterByMonth(e)}*/>Marzo</button>
-              <button value='04' className={styles.month} id="Abril" /*onClick={(e) => filterByMonth(e)}*/>Abril</button>
-              <button value='05' className={styles.month} id="Mayo" /*onClick={(e) => filterByMonth(e)}*/>Mayo</button>
-              <button value='06' className={styles.month} id="Junio" /*onClick={(e) => filterByMonth(e)}*/>Junio</button>
-              <button value='07' className={styles.month} id="Julio" /*onClick={(e) => filterByMonth(e)}*/>Julio</button>
-              <button value='08' className={styles.month} id="Agosto" /*onClick={(e) => filterByMonth(e)}*/>Agosto</button>
-              <button value='09' className={styles.month} id="Septiembre" /*onClick={(e) => filterByMonth(e)}*/>Septiembre</button>
-              <button value='10' className={styles.month} id="Octubre" /*onClick={(e) => filterByMonth(e)}*/>Octubre</button>
-              <button value='11' className={styles.month} id="Noviembre" /*onClick={(e) => filterByMonth(e)}*/>Noviembre</button>
-              <button value='12' className={styles.month} id="Diciembre" /*onClick={(e) => filterByMonth(e)}*/>Diciembre</button>
+              {
+                ['Enero', 'Febero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
+                  (month, i) => {
+                    return( <button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
+                  )}
+                )
+              }
             </div>
             <div className={styles.annualCard}>
               <button className={styles.annual} onClick={handleRefresh}>Refresh</button>
@@ -280,13 +271,13 @@ export default function InputTable() {
             <tbody>
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                <tr className={styles.monthlyInput}>
-                      <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
-                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                      <th>{detalles.category ? detalles.category : "-"}</th>
-                      <th>{detalles.description}</th>
-                      <th>$ {detalles.amount}</th>
-                    </tr>)
+                  <tr className={styles.monthlyInput}>
+                    <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
+                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                  </tr>)
               })
                 : <></>
               }
@@ -317,13 +308,28 @@ export default function InputTable() {
 
                 <select value={input.category} onChange={handleSelectCategories}>
                   <option>Selecciona una categoría</option>
-                  {usuario.categories.length > 0
-                    ? usuario.categories.map((category: string) =>
-                      (<option value={category}>{category}</option>))
-                    : (<option value="Otros">Otros</option>)
+                  {
+                    selectKey.keyInput ?
+                      selectKey.keyInput === 'monthly'
+                        ? ['Salario', 'Préstamo', 'Otros'].map(montInput => {
+                          return (<option value={montInput}>{montInput}</option>)
+                        })
+                        : ['Changa', 'Herencia', 'Encontrado', 'Préstamo', 'Otros'].map(extraInput => {
+                          return (<option value={extraInput}>{extraInput}</option>)
+                        })
+                      : ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map(undefinedCategory => {
+                        return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                      })
+                  }
+                  {selectKey.keyInput === 'monthly'
+                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category) => {
+                      return (<option value={montInput.name}>{montInput.name}</option>)
+                    })
+                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category) => {
+                      return (<option value={extraInput.name}>{extraInput.name}</option>)
+                    })
                   }
                 </select>
-
                 <input
                   type='text'
                   name='description'
@@ -354,31 +360,19 @@ export default function InputTable() {
                 <button type='submit'>Agregar</button>
               </div>
             </form>
-            <form onSubmit={handleSubmitCategory}>
-              <div className={styles.form2}>
-                <label>Elige las categorias por default o crea una: </label>
-                <input
-                  type='text'
-                  name='value'
-                  placeholder='Agrega el nombre'
-                  onChange={handleChangeCategory}
-                >
-                </input>
-                <button type='submit'>Crear</button>
-              </div>
-            </form>
-            <div>
-              <form onSubmit={handleSubmitCategoryDelete}>
-                <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
-                  {usuario.categories.length > 0
-                    ? usuario.categories.map((category: string) =>
-                      (<option value={category}>{category}</option>))
-                    : (<option value="Otros">Otros</option>)
+            {
+                    input.category === 'Otros' 
+                    && (<div>
+                      <button onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro</button>
+                    <PopUp
+                      open={open} 
+                      setOpen={setOpen}
+                      onClick={() => setOpen(open)}
+                      title="Completa para agregar una categoría!">
+                      <CategoryCreate/>
+                    </PopUp>
+                    </div> )
                   }
-                </select>
-                <button type='submit'>Delete</button>
-              </form>
-            </div>
           </div>
         </div>
       </div>

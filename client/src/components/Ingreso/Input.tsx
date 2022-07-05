@@ -8,13 +8,13 @@ export default function Input() {
   const { renderInputs, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  // let currentDate = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
+  let currentDate = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
 
-  // useEffect(() => {
-  //   if (status === 'success'){
-  //     dispatch(renderInput(currentDate))
-  //   }
-  // }, [status])
+  useEffect(() => {
+    if (status === 'success'){
+      dispatch(renderInput(currentDate))
+    }
+  }, [status])
 
   return (
     <div>

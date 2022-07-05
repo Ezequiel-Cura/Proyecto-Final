@@ -6,11 +6,10 @@ import User from "../../models/User";
 
 const router = Router()
 
-// router.post("/", authorization, async (req: any, res: Response) => {
-  router.post("/", async (req: any, res: Response) => {
+router.post("/", authorization, async (req: any, res: Response) => {
+
   const { key, value } = req.body
-  // const id = req.userId
-  const id = ""
+  const id = req.userId
 
   try {
     const user:any = await User.findById(id)

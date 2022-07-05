@@ -18,16 +18,20 @@ const authorization_1 = __importDefault(require("../../middleware/authorization"
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { value } = req.body;
+    // router.delete("/", async (req: any, res: Response) => {
+    const { _id } = req.body;
     const id = req.userId;
+    // const id = "62c0a45f6ffc62c777c647de"
     try {
         const user = yield User_1.default.findById(id);
         if (!user)
             return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
-        yield user.categories.remove({ "_id": new mongodb_1.ObjectId(value.id) }).save();
-        res.status(200).send(user.categories);
+        yield user.categories.remove({ "_id": new mongodb_1.ObjectId(_id) });
+        yield user.save();
+        res.status(200).send(user);
     }
     catch (err) {
+        console.log(err);
         res.status(400).send(err);
     }
 }));

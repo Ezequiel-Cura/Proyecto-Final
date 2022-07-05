@@ -3,48 +3,61 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, totalExpenses } from "redux/reducers/userReducer";
+import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, renderOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
+import PopUp from "components/Saves/PopUp";
+import CategoryCreate from "components/Category/CategoryCreate";
 
 
 export default function ExpensesTable() {
    const { usuario, renderOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
-  useEffect(() => {
+   const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
+  
+   useEffect(() => {
     if (status === 'success'){
-      // dispatch(getAllExpenses())
-      dispatch(totalExpenses())
+      dispatch(renderOutput(date))
     }
   }, [status])
 
   interface AgregarGastos { 
     id?: string,  
-    key: string,               //monthlyExpenses, variableExpenses
+    frequency: string,               //monthlyExpenses, variableExpenses
+    key: string,
     value: Value,
   }
   interface Value {
+    date: string,
+    end?: string,
     description: string,
-    amount: number,
-    category?: string,
-    date?: string,
-    _id?: string,
-    source?: string 
+    category: string,
+    amount: number
+  }
+
+  interface Category {
+    name: string,
+    frequency: string,
+    type: string,
+    _id: {
+      $oid: string
+    }
   }
 
   const [input, setInput] = useState<Value>({
-      category: '',
-      description: '',
-      amount: 0,
+    category: '',
+    description: '',
+    amount: 0,
+    date: '',
   })
 
   interface keySelect {
-    keyInput: string
+    frequency: string
   }
 
   const [selectKey, setSelectKey] = useState<keySelect>({
-    keyInput: '', 
+    frequency: '',
   })
 
   function handleChange(e : React.ChangeEvent<HTMLInputElement>){ 
@@ -55,9 +68,9 @@ export default function ExpensesTable() {
   }
 
   function handleSelectI(e : React.ChangeEvent<HTMLSelectElement>){    
+    console.log(e.target.value)
     setSelectKey({
-      ...selectKey,
-      keyInput: e.target.value
+      frequency: e.target.value
     })
   }
 
@@ -69,13 +82,25 @@ export default function ExpensesTable() {
   }
 
   const form : AgregarGastos = {
-    key: selectKey.keyInput,
+    frequency: selectKey.frequency,
+    key: 'output',
     value: input,
   }
+
+  const [open, setOpen] = useState<boolean>(false);
 
   function handleSubmit(e : React.FormEvent<HTMLFormElement>){   
     e.preventDefault();
     dispatch(addDato(form));
+    setInput({
+      category: '',
+      description: '',
+      amount: 0,
+      date: ''
+    })
+    setSelectKey({
+      frequency: ''
+    })
   } 
 
   function handleDelete(event: any) {
@@ -159,32 +184,32 @@ export default function ExpensesTable() {
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               {
-                usuario.CategoriesExpenses.length > 0
-                  ? usuario.CategoriesExpenses.map((category: string) => (<option value={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</option>))
-                  : <option value="Otros"></option>
+                ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler', 'Otros'].map(undefinedCategory => {
+                  return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                })
+              }
+              {
+                usuario.categories.filter((category: Category) => category.type === 'output').map((category: Category) => {
+                  return (<option value={category.name}>{category.name}</option>)
+              })
               }
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
-              <option value='fijo'>Gasto Fijo</option>
-              <option value='variable'>Gasto Variable</option>
+              <option value='monthly'>Gasto Fijo</option>
+              <option value='extra'>Gasto Variable</option>
             </select>
           </div>
 
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
-            <button value='01' className={styles.months} id="Enero" /* onClick={(e) => filterByMonth(e)}*/>Enero</button>
-              <button value='02' className={styles.months} id="Febrero" /* onClick={(e) => filterByMonth(e)}*/>Febrero</button>
-              <button value='03' className={styles.months} id="Marzo" /* onClick={(e) => filterByMonth(e)}*/>Marzo</button>
-              <button value='04' className={styles.months} id="Abril" /* onClick={(e) => filterByMonth(e)}*/>Abril</button>
-              <button value='05' className={styles.months} id="Mayo" /* onClick={(e) => filterByMonth(e)}*/>Mayo</button>
-              <button value='06' className={styles.months} id="Junio" /* onClick={(e) => filterByMonth(e)}*/>Junio</button>
-              <button value='07' className={styles.months} id="Julio" /* onClick={(e) => filterByMonth(e)}*/>Julio</button>
-              <button value='08' className={styles.months} id="Agosto" /* onClick={(e) => filterByMonth(e)}*/>Agosto</button>
-              <button value='09' className={styles.months} id="Septiembre"/* onClick={(e) => filterByMonth(e)}*/>Septiembre</button>
-              <button value='10' className={styles.months} id="Octubre" /* onClick={(e) => filterByMonth(e)}*/>Octubre</button>
-              <button value='11' className={styles.months} id="Noviembre" /* onClick={(e) => filterByMonth(e)}*/>Noviembre</button>
-              <button value='12' className={styles.months} id="Diciembre" /* onClick={(e) => filterByMonth(e)}*/>Diciembre</button>
+            {
+                ['Enero', 'Febero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
+                  (month, i) => {
+                    return( <button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
+                  )}
+                )
+              }
             </div>
             <div className={styles.annualCard}>
               <button className={styles.annual} onClick={handleRefresh}>Refresh</button>
@@ -202,25 +227,15 @@ export default function ExpensesTable() {
               </tr>
             </thead>
             <tbody>
-            {renderOutputs.length > 0 ?renderOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: any) => {
+            {renderOutputs.length > 0 ? renderOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                  detalles.source === 'monthlyExpenses' 
-                  ? (<tr className={styles.monthlyInput}>
-                    <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
-                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
-                    <th>{detalles.description}</th>
-                    <th>$ {detalles.amount}</th>
-                  </tr>)
-                  : (
-                    <tr>
+                  <tr className={styles.monthlyInput}>
                     <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
                   </tr>
-                  )
                 )
               }) 
               : <></>
@@ -245,19 +260,34 @@ export default function ExpensesTable() {
             <div className={styles.form}>
               <select onChange={handleSelectI}>
                 <option>Selecciona el tipo</option>
-                <option value='monthlyExpenses'>Gasto fijo</option>
-                <option value='variableExpenses'>Gasto Variable</option>
+                <option value='monthly'>Gasto fijo</option>
+                <option value='extra'>Gasto Variable</option>
               </select>
 
               <select value={input.category} onChange={handleSelectC}>
                 <option>Selecciona una categoría</option>
-                {usuario.CategoriesExpenses.length > 0
-                  ? usuario.CategoriesExpenses.map((category: string) =>
-                    (<option value={category}>{category}</option>))
-                  : (<option value="Otros">Otros</option>)
+                  {
+                    selectKey.frequency ?
+                      selectKey.frequency === 'monthly'
+                        ? ['Transporte', 'Alquiler', 'Deuda','Impuestos', 'Otros'].map(montOutput => {
+                          return (<option value={montOutput}>{montOutput}</option>)
+                        })
+                        : ['Regalo', 'Super', 'Transporte', 'Otros'].map(extraOutput => {
+                          return (<option value={extraOutput}>{extraOutput}</option>)
+                        })
+                      : ['Impuestos', 'Transporte', 'Alquiler', 'Deuda', 'Ocio', 'Regalo', 'Super', 'Otros'].map(undefinedCategory => {
+                        return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                      })
+                  }
+                  {selectKey.frequency === 'monthly'
+                    ? usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
+                      return (<option value={montOutput.name}>{montOutput.name}</option>)
+                    })
+                    : usuario.categories.filter((extraOutput: Category) => extraOutput.frequency === 'extra' && extraOutput.type === 'output').map((extraOutput: Category) => {
+                      return (<option value={extraOutput.name}>{extraOutput.name}</option>)
+                    })
                   }
               </select>
-
               <input 
                 type='text' 
                 name='description'
@@ -282,6 +312,19 @@ export default function ExpensesTable() {
               <button type='submit'>Agregar</button>
             </div>
           </form>
+          {
+                    input.category === 'Otros' 
+                    && (<div>
+                      <button onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro</button>
+                    <PopUp
+                      open={open} 
+                      setOpen={setOpen}
+                      onClick={() => setOpen(open)}
+                      title="Completa para agregar una categoría!">
+                      <CategoryCreate/>
+                    </PopUp>
+                    </div> )
+                  }
         </div>
       </div>
   )
