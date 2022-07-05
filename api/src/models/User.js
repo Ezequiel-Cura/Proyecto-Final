@@ -10,6 +10,7 @@ const userSchema = new mongoose_1.Schema({
     lastName: String,
     email: { type: String, unique: true, lowercase: true, required: true },
     password: { type: String, required: true },
+    isGoogle: { type: Boolean, default: false },
     avatar: String,
     premium: { type: Boolean, default: false },
     role: { type: String, default: 'user' },

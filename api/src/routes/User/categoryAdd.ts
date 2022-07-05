@@ -8,20 +8,21 @@ const router = Router()
 
 router.post("/", authorization, async (req: any, res: Response) => {
 
-  const { key, value } = req.body
+  const { value } = req.body
   const id = req.userId
-
+console.log({value})
   try {
-    const user:any = await User.findById(id)
+    const user = await User.findById(id)
 
-    if (!user) return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
+    if (!user) return res.status(404).send(`No se encontró al usuario con id: ${id}`)
 
     await user.categories.push(value)
     await user.save()
-    res.status(200).send({key, value: user[key]})
+    res.status(200).send(user)
 
   }
   catch (err) {
+    console.log({err})
     res.status(400).send(err)
   }
 

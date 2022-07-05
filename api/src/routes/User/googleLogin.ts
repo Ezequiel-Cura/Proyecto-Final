@@ -21,7 +21,7 @@ router.post("/", async (req: Request, res: Response) => {
         const token = user.generateAuthToken()
         return res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false}).status(200).end()
     }
-    const newUser: any = await new User({firstName: given_name, email, password: passwordHash, avatar: picture}).save()
+    const newUser: any = await new User({firstName: given_name, email, password: passwordHash, avatar: picture, isGoogle: true}).save()
     const token = newUser.generateAuthToken()
     res.cookie("access_token", token, {maxAge : 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false}).status(200).end()
   } catch (err: any) {
