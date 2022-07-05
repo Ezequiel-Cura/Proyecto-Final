@@ -18,10 +18,10 @@ import box from "assets/other.png";
 //CONTROLADORES
 import {
   totalAlimentos,
-  totalCombustible,
+  totalTransporte,
   totalOcio,
   totalSalud,
-  totalViajes,
+  totalRegalo,
   totalAlquiler,
   totalGimnasio,
   totalOther,
@@ -182,12 +182,12 @@ export default function Detalles() {
                 Gastos de Alimentos totales = ${totalAlimentos(usuario)}{" "}
               </span>
               <img src={viaje} alt="LOL" />{" "}
-              <span> Gastos de Viajes totales = ${totalViajes(usuario)} </span>
+              <span> Gastos de Regalos totales = ${totalRegalo(usuario)} </span>
               <img src={salud} alt="LOL" />{" "}
               <span> Gastos de Salud totales = ${totalSalud(usuario)} </span>
               <img src={combustible} alt="LOL" />{" "}
               <span>
-                Gastos de Combustible totales = ${totalCombustible(usuario)}
+                Gastos de Combustible totales = ${totalTransporte(usuario)}
               </span>
               <img src={ocio} alt="LOL" />{" "}
               <span>Gastos en Ocio totales = ${totalOcio(usuario)}</span>

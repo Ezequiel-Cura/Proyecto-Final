@@ -1,13 +1,13 @@
-export function totalViajes(usuario: any) {
+export function totalRegalo(usuario: any) {
     const extras1 = usuario.extra.input.filter(
-      (e: any) => e.category === "Viaje"
+      (e: any) => e.category === "Regalo"
     );
     const total1 = extras1.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0);
 
     const extras2 = usuario.monthly.input.filter(
-      (e: any) => e.category === "Viaje")
+      (e: any) => e.category === "Regalo")
       
       const total2 = extras2.reduce((prev: any, actual: any) => {
         return prev + actual.amount;
@@ -16,16 +16,16 @@ export function totalViajes(usuario: any) {
     return total;
   }
 
-  export function totalCombustible(usuario: any) {
+  export function totalTransporte(usuario: any) {
     const extras1 = usuario.extra.input.filter(
-      (e: any) => e.category === "Combustible"
+      (e: any) => e.category === "Transporte"
     );
     const total1 = extras1.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0);
 
     const extras2 = usuario.monthly.input.filter(
-      (e: any) => e.category === "Combustible")
+      (e: any) => e.category === "Transporte")
       
       const total2 = extras2.reduce((prev: any, actual: any) => {
         return prev + actual.amount;
