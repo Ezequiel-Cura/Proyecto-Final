@@ -31,7 +31,6 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
         if (frequency === "monthly") {
             yield user.monthly[key].push(value);
             yield user.save();
-            console.log(user.monthly);
             return res.status(200).send(user);
         }
         //---------------------------------

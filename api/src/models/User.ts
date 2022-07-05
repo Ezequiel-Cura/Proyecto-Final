@@ -8,6 +8,7 @@ interface IUser {
   lastName?: string
   email: string
   password: string
+  isGoogle: boolean
 
   avatar: string
   premium: boolean
@@ -15,8 +16,8 @@ interface IUser {
 
   savings: any
   fees: Array<object>
-  monthly: Array<object>
-  extra: Array<object>
+  monthly: any
+  extra: any
 
   categories: any,
   generateAuthToken: () => any
@@ -27,7 +28,7 @@ const userSchema = new Schema<IUser>({
   lastName: String,
   email: { type: String, unique: true, lowercase: true, required: true },
   password: { type: String, required: true },
-
+  isGoogle: { type: Boolean, default: false },
   avatar: String,
   premium: { type: Boolean, default: false },
   role: { type: String, default: 'user' },
