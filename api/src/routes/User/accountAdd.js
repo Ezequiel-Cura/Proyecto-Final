@@ -31,6 +31,7 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
         if (frequency === "monthly") {
             yield user.monthly[key].push(value);
             yield user.save();
+            console.log(user.monthly);
             return res.status(200).send(user);
         }
         //---------------------------------
@@ -46,10 +47,8 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
                 date: targetDate,
                 entries: [value]
             };
-            console.log({ newEntry });
             yield user.extra[key].push(newEntry);
             yield user.save();
-            console.log({ user });
             return res.status(200).send(user);
         }
         //---------------------------------
