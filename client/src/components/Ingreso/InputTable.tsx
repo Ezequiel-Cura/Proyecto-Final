@@ -31,7 +31,8 @@ export default function InputTable() {
     end?: string,
     description: string,
     category: string,
-    amount: number
+    amount: number,
+    frequency?: string
   }
   interface AgregarIngresos {
     id?: string,
@@ -41,14 +42,12 @@ export default function InputTable() {
   }
 
   //Delete
-  interface idUndefined {
-    _id: string | undefined
-  }
 
   interface accountParameter {
     id?: string,
-    key: string | undefined,
-    value: idUndefined
+    type: string,
+    frequency: string,
+    value: any
   }
 
   interface keySelect {
@@ -271,14 +270,13 @@ export default function InputTable() {
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
                   <tr className={styles.monthlyInput}>
-                    <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
+                    <th><button onClick={() => handleDelete({ id: usuario._id, frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
                   </tr>)
-              })
-                : <></>
+              }) :   <th></th>
               }
               <tr>
                 <th className={styles.lastBox}></th>

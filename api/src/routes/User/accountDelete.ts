@@ -8,19 +8,32 @@ const router = Router()
 
 
 router.delete("/", authorization, async (req: any, res: Response) => {
-  const {key, value} = req.body.source
+  // router.delete("/", async (req: any, res: Response) => {
+  const { frequency, type, value} = req.body
   const id = req.userId
+  // const id = "62c0a45f6ffc62c777c647de"
   try{
-    const user : any = await User.findById(id)
+    const user = await User.findById(id)
     if(!user){
      res.status(404).send(`No se encontró al usuario con id: ${id}`)
     } else {
-      await user[key].remove( {"_id": new ObjectId(value._id)})
-      await user.save()
-      res.status(200).send("Removed")
+      if(frequency === 'monthly'){
+        await user.monthly[type].remove( {"_id": new ObjectId(value._id)})
+        await user.save()
+        return res.status(200).send("Removed")
+      } else if(frequency === 'extra'){
+        const dateSplit = value.date.split('-')	
+        const targetDate = `${dateSplit[0]}-${dateSplit[1]}` //transform date into format mm-yyyy
+        const targetIndex =  user.extra[type].map((e: any) => e.date).indexOf(targetDate)
+        await user.extra[type][targetIndex].entries.remove({"_id": new ObjectId(value._id)})  //{date, entries: []}
+        await user.save()
+        return res.status(200).send("Removed")
+      }
+
     }
   }
   catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 });
