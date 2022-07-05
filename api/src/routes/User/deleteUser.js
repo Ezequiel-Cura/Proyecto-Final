@@ -26,7 +26,7 @@ router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(404).send(`Usuario ${user} eliminado`);
         }
     })
-        .catch(() => {
+        .catch((e) => {
         res.status(400).send('Error en protocolo de borrado');
     });
 }));

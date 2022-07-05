@@ -96,9 +96,11 @@ const reducerSlice = createSlice({
       console.log({payload})
       const month = state.usuario.monthly.input || []
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
-      
-      state.renderInputs = [...month, ...state.usuario.extra.input[0].entries]
-      console.log(extraIndex)
+      if(extraIndex < 0){
+        state.renderInputs = [...month]
+       } else{
+         state.renderInputs = [...month, ...state.usuario.extra.input[0].entries]
+       }
     },
 
     totalInput: (state) => {
