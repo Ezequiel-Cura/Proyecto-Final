@@ -224,11 +224,11 @@ export default function InputTable() {
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               {
-                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map(undefinedCategory => {
+                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map( undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                 })
               }
-              {
+              { usuario.categories.length > 0 &&
                 usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
                   return (<option value={category.name}>{category.name}</option>)
               })
@@ -269,14 +269,14 @@ export default function InputTable() {
             <tbody>
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                  <tr className={styles.monthlyInput}>
+                  <tr className={styles.monthlyInput} key={detalles._id}>
                     <th><button onClick={() => handleDelete({ id: usuario._id, frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
                   </tr>)
-              }) :   <th></th>
+              }) : <></>
               }
               <tr>
                 <th className={styles.lastBox}></th>
@@ -318,12 +318,13 @@ export default function InputTable() {
                         return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                       })
                   }
-                  {selectKey.keyInput === 'monthly'
-                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category) => {
-                      return (<option value={montInput.name}>{montInput.name}</option>)
+                  { usuario.categories.length > 0 
+                  && selectKey.keyInput === 'monthly'
+                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
+                      return (<option value={montInput.name} key={i}>{montInput.name}</option>)
                     })
-                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category) => {
-                      return (<option value={extraInput.name}>{extraInput.name}</option>)
+                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
+                      return (<option value={extraInput.name} key={i}>{extraInput.name}</option>)
                     })
                   }
                 </select>

@@ -14,13 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const mongodb_1 = require("mongodb");
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-// router.delete("/", authorization, async (req: any, res: Response) => {
-router.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // router.delete("/", async (req: any, res: Response) => {
     const { frequency, type, value } = req.body;
-    // const id = req.userId
-    const id = "62c0a45f6ffc62c777c647de";
+    const id = req.userId;
+    // const id = "62c0a45f6ffc62c777c647de"
     try {
         const user = yield User_1.default.findById(id);
         if (!user) {
