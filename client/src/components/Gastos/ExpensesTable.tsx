@@ -3,10 +3,10 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ expensesOrderByAmount, renderOutput } from "redux/reducers/userReducer";
+import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
-import PopUp from "components/Saves/PopUp";
+import PopUp from "components/Saves/Form/PopUp";
 import CategoryCreate from "components/Category/CategoryCreate";
 
 
@@ -114,7 +114,7 @@ export default function ExpensesTable() {
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(expensesOrderByAmount(e.target.value))
+    // dispatch(expensesOrderByAmount(e.target.value))
   }
 
   function handleOrderByCategories(e: any) {

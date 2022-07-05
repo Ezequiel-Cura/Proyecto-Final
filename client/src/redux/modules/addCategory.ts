@@ -9,6 +9,7 @@ async (ingreso, { rejectWithValue }) => {
 
     return data
   } catch (err: any) {
+    console.log(err)
     return rejectWithValue(err.response.data)
   }
 })

@@ -12,13 +12,13 @@ router.get("/", authorization, async (req: any, res: Response) => {
       firstName: 1, 
       lastName: 1, 
       avatar: 1, 
-      Account: 1, 
-      Saving: 1, 
+      savings: 1, 
       premium: 1,
       monthly: 1,
       extra: 1,
       categories: 1,
-      role: 1
+      role: 1,
+      isGoogle: 1
     })
     res.status(200).send(user)
   } catch (err: any) {

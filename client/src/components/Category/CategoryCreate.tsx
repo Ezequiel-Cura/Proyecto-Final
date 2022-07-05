@@ -26,7 +26,6 @@ export default function CategoryCreate() {
   })
 
   const form = {
-    id: usuario._id,
     value:{
         name: inputName.name,
         frequency: selectOpt.frequency,
@@ -40,6 +39,7 @@ export default function CategoryCreate() {
     })
   }
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
+    e.preventDefault();
     setSelectOpt({
       ...selectOpt,
       [e.target.name]: e.target.value
@@ -47,8 +47,9 @@ export default function CategoryCreate() {
   }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
+    console.log({form})
     dispatch(addCategory(form));
-  }
+    }
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -61,22 +62,18 @@ export default function CategoryCreate() {
                 onChange={handleChange}
               >
               </input>
-              <select value={selectOpt.frequency} onChange={handleSelectInputs}>
+              <select onChange={(e) => handleSelectInputs(e)}>
                   <option>Selecciona su frecuencia</option>
                   <option value='monthly'>Ingreso fijo</option>
                   <option value='extra'>Ingreso extra</option>
                 </select>
-                <select value={selectOpt.type} onChange={handleSelectInputs}>
+                <select onChange={(e) => handleSelectInputs(e)}>
                   <option>Selecciona su tipo</option>
                   <option value='input'>Ingreso</option>
                   <option value='output'>Gasto</option>
                 </select>
               <button type='submit'>Agregar</button>
       </form>
-      {status === 'success' 
-      ? <p>Se agrego! Ya puedes seleccionarla entre tus opciones.</p>
-      : <p>Hubo un problema, inténtalo más tarde.</p>
-      }
     </div>
   )
 }

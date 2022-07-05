@@ -35,8 +35,8 @@ export default function Saves() {
           </div>
 
           <div className={style.wrapperAllSaves}>
-            {usuario.saving.length > 0
-            ? usuario.saving.map( (s: SavingUser) => (
+            {usuario.savings.length > 0
+            ? usuario.savings.map( (s: SavingUser) => (
                 <div id='amount1' className={style.wrapperSave}>
                   <div id='amount1' className={style.name}>
                     <div className={style.divP}>
@@ -68,45 +68,12 @@ export default function Saves() {
                     </table>
                   </div>
                 </div>))
-            : <h1>No tienes un monto, agrega</h1>
+            : <p>No tienes casillas de ahorros actualmente, agrega una!</p>
             }
-          
-          {/* EJEMPLO */}
-          <div id='amount2' className={style.wrapperSave}>
-              <div id='amount2' className={style.name}>
-                {/* <h1>Nombre: <br/>{s.name}</h1> */}
-                <div className={style.divP}>
-                  <p>Nombre: </p>
-                </div>
-                <div className={style.divH1}>
-                  <h1>Viaje</h1>
-                </div>
-              </div>
-              <div className={style.wrapperTable}>
-                <table className={style.table}>
-                  <thead className={style.head}>
-                    <tr>
-                      <th>Comienzo</th>
-                      <th>Objetivo</th>
-                      <th>Total</th>
-                      {/* <button onClick={handleDelete}>X</button> */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th>2022-09-13</th>
-                      <th>Vacaciones Verano-2094</th>
-                      {/* <th>{s.start}</th>
-                    <th>{s.goal ? s.goal : "No tiene un objetivo"}</th>
-                    <th>{s.amount}</th> */}
-                      <th className={style.divAmount}><div className={style.amount}>$94.609</div></th>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div> 
+          </div>
+
           <SavesForm/>
+          
         </div>
       </div>
     </div>

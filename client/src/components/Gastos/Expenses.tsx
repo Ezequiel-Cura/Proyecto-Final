@@ -3,14 +3,16 @@ import React, { useEffect } from 'react';
 import ExpensesLanding from "./ExpensesLanding";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpensesTable from './ExpensesTable';
+import { renderOutput } from 'redux/reducers/userReducer';
 
 export default function Expenses() {
   const { renderOutputs, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
+  let currentDate = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
   useEffect(() => {
     if (status === 'success'){
-      // dispatch()
+      dispatch(renderOutput(currentDate))
     }
   }, [status])
   
