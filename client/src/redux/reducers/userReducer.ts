@@ -95,15 +95,19 @@ const reducerSlice = createSlice({
   reducers: {
     renderInput: (state, { payload }) => {
       try{
-        const month = state.usuario.monthly.input.forEach((e:Entries) => e.frequency = 'monthly' ) || []
+        // Bring monthly inputs
+      const month = state.usuario.monthly.input.slice().map((e:Entries) => e = {...e, frequency: 'monthly'} ) || []
+      
+      // Bring extra inputs
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
-      if(extraIndex < 0){
-         state.renderInputs = [...month]
-       } else{
-          state.renderInputs = [...month, ...state.usuario.extra.input[extraIndex].entries.map((e:Entries) => e.frequency = 'extra')]
-       }} catch(e){
+      const extra = state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
+        state.renderInputs = extraIndex < 0 
+        ? [...month] 
+        : [...month, ...extra]
+      }catch(e){
         console.log(e)
-       }
+      }
+      
     },
 
     totalInput: (state) => {
@@ -116,18 +120,21 @@ const reducerSlice = createSlice({
     },
 
     renderOutput: (state, { payload }) => {
-      try{
-        const month = state.usuario.monthly.output || []
-      const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
-      console.log(extraIndex)
-      if(extraIndex < 0){
-       state.renderOutputs = [...month]
-      } else{
-        state.renderOutputs = [...month, ...state.usuario.extra.output[0].entries]
-      }
-    }catch(error){
-        console.log(error)
-      }
+        try
+        {    // Bring monthly inputs
+            const month = state.usuario.monthly.output.slice().map((e:Entries) => e = {...e, frequency: 'monthly'} ) || []
+      
+            // Bring extra inputs
+            const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
+            const extra = state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
+      
+            
+              state.renderOutputs = extraIndex < 0 
+              ? [...month] 
+              : [...month, ...extra]
+            }catch(e){
+              console.log(e)
+            }
     },
     expensesFilterByFrequency: (state, { payload }) => {
       let currExpSta = current(state)
