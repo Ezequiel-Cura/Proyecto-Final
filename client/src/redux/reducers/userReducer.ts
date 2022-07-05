@@ -94,14 +94,18 @@ const reducerSlice = createSlice({
   initialState,
   reducers: {
     renderInput: (state, { payload }) => {
-
-      const month = state.usuario.monthly.input.forEach((e:Entries) => e.frequency = 'monthly' ) || []
+      // Bring monthly inputs
+      const month = state.usuario.monthly.input.slice().map((e:Entries) => e = {...e, frequency: 'monthly'} ) || []
+      
+      // Bring extra inputs
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
-      if(extraIndex < 0){
-        state.renderInputs = [...month]
-       } else{
-         state.renderInputs = [...month, ...state.usuario.extra.input[0].entries.map((e:Entries) => e.frequency = 'extra')]
-       }
+      const extra = state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
+
+      
+        state.renderInputs = extraIndex < 0 
+        ? [...month] 
+        : [...month, ...extra]
+      
     },
 
     totalInput: (state) => {
