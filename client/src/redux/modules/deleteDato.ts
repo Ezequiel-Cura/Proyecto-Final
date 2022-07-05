@@ -7,7 +7,7 @@ async (ingreso: any, { rejectWithValue }) => {
   try {
     let deleteEntry: any = await axios.delete("/user/account", {
       data: {
-        source: ingreso
+        ingreso
       }
     });
     return deleteEntry.data

@@ -13,7 +13,7 @@ router.post("/", authorization, async (req: any, res: Response) => {
 	const id = req.userId
 	try {
 		// Check presence of user 
-		const user: any = await User.findById(id)
+		const user = await User.findById(id)
 		if (!user) return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
 		//---------------------------------
 
@@ -21,7 +21,7 @@ router.post("/", authorization, async (req: any, res: Response) => {
 		if (frequency === "monthly") {
 			await user.monthly[key].push(value)
 			await user.save()
-			console.log(user.monthly)
+
 			return res.status(200).send(user)
 		}
 		//---------------------------------

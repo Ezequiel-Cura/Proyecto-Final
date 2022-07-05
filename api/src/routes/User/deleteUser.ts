@@ -14,7 +14,7 @@ router.delete("/user", async (req: Request, res: Response) => {
       res.status(404).send(`Usuario ${user} eliminado`)
     }
   })
-  .catch(() => {
+  .catch((e) => {
     res.status(400).send('Error en protocolo de borrado')
   })
 });
