@@ -46,6 +46,7 @@ export const uploadImage: any = createAsyncThunk("user/uploadImage",
 interface Entries {
   date: string,
   end?:string,
+  frequency?: string,
   description: string,
   category: string,
   amount: number
@@ -93,13 +94,13 @@ const reducerSlice = createSlice({
   initialState,
   reducers: {
     renderInput: (state, { payload }) => {
-      console.log({payload})
-      const month = state.usuario.monthly.input || []
+
+      const month = state.usuario.monthly.input.forEach((e:Entries) => e.frequency = 'monthly' ) || []
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
       if(extraIndex < 0){
         state.renderInputs = [...month]
        } else{
-         state.renderInputs = [...month, ...state.usuario.extra.input[0].entries]
+         state.renderInputs = [...month, ...state.usuario.extra.input[0].entries.map((e:Entries) => e.frequency = 'extra')]
        }
     },
 
