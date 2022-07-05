@@ -1,26 +1,15 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from 'axios';
-
 import { registerUser } from '../modules/registerUser'
-
 import { loginUser } from '../modules/loginUser'
-
 import { googleLogin } from '../modules/googleLogin'
-
 import { logout } from '../modules/logout'
-
 import { getUserInfo } from '../modules/getUserInfo'
-
 import { addDato } from '../modules/addDato'
-
 import { deleteDato } from '../modules/deleteDato'
-
 import { addCategory } from '../modules/addCategory'
-
 import { deleteCategory } from '../modules/deleteCategory'
-
 import { addSaving } from '../modules/addSaving'
-
 import { deleteSaving } from '../modules/deleteSaving'
 
 

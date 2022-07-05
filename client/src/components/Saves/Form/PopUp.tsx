@@ -1,5 +1,5 @@
 import React  from 'react';
-import style from './Saves.module.css';
+import style from '../Saves.module.css';
 import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 export default function PopUp(props : any) {
