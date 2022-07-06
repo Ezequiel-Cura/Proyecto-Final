@@ -3,7 +3,7 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { /*inputsFilterByMonth,*/ /*inputsOrderByAmount,*/ inputsFilterByFrequency, /*filterInputByCategory,*/ totalInput, renderInput } from "redux/reducers/userReducer";
+import { inputsFilterByFrequency, totalInput, renderInput, inputsOrderByAmount, filterInputByCategory, inputsFilterByMonth } from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 // import { addCategory } from 'redux/modules/addCategory'
@@ -145,19 +145,20 @@ export default function InputTable() {
     dispatch(deleteDato(event))
   }
 
-  // function filterByMonth(e: any) {
-  //   e.preventDefault();
-  //   dispatch(inputsFilterByMonth(e.target.value))
-  // }
+  function filterByMonth(e: any) {
+    e.preventDefault();
+    dispatch(inputsFilterByMonth(e.target.value))
+  }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    // dispatch(inputsOrderByAmount(e.target.value))
+    dispatch(inputsOrderByAmount(e.target.value))
   }
 
   function handleOrderByCategories(e: any) {
     e.preventDefault();
-    // dispatch(filterInputByCategory(e.target.value));
+    dispatch(filterInputByCategory(e.target.value));
+    dispatch(totalInput())
   }
 
   function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -166,9 +167,10 @@ export default function InputTable() {
     dispatch(totalInput())
   }
 
-  function handleRefresh(e: any) {
+  function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     dispatch(renderInput(date))
+    dispatch(totalInput())
   }
 
   //Paginado
@@ -218,12 +220,12 @@ export default function InputTable() {
 
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
-              <option>Ordenar por monto</option>
+              <option value='default'>Ordenar por monto</option>
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
-              <option>Ordenar por categoria</option>
+            <select onChange={(e) => handleOrderByCategories(e)}>
+              <option value='default'>Ordenar por categoria</option>
               {
                 ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map( undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
@@ -235,9 +237,9 @@ export default function InputTable() {
               })
               }
             </select>
-            <select value='Ordenar' onChange={(e) => handleFilterByFrequency(e)}>
-              <option>Ordenar por frecuencia</option>
-              <option value='fijo'>Ingreso Fijo</option>
+            <select onChange={(e) => handleFilterByFrequency(e)}>
+              <option value='default'>Ordenar por frecuencia</option>
+              <option value='monthly'>Ingreso Fijo</option>
               <option value='extra'>Ingreso Extra</option>
             </select>
           </div>
@@ -247,7 +249,7 @@ export default function InputTable() {
               {
                 ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return( <button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
+                    return( <button value={i < 10 ? `0${i+1}` : `${i+1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                   )}
                 )
               }
