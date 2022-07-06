@@ -4,6 +4,7 @@ import axios from "axios"
 
 export const addCategory: any = createAsyncThunk("user/addCategory",
 async (ingreso, { rejectWithValue }) => {
+  console.log({ingreso}, "INGRESOOOOOO")
   try {
     const { data } = await axios.post(`/user/category`, ingreso)
 
