@@ -23,7 +23,7 @@ export default function InputTable() {
       dispatch(renderInput(date))
       dispatch(totalInput())
     }
-  }, [status])
+  }, [status, date, dispatch])
 
   //Typescript
   interface Value {
@@ -160,9 +160,10 @@ export default function InputTable() {
     // dispatch(filterInputByCategory(e.target.value));
   }
 
-  function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     dispatch(inputsFilterByFrequency(e.target.value))
+    dispatch(totalInput())
   }
 
   function handleRefresh(e: any) {
@@ -234,7 +235,7 @@ export default function InputTable() {
               })
               }
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
+            <select value='Ordenar' onChange={(e) => handleFilterByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
               <option value='fijo'>Ingreso Fijo</option>
               <option value='extra'>Ingreso Extra</option>

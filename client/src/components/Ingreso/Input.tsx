@@ -5,7 +5,7 @@ import { renderInput } from 'redux/reducers/userReducer';
 import InputTable from './InputTable';
 
 export default function Input() {
-  const { renderInputs, status } = useAppSelector(state => state.user);
+  const { renderInputs, status, allInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   let currentDate = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
@@ -18,7 +18,7 @@ export default function Input() {
 
   return (
     <div>
-      { renderInputs.length > 0 ? <InputTable/> : <InputLanding/> }
+      { renderInputs.length > 0 || allInputs.length > 0 ? <InputTable/> : <InputLanding/> }
     </div>
   )
 }
