@@ -1,13 +1,14 @@
 
 import { Router, Request, Response } from "express";
 import { ObjectId } from "mongodb";
+import authorization from "../../middleware/authorization";
 
 import User from "../../models/User";
 
 
 const router = Router()
 
-router.delete("/", async (req: any, res: Response) => {
+router.delete("/", authorization, async (req: any, res: Response) => {
 
   const {id, value } = req.body
 
