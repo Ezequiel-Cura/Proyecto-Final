@@ -3,7 +3,7 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput } from "redux/reducers/userReducer";
+import { expensesFilterByMonth, expensesOrderByAmount, filterExpensesByCategory, outputsFilterByFrequency, renderOutput, totalOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
 import PopUp from "components/Saves/Form/PopUp";
@@ -11,7 +11,7 @@ import CategoryCreate from "components/Category/CategoryCreate";
 
 
 export default function ExpensesTable() {
-   const { usuario, renderOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
+   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
    const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -19,6 +19,7 @@ export default function ExpensesTable() {
    useEffect(() => {
     if (status === 'success'){
       dispatch(renderOutput(date))
+      dispatch(totalOutput())
     }
   }, [status])
 
@@ -107,29 +108,33 @@ export default function ExpensesTable() {
     dispatch(deleteDato(event))
   }
   
-  // function filterByMonth(e: any) {
-  //   e.preventDefault();
-  //   dispatch(expensesFilterByMonth(e.target.value))
-  // }
+  function filterByMonth(e: any) {
+    e.preventDefault();
+    
+    dispatch(expensesFilterByMonth(e.target.value))
+  }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    // dispatch(expensesOrderByAmount(e.target.value))
+    dispatch(expensesOrderByAmount(e.target.value))
   }
 
   function handleOrderByCategories(e: any) {
     e.preventDefault();
-    // dispatch(filterExpensesByCategory(e.target.value));
+    dispatch(filterExpensesByCategory(e.target.value));
+    dispatch(totalOutput())
   }
 
-  function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(expensesFilterByFrequency(e.target.value))
+    dispatch(outputsFilterByFrequency(e.target.value))
+    dispatch(totalOutput())
   }
 
   function handleRefresh(e: any){
     e.preventDefault();
-    // dispatch(getAllExpenses())
+    dispatch(renderOutput(date))
+    dispatch(totalOutput())
   }
 
   //Paginado---------------------------------------------------------------
@@ -176,13 +181,13 @@ export default function ExpensesTable() {
           </div>
 
           <div className={styles.selectsOrder}>
-            <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
-              <option>Ordenar por monto</option>
+            <select onChange={(e) => handleOrderAmount(e)}>
+              <option value='default'>Ordenar por monto</option>
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
-              <option>Ordenar por categoria</option>
+            <select onChange={(e) => handleOrderByCategories(e)}>
+              <option value='default'>Ordenar por categoria</option>
               {
                 ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler'].map(undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
@@ -194,8 +199,8 @@ export default function ExpensesTable() {
               })
               }
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
-              <option>Ordenar por frecuencia</option>
+            <select  onChange={(e) => handleFilterByFrequency(e)}>
+              <option value='default'>Ordenar por frecuencia</option>
               <option value='monthly'>Gasto Fijo</option>
               <option value='extra'>Gasto Variable</option>
             </select>
@@ -206,7 +211,7 @@ export default function ExpensesTable() {
             {
                 ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return( <button value={i < 10 ? `0${i}` : i} className={styles.months} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
+                    return( <button value={i < 10 ? `0${i+1}` : `${i+1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                   )}
                 )
               }
@@ -256,7 +261,7 @@ export default function ExpensesTable() {
                 <th></th>
                 <th></th>
                 <th></th>
-                <th className={styles.totalAmount}><b>Total: ${totalExpensesMonth}</b></th>
+                <th className={styles.totalAmount}><b>Total: ${totalOutputsMonth}</b></th>
                 <th className={styles.lastBox}></th>
               </tr>
             </tbody>
