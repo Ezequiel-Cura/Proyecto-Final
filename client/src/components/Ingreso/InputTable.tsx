@@ -67,6 +67,13 @@ export default function InputTable() {
     date: today
   });
 
+  const [validate, setValidate] = useState({
+    category: '',
+    description: '',
+    amount: '',
+    date: ''
+  })
+
   const [selectKey, setSelectKey] = useState<keySelect>({
     keyInput: '',
   })
@@ -77,7 +84,6 @@ export default function InputTable() {
     if (status === 'success') {
       dispatch(renderInput(date))
       dispatch(totalInput())
-      console.log(today)
     }
   }, [status])
 
