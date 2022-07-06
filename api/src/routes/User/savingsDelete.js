@@ -19,7 +19,7 @@ const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { value } = req.body;
-    console.log(value, "value");
+    const id = req.userId;
     try {
         const id = req.userId;
         const user = yield User_1.default.findById(id);

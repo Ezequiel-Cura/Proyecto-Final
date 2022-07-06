@@ -9,8 +9,9 @@ import User from "../../models/User";
 const router = Router()
 
 router.delete("/", authorization, async (req: any, res: Response) => {
+
   const { value } = req.body
-  console.log(value, "value")
+const id = req.userId
   try {
     const id = req.userId
     const user = await User.findById(id)

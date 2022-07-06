@@ -14,11 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const User_1 = __importDefault(require("../../models/User"));
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const router = (0, express_1.Router)();
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, value } = req.body;
-    console.log(id, "id");
-    console.log(value, "value");
+router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { value } = req.body;
+    const id = req.userId;
     try {
         const user = yield User_1.default.findById(id);
         if (!user) {
@@ -31,6 +31,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (err) {
+        console.log(err);
         res.status(400).send(err.message);
     }
 }));

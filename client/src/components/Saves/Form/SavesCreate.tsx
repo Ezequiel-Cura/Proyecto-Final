@@ -40,10 +40,10 @@ export default function SavesCreate() {
     e.preventDefault();
     console.log(form, 'form')
     dispatch(addSaving(form));
-    {status === 'success' 
-      ? <p>Se agrego! Vuelve a Ahorros</p>
-      : <p>Hubo algun problema, intentalo mas tarde</p>
-    }
+    // status === 'success' 
+    //   ? <p>Se agrego! Vuelve a Ahorros</p>
+    //   : <p>Hubo algun problema, intentalo mas tarde</p>
+    
   }
   return (
     <div>
