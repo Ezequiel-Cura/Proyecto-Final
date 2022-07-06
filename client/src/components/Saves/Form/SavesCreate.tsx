@@ -30,7 +30,6 @@ export default function SavesCreate() {
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(e)
     setInput({
       ...input,
       [e.target.name]: e.target.value
@@ -96,9 +95,10 @@ export default function SavesCreate() {
               </input>
               <p>
                 <label>Seleccionar tipo de moneda: </label>
-                <input type="radio" name="currency" value="" id="" checked onChange={handleChange}/>Peso Argentino<br />
-                <input type="radio" name="currency" value="Dolar" id="dolar" onChange={handleChange}/>Dolar<br />
-                <input type="radio" name="currency" value="Euro" onChange={handleChange}/>Euro <br />
+                <input type="radio" name="currency" value="" id="" onChange={handleChange} />Peso Argentino
+                <input type="radio" name="currency" value="Dolar" id="dolar" onChange={handleChange}/>Dolar
+                <input type="radio" name="currency" value="Euro" id="euro" onChange={handleChange}/>Euro
+                <input type="radio" name="currency" value="Libra" id="libra" onChange={handleChange}/>Libra
               </p>
               <Button type='submit'>Agregar</Button>
       </form>
