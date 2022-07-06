@@ -35,16 +35,23 @@ export default function CategoryCreate() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({ 
+      ...inputName,
         name: e.target.value
     })
   }
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    setSelectOpt({
-      ...selectOpt,
-      [e.target.name]: e.target.value
-    })
+    if(e.target.value === 'monthly' || e.target.value === 'extra'){
+      setSelectOpt({
+        ...selectOpt,
+        frequency: e.target.value
+      })} else{
+        setSelectOpt({
+          ...selectOpt,
+          type: e.target.value
+      })
   }
+}
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
     console.log({form})
@@ -64,7 +71,7 @@ export default function CategoryCreate() {
               </input>
               <select onChange={(e) => handleSelectInputs(e)}>
                   <option>Selecciona su frecuencia</option>
-                  <option value='monthly'>Ingreso fijo</option>
+                  <option value='monthly' >Ingreso fijo</option>
                   <option value='extra'>Ingreso extra</option>
                 </select>
                 <select onChange={(e) => handleSelectInputs(e)}>

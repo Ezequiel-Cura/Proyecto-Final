@@ -10,14 +10,16 @@ export default function Saves() {
   const dispatch = useAppDispatch();
   console.log(usuario)
 
+  interface Currency {
+    type: string,
+  }
   interface SavingUser {
     name: string,
     start: string,
     end: string,
     goal?: number,
-    place: string,
-    currency: string,
-    amount: number
+    depositPlace: string,
+    currency: Currency,
   }
 
   function handleDelete(e : any) {
@@ -43,7 +45,7 @@ export default function Saves() {
                       <p>Nombre: </p>
                     </div>
                     <div className={style.divH1}>
-                      <h1>Viaje</h1>
+                      <h1>{s.name}</h1>
                     </div>
                   </div>
                   <div className={style.wrapperTable}>
@@ -51,21 +53,21 @@ export default function Saves() {
                       <thead className={style.head}>
                         <tr>
                           <th>Comienzo</th>
-                          <th>Descripcion</th>
+                          <th>Final</th>
                           <th>Total actual</th>
                           <th>Objetivo</th>
-                          <button onClick={handleDelete}>X</button>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <th>{s.start}</th>
-                          <th>{s.goal ? s.goal : "No tiene una descripcion"}</th>
-                          <th>Monto actual</th>
-                          <th className={style.divAmount}><div className={style.amount}>{s.amount}</div></th>
+                          <th>{s.start && s.start.split("T")[0]}</th>
+                          <th>{s.end && s.end.split("T")[0]}</th>
+                          <th>{s.depositPlace}</th>
+                          <th className={style.divAmount}><div className={style.amount}>{s.goal}</div></th>
                         </tr>
                       </tbody>
                     </table>
+                    <button onClick={handleDelete}>X</button>
                   </div>
                 </div>))
             : <p>No tienes casillas de ahorros actualmente, agrega una!</p>

@@ -248,3 +248,23 @@
     background: none;
     color: white;
 }
+.CrearDiv{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.Crear{
+    background-color: #e8f038;
+    font-weight: bold;
+    color: black;
+}
+
+.CrearButton{
+    padding: 1rem;
+    border-radius: 25rem;
+    border: 2px #333333 solid;
+    background: #e8f038;
+    color: rgb(59, 59, 59);
+    font-size: medium;
+    margin-top: 25px;
+}

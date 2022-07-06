@@ -211,12 +211,10 @@ export default function InputTable() {
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
 
-          {/* Title */}
           <div className={styles.title}>
             <h1>Tus Ingresos </h1>
           </div>
 
-          {/* Order Selector */}
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option>Ordenar por monto</option>
@@ -227,7 +225,7 @@ export default function InputTable() {
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               {
-                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map( undefinedCategory => {
+                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map( undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                 })
               }
@@ -244,7 +242,6 @@ export default function InputTable() {
             </select>
           </div>
 
-          {/* Months Selector */}
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
               {
@@ -260,7 +257,6 @@ export default function InputTable() {
             </div>
           </div>
 
-          {/* Table */}
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
@@ -293,14 +289,12 @@ export default function InputTable() {
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className={stylesPag.wrapperPag}>
             <button className={page <= 1 ? stylesPag.disabledPrev : stylesPag.paginationPrev} onClick={() => handlePrevButton()}>Prev</button>
             {indice}
             <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
           </div>
 
-          {/* Forms */}
           <div className={styles.wrapperForms}>
             <form onSubmit={handleSubmit}>
               <div className={styles.form}>
@@ -315,17 +309,18 @@ export default function InputTable() {
                   {
                     selectKey.keyInput ?
                       selectKey.keyInput === 'monthly'
-                        ? ['Salario', 'Préstamo', 'Otros'].map(montInput => {
+                        ? ['Salario', 'Préstamo'].map(montInput => {
                           return (<option value={montInput}>{montInput}</option>)
                         })
-                        : ['Changa', 'Herencia', 'Encontrado', 'Préstamo', 'Otros'].map(extraInput => {
+                        : ['Changa', 'Herencia', 'Encontrado', 'Préstamo'].map(extraInput => {
                           return (<option value={extraInput}>{extraInput}</option>)
                         })
-                      : ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado', 'Otros'].map(undefinedCategory => {
+                      : ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
                         return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                       })
                   }
-                  { usuario.categories.length > 0 
+                  { selectKey.keyInput ?
+                  usuario.categories.length > 0 
                   && selectKey.keyInput === 'monthly'
                     ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
                       return (<option value={montInput.name} key={i}>{montInput.name}</option>)
@@ -333,9 +328,12 @@ export default function InputTable() {
                     : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
                       return (<option value={extraInput.name} key={i}>{extraInput.name}</option>)
                     })
+                    :  usuario.categories.length > 0 
+                    && usuario.categories.map((allInputs: Category, i: number) => {
+                      return (<option value={allInputs.name} key={i}>{allInputs.name}</option>)})
                   }
+                       <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
-
                 <input
                   type='text'
                   name='description'
@@ -344,7 +342,6 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
-
                 <label>$</label>
                 <input
                   type='number'
@@ -356,7 +353,6 @@ export default function InputTable() {
                   className={styles.amount}
                 >
                 </input>
-
                 <input
                   type='date'
                   name='date'
@@ -369,9 +365,9 @@ export default function InputTable() {
               </div>
             </form>
             {
-                    input.category === 'Otros' 
-                    && (<div>
-                      <button onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro</button>
+                    input.category === 'Crear' 
+                    && (<div className={styles.CrearDiv}>
+                      <button onClick={() => setOpen(!open)} className={styles.CrearButton}>Agregar una nueva categoría</button>
                     <PopUp
                       open={open} 
                       setOpen={setOpen}

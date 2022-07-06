@@ -100,16 +100,12 @@ const reducerSlice = createSlice({
       
       // Bring extra inputs
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
-      const extra = state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
-        state.renderInputs = extraIndex < 0 
-        ? [...month] 
-        : [...month, ...extra]
+      const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
+        state.renderInputs =  [...month, ...extra]
       }catch(e){
         console.log(e)
       }
-      
     },
-
     totalInput: (state) => {
       // let State = current(state);
       // let reduceTotal = 0
@@ -118,7 +114,6 @@ const reducerSlice = createSlice({
 
       // state.totalInputsMonth = state.allInputs.reduce((prev: any, curr: any) => prev = prev + curr.amount)
     },
-
     renderOutput: (state, { payload }) => {
         try
         {    // Bring monthly inputs
@@ -126,12 +121,8 @@ const reducerSlice = createSlice({
       
             // Bring extra inputs
             const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
-            const extra = state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
-      
-            
-              state.renderOutputs = extraIndex < 0 
-              ? [...month] 
-              : [...month, ...extra]
+            const extra = extraIndex < 0 ? [] : state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})  
+              state.renderOutputs = [...month, ...extra]
             }catch(e){
               console.log(e)
             }
