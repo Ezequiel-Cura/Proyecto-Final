@@ -55,14 +55,16 @@ export default function InputTable() {
 
   const dispatch = useAppDispatch();
   const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
+
+  const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0'+(new Date().getMonth() + 1) :(new Date().getMonth() + 1) }-${(new Date().getDate() < 10) ? '0'+new Date().getDate() : new Date().getDate() }`
   
   
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
+  const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
   const [input, setInput] = useState<Value>({
     category: '',
     description: '',
     amount: 0,
-    date: '',
+    date: today
   });
 
   const [selectKey, setSelectKey] = useState<keySelect>({
@@ -75,6 +77,7 @@ export default function InputTable() {
     if (status === 'success') {
       dispatch(renderInput(date))
       dispatch(totalInput())
+      console.log(today)
     }
   }, [status])
 
@@ -224,11 +227,12 @@ export default function InputTable() {
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
-
+          {/* Title */}
           <div className={styles.title}>
             <h1>Tus Ingresos </h1>
           </div>
 
+          {/* Order */}
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option>Ordenar por monto</option>
@@ -255,6 +259,7 @@ export default function InputTable() {
             </select>
           </div>
 
+          {/* Month */}
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
               {
@@ -271,6 +276,7 @@ export default function InputTable() {
             </div>
           </div>
 
+          {/* Table */}
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
@@ -303,15 +309,18 @@ export default function InputTable() {
             </tbody>
           </table>
 
+          {/* Pagination */}
           <div className={stylesPag.wrapperPag}>
             <button className={page <= 1 ? stylesPag.disabledPrev : stylesPag.paginationPrev} onClick={() => handlePrevButton()}>Prev</button>
             {indice}
             <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
           </div>
 
+          {/* Creation form */}
           <div className={styles.wrapperForms}>
             <form onSubmit={handleSubmit}>
               <div className={styles.form}>
+
                 <select value={selectKey.keyInput} onChange={handleSelectInputs}>
                   <option>Selecciona el tipo</option>
                   <option value='monthly'>Ingreso fijo</option>
@@ -379,6 +388,7 @@ export default function InputTable() {
                 <button type='submit'>Agregar</button>
               </div>
             </form>
+
             {
               input.category === 'Crear'
               && (<div className={styles.CrearDiv}>
