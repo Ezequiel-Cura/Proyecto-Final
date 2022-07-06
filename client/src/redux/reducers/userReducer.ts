@@ -37,7 +37,7 @@ export const uploadImage: any = createAsyncThunk("user/uploadImage",
     formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)
     const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload",
       formData, { withCredentials: false });
-    const { data } = await axios.put("/user", { id: info.id, key: "avatar", value: result.data.url });
+    const { data } = await axios.put("/user/update", { id: info.id, key: "avatar", value: result.data.url });
     return data
   });
 
@@ -54,9 +54,11 @@ interface Entries {
 interface User {
   usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
+  allInputs: Entries[] | [],
+  allOutputs:  Entries[] | [],
   renderInputs: Entries[] | [],
   renderOutputs: Entries[] | [],
-  totalExpensesMonth: number,
+  totalOutputsMonth: number,
   totalInputsMonth: number
 
 }
@@ -81,9 +83,11 @@ const initialState: User = {
     categories: []
   },
   status: 'idle',
+  allInputs: [],
+  allOutputs: [],
   renderInputs: [],
   renderOutputs: [],
-  totalExpensesMonth: 0,
+  totalOutputsMonth: 0,
   totalInputsMonth: 0
 
 }
@@ -102,17 +106,15 @@ const reducerSlice = createSlice({
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
       const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
         state.renderInputs =  [...month, ...extra]
+        state.allInputs = [...month, ...extra]
       }catch(e){
         console.log(e)
       }
     },
     totalInput: (state) => {
-      // let State = current(state);
-      // let reduceTotal = 0
-      // curAllInputState.allInputs.forEach( entrie => reduceTotal+= entrie.amount)
-      // state.totalInputsMonth = reduceTotal
-
-      // state.totalInputsMonth = state.allInputs.reduce((prev: any, curr: any) => prev = prev + curr.amount)
+      let reduceTotal = 0
+      state.renderInputs.forEach( entrie => reduceTotal+= entrie.amount)
+      state.totalInputsMonth = reduceTotal
     },
     renderOutput: (state, { payload }) => {
         try
@@ -123,19 +125,21 @@ const reducerSlice = createSlice({
             const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
             const extra = extraIndex < 0 ? [] : state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})  
               state.renderOutputs = [...month, ...extra]
+              state.allOutputs = [...month, ...extra]
             }catch(e){
               console.log(e)
             }
     },
-    expensesFilterByFrequency: (state, { payload }) => {
-      let currExpSta = current(state)
-      const expensesByFrequency = payload === 'fijo'
-        ? [...currExpSta.usuario.Account.monthlyExpenses]
-        : [...currExpSta.usuario.Account.variableExpenses]
-      return {
-        ...state,
-        allExpenses: expensesByFrequency
-      }
+    totalOutput: (state) => {
+      let reduceTotal = 0
+      state.renderOutputs.forEach( entrie => reduceTotal+= entrie.amount)
+      state.totalOutputsMonth = reduceTotal;
+    },
+    outputsFilterByFrequency: (state, { payload }) => {
+      const outputsByFrequency = payload === 'monthly'
+        ? state.renderOutputs.filter((e: Entries) => e.frequency === 'monthly')
+        : state.renderOutputs.filter((e: Entries) => e.frequency === 'extra')
+        state.renderOutputs = outputsByFrequency
     },
 
     // expensesOrderByAmount: (state, { payload }) => {
@@ -370,15 +374,15 @@ const reducerSlice = createSlice({
   }
 })
 export const {
-  // inputsFilterByMonth,
   totalInput,
   renderOutput,
   renderInput,
-  // getAllExpenses,
+  totalOutput,
+  outputsFilterByFrequency,
+  // inputsFilterByMonth,
   // inputsOrderByAmount,
   // expensesOrderByAmount,
   // expensesFilterByMonth,
-  expensesFilterByFrequency,
   inputsFilterByFrequency,
   // filterExpensesByCategory,
   // filterInputByCategory,

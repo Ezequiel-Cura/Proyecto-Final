@@ -3,7 +3,7 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput } from "redux/reducers/userReducer";
+import { outputsFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput, totalOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
 import PopUp from "components/Saves/PopUp";
@@ -11,7 +11,7 @@ import CategoryCreate from "components/Category/CategoryCreate";
 
 
 export default function ExpensesTable() {
-   const { usuario, renderOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
+   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
    const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -19,6 +19,7 @@ export default function ExpensesTable() {
    useEffect(() => {
     if (status === 'success'){
       dispatch(renderOutput(date))
+      dispatch(totalOutput())
     }
   }, [status])
 
@@ -122,9 +123,10 @@ export default function ExpensesTable() {
     // dispatch(filterExpensesByCategory(e.target.value));
   }
 
-  function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(expensesFilterByFrequency(e.target.value))
+    dispatch(outputsFilterByFrequency(e.target.value))
+    dispatch(totalOutput())
   }
 
   function handleRefresh(e: any){
@@ -194,7 +196,7 @@ export default function ExpensesTable() {
               })
               }
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
+            <select value='Ordenar' onChange={(e) => handleFilterByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
               <option value='monthly'>Gasto Fijo</option>
               <option value='extra'>Gasto Variable</option>
@@ -204,7 +206,7 @@ export default function ExpensesTable() {
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
             {
-                ['Enero', 'Febero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
+                ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
                     return( <button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
                   )}
@@ -219,33 +221,45 @@ export default function ExpensesTable() {
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
-                <th></th>
+                <th>Frecuencia</th>
                 <th>Fecha</th>
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
             {renderOutputs.length > 0 ? renderOutputs.slice((page - 1) * inputsPerPage, (page - 1 ) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                  <tr className={styles.monthlyInput}>
-                    <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
+                  detalles.frequency === 'monthly' ?
+                  <tr className={styles.monthlyInput} key={detalles._id}>
+                    <th>Gasto fijo</th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
+                    <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'output', value: detalles })}></button></th>
                   </tr>
+                  :  <tr key={detalles._id}>
+                  <th>Gasto extra</th>
+                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                  <th>{detalles.category ? detalles.category : "-"}</th>
+                  <th>{detalles.description}</th>
+                  <th>$ {detalles.amount}</th>
+                  <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'output', value: detalles })}></button></th>
+                </tr>
                 )
               }) 
               : <></>
               }
               <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th className={styles.totalAmount}><b>Total: ${totalOutputsMonth}</b></th>
                 <th className={styles.lastBox}></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th className={styles.totalAmount}><b>Total: ${totalExpensesMonth}</b></th>
               </tr>
             </tbody>
           </table>

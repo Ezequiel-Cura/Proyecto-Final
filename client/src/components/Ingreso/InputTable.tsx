@@ -183,9 +183,10 @@ export default function InputTable() {
     // dispatch(filterInputByCategory(e.target.value));
   }
 
-  function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     dispatch(inputsFilterByFrequency(e.target.value))
+    dispatch(totalInput())
   }
 
   function handleRefresh(e: any) {
@@ -258,7 +259,7 @@ export default function InputTable() {
                 })
               }
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
+            <select value='Ordenar' onChange={(e) => handleFilterByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
               <option value='fijo'>Ingreso Fijo</option>
               <option value='extra'>Ingreso Extra</option>
@@ -269,7 +270,7 @@ export default function InputTable() {
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
               {
-                ['Enero', 'Febero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
+                ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
                     return (<button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
                     )
@@ -286,31 +287,44 @@ export default function InputTable() {
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
-                <th></th>
-                <th>Fecha</th>
+                <th>Frecuencia</th>
+              <th>Fecha</th>
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
+                  detalles.frequency === 'monthly' ?
                   <tr className={styles.monthlyInput} key={detalles._id}>
-                    <th><button onClick={() => handleDelete({ id: usuario._id, frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                    <th>Ingreso fijo</th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
                     <th>{detalles.category ? detalles.category : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
-                  </tr>)
+                    <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                  </tr>
+                  : <tr key={detalles._id}>
+                    <th>Ingreso extra</th>
+                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                  <th>{detalles.category ? detalles.category : "-"}</th>
+                  <th>{detalles.description}</th>
+                  <th>$ {detalles.amount}</th>
+                  <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                </tr>
+                  )
               }) : <></>
               }
               <tr>
-                <th className={styles.lastBox}></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
                 <th className={styles.totalAmount}><b>Total: ${totalInputsMonth}</b></th>
+                <th className={styles.lastBox}></th>
               </tr>
             </tbody>
           </table>
