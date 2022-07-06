@@ -8,28 +8,14 @@ h3 {
     margin: 4px 0px;
 }
 
-.cuentaWrapper {
-    color: black;
-    padding: 15vh 5%;
-    width: calc(100% - 10%);
-    background-color: #FFFFFF;
-}
-.cuentaWrapper h1 {
-    font-size: 50px;
-}
-
 .infoWrapper {
     height: 100%;
-    background-color: rgb(83, 83, 83);
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    justify-content: center;
-    justify-items: center;
-    background-color: #393c38;
-    display: grid;
+    background-color: #2a2a2a;
     grid-template-columns: 1fr;
     grid-template-rows: 50% 1fr;
-    width: 100%;
+    justify-content: center;
     justify-items: center;
     overflow: auto;
 }
@@ -39,7 +25,7 @@ h3 {
     padding: 25px;
     width: calc(100% - 50px);
     flex-direction: column;
-    background-color: #2E332C;
+    background-color: #252525;
     justify-content: space-around;
 }
     

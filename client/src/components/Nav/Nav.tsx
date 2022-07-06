@@ -47,7 +47,7 @@ const {usuario} = useAppSelector(({user}) => user)
             {usuario.role === "admin" &&
             <Link to="/admin/controlPanel">
                 <div>   
-                    <h4>Panel de Control</h4>
+                    <h4 style={{textAlign: "center"}}>Panel de Control</h4>
                 </div>
             </Link>
             }

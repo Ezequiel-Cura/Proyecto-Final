@@ -1,28 +1,20 @@
 import styles from "./Landing.module.css"
-import { useLocation, useNavigate } from "react-router-dom";
-import React, { useEffect } from 'react';
-import Login from "./utils/Login";
-import Register from "./utils/Register";
-
+import React from 'react'
+import { useNavigate } from "react-router-dom"
 
 export default function Landing() {
-  const {state} : any = useLocation()
   const navigate = useNavigate()
-  useEffect(() => {
-    if(localStorage.getItem("logged")) navigate("/home")
-  },[])
   return (
     <div className={styles.wrapper}>
-      <div className={styles.welcome}>
-        <h1 className={styles.textWelcome}>Bienvenidos a Finanzas Personales 😉</h1>
+      <div className={styles.registerButtonContainer}>
+        <button className={styles.registerButton} onClick={() => navigate("/login")}>
+          Aun no tienes cuenta? Registrate
+        </button>
+        <button className={styles.registerButton} onClick={() => navigate("/login", {state : {registered: true}})}>
+          Ya no tienes cuenta? Inicia sesion
+        </button>
       </div>
-      <div className={styles.container}>
-          {
-            state?.registered ? <Login/> : <Register/>
-          }
-          <div className={styles.image}/>
-      </div>
-      <div className={styles.background}/>
     </div>
   )
 }
+

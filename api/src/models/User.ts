@@ -9,6 +9,9 @@ interface IUser {
   email: string
   password: string
   isGoogle: boolean
+  verified: boolean
+  verifyToken: string
+  isEmailSubscripted: Boolean
 
   avatar: string
   premium: boolean
@@ -29,6 +32,9 @@ const userSchema = new Schema<IUser>({
   email: { type: String, unique: true, lowercase: true, required: true },
   password: { type: String, required: true },
   isGoogle: { type: Boolean, default: false },
+  verified: { type: Boolean, default: false},
+  verifyToken: { type: String },
+  isEmailSubscripted: { type: Boolean, default: true},
   avatar: String,
   premium: { type: Boolean, default: false },
   role: { type: String, default: 'user' },
