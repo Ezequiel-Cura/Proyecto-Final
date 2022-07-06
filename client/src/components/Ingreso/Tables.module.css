@@ -138,7 +138,8 @@
 }
 
 .table .lastBox {
-    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #00BFA6;
 }
 
 .table .totalAmount {
@@ -222,6 +223,7 @@
     background-color: #003459;
     border-radius: 20px;
 }
+
 
 .form2 button {
     padding: 12px;
