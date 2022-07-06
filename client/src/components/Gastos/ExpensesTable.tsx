@@ -3,7 +3,7 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput, totalOutput } from "redux/reducers/userReducer";
+import { outputsFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput, totalOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
 import PopUp from "components/Saves/PopUp";
@@ -123,9 +123,10 @@ export default function ExpensesTable() {
     // dispatch(filterExpensesByCategory(e.target.value));
   }
 
-  function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(expensesFilterByFrequency(e.target.value))
+    dispatch(outputsFilterByFrequency(e.target.value))
+    dispatch(totalOutput())
   }
 
   function handleRefresh(e: any){
@@ -195,7 +196,7 @@ export default function ExpensesTable() {
               })
               }
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
+            <select value='Ordenar' onChange={(e) => handleFilterByFrequency(e)}>
               <option>Ordenar por frecuencia</option>
               <option value='monthly'>Gasto Fijo</option>
               <option value='extra'>Gasto Variable</option>

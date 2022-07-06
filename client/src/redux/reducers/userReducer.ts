@@ -54,6 +54,8 @@ interface Entries {
 interface User {
   usuario: any
   status: 'idle' | 'loading' | 'success' | 'failed'
+  allInputs: Entries[] | [],
+  allOutputs:  Entries[] | [],
   renderInputs: Entries[] | [],
   renderOutputs: Entries[] | [],
   totalOutputsMonth: number,
@@ -81,6 +83,8 @@ const initialState: User = {
     categories: []
   },
   status: 'idle',
+  allInputs: [],
+  allOutputs: [],
   renderInputs: [],
   renderOutputs: [],
   totalOutputsMonth: 0,
@@ -102,6 +106,7 @@ const reducerSlice = createSlice({
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
       const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
         state.renderInputs =  [...month, ...extra]
+        state.allInputs = [...month, ...extra]
       }catch(e){
         console.log(e)
       }
@@ -120,6 +125,7 @@ const reducerSlice = createSlice({
             const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
             const extra = extraIndex < 0 ? [] : state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})  
               state.renderOutputs = [...month, ...extra]
+              state.allOutputs = [...month, ...extra]
             }catch(e){
               console.log(e)
             }
@@ -129,15 +135,11 @@ const reducerSlice = createSlice({
       state.renderOutputs.forEach( entrie => reduceTotal+= entrie.amount)
       state.totalOutputsMonth = reduceTotal;
     },
-    expensesFilterByFrequency: (state, { payload }) => {
-      let currExpSta = current(state)
-      const expensesByFrequency = payload === 'fijo'
-        ? [...currExpSta.usuario.Account.monthlyExpenses]
-        : [...currExpSta.usuario.Account.variableExpenses]
-      return {
-        ...state,
-        allExpenses: expensesByFrequency
-      }
+    outputsFilterByFrequency: (state, { payload }) => {
+      const outputsByFrequency = payload === 'monthly'
+        ? state.renderOutputs.filter((e: Entries) => e.frequency === 'monthly')
+        : state.renderOutputs.filter((e: Entries) => e.frequency === 'extra')
+        state.renderOutputs = outputsByFrequency
     },
 
     // expensesOrderByAmount: (state, { payload }) => {
@@ -376,11 +378,11 @@ export const {
   renderOutput,
   renderInput,
   totalOutput,
+  outputsFilterByFrequency,
   // inputsFilterByMonth,
   // inputsOrderByAmount,
   // expensesOrderByAmount,
   // expensesFilterByMonth,
-  expensesFilterByFrequency,
   inputsFilterByFrequency,
   // filterExpensesByCategory,
   // filterInputByCategory,

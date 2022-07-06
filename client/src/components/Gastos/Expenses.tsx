@@ -6,7 +6,7 @@ import ExpensesTable from './ExpensesTable';
 import { renderOutput } from 'redux/reducers/userReducer';
 
 export default function Expenses() {
-  const { renderOutputs, status } = useAppSelector(state => state.user);
+  const { renderOutputs, status, allOutputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
   let currentDate = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
@@ -18,7 +18,7 @@ export default function Expenses() {
   
   return (
     <div>
-        { renderOutputs.length > 0 ? <ExpensesTable/> : <ExpensesLanding/> }
+        { renderOutputs.length > 0 || allOutputs.length > 0 ? <ExpensesTable/> : <ExpensesLanding/> }
     </div>
   )
 }
