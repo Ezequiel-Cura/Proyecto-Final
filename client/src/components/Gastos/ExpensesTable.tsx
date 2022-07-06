@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { expensesFilterByMonth, expensesOrderByAmount, filterExpensesByCategory, outputsFilterByFrequency, renderOutput, totalOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
-import PopUp from "components/Saves/PopUp";
+import PopUp from "components/Saves/Form/PopUp";
 import CategoryCreate from "components/Category/CategoryCreate";
 
 

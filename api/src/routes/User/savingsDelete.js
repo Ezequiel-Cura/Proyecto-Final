@@ -21,6 +21,7 @@ router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void
     const { value } = req.body;
     const id = req.userId;
     try {
+        const id = req.userId;
         const user = yield User_1.default.findById(id);
         if (!user) {
             res.status(404).send(`No se encontró al usuario con id: ${id}`);

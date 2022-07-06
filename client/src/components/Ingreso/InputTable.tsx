@@ -8,7 +8,7 @@ import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 // import { addCategory } from 'redux/modules/addCategory'
 import { deleteCategory } from 'redux/modules/deleteCategory'
-import PopUp from 'components/Saves/PopUp';
+import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 
 export default function InputTable() {

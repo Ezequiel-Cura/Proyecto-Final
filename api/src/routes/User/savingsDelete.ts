@@ -13,6 +13,7 @@ router.delete("/", authorization, async (req: any, res: Response) => {
   const { value } = req.body
 const id = req.userId
   try {
+    const id = req.userId
     const user = await User.findById(id)
     if (!user) {
       res.status(404).send(`No se encontró al usuario con id: ${id}`)
@@ -27,5 +28,6 @@ const id = req.userId
     res.status(400).send(err)
   }
 });
+
 
 export default router;

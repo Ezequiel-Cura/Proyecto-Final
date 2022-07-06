@@ -5,10 +5,10 @@ import authorization from "../../middleware/authorization";
 
 const router = Router()
 
-router.post("/", authorization, async (req: Request, res: Response) => {
+router.post("/", authorization, async (req: any, res: Response) => {
   const {value} = req.body
-  console.log({req}, "reeeeeeeeeeq")
-    const id = "jhjdhj"
+
+    const id = req.userId
   try{
     const user = await User.findById(id)
    if(!user){
