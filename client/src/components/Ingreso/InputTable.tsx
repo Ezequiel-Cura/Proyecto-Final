@@ -13,19 +13,7 @@ import CategoryCreate from 'components/Category/CategoryCreate';
 
 export default function InputTable() {
 
-  const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
-  const dispatch = useAppDispatch();
-
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
-
-  useEffect(() => {
-    if (status === 'success') {
-      dispatch(renderInput(date))
-      dispatch(totalInput())
-    }
-  }, [status])
-
-  //Typescript
+  // Interfaces
   interface Value {
     date: string,
     end?: string,
@@ -42,7 +30,6 @@ export default function InputTable() {
   }
 
   //Delete
-
   interface accountParameter {
     id?: string,
     type: string,
@@ -54,6 +41,23 @@ export default function InputTable() {
     keyInput: string
   }
 
+  interface Category {
+    name: string,
+    frequency: string,
+    type: string,
+    _id: {
+      $oid: string
+    }
+  }
+  //---------------------------------
+
+  // Variables & States
+
+  const dispatch = useAppDispatch();
+  const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
+  
+  
+  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
   const [input, setInput] = useState<Value>({
     category: '',
     description: '',
@@ -67,7 +71,24 @@ export default function InputTable() {
 
   const [open, setOpen] = useState<boolean>(false);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  useEffect(() => {
+    if (status === 'success') {
+      dispatch(renderInput(date))
+      dispatch(totalInput())
+    }
+  }, [status])
+
+  // const [formCategoryDelete, setFormCategoryDelete] = useState<Category>({
+  //   key: 'CategoriesInputs',
+  //   value: ''
+  // })
+  //---------------------------------
+
+
+  //Controllers
+
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input
     setInput({
       ...input,
       [e.target.name]: e.target.value
@@ -77,12 +98,15 @@ export default function InputTable() {
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
       ...selectKey,
-      keyInput: e.target.value
+      keyInput: e.target.value,
+    })
+    setInput({
+      ...input, 
+      category: ''
     })
   }
 
   function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e.target.value, 'categorrrrri')
     setInput({
       ...input,
       category: e.target.value
@@ -108,24 +132,14 @@ export default function InputTable() {
       keyInput: ''
     })
   }
+  //---------------------------------
+
 
   //Form de categorias
 
-  interface Category {
-    name: string,
-    frequency: string,
-    type: string,
-    _id: {
-      $oid: string
-    }
-  }
+
 
   //Form DELETE categorias
-  // const [formCategoryDelete, setFormCategoryDelete] = useState<Category>({
-  //   key: 'CategoriesInputs',
-  //   value: ''
-  // })
-
   // function handleChangeCategoryDelete(e: any) {
   //   setFormCategoryDelete({
   //     ...formCategoryDelete,
@@ -139,7 +153,7 @@ export default function InputTable() {
   //   dispatch(deleteCategory(formCategoryDelete))
   // }
 
-
+  // Categories
   //Selects/button
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
@@ -224,14 +238,14 @@ export default function InputTable() {
             <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
               <option>Ordenar por categoria</option>
               {
-                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map( undefinedCategory => {
+                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                 })
               }
-              { usuario.categories.length > 0 &&
+              {usuario.categories.length > 0 &&
                 usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
                   return (<option value={category.name}>{category.name}</option>)
-              })
+                })
               }
             </select>
             <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
@@ -246,8 +260,9 @@ export default function InputTable() {
               {
                 ['Enero', 'Febero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return( <button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
-                  )}
+                    return (<button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
+                    )
+                  }
                 )
               }
             </div>
@@ -318,20 +333,21 @@ export default function InputTable() {
                         return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                       })
                   }
-                  { selectKey.keyInput ?
-                  usuario.categories.length > 0 
-                  && selectKey.keyInput === 'monthly'
-                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
-                      return (<option value={montInput.name} key={i}>{montInput.name}</option>)
-                    })
-                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
-                      return (<option value={extraInput.name} key={i}>{extraInput.name}</option>)
-                    })
-                    :  usuario.categories.length > 0 
+                  {selectKey.keyInput ?
+                    usuario.categories.length > 0
+                      && selectKey.keyInput === 'monthly'
+                      ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
+                        return (<option value={montInput.name} key={i}>{montInput.name}</option>)
+                      })
+                      : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
+                        return (<option value={extraInput.name} key={i}>{extraInput.name}</option>)
+                      })
+                    : usuario.categories.length > 0
                     && usuario.categories.map((allInputs: Category, i: number) => {
-                      return (<option value={allInputs.name} key={i}>{allInputs.name}</option>)})
+                      return (<option value={allInputs.name} key={i}>{allInputs.name}</option>)
+                    })
                   }
-                       <option value='Crear' className={styles.Crear}>Crear</option>
+                  <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
                 <input
                   type='text'
@@ -364,18 +380,18 @@ export default function InputTable() {
               </div>
             </form>
             {
-                    input.category === 'Crear' 
-                    && (<div className={styles.CrearDiv}>
-                      <button onClick={() => setOpen(!open)} className={styles.CrearButton}>Agregar una nueva categoría</button>
-                    <PopUp
-                      open={open} 
-                      setOpen={setOpen}
-                      onClick={() => setOpen(open)}
-                      title="Completa para agregar una categoría!">
-                      <CategoryCreate/>
-                    </PopUp>
-                    </div> )
-                  }
+              input.category === 'Crear'
+              && (<div className={styles.CrearDiv}>
+                <button onClick={() => setOpen(!open)} className={styles.CrearButton}>Agregar una nueva categoría</button>
+                <PopUp
+                  open={open}
+                  setOpen={setOpen}
+                  onClick={() => setOpen(open)}
+                  title="Completa para agregar una categoría!">
+                  <CategoryCreate />
+                </PopUp>
+              </div>)
+            }
           </div>
         </div>
       </div>
