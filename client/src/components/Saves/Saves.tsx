@@ -3,12 +3,11 @@ import style from './Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import SavesForm from './Form/SavesForm';
-// import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
+import { deleteSaving } from 'redux/modules/deleteSaving';
 
 export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-  console.log(usuario)
 
   interface Currency {
     type: string,
@@ -23,7 +22,8 @@ export default function Saves() {
   }
 
   function handleDelete(e : any) {
-    e.preventDefault();
+    console.log(e, 'delete')
+    dispatch(deleteSaving(e))
   }
   
   return (
@@ -67,8 +67,8 @@ export default function Saves() {
                         </tr>
                       </tbody>
                     </table>
-                    <button onClick={handleDelete}>X</button>
                   </div>
+                  <button onClick={() => handleDelete({value: s})}>X</button>
                 </div>))
             : <p>No tienes casillas de ahorros actualmente, agrega una!</p>
             }

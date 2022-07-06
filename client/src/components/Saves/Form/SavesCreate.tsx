@@ -7,17 +7,14 @@ import style from '../PopUpForm.module.css'
 export default function SavesCreate() {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
-
-  interface Currency {
-    type: string,
-  }
+  console.log({usuario})
   interface SavingUser {
     name: string,
     start: string,
     end: string,
     goal?: number,
     depositPlace: string,
-    //currency: Currency,
+    currency: string,
   }
 
   const [input, setInput] = useState<SavingUser>({
@@ -25,11 +22,12 @@ export default function SavesCreate() {
     start: '', 
     end: '', 
     goal: 0,
-    depositPlace: ''
-    //currency: {type: ''}
+    depositPlace: '',
+    currency: ''
   });
 
   const form = {
+    // id: usuario._id,
     value: input
   }
 
@@ -78,12 +76,12 @@ export default function SavesCreate() {
                 onChange={handleChange}
               >
               </input>
-              <label>Primer ahorro: </label>
+              <label>Deposito: </label>
               <input
                 type='text'
                 name='depositPlace'
                 value={input.depositPlace}
-                placeholder='Agrega el primer monto de ahorro'
+                placeholder='Donde esta alojado'
                 onChange={handleChange}
               >
               </input>
@@ -101,11 +99,11 @@ export default function SavesCreate() {
                 <label>Seleccionar tipo de moneda: </label>
                 <br/>
                 <label>
-                  <input type="radio" name="currency" value="argentina"/>Peso Argentino
+                  <input type="radio" name="currency" value={input.currency} onChange={handleChange}/>Peso Argentino
                 </label>
                 <br/>
                 <label>
-                  <input type="radio" name="currency" value="dolar"/>Dolar
+                  <input type="radio" name="currency" value={input.currency} onChange={handleChange}/>Dolar
                 </label> 
               </p>
               <Button type='submit'>Agregar</Button>

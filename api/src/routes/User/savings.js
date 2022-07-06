@@ -17,6 +17,8 @@ const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, value } = req.body;
+    console.log(id, "id");
+    console.log(value, "value");
     try {
         const user = yield User_1.default.findById(id);
         if (!user) {

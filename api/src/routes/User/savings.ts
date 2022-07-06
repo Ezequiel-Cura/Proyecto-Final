@@ -6,7 +6,7 @@ const router = Router()
 
 router.post("/", async (req: Request, res: Response) => {
   const {id, value} = req.body
-
+  console.log(value, "value")
   try{
     const user = await User.findById(id)
    if(!user){
