@@ -52,27 +52,13 @@ export default function InputTable() {
   //---------------------------------
 
   // Variables & States
-
   const dispatch = useAppDispatch();
   const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
 
-  const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0'+(new Date().getMonth() + 1) :(new Date().getMonth() + 1) }-${(new Date().getDate() < 10) ? '0'+new Date().getDate() : new Date().getDate() }`
-  
-  
+  //---------------Date----------------
+  const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
-  const [input, setInput] = useState<Value>({
-    category: '',
-    description: '',
-    amount: 0,
-    date: today
-  });
-
-  const [validate, setValidate] = useState({
-    category: '',
-    description: '',
-    amount: '',
-    date: ''
-  })
+  //-----------------------------------
 
   const [selectKey, setSelectKey] = useState<keySelect>({
     keyInput: '',
@@ -91,26 +77,43 @@ export default function InputTable() {
   //   key: 'CategoriesInputs',
   //   value: ''
   // })
-  //---------------------------------
+  //-----------------------------------
 
 
   //Controllers
+  // Input & Validate
+  const [input, setInput] = useState<Value>({ // Form inputs
+    category: '',
+    description: '',
+    amount: 0,
+    date: today
+  });
+  const [validate, setValidate] = useState({ // Error to display
+    category: '',
+    description: '',
+    amount: '',
+    date: '',
+    pass: false
+  })
 
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input changer
     setInput({
       ...input,
       [e.target.name]: e.target.value
     })
   }
+  useEffect(() => { // Validator
+    
+  }, [input])
 
+  //-----------------------------------
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
       ...selectKey,
       keyInput: e.target.value,
     })
     setInput({
-      ...input, 
+      ...input,
       category: ''
     })
   }
@@ -288,7 +291,7 @@ export default function InputTable() {
             <thead className={styles.head}>
               <tr>
                 <th>Frecuencia</th>
-              <th>Fecha</th>
+                <th>Fecha</th>
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
@@ -299,23 +302,23 @@ export default function InputTable() {
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
                   detalles.frequency === 'monthly' ?
-                  <tr className={styles.monthlyInput} key={detalles._id}>
-                    <th>Ingreso fijo</th>
-                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
-                    <th>{detalles.description}</th>
-                    <th>$ {detalles.amount}</th>
-                    <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
-                  </tr>
-                  : <tr key={detalles._id}>
-                    <th>Ingreso extra</th>
-                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category : "-"}</th>
-                  <th>{detalles.description}</th>
-                  <th>$ {detalles.amount}</th>
-                  <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
-                </tr>
-                  )
+                    <tr className={styles.monthlyInput} key={detalles._id}>
+                      <th>Ingreso fijo</th>
+                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                      <th>{detalles.category ? detalles.category : "-"}</th>
+                      <th>{detalles.description}</th>
+                      <th>$ {detalles.amount}</th>
+                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                    </tr>
+                    : <tr key={detalles._id}>
+                      <th>Ingreso extra</th>
+                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                      <th>{detalles.category ? detalles.category : "-"}</th>
+                      <th>{detalles.description}</th>
+                      <th>$ {detalles.amount}</th>
+                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                    </tr>
+                )
               }) : <></>
               }
               <tr>
@@ -384,6 +387,7 @@ export default function InputTable() {
                   value={input.description}
                   placeholder='Agrega una descripción'
                   onChange={handleChange}
+                  autoFocus= {true}
                 >
                 </input>
                 <label>$</label>
@@ -405,10 +409,14 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
-                <button type='submit'>Agregar</button>
+                <button type='submit' disabled= {!validate.pass}>Agregar</button>
               </div>
             </form>
 
+            {/* Error Display */}
+            <span id='validateError'></span>
+
+            {/* Category Creation */}
             {
               input.category === 'Crear'
               && (<div className={styles.CrearDiv}>
