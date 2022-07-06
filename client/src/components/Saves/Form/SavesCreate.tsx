@@ -7,7 +7,6 @@ import style from '../PopUpForm.module.css'
 export default function SavesCreate() {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
-  console.log({usuario})
   interface SavingUser {
     name: string,
     start: string,
@@ -27,11 +26,11 @@ export default function SavesCreate() {
   });
 
   const form = {
-    // id: usuario._id,
     value: input
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(e)
     setInput({
       ...input,
       [e.target.name]: e.target.value
@@ -97,14 +96,9 @@ export default function SavesCreate() {
               </input>
               <p>
                 <label>Seleccionar tipo de moneda: </label>
-                <br/>
-                <label>
-                  <input type="radio" name="currency" value={input.currency} onChange={handleChange}/>Peso Argentino
-                </label>
-                <br/>
-                <label>
-                  <input type="radio" name="currency" value={input.currency} onChange={handleChange}/>Dolar
-                </label> 
+                <input type="radio" name="currency" value="" id="" checked onChange={handleChange}/>Peso Argentino<br />
+                <input type="radio" name="currency" value="Dolar" id="dolar" onChange={handleChange}/>Dolar<br />
+                <input type="radio" name="currency" value="Euro" onChange={handleChange}/>Euro <br />
               </p>
               <Button type='submit'>Agregar</Button>
       </form>
