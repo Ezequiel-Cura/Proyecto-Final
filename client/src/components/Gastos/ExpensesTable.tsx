@@ -3,7 +3,7 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput } from "redux/reducers/userReducer";
+import { expensesFilterByFrequency, /*expensesFilterByMonth,*/ /*expensesOrderByAmount,*/ renderOutput, totalOutput } from "redux/reducers/userReducer";
 import {addDato} from 'redux/modules/addDato'
 import {deleteDato} from 'redux/modules/deleteDato'
 import PopUp from "components/Saves/PopUp";
@@ -11,7 +11,7 @@ import CategoryCreate from "components/Category/CategoryCreate";
 
 
 export default function ExpensesTable() {
-   const { usuario, renderOutputs, totalExpensesMonth, status } = useAppSelector( state => state.user);
+   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector( state => state.user);
    const dispatch = useAppDispatch();
 
    const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -19,6 +19,7 @@ export default function ExpensesTable() {
    useEffect(() => {
     if (status === 'success'){
       dispatch(renderOutput(date))
+      dispatch(totalOutput())
     }
   }, [status])
 
@@ -256,7 +257,7 @@ export default function ExpensesTable() {
                 <th></th>
                 <th></th>
                 <th></th>
-                <th className={styles.totalAmount}><b>Total: ${totalExpensesMonth}</b></th>
+                <th className={styles.totalAmount}><b>Total: ${totalOutputsMonth}</b></th>
                 <th className={styles.lastBox}></th>
               </tr>
             </tbody>

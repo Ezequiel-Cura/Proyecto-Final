@@ -56,7 +56,7 @@ interface User {
   status: 'idle' | 'loading' | 'success' | 'failed'
   renderInputs: Entries[] | [],
   renderOutputs: Entries[] | [],
-  totalExpensesMonth: number,
+  totalOutputsMonth: number,
   totalInputsMonth: number
 
 }
@@ -83,7 +83,7 @@ const initialState: User = {
   status: 'idle',
   renderInputs: [],
   renderOutputs: [],
-  totalExpensesMonth: 0,
+  totalOutputsMonth: 0,
   totalInputsMonth: 0
 
 }
@@ -107,12 +107,9 @@ const reducerSlice = createSlice({
       }
     },
     totalInput: (state) => {
-      // let State = current(state);
-      // let reduceTotal = 0
-      // curAllInputState.allInputs.forEach( entrie => reduceTotal+= entrie.amount)
-      // state.totalInputsMonth = reduceTotal
-
-      // state.totalInputsMonth = state.allInputs.reduce((prev: any, curr: any) => prev = prev + curr.amount)
+      let reduceTotal = 0
+      state.renderInputs.forEach( entrie => reduceTotal+= entrie.amount)
+      state.totalInputsMonth = reduceTotal
     },
     renderOutput: (state, { payload }) => {
         try
@@ -126,6 +123,11 @@ const reducerSlice = createSlice({
             }catch(e){
               console.log(e)
             }
+    },
+    totalOutput: (state) => {
+      let reduceTotal = 0
+      state.renderOutputs.forEach( entrie => reduceTotal+= entrie.amount)
+      state.totalOutputsMonth = reduceTotal;
     },
     expensesFilterByFrequency: (state, { payload }) => {
       let currExpSta = current(state)
@@ -370,11 +372,11 @@ const reducerSlice = createSlice({
   }
 })
 export const {
-  // inputsFilterByMonth,
   totalInput,
   renderOutput,
   renderInput,
-  // getAllExpenses,
+  totalOutput,
+  // inputsFilterByMonth,
   // inputsOrderByAmount,
   // expensesOrderByAmount,
   // expensesFilterByMonth,
