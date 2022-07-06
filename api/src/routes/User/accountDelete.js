@@ -21,6 +21,7 @@ router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void
     // router.delete("/", async (req: any, res: Response) => {
     const { frequency, type, value } = req.body;
     const id = req.userId;
+    console.log({ frequency, type, value });
     // const id = "62c0a45f6ffc62c777c647de"
     try {
         const user = yield User_1.default.findById(id);
@@ -31,7 +32,7 @@ router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void
             if (frequency === 'monthly') {
                 yield user.monthly[type].remove({ "_id": new mongodb_1.ObjectId(value._id) });
                 yield user.save();
-                return res.status(200).send("Removed");
+                return res.status(200).send(user);
             }
             else if (frequency === 'extra') {
                 const dateSplit = value.date.split('-');
@@ -39,7 +40,7 @@ router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void
                 const targetIndex = user.extra[type].map((e) => e.date).indexOf(targetDate);
                 yield user.extra[type][targetIndex].entries.remove({ "_id": new mongodb_1.ObjectId(value._id) }); //{date, entries: []}
                 yield user.save();
-                return res.status(200).send("Removed");
+                return res.status(200).send(user);
             }
         }
     }

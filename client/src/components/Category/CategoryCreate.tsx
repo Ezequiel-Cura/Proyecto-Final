@@ -26,7 +26,6 @@ export default function CategoryCreate() {
   })
 
   const form = {
-    id: usuario._id,
     value:{
         name: inputName.name,
         frequency: selectOpt.frequency,
@@ -36,19 +35,28 @@ export default function CategoryCreate() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({ 
+      ...inputName,
         name: e.target.value
     })
   }
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectOpt({
-      ...selectOpt,
-      [e.target.name]: e.target.value
-    })
+    e.preventDefault();
+    if(e.target.value === 'monthly' || e.target.value === 'extra'){
+      setSelectOpt({
+        ...selectOpt,
+        frequency: e.target.value
+      })} else{
+        setSelectOpt({
+          ...selectOpt,
+          type: e.target.value
+      })
   }
+}
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
+    console.log({form})
     dispatch(addCategory(form));
-  }
+    }
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -61,22 +69,18 @@ export default function CategoryCreate() {
                 onChange={handleChange}
               >
               </input>
-              <select value={selectOpt.frequency} onChange={handleSelectInputs}>
+              <select onChange={(e) => handleSelectInputs(e)}>
                   <option>Selecciona su frecuencia</option>
-                  <option value='monthly'>Ingreso fijo</option>
+                  <option value='monthly' >Ingreso fijo</option>
                   <option value='extra'>Ingreso extra</option>
                 </select>
-                <select value={selectOpt.type} onChange={handleSelectInputs}>
+                <select onChange={(e) => handleSelectInputs(e)}>
                   <option>Selecciona su tipo</option>
                   <option value='input'>Ingreso</option>
                   <option value='output'>Gasto</option>
                 </select>
               <button type='submit'>Agregar</button>
       </form>
-      {status === 'success' 
-      ? <p>Se agrego! Ya puedes seleccionarla entre tus opciones.</p>
-      : <p>Hubo un problema, inténtalo más tarde.</p>
-      }
     </div>
   )
 }

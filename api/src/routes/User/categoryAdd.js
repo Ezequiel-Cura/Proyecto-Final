@@ -17,17 +17,19 @@ const authorization_1 = __importDefault(require("../../middleware/authorization"
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { key, value } = req.body;
+    const { value } = req.body;
     const id = req.userId;
+    console.log({ value });
     try {
         const user = yield User_1.default.findById(id);
         if (!user)
-            return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`);
+            return res.status(404).send(`No se encontró al usuario con id: ${id}`);
         yield user.categories.push(value);
         yield user.save();
-        res.status(200).send({ key, value: user[key] });
+        res.status(200).send(user);
     }
     catch (err) {
+        console.log({ err });
         res.status(400).send(err);
     }
 }));
