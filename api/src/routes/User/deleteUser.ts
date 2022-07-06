@@ -3,15 +3,17 @@ import User from "../../models/User";
 
 const router = Router()
 
-router.delete("/user", async (req: Request, res: Response) => {
+router.delete("/", async (req: Request, res: Response) => {
   const {id} = req.query
 
   User.findByIdAndDelete(id)
   .then((user) => {
+    console.log(user)
     if(user){
-      res.status(200).send(`Usuario ${user} eliminado`)
+      return res.status(200).send(`Usuario ${user} eliminado`)
     } else {
-      res.status(404).send(`Usuario ${user} eliminado`)
+      console.log(user)
+      return res.status(404).send(`Usuario ${user} eliminado`)
     }
   })
   .catch((e) => {

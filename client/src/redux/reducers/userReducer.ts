@@ -94,16 +94,18 @@ const reducerSlice = createSlice({
   initialState,
   reducers: {
     renderInput: (state, { payload }) => {
-
-      const month = state.usuario.monthly.input.forEach((e:Entries) => e.frequency = 'monthly' ) || []
+      try{
+        // Bring monthly inputs
+      const month = state.usuario.monthly.input.slice().map((e:Entries) => e = {...e, frequency: 'monthly'} ) || []
+      
+      // Bring extra inputs
       const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
-      if(extraIndex < 0){
-        state.renderInputs = [...month]
-       } else{
-         state.renderInputs = [...month, ...state.usuario.extra.input[0].entries.map((e:Entries) => e.frequency = 'extra')]
-       }
+      const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})
+        state.renderInputs =  [...month, ...extra]
+      }catch(e){
+        console.log(e)
+      }
     },
-
     totalInput: (state) => {
       // let State = current(state);
       // let reduceTotal = 0
@@ -112,20 +114,18 @@ const reducerSlice = createSlice({
 
       // state.totalInputsMonth = state.allInputs.reduce((prev: any, curr: any) => prev = prev + curr.amount)
     },
-
     renderOutput: (state, { payload }) => {
-      try{
-        const month = state.usuario.monthly.output || []
-      const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
-      console.log(extraIndex)
-      if(extraIndex < 0){
-       state.renderOutputs = [...month]
-      } else{
-        state.renderOutputs = [...month, ...state.usuario.extra.output[0].entries]
-      }
-    }catch(error){
-        console.log(error)
-      }
+        try
+        {    // Bring monthly inputs
+            const month = state.usuario.monthly.output.slice().map((e:Entries) => e = {...e, frequency: 'monthly'} ) || []
+      
+            // Bring extra inputs
+            const extraIndex = state.usuario.extra.output.map((e:Entries) => e.date).indexOf(payload) || 0
+            const extra = extraIndex < 0 ? [] : state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = {...e, frequency: 'extra'})  
+              state.renderOutputs = [...month, ...extra]
+            }catch(e){
+              console.log(e)
+            }
     },
     expensesFilterByFrequency: (state, { payload }) => {
       let currExpSta = current(state)
@@ -138,17 +138,17 @@ const reducerSlice = createSlice({
       }
     },
 
-    expensesOrderByAmount: (state, { payload }) => {
-      let currStateExpAmount = current(state)
-      const orderExpenses: Entries[] = [...currStateExpAmount.renderInputs];
-      let orderByAmount = payload === 'menorAMayor'
-        // ? orderExpenses.sort((a, b) => a.amount - b.amount)
-        // : orderExpenses.sort((a, b) => b.amount - a.amount)
-      return {
-        ...state,
-        allExpenses: orderByAmount
-      }
-    },
+    // expensesOrderByAmount: (state, { payload }) => {
+    //   let currStateExpAmount = current(state)
+    //   const orderExpenses: Entries[] = [...currStateExpAmount.renderInputs];
+    //   let orderByAmount = payload === 'menorAMayor'
+    //     // ? orderExpenses.sort((a, b) => a.amount - b.amount)
+    //     // : orderExpenses.sort((a, b) => b.amount - a.amount)
+    //   return {
+    //     ...state,
+    //     allExpenses: orderByAmount
+    //   }
+    // },
 
     
 
@@ -167,18 +167,16 @@ const reducerSlice = createSlice({
       }
     },
 
-    // inputsFilterByMonth: (state, { payload }) => {
-
-    //   let currentInputState = current(state)
-    //   const allInputsFilter = [...currentInputState.usuario.Account.monthlyInput, ...currentInputState.usuario.Account.extraInput]
-    //   //                                                             Index                2022-01-05  === 01
-    //   const inpFilter: Entries[] = allInputsFilter.filter((entrie: Entries) => entrie.date.split("-")[1] === payload)
-    //   const inpOrder = inpFilter.sort((a, b) => parseInt(a.date.split("-")[2]) - parseInt(b.date.split("-")[2]))
-    //   return {
-    //     ...state,
-    //     allInputs: inpOrder
-    //   }
-    // },
+    inputsFilterByMonth: (state, { payload }) => {
+      const month = state.usuario.monthly.input.forEach((e:Entries) => e.frequency = 'monthly' ) || []
+      const monthFilter = month ? month.filter((e: Entries) => e.date.split('-')[0] + e.date.split('-')[1] === payload) : []
+      const extraIndex = state.usuario.extra.input.map((e:Entries) => e.date).indexOf(payload) || 0
+      if(extraIndex < 0){
+        state.renderInputs = [...monthFilter]
+       } else{
+         state.renderInputs = [...monthFilter, ...state.usuario.extra.input[0].entries.map((e:Entries) => e.frequency = 'extra')]
+       }
+    },
     
     // inputsOrderByAmount: (state, { payload }) => {
     //   let currStateInpAmount = current(state)
@@ -375,11 +373,10 @@ export const {
   // inputsFilterByMonth,
   totalInput,
   renderOutput,
-  // getAllInputs,
   renderInput,
   // getAllExpenses,
   // inputsOrderByAmount,
-  expensesOrderByAmount,
+  // expensesOrderByAmount,
   // expensesFilterByMonth,
   expensesFilterByFrequency,
   inputsFilterByFrequency,
