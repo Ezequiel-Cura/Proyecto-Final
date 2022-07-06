@@ -10,8 +10,8 @@ const router = Router()
 
 router.delete("/", authorization, async (req: any, res: Response) => {
 
-  const {id, value } = req.body
-
+  const { value } = req.body
+const id = req.userId
   try {
     const user = await User.findById(id)
     if (!user) {

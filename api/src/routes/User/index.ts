@@ -26,5 +26,6 @@ router.use('/account', accountDelete)
 router.use('/category', categoryAdd)
 router.use('/category', categoryDelete)
 router.use('/savings', savings)
+router.use('/savings', savingsDelete)
 
 export default router

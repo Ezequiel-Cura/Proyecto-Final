@@ -1,12 +1,14 @@
 import { Router, Request, Response } from "express";
 import User from "../../models/User";
+import authorization from "../../middleware/authorization";
 
 
 const router = Router()
 
-router.post("/", async (req: Request, res: Response) => {
-  const {id, value} = req.body
-
+router.post("/", authorization, async (req: Request, res: Response) => {
+  const {value} = req.body
+  console.log({req}, "reeeeeeeeeeq")
+    const id = "jhjdhj"
   try{
     const user = await User.findById(id)
    if(!user){

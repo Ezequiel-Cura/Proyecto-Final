@@ -61,6 +61,11 @@ export default function ExpensesTable() {
     frequency: '',
   })
 
+  const [selectDefault, setSelectDefault] = useState({
+    frequency: 'default',
+    category: 'default'
+  })
+
   function handleChange(e : React.ChangeEvent<HTMLInputElement>){ 
     setInput({
       ...input,
@@ -110,7 +115,6 @@ export default function ExpensesTable() {
   
   function filterByMonth(e: any) {
     e.preventDefault();
-    
     dispatch(expensesFilterByMonth(e.target.value))
   }
 
@@ -129,6 +133,10 @@ export default function ExpensesTable() {
     e.preventDefault();
     dispatch(outputsFilterByFrequency(e.target.value))
     dispatch(totalOutput())
+    setSelectDefault({
+     ...selectDefault,
+
+    })
   }
 
   function handleRefresh(e: any){
@@ -187,7 +195,7 @@ export default function ExpensesTable() {
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
             <select onChange={(e) => handleOrderByCategories(e)}>
-              <option value='default'>Ordenar por categoria</option>
+              <option value={selectDefault.category}>Ordenar por categoria</option>
               {
                 ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler'].map(undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)

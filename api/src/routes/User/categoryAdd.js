@@ -19,7 +19,6 @@ const router = (0, express_1.Router)();
 router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { value } = req.body;
     const id = req.userId;
-    console.log({ value });
     try {
         const user = yield User_1.default.findById(id);
         if (!user)
