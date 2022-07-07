@@ -3,7 +3,7 @@ import style from './Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import SavesForm from './Form/SavesForm';
-import { deleteSaving } from 'redux/modules/deleteSaving';
+import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 
 export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);
