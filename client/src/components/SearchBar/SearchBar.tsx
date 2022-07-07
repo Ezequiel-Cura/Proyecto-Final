@@ -2,28 +2,38 @@ import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
 
 export default function SearchBar(){
+  const usuario = useAppSelector((state) => state.user.usuario)
 
    const [input, setInput] = useState("")
 
-   const [filtrado, setFiltrado] = useState([])
+   const [filtrado, setFiltrado] = useState<any>([])
+
+   const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
+
+   const extraDate = usuario?.extra.output.find((e: any) => e.date === date)
+
+   const monthly = usuario?.monthly
 
    function inputChange(e: any) {
     setInput(e.target.value);
-    console.log(input)
   }
-
-  const {Account} = useAppSelector((state) => state.user.usuario)
-
-
   
   function handleClick(e: React.SyntheticEvent){
     e.preventDefault()
-   setFiltrado (...(filtrado as []), Account.variableExpenses.filter((e: any) => e.description === input.trim()))
-   setFiltrado (...(filtrado as []) ,Account.monthlyExpenses.filter((e: any) => e.description === input.trim()))
+  let inputaux = input.toLowerCase().trim()
+  let busqueda = [...extraDate.entries, ...monthly.output].filter((e) => e.description.toLowerCase().includes(inputaux))
 
-    console.log(filtrado) 
+  //   let busquedaExtra =  extraDate.entries?.filter((e: any) => (e.description.toLowerCase().includes(input.toLowerCase().trim())) )
+
+  //   let busquedaMensual = monthly.output.filter((e: any) => (e.description.toLowerCase().includes(input.toLowerCase().trim())))
+
+  //   let concatenado = busquedaExtra.concat(busquedaMensual)
+
+  setFiltrado(busqueda)
+  // setFiltrado(concatenado)
   }
 
+  
 return(
     <div>
      <input 
@@ -39,7 +49,7 @@ return(
         Buscar
       </button>
       <div>
-      {filtrado.length > 0 ?
+      {filtrado.length ?
       filtrado.map((e: any) => (
         <div>
           <span>{e.date.split("T")[0]}</span>
@@ -51,11 +61,9 @@ return(
           <span>${e.amount}</span>
         </div>
       ))
-    : <span>BuScA tUs gAsToS</span>
+    : <span>¡Acá salen tus gastos buscados!</span>
     }
       </div>
     </div>
 )
 }
-
-// date: '2022-07-01T02:06:49.608Z', category: 'Salud', description: 'ayuda me dio la gripe del mono', amount: 2000

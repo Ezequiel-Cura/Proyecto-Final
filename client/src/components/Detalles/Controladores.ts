@@ -1,123 +1,146 @@
 
 
-export function totalRegalo(usuario: any, status: any) {
+export function totalRegalo(usuario: any) {
   
   const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 
- let extraRegalo = status === "succes" && usuario?.extra.input?.find((e: any) => e.date === date)
+ let extraRegalo = usuario?.extra.output?.find((e: any) => e.date === date)
 
- extraRegalo = extraRegalo ? extraRegalo.entries?.reduce((prev: any, actual: any) => {
-  return prev + actual.amount
- }, 0):0
+const regaloFiltrado = extraRegalo?.entries.filter((e: any) => (e.category === "Regalo"))
 
+const totalExtra = regaloFiltrado ? regaloFiltrado.reduce((prev: any, actual: any) => {
+
+   return prev + actual.amount
+  }, 0):0
+
+ const total = totalExtra
+
+ return total
   }
 
   export function totalTransporte(usuario: any) {
+    const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 
-    const extras1 = usuario.extra.input.filter(
-      (e: any) => e.category === "Transporte"
-    );
-    const total1 = extras1.reduce((prev: any, actual: any) => {
-      return prev + actual.amount;
-    }, 0);
+    let extra = usuario?.extra.output?.find((e: any) => e.date === date)
 
-    const extras2 = usuario.monthly.input.filter(
-      (e: any) => e.category === "Transporte")
-      
-      const total2 = extras2.reduce((prev: any, actual: any) => {
-        return prev + actual.amount;
-      }, 0);
+    let monthly = usuario?.monthly
 
-    const total = total1 + total2
+    const transporteExtraFiltrado = extra?.entries.filter((e: any) => e.category === "Transporte")
 
-    return total;
+    const transporteMonthlyFiltrado = monthly.output.filter((e: any) => e.category === "Transporte")
+
+    const totalExtra = transporteExtraFiltrado ? transporteExtraFiltrado.reduce((prev: any,actual: any) => {
+      return prev + actual.amount
+    },0):0
+
+    const totalMonthly = transporteMonthlyFiltrado? transporteMonthlyFiltrado.reduce((prev: any, actual: any) => {
+      return prev + actual.amount
+    },0):0
+
+    const total = totalExtra + totalMonthly
+   
+    return total
   }
 
   export function totalOcio(usuario: any) {
 
-    const extras = usuario.extra.input.filter(
-      (e: any) => e.category === "Ocio"
-    );
-    const total = extras.reduce((prev: any, actual: any) => {
-      return prev + actual.amount;
-    }, 0);
+    const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
+
+    let extra = usuario?.extra.output?.find((e:any) => e.date === date)
+
+    const ocioExtraFiltrado = extra?.entries.filter((e: any) => e.category === "Ocio")
+
+    const totalExtra = ocioExtraFiltrado ? ocioExtraFiltrado.reduce((prev: any, actual: any) =>{
+      return prev + actual.amount
+    },0):0
+
+    const total = totalExtra
 
     return total;
   }
 
-  export function totalAlimentos(usuario: any) {
-    const extras = usuario.extra.input.filter(
-      (e: any) => e.category === "Alimentos"
-    );
-    const total = extras.reduce((prev: any, actual: any) => {
-      return prev + actual.amount;
-    }, 0);
+  export function totalSuper(usuario: any) {
+   
+    const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
+
+    let extra = usuario?.extra.output?.find((e:any) => e.date === date)
+
+    const superExtraFiltrado = extra?.entries.filter((e: any) => e.category === "Super")
+
+    const totalExtra = superExtraFiltrado ? superExtraFiltrado.reduce((prev: any, actual: any) =>{
+      return prev + actual.amount
+    },0):0
+
+    const total = totalExtra
+
 
     return total;
   }
 
   export function totalSalud(usuario: any) {
+    const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 
-    const extras1 = usuario.extra.input.filter(
-      (e: any) => e.category === "Salud"
-    );
-    const total1 = extras1.reduce((prev: any, actual: any) => {
-      return prev + actual.amount;
-    }, 0);
+    let extra = usuario?.extra.output?.find((e: any) => e.date === date)
 
-    const extras2 = usuario.monthly.input.filter(
-      (e: any) => e.category === "Salud"
-    );
+    let monthly = usuario?.monthly
 
-    const total2 = extras2.reduce((prev: any, actual: any) => {
-      return prev + actual.amount;
-    }, 0);
+    const saludExtraFiltrado = extra?.entries.filter((e: any) => e.category === "Salud")
 
-    const total = total1 + total2
-     
-    return total;
+    const saludMonthlyFiltrado = monthly.output.filter((e: any) => e.category === "Salud")
+
+    const totalExtra = saludExtraFiltrado ? saludExtraFiltrado.reduce((prev: any,actual: any) => {
+      return prev + actual.amount
+    },0):0
+
+    const totalMonthly = saludMonthlyFiltrado? saludMonthlyFiltrado.reduce((prev: any, actual: any) => {
+      return prev + actual.amount
+    },0):0
+
+    const total = totalExtra + totalMonthly
+   
+    return total
   }
 
   export function totalAlquiler(usuario: any){
 
-    const extras = usuario.monthly.input.filter(
-      (e: any) => e.category === "Alquiler")
-      
-      const total = extras.reduce((prev: any, actual: any) => {
-        return prev + actual.amount;
-      }, 0);
-      return total
+    let monthly = usuario?.monthly
+
+    const alquilerMonthlyFiltrado = monthly.output.filter((e: any) => e.category === "Alquiler")
+
+    const totalMonthly = alquilerMonthlyFiltrado ? alquilerMonthlyFiltrado.reduce((prev: any, actual: any) => {
+      return prev + actual.amount
+    },0):0
+ 
+    const total = totalMonthly
+
+    return total;
   }
 
   export function totalGimnasio(usuario: any){
+    let monthly = usuario?.monthly
+
+    const gimnasioMonthlyFiltrado = monthly.output.filter((e: any) => e.category === "Gimnasio")
+
+    const totalMonthly = gimnasioMonthlyFiltrado ? gimnasioMonthlyFiltrado.reduce((prev: any, actual: any) => {
+      return prev + actual.amount
+    },0):0
+ 
+    const total = totalMonthly
     
-    const extras = usuario.monthly.input.filter(
-      (e: any) => e.category === "Gimnasio")
-      
-      const total = extras.reduce((prev: any, actual: any) => {
-        return prev + actual.amount;
-      }, 0);
       return total
   }
 
-  export function totalOther(usuario: any){
+  export function totalImpuestos(usuario: any){
     
-    const extras2 = usuario.extra.input.filter(
-      (e: any) => e.category === "Otros")
-    
-      const total2 = extras2.reduce((prev: any, actual: any) => {
-        return prev + actual.amount;
-      }, 0);
-    
-    
-    const extras1 = usuario.monthly.input.filter(
-      (e: any) => e.category === "Otros")
-      
-      const total1 = extras1.reduce((prev: any, actual: any) => {
-        return prev + actual.amount;
-      }, 0);
+    let monthly = usuario?.monthly
 
-      const total = total1 + total2
+    const impuestoMonthlyFiltrado = monthly.output.filter((e: any) => e.category === "Impuestos")
 
-      return total
+    const totalMonthly = impuestoMonthlyFiltrado ? impuestoMonthlyFiltrado.reduce((prev: any, actual: any) => {
+      return prev + actual.amount
+    },0):0
+ 
+    const total = totalMonthly
+
+      return total;
   }

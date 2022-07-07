@@ -14,17 +14,19 @@ import lock from "assets/lock.png";
 import dumbell from "assets/dumbell.png";
 import taxes from "assets/taxes.png";
 import box from "assets/other.png";
+import gift from "assets/gift.png"
+import balance from "assets/balance.png"
 
 //CONTROLADORES
 import {
-  totalAlimentos,
+  totalSuper,
   totalTransporte,
   totalOcio,
   totalSalud,
   totalRegalo,
   totalAlquiler,
   totalGimnasio,
-  totalOther,
+  totalImpuestos,
 } from "./Controladores";
 
 
@@ -124,7 +126,7 @@ export default function Detalles() {
       c[v.name] = (c[v.name] || 0) + v.value;
       return c;
     }, {})
-    console.log(ulData)
+ 
     const elData = []
     for (const key in ulData) {
      elData.push({
@@ -133,7 +135,7 @@ export default function Detalles() {
         unit: "%",
      })
     }
-    console.log(elData)
+ 
     return elData;
   };
   const labelFormatter = ({ value }: any) => {
@@ -186,15 +188,15 @@ export default function Detalles() {
               <img src={carrito} alt="LOL" />{" "}
               <span>
                 {" "}
-                Gastos de Alimentos totales = ${totalAlimentos(usuario)}{" "}
+                Gastos en el Super totales = ${totalSuper(usuario)}{" "}
               </span>
-              <img src={viaje} alt="LOL" />{" "}
+              <img src={gift} alt="LOL" />{" "}
               <span> Gastos de Regalos totales = ${totalRegalo(usuario)} </span>
               <img src={salud} alt="LOL" />{" "}
               <span> Gastos de Salud totales = ${totalSalud(usuario)} </span>
               <img src={combustible} alt="LOL" />{" "}
               <span>
-                Gastos de Combustible totales = ${totalTransporte(usuario)}
+                Gastos de Transporte totales = ${totalTransporte(usuario)}
               </span>
               <img src={ocio} alt="LOL" />{" "}
               <span>Gastos en Ocio totales = ${totalOcio(usuario)}</span>
@@ -206,8 +208,8 @@ export default function Detalles() {
               <span>
                 Gastos en Alquileres totales = $ {totalAlquiler(usuario)}
               </span>
-              <img src={box} alt="LOL" />{" "}
-              <span>Otros gastos totales = $ {totalOther(usuario)}</span>
+              <img src={balance} alt="LOL" />{" "}
+              <span>Gastos en Impuestos totales = $ {totalImpuestos(usuario)}</span>
             </div>
             <div className={styles.blocked_wrapper}>
               <div className={styles.blocked}>
