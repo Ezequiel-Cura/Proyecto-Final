@@ -41,12 +41,12 @@ const userSchema = new Schema<IUser>({
 
   savings:[{
     name: { type: String, required: true },
-    start: { type: Date, required: true, default: Date.now()},
+    start: { type: Date, default: Date.now()},
     end: Date,
     goal: Number,
     currentAmount: Number,
     depositPlace: String,
-    currency: { type: String, required: true, default: "Peso Argentino" },
+    currency: { type: String, default: "Peso Argentino" },
   }],
 
   fees: [{

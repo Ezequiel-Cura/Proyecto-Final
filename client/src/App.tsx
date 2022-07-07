@@ -25,7 +25,7 @@ import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
 
 function App() {
   const dispatch = useAppDispatch()
-  const { usuario } = useAppSelector((({user}) => user))
+  const { usuario }: any = useAppSelector((({user}) => user))
   const [logged, setLogged] = useState(true)
 
   useEffect(()=> {

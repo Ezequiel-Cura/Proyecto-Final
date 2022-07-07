@@ -9,7 +9,7 @@ import { logout } from 'redux/modules/logout'
 export default function Nav() {
 const navigate = useNavigate()
 const dispatch = useAppDispatch()
-const {usuario} = useAppSelector(({user}) => user)
+const {usuario}: any = useAppSelector(({user}) => user)
   return (
     <div className={styles.Nav_wrapper}>
         <div className={styles.image_wrapper}>
@@ -47,7 +47,7 @@ const {usuario} = useAppSelector(({user}) => user)
             {usuario.role === "admin" &&
             <Link to="/admin/controlPanel">
                 <div>   
-                    <h4 style={{textAlign: "center"}}>Panel de Control</h4>
+                    <h4>Panel de Control</h4>
                 </div>
             </Link>
             }

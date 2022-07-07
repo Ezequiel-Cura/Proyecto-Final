@@ -11,6 +11,7 @@ router.delete("/", authorization, async (req: any, res: Response) => {
   // router.delete("/", async (req: any, res: Response) => {
   const { frequency, type, value} = req.body
   const id = req.userId
+  console.log({frequency, type, value})
   // const id = "62c0a45f6ffc62c777c647de"
   try{
     const user = await User.findById(id)
@@ -20,14 +21,14 @@ router.delete("/", authorization, async (req: any, res: Response) => {
       if(frequency === 'monthly'){
         await user.monthly[type].remove( {"_id": new ObjectId(value._id)})
         await user.save()
-        return res.status(200).send("Removed")
+        return res.status(200).send(user)
       } else if(frequency === 'extra'){
         const dateSplit = value.date.split('-')	
         const targetDate = `${dateSplit[0]}-${dateSplit[1]}` //transform date into format mm-yyyy
         const targetIndex =  user.extra[type].map((e: any) => e.date).indexOf(targetDate)
         await user.extra[type][targetIndex].entries.remove({"_id": new ObjectId(value._id)})  //{date, entries: []}
         await user.save()
-        return res.status(200).send("Removed")
+        return res.status(200).send(user)
       }
 
     }
