@@ -169,12 +169,13 @@ const reducerSlice = createSlice({
       const month = state.usuario.monthly.input.filter((e:Entries) => `${e.date.split('-')[1]}` === payload ) || []
       // const monthFilter = month ? month.filter((e: Entries) => e.date.split('-')[0] + e.date.split('-')[1] === payload) : []
       const monthEntries = month.length > 0 ? month.map((e:Entries) => e = {...e, frequency: 'monthly'} ) : []
-      const extraIndex = state.usuario.extra.input.find((e:Entries) => e.date === payload)
+      const extraIndex = state.usuario.extra.input.find((e:Entries) => e.date.split('-')[1] === payload)
+
       if(!extraIndex){
         state.renderInputs = [...monthEntries]
        } else{
-        const extraEntries = extraIndex.entries.map((e: Entries) => e = {...e, frequency: 'extra'})  
-         state.renderInputs = [...month, ...extraEntries]
+        const extraEntries = extraIndex.entries.map((e: Entries) => e = {...e, frequency: 'extra'}) 
+         state.renderInputs = [...monthEntries, ...extraEntries]
        }
     },  
     inputsOrderByAmount: (state, { payload }) => {
@@ -189,12 +190,12 @@ const reducerSlice = createSlice({
       const month = state.usuario.monthly.output.filter((e:Entries) => `${e.date.split('-')[1]}` === payload ) || []
       // const monthFilter = month ? month.filter((e: Entries) => e.date.split('-')[0] + e.date.split('-')[1] === payload) : []
       const monthEntries = month.length > 0 ? month.map((e:Entries) => e = {...e, frequency: 'monthly'} ) : []
-      const extraIndex = state.usuario.extra.output.find((e:Entries) => e.date === payload)
+      const extraIndex = state.usuario.extra.output.find((e:Entries) => e.date.split('-')[1] === payload)
       if(!extraIndex){
         state.renderOutputs = [...monthEntries]
        } else{
         const extraEntries = extraIndex.entries.map((e: Entries) => e = {...e, frequency: 'extra'})  
-         state.renderOutputs = [...month, ...extraEntries]
+         state.renderOutputs = [...monthEntries, ...extraEntries]
        }
     },
 
