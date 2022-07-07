@@ -144,6 +144,7 @@ export default function ExpensesTable() {
     e.preventDefault();
     dispatch(renderOutput(date))
     dispatch(totalOutput())
+    dispatch(clearChangeOptions())
     return resetAll()
   }
 

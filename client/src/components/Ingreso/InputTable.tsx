@@ -160,6 +160,7 @@ export default function InputTable() {
     e.preventDefault();
     dispatch(renderInput(date))
     dispatch(totalInput())
+    dispatch(clearChangeOptions())
     return resetAll()
   }
 
