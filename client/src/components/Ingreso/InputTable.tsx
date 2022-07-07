@@ -3,11 +3,9 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { inputsFilterByFrequency, totalInput, renderInput, inputsOrderByAmount, filterInputByCategory, inputsFilterByMonth } from "redux/reducers/userReducer";
+import { filterInputByOptions, totalInput, renderInput, inputsOrderByAmount, changeOptions, clearChangeOptions } from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
-// import { addCategory } from 'redux/modules/addCategory'
-import { deleteCategory } from 'redux/modules/deleteCategory'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 
@@ -22,7 +20,8 @@ export default function InputTable() {
     if (status === 'success') {
       dispatch(renderInput(date))
       dispatch(totalInput())
-    }
+      dispatch(clearChangeOptions())
+    };
   }, [status, date, dispatch])
 
   //Typescript
@@ -120,25 +119,6 @@ export default function InputTable() {
     }
   }
 
-  //Form DELETE categorias
-  // const [formCategoryDelete, setFormCategoryDelete] = useState<Category>({
-  //   key: 'CategoriesInputs',
-  //   value: ''
-  // })
-
-  // function handleChangeCategoryDelete(e: any) {
-  //   setFormCategoryDelete({
-  //     ...formCategoryDelete,
-  //     value: e.target.value
-  //   })
-  // }
-
-  // function handleSubmitCategoryDelete(e: React.FormEvent<HTMLFormElement>) {
-  //   e.preventDefault();
-  //   console.log(formCategoryDelete)
-  //   dispatch(deleteCategory(formCategoryDelete))
-  // }
-
 
   //Selects/button
   function handleDelete(event: accountParameter) {
@@ -147,7 +127,8 @@ export default function InputTable() {
 
   function filterByMonth(e: any) {
     e.preventDefault();
-    dispatch(inputsFilterByMonth(e.target.value))
+    dispatch(changeOptions(['month', e.target.value]))
+    dispatch(filterInputByOptions())
     dispatch(totalInput())
   }
 
@@ -158,13 +139,15 @@ export default function InputTable() {
 
   function handleOrderByCategories(e: any) {
     e.preventDefault();
-    dispatch(filterInputByCategory(e.target.value));
+    dispatch(changeOptions(['category', e.target.value]))
+    dispatch(filterInputByOptions());
     dispatch(totalInput())
   }
 
   function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(inputsFilterByFrequency(e.target.value))
+    dispatch(changeOptions(['frequency', e.target.value]))
+    dispatch(filterInputByOptions())
     dispatch(totalInput())
   }
 
@@ -176,14 +159,14 @@ export default function InputTable() {
 
   //Paginado
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(5);
+  const [inputsPerPage, ] = useState(6);
 
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, ] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-  for (let i = 1; i <= renderInput.length && Math.ceil(renderInput.length / inputsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(renderInputs.length / inputsPerPage); i++) {
     pageNumber.push(i)
   }
 
