@@ -47,7 +47,7 @@ export default function SavesCreate() {
   return (
     <div className={style.wrapperForm}>
       <form onSubmit={handleSubmit}>
-              <h1>Agrega una casilla de ahorro!</h1>
+              <h2>Agrega una casilla de ahorro</h2>
               <label>Nombre de la casilla: </label>
               <input
                 type='text'

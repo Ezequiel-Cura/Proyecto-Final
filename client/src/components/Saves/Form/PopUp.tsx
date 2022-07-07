@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 
 export default function PopUp(props : any) {
-    const {title, children, open, setOpen } = props;
+    const { children, open, setOpen } = props;
 
     const stylesMui = {
         paper: {
@@ -16,8 +16,7 @@ export default function PopUp(props : any) {
 return (
     <Dialog open={open} maxWidth='md'>
         <DialogTitle>
-            {title}
-            <button onClick={()=> setOpen(!open)}>X</button>
+            <button className={style.closeButton} onClick={()=> setOpen(!open)}>X</button>
         </DialogTitle>
         <DialogContent>
             {children}
