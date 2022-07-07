@@ -35,7 +35,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             const token = user.generateAuthToken();
             return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false }).status(200).end();
         }
-        const newUser = yield new User_1.default({ firstName: given_name, email, password: passwordHash, avatar: picture, isGoogle: true }).save();
+        const newUser = yield new User_1.default({ firstName: given_name, email, password: passwordHash, avatar: picture, isGoogle: true, verified: true }).save();
         const token = newUser.generateAuthToken();
         res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false }).status(200).end();
     }

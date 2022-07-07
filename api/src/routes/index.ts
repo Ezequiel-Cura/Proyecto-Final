@@ -1,11 +1,13 @@
 import { Router } from "express";
 import User from './User/index';
 import Admin from "./Admin"
+import Emails from "./Emails"
 
 const router = Router()
 
 router.use("/user", User)
 router.use("/admin", Admin)
-router.use("/currency",)
+router.use("/emails", Emails)
+// router.use("/currency",)
 
 export default router

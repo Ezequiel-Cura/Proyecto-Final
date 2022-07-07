@@ -6,7 +6,6 @@ export const registerUser: any = createAsyncThunk("user/registerUser",
 async (user, { rejectWithValue }) => {
   try {
     const { data } = await axios.post("/user/register", user)
-    localStorage.setItem("logged", "true")
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)
