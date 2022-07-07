@@ -45,8 +45,9 @@ export default function SavesCreate() {
     
   }
   return (
-    <div>
+    <div className={style.wrapperForm}>
       <form onSubmit={handleSubmit}>
+              <h1>Agrega una casilla de ahorro!</h1>
               <label>Nombre de la casilla: </label>
               <input
                 type='text'
@@ -93,14 +94,16 @@ export default function SavesCreate() {
                 onChange={handleChange}
               >
               </input>
-              <p>
+              <div>
                 <label>Seleccionar tipo de moneda: </label>
                 <input type="radio" name="currency" value="" id="" onChange={handleChange} />Peso Argentino
                 <input type="radio" name="currency" value="Dolar" id="dolar" onChange={handleChange}/>Dolar
                 <input type="radio" name="currency" value="Euro" id="euro" onChange={handleChange}/>Euro
                 <input type="radio" name="currency" value="Libra" id="libra" onChange={handleChange}/>Libra
-              </p>
-              <Button type='submit'>Agregar</Button>
+                <input type="radio" name="currency" value="Yen" id="yen" onChange={handleChange}/>Yen
+                <input type="radio" name="currency" value="Franco Suizo" id="franco suizo" onChange={handleChange}/>Franco Suizo
+              </div>
+              <button type='submit'>Agregar</button>
       </form>
     </div>
   )

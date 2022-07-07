@@ -1,3 +1,32 @@
+.wrapperForm input {
+    padding: 10px;
+    margin-right: 20px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background-color: #E3E3E3;
+}
+
+.wrapperForm button {
+    padding: 12px;
+    margin-right: 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color: #00BFA6;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.wrapperForm button:hover {
+    background-color: rgb(118, 189, 3) ;
+}
+
+Dialog {
+    background-color: black;
+}
+
 select{
 background-color: blue;
 }
