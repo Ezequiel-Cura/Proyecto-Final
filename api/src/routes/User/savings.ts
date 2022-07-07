@@ -1,12 +1,14 @@
 import { Router, Request, Response } from "express";
 import User from "../../models/User";
+import authorization from "../../middleware/authorization";
 
 
 const router = Router()
 
-router.post("/", async (req: Request, res: Response) => {
-  const {id, value} = req.body
+router.post("/", authorization, async (req: any, res: Response) => {
+  const {value} = req.body
 
+    const id = req.userId
   try{
     const user = await User.findById(id)
    if(!user){
@@ -18,6 +20,7 @@ router.post("/", async (req: Request, res: Response) => {
    }
   }
   catch (err: any) {
+    console.log(err)
     res.status(400).send(err.message)
   }
 

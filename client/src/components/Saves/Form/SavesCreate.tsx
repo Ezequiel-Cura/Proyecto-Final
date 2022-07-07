@@ -1,35 +1,31 @@
+import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addSaving } from 'redux/modules/addSaving';
-// import { addSaving, deleteSaving } from 'redux/reducers/userReducer';
+import style from '../PopUpForm.module.css'
 
 export default function SavesCreate() {
-
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
-
   interface SavingUser {
     name: string,
     start: string,
     end: string,
     goal?: number,
-    place: string,
+    depositPlace: string,
     currency: string,
-    amount: number
   }
 
   const [input, setInput] = useState<SavingUser>({
-    name: '',
-    start: '',
-    end: '',
+    name: '', 
+    start: '', 
+    end: '', 
     goal: 0,
-    place: '',
-    currency: '',
-    amount: 0
+    depositPlace: '',
+    currency: ''
   });
 
   const form = {
-    id: usuario._id,
     value: input
   }
 
@@ -41,7 +37,12 @@ export default function SavesCreate() {
   }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-    dispatch(addSaving());
+    console.log(form, 'form')
+    dispatch(addSaving(form));
+    // status === 'success' 
+    //   ? <p>Se agrego! Vuelve a Ahorros</p>
+    //   : <p>Hubo algun problema, intentalo mas tarde</p>
+    
   }
   return (
     <div>
@@ -58,18 +59,27 @@ export default function SavesCreate() {
               <label>Fecha de inicio: </label>
               <input
                 type='date'
-                name='end'
-                value={input.end}
+                name='start'
+                value={input.start}
                 placeholder='Agrega una fecha'
                 onChange={handleChange}
               >
               </input>
-              <label>Descripcion: </label>
+              <label>Fecha limite: </label>
               <input
-                type='text'
-                name='description'
+                type='date'
+                name='end'
                 value={input.end}
                 placeholder='Agrega una descripcion'
+                onChange={handleChange}
+              >
+              </input>
+              <label>Deposito: </label>
+              <input
+                type='text'
+                name='depositPlace'
+                value={input.depositPlace}
+                placeholder='Donde esta alojado'
                 onChange={handleChange}
               >
               </input>
@@ -79,16 +89,19 @@ export default function SavesCreate() {
                 name='goal'
                 min='0'
                 value={input.goal}
-                placeholder='Monto'
+                placeholder='Agrega un monto'
                 onChange={handleChange}
               >
               </input>
-              <button type='submit'>Agregar</button>
+              <p>
+                <label>Seleccionar tipo de moneda: </label>
+                <input type="radio" name="currency" value="" id="" onChange={handleChange} />Peso Argentino
+                <input type="radio" name="currency" value="Dolar" id="dolar" onChange={handleChange}/>Dolar
+                <input type="radio" name="currency" value="Euro" id="euro" onChange={handleChange}/>Euro
+                <input type="radio" name="currency" value="Libra" id="libra" onChange={handleChange}/>Libra
+              </p>
+              <Button type='submit'>Agregar</Button>
       </form>
-      {status === 'success' 
-      ? <p>Se agrego! Vuelve a Ahorros</p>
-      : <p>Hubo algun problema, intentalo mas tarde</p>
-      }
     </div>
   )
 }

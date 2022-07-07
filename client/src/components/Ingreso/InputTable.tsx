@@ -3,12 +3,12 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { /*inputsFilterByMonth,*/ /*inputsOrderByAmount,*/ inputsFilterByFrequency, /*filterInputByCategory,*/ totalInput, renderInput } from "redux/reducers/userReducer";
+import { inputsFilterByFrequency, totalInput, renderInput, inputsOrderByAmount, filterInputByCategory, inputsFilterByMonth } from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 // import { addCategory } from 'redux/modules/addCategory'
 import { deleteCategory } from 'redux/modules/deleteCategory'
-import PopUp from 'components/Saves/PopUp';
+import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 
 export default function InputTable() {
@@ -171,19 +171,21 @@ export default function InputTable() {
     dispatch(deleteDato(event))
   }
 
-  // function filterByMonth(e: any) {
-  //   e.preventDefault();
-  //   dispatch(inputsFilterByMonth(e.target.value))
-  // }
+  function filterByMonth(e: any) {
+    e.preventDefault();
+    dispatch(inputsFilterByMonth(e.target.value))
+    dispatch(totalInput())
+  }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    // dispatch(inputsOrderByAmount(e.target.value))
+    dispatch(inputsOrderByAmount(e.target.value))
   }
 
   function handleOrderByCategories(e: any) {
     e.preventDefault();
-    // dispatch(filterInputByCategory(e.target.value));
+    dispatch(filterInputByCategory(e.target.value));
+    dispatch(totalInput())
   }
 
   function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -192,9 +194,10 @@ export default function InputTable() {
     dispatch(totalInput())
   }
 
-  function handleRefresh(e: any) {
+  function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     dispatch(renderInput(date))
+    dispatch(totalInput())
   }
 
   //Paginado
@@ -245,12 +248,12 @@ export default function InputTable() {
           {/* Order */}
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
-              <option>Ordenar por monto</option>
+              <option value='default'>Ordenar por monto</option>
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
-              <option>Ordenar por categoria</option>
+            <select onChange={(e) => handleOrderByCategories(e)}>
+              <option value='default'>Ordenar por categoria</option>
               {
                 ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
@@ -258,14 +261,14 @@ export default function InputTable() {
               }
               {usuario.categories.length > 0 &&
                 usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
-                  return (<option value={category.name}>{category.name}</option>)
-                })
+                  return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
+              })
               }
             </select>
-            <select value='Ordenar' onChange={(e) => handleFilterByFrequency(e)}>
-              <option>Ordenar por frecuencia</option>
-              <option value='fijo'>Ingreso Fijo</option>
-              <option value='extra'>Ingreso Extra</option>
+            <select onChange={(e) => handleFilterByFrequency(e)}>
+              <option value='default'>Ordenar por frecuencia</option>
+              <option value='monthly'>Ingreso fijo</option>
+              <option value='extra'>Ingreso extra</option>
             </select>
           </div>
 
@@ -275,9 +278,8 @@ export default function InputTable() {
               {
                 ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return (<button value={i < 10 ? `0${i}` : i} className={styles.month} id={month} /*onClick={(e) => filterByMonth(e)}*/>{month}</button>
-                    )
-                  }
+                    return( <button value={i < 10 ? `0${i+1}` : `${i+1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                  )}
                 )
               }
             </div>
@@ -302,23 +304,23 @@ export default function InputTable() {
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
                   detalles.frequency === 'monthly' ?
-                    <tr className={styles.monthlyInput} key={detalles._id}>
-                      <th>Ingreso fijo</th>
-                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                      <th>{detalles.category ? detalles.category : "-"}</th>
-                      <th>{detalles.description}</th>
-                      <th>$ {detalles.amount}</th>
-                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
-                    </tr>
-                    : <tr key={detalles._id}>
-                      <th>Ingreso extra</th>
-                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                      <th>{detalles.category ? detalles.category : "-"}</th>
-                      <th>{detalles.description}</th>
-                      <th>$ {detalles.amount}</th>
-                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
-                    </tr>
-                )
+                  <tr className={styles.monthlyInput} key={detalles._id}>
+                    <th>Ingreso fijo</th>
+                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                    <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                  </tr>
+                  : <tr key={detalles._id}>
+                    <th>Ingreso extra</th>
+                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                  <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
+                  <th>{detalles.description}</th>
+                  <th>$ {detalles.amount}</th>
+                  <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                </tr>
+                  )
               }) : <></>
               }
               <tr>
@@ -365,19 +367,19 @@ export default function InputTable() {
                         return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                       })
                   }
-                  {selectKey.keyInput ?
-                    usuario.categories.length > 0
-                      && selectKey.keyInput === 'monthly'
-                      ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
-                        return (<option value={montInput.name} key={i}>{montInput.name}</option>)
-                      })
-                      : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
-                        return (<option value={extraInput.name} key={i}>{extraInput.name}</option>)
-                      })
-                    : usuario.categories.length > 0
-                    && usuario.categories.map((allInputs: Category, i: number) => {
-                      return (<option value={allInputs.name} key={i}>{allInputs.name}</option>)
+                  { selectKey.keyInput ?
+                  usuario.categories.length > 0 
+                  && selectKey.keyInput === 'monthly'
+                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
+                      return (
+                      <option value={montInput.name} key={i}>{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
                     })
+                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
+                      return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
+                    })
+                    :  usuario.categories.length > 0 
+                    && usuario.categories.map((allInputs: Category, i: number) => {
+                      return (<option value={allInputs.name} key={i}>{allInputs.name.charAt(0).toUpperCase() + allInputs.name.slice(1).toLowerCase()}</option>)})
                   }
                   <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
