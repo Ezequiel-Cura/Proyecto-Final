@@ -10,6 +10,8 @@ declare global {
       SUPER_SECRET_SALT: number,
       JWTPRIVATEKEY: string,
       GOOGLE_SECRET: string,
+      EMAIL_USER: string,
+      EMAIL_PASSWORD: string,
       FRONT_URL: string,
       FRONT_URL1: string,
       FRONT_URL2: string,

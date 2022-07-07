@@ -1,179 +1,28 @@
-.background {
-    background-image: url("assets/vieja.png");
-    background-size: cover;
-    background-position: center;
-    filter: blur(5px);
-    position: absolute;
-    top: 0px;
-    z-index: -1;
-    height: 100vh;
-    width: 100%;
-}
 .wrapper {
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: auto;
-}
-.input {
-    border-radius: 15px;
-    height: 30px;
-    width: 80%;
-    padding: 2px 20px;
-    align-self: center;
-    justify-self: center;
-}
-.welcome{
-    padding: 20px;
-    font-size: var(--font-size-big);
-    top: 0px;
-    max-height: 20%;
-}
-.textWelcome{
-    font-size: 3.5rem;
-}
-.container {
-    width: 80%;
-    display: grid;
-    grid-template-columns: 35fr 65fr;
-    height: 60%;
-    border-radius: 4px;
-}
-.formContainer{
-    background-color: rgba(124, 132, 132, 0.286);
-    display: grid;
-    grid-template-rows: 1fr 5fr;
-    height: calc(100% - 50px);
-    padding: 25px 50px;
-}
-.textContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.form{
-    display:grid;
-    width: 100%;
-}
-.image {
-    background-color: rgba(124, 132, 132, 0.286);
     background-image: url("assets/vieja.png");
-    background-size: cover;
-    background-position: center;
-}
-.buttons {
-    padding: 20px;
-    display:flex;
-    gap: 30px;
+    background-position: center center;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.errorMessage {
-    text-align: center;
-    color: red;
+.registerButtonContainer {
+    display: flex;
+    flex-direction:column;
 }
-.button {
-    justify-self: center;
+
+.registerButton {
+    background-color: lightseagreen;
     cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 10rem;
-    color: black;
-    text-transform: uppercase;
-    font-weight: bolder;
-    font-size: 1rem;
-    letter-spacing: 0.1rem;
-    transition: all 0.3s;
-    position: relative;
-    z-index: 1;
-    width: 90%;
-    height: 59px;
-  }
-.button:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: wheat;
-    border-radius: 10rem;
-    z-index: -2;
-  }
-.button:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%;
-    height: 100%;
-    background-color: rgb(255, 211, 129);
-    transition: all 0.3s;
-    border-radius: 10rem;
-    z-index: -1;
-  }
-.button:hover:before {
-    width: 100%;
-  }
-.googleLogin {
-    justify-self: center;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 10px 0px;
 }
 
-    @media (max-width: 1400px) {
-        .textWelcome{
-            font-size: 3rem;
-        }
-    }  
-    @media (max-width: 1200px) {
-        .textWelcome{
-            font-size: 2.5rem;
-        }
-    }
-
-    @media (max-width: 900px) {
-        .container{
-            grid-template-columns: 1fr;
-            width: 90%;
-        }
-        .button{
-            width: 60%;
-        }
-        .image{
-            display: none;
-        }
-        .formContainer{
-            padding: 50px;
-            width: calc(100% - 100px);
-            height: 50vh;
-        }
-        .textWelcome{
-            font-size: 1.5rem;
-        }
-    }
-    @media (max-width: 600px) {
-        .formContainer{
-            padding: 20px;
-            width: calc(100% - 40px);
-        }
-        .textContainer h3 {
-            font-size: 1rem;
-        }
-        .button{
-            width: 60%;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .container{
-            width: 100%;
-        }
-        .formContainer{
-            padding: 2px;
-            width: 100%
-        }
-        .button {
-            width: 80%;
-        }
-    }
+.registerButton:hover {
+    background-color: rgba(32, 178, 171, 0.753);
+    color: white;
+}

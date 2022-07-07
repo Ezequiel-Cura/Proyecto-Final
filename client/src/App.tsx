@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 // COMPONENTS
 import Home from 'components/Home/Home';
-import Landing from 'components/Landing/Landing';
+import Login from 'components/Login';
 import Profile from 'components/Profile/Profile';
 import Input from 'components/Ingreso/Input';
 import InputTable from 'components/Ingreso/InputTable';
@@ -18,12 +18,14 @@ import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
 import Novedades from 'components/Novedades/Novedades';
 import SavesLanding from 'components/Saves/SavesLanding';
 import Saves from 'components/Saves/Saves';
+import Landing from 'components/Landing/Landing';
+import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
 
 
 
 function App() {
   const dispatch = useAppDispatch()
-  const { usuario } = useAppSelector((({user}) => user))
+  const { usuario }: any = useAppSelector((({user}) => user))
   const [logged, setLogged] = useState(true)
 
   useEffect(()=> {
@@ -34,7 +36,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing/>}/>
-      <Route element={<ProtectedRoute isAllowed={logged}/>}>
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
+      <Route element={<ProtectedRoute isAllowed={logged} redirectPath={"/login"} state={{registered: true}}/>}>
         <Route path='/home' element={<Home/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/home/ingresos' element={<Input/>}/>
@@ -42,11 +46,11 @@ function App() {
         <Route path='/home/gastos' element={<Expenses/>}/>
         <Route path='/home/gastos/add' element={<ExpensesTable/>}/>
         <Route path='/home/saving' element={<SavesLanding/>}/>
-        <Route path='/home/saving/add' element={<Saves/>}/>
+      <Route path='/home/saving/add' element={<Saves/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
         <Route path="/home/novedades" element={<Novedades/>} />
       </Route>
-      <Route path='/admin' element={<ProtectedRoute isAllowed={logged && usuario.role === "admin"}/>}>
+      <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={logged && usuario.role === "admin"}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
       </Route>
       
