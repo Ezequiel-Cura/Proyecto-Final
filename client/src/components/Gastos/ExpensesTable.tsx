@@ -116,6 +116,7 @@ export default function ExpensesTable() {
   function filterByMonth(e: any) {
     e.preventDefault();
     dispatch(expensesFilterByMonth(e.target.value))
+    dispatch(totalOutput())
   }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -127,6 +128,10 @@ export default function ExpensesTable() {
     e.preventDefault();
     dispatch(filterExpensesByCategory(e.target.value));
     dispatch(totalOutput())
+        setSelectDefault({
+     ...selectDefault,
+     frequency: 'default'
+    })
   }
 
   function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -135,7 +140,7 @@ export default function ExpensesTable() {
     dispatch(totalOutput())
     setSelectDefault({
      ...selectDefault,
-
+     category: 'default'
     })
   }
 
@@ -194,8 +199,8 @@ export default function ExpensesTable() {
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select onChange={(e) => handleOrderByCategories(e)}>
-              <option value={selectDefault.category}>Ordenar por categoria</option>
+            <select onChange={(e) => handleOrderByCategories(e)} value={selectDefault.category}>
+              <option value='default'>Ordenar por categoria</option>
               {
                 ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler'].map(undefinedCategory => {
                   return (<option value={undefinedCategory}>{undefinedCategory}</option>)
@@ -203,14 +208,14 @@ export default function ExpensesTable() {
               }
               {
                 usuario.categories.filter((category: Category) => category.type === 'output').map((category: Category) => {
-                  return (<option value={category.name}>{category.name}</option>)
+                  return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
               })
               }
             </select>
-            <select  onChange={(e) => handleFilterByFrequency(e)}>
+            <select  onChange={(e) => handleFilterByFrequency(e)} value={selectDefault.frequency}>
               <option value='default'>Ordenar por frecuencia</option>
-              <option value='monthly'>Gasto Fijo</option>
-              <option value='extra'>Gasto Variable</option>
+              <option value='monthly'>Gasto fijo</option>
+              <option value='extra'>Gasto variable</option>
             </select>
           </div>
 
@@ -247,7 +252,7 @@ export default function ExpensesTable() {
                   <tr className={styles.monthlyInput} key={detalles._id}>
                     <th>Gasto fijo</th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
                     <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'output', value: detalles })}></button></th>
@@ -255,7 +260,7 @@ export default function ExpensesTable() {
                   :  <tr key={detalles._id}>
                   <th>Gasto extra</th>
                   <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category : "-"}</th>
+                  <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
                   <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'output', value: detalles })}></button></th>
@@ -286,7 +291,7 @@ export default function ExpensesTable() {
               <select onChange={handleSelectI}>
                 <option>Selecciona el tipo</option>
                 <option value='monthly'>Gasto fijo</option>
-                <option value='extra'>Gasto Variable</option>
+                <option value='extra'>Gasto variable</option>
               </select>
 
               <select value={input.category} onChange={handleSelectC}>
@@ -308,14 +313,14 @@ export default function ExpensesTable() {
                   selectKey.frequency === 'monthly'
                   && usuario.categories.length > 0
                     ? usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
-                      return (<option value={montOutput.name}>{montOutput.name}</option>)
+                      return (<option value={montOutput.name}>{montOutput.name.charAt(0).toUpperCase() + montOutput.name.slice(1).toLowerCase()}</option>)
                     })
                     : usuario.categories.filter((extraOutput: Category) => extraOutput.frequency === 'extra' && extraOutput.type === 'output').map((extraOutput: Category) => {
-                      return (<option value={extraOutput.name}>{extraOutput.name}</option>)
+                      return (<option value={extraOutput.name}>{extraOutput.name.charAt(0).toUpperCase() + extraOutput.name.slice(1).toLowerCase()}</option>)
                     })
                     : usuario.categories.length > 0 
                     && usuario.categories.map((allOutputs: Category, i: number) => {
-                      return (<option value={allOutputs.name} key={i}>{allOutputs.name}</option>)})
+                      return (<option value={allOutputs.name} key={i}>{allOutputs.name.charAt(0).toUpperCase() + allOutputs.name.slice(1).toLowerCase()}</option>)})
                   }
                   <option value='Crear' className={styles.Crear}>Crear</option>
               </select>
