@@ -7,8 +7,6 @@ export default function CategoryCreate() {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
 
-
-
   const [name, setName] = useState('');
 
   const [frequency, setFrequency] = useState('')
@@ -19,26 +17,24 @@ export default function CategoryCreate() {
 
   const [valAllow, setAllow] = useState(false)
 
+    
+  let validate = {
+    msg: valMsg,
+    allowed: valAllow
+  }
+
+  
+  useEffect(() => {
+    validate = {msg: valMsg, allowed: valAllow}
+  }, [valMsg, valAllow])
   
   const handleFormChange = () => { 
     !form.name ? setMsg('Proporcione un nombre') : 
     !form.frequency ? setMsg('Proporcione una frequencia') : 
     !form.type ? setMsg('Proporcione un tipo') : 
     setMsg('')
-
-    valMsg === '' && setAllow(true)
+    valMsg === '' ? setAllow(true) : setAllow(false)
   }
-
-  
-  let validate = {
-    msg: valMsg,
-    allowed: valAllow
-  }
-
-  useEffect(() => {
-    validate = {msg: valMsg, allowed: valAllow}
-  }, [valMsg, valAllow])
-
   let form = {
     name: name,
     frequency: frequency,
@@ -88,7 +84,7 @@ export default function CategoryCreate() {
   return (
     <div>
       <span>{validate.msg}</span>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <label>Nombre de la categoría: </label>
         <input
           autoFocus={true}
