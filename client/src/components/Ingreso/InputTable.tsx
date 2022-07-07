@@ -3,7 +3,7 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { filterInputByOptions, totalInput, renderInput, inputsOrderByAmount, inputsFilterByMonth, changeOptions, clearChangeOptions } from "redux/reducers/userReducer";
+import { filterInputByOptions, totalInput, renderInput, inputsOrderByAmount, changeOptions, clearChangeOptions } from "redux/reducers/userReducer";
 import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 import PopUp from 'components/Saves/Form/PopUp';
@@ -159,14 +159,14 @@ export default function InputTable() {
 
   //Paginado
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(5);
+  const [inputsPerPage, ] = useState(6);
 
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, ] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-  for (let i = 1; i <= renderInput.length && Math.ceil(renderInput.length / inputsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(renderInputs.length / inputsPerPage); i++) {
     pageNumber.push(i)
   }
 
