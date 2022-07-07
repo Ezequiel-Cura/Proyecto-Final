@@ -13,6 +13,7 @@ import deleteUser from './deleteUser'
 import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
 import savingsDelete from './savingsDelete'
+import review from "./review"
 
 router.use('/login', login)
 router.use('/register', register)
@@ -27,5 +28,6 @@ router.use('/category', categoryAdd)
 router.use('/category', categoryDelete)
 router.use('/savings', savings)
 router.use('/savings', savingsDelete)
+router.use("/review", review)
 
 export default router

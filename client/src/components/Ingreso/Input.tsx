@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import InputLanding from './InputLanding';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { renderInput } from 'redux/reducers/userReducer';
+import { renderInput } from 'redux/reducers/userReducer/userReducer';
 import InputTable from './InputTable';
 
 export default function Input() {

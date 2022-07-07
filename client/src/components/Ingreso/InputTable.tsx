@@ -3,9 +3,9 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { filterInputByOptions, totalInput, renderInput, inputsOrderByAmount, changeOptions, clearChangeOptions } from "redux/reducers/userReducer";
-import { addDato } from 'redux/modules/addDato'
-import { deleteDato } from 'redux/modules/deleteDato'
+import { totalInput, renderInput, inputsOrderByAmount, changeOptions, filterInputByOptions, clearChangeOptions } from "redux/reducers/userReducer/userReducer";
+import { addDato } from 'redux/reducers/userReducer/actions/addDato'
+import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 

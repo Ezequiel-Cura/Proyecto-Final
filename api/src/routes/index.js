@@ -7,10 +7,11 @@ const express_1 = require("express");
 const index_1 = __importDefault(require("./User/index"));
 const Admin_1 = __importDefault(require("./Admin"));
 const Emails_1 = __importDefault(require("./Emails"));
-const ConvertCurrency_1 = __importDefault(require("./ConvertCurrency/ConvertCurrency"));
+const common_1 = __importDefault(require("./common"));
 const router = (0, express_1.Router)();
 router.use("/user", index_1.default);
 router.use("/admin", Admin_1.default);
 router.use("/emails", Emails_1.default);
-router.use("/currency", ConvertCurrency_1.default);
+router.use("/common", common_1.default);
+// router.use("/currency",)
 exports.default = router;
