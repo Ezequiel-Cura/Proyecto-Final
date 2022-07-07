@@ -42,7 +42,7 @@ function App() {
         <Route path='/home/gastos' element={<Expenses/>}/>
         <Route path='/home/gastos/add' element={<ExpensesTable/>}/>
         <Route path='/home/saving' element={<SavesLanding/>}/>
-      <Route path='/home/saving/add' element={<Saves/>}/>
+        <Route path='/home/saving/add' element={<Saves/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
         <Route path="/home/novedades" element={<Novedades/>} />
       </Route>

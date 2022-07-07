@@ -8,7 +8,7 @@ import { addDato } from 'redux/modules/addDato'
 import { deleteDato } from 'redux/modules/deleteDato'
 // import { addCategory } from 'redux/modules/addCategory'
 import { deleteCategory } from 'redux/modules/deleteCategory'
-import PopUp from 'components/Saves/PopUp';
+import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 
 export default function InputTable() {
@@ -148,6 +148,7 @@ export default function InputTable() {
   function filterByMonth(e: any) {
     e.preventDefault();
     dispatch(inputsFilterByMonth(e.target.value))
+    dispatch(totalInput())
   }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -233,14 +234,14 @@ export default function InputTable() {
               }
               { usuario.categories.length > 0 &&
                 usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
-                  return (<option value={category.name}>{category.name}</option>)
+                  return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
               })
               }
             </select>
             <select onChange={(e) => handleFilterByFrequency(e)}>
               <option value='default'>Ordenar por frecuencia</option>
-              <option value='monthly'>Ingreso Fijo</option>
-              <option value='extra'>Ingreso Extra</option>
+              <option value='monthly'>Ingreso fijo</option>
+              <option value='extra'>Ingreso extra</option>
             </select>
           </div>
 
@@ -277,7 +278,7 @@ export default function InputTable() {
                   <tr className={styles.monthlyInput} key={detalles._id}>
                     <th>Ingreso fijo</th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
                     <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
@@ -285,7 +286,7 @@ export default function InputTable() {
                   : <tr key={detalles._id}>
                     <th>Ingreso extra</th>
                   <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category : "-"}</th>
+                  <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
                   <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
@@ -338,14 +339,15 @@ export default function InputTable() {
                   usuario.categories.length > 0 
                   && selectKey.keyInput === 'monthly'
                     ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
-                      return (<option value={montInput.name} key={i}>{montInput.name}</option>)
+                      return (
+                      <option value={montInput.name} key={i}>{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
                     })
                     : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
-                      return (<option value={extraInput.name} key={i}>{extraInput.name}</option>)
+                      return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
                     })
                     :  usuario.categories.length > 0 
                     && usuario.categories.map((allInputs: Category, i: number) => {
-                      return (<option value={allInputs.name} key={i}>{allInputs.name}</option>)})
+                      return (<option value={allInputs.name} key={i}>{allInputs.name.charAt(0).toUpperCase() + allInputs.name.slice(1).toLowerCase()}</option>)})
                   }
                        <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
