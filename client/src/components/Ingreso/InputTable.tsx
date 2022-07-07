@@ -159,14 +159,14 @@ export default function InputTable() {
 
   //Paginado
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(5);
+  const [inputsPerPage,] = useState(2);
 
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit,] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-  for (let i = 1; i <= renderInput.length && Math.ceil(renderInput.length / inputsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(renderInputs.length / inputsPerPage); i++) {
     pageNumber.push(i)
   }
 

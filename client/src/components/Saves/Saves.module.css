@@ -42,7 +42,7 @@ h1 {
     border-radius: 20px;
     margin: 20px;
     position: relative;
-    background-color: #2e3b09;
+    background: linear-gradient(to right, #C6EC59 35%, #444444 85%, #DB0808)
 }
 
 .wrapperName1 {
