@@ -18,7 +18,7 @@ export default function UserRow({id, email, nombre, apellido, role, premium}: Us
   const [position, setPosition] = useState({x: 0, y: 0})
 
   return (
-    <tr style={{textAlign: "center"}}>
+    <tr className={styles.tr}>
     <td>{nombre} {apellido === undefined ? null : apellido}</td>
     <td>{email}</td>
     <td
