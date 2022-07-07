@@ -135,10 +135,16 @@ export default function ExpensesTable() {
     dispatch(totalOutput())
   }
 
+  function resetAll() {
+    (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default'
+  } 
+
   function handleRefresh(e: any){
     e.preventDefault();
     dispatch(renderOutput(date))
     dispatch(totalOutput())
+    return resetAll()
   }
 
   //Paginado---------------------------------------------------------------
@@ -190,7 +196,8 @@ export default function ExpensesTable() {
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select onChange={(e) => handleOrderByCategories(e)} >
+
+            <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)} >
               <option value='default'>Ordenar por categoria</option>
               {
                 ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler'].map(undefinedCategory => {
@@ -203,11 +210,13 @@ export default function ExpensesTable() {
               })
               }
             </select>
-            <select  onChange={(e) => handleFilterByFrequency(e)}>
+
+            <select id='selectFrequency' onChange={(e) => handleFilterByFrequency(e)}>
               <option value='default'>Ordenar por frecuencia</option>
               <option value='monthly'>Gasto fijo</option>
               <option value='extra'>Gasto variable</option>
             </select>
+
           </div>
 
           <div className={styles.allMonths}>
@@ -215,7 +224,7 @@ export default function ExpensesTable() {
             {
                 ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return( <button value={i < 10 ? `0${i+1}` : `${i+1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                    return( <button value={i < 10 ? `0${i+1}` : `${i+1}`} className={styles.months} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                   )}
                 )
               }
@@ -318,13 +327,16 @@ export default function ExpensesTable() {
               <input 
                 type='text' 
                 name='description'
+                value={input.description}
                 placeholder='Agrega una descripcion'
                 onChange={handleChange}
                 >
               </input>
+              <label>$</label>
               <input 
                 type='number' 
                 name='amount'
+                value={input.amount}
                 placeholder='Agrega un monto'
                 onChange={handleChange}
                 >
@@ -332,6 +344,7 @@ export default function ExpensesTable() {
               <input
                 type='date'
                 name='date'
+                value={input.date}
                 placeholder='Agrega una fecha'
                 onChange={handleChange}
                 >

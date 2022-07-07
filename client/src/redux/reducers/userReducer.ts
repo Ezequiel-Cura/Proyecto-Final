@@ -114,9 +114,10 @@ const reducerSlice = createSlice({
         // const month = state.usuario.monthly.input.slice().map((e:Entries) => e = {...e, frequency: 'monthly'} ) || []
         // Bring extra inputs
         const extraIndex = state.usuario.extra.input.map((e: Entries) => e.date).indexOf(payload) || 0
-        const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-        state.renderInputs = [...monthEntries, ...extra]
-        state.allInputs = [...monthEntries, ...extra]
+        const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' }).map((e: Entries) => e = { ...e, date: e.date.split("T")[0] })
+        const sortInputs = [...monthEntries, ...extra].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
+        state.renderInputs = sortInputs;
+        state.allInputs = sortInputs;
       } catch (e) {
         console.log(e)
       }
@@ -134,9 +135,10 @@ const reducerSlice = createSlice({
 
         // Bring extra inputs
         const extraIndex = state.usuario.extra.output.map((e: Entries) => e.date).indexOf(payload) || 0
-        const extra = extraIndex < 0 ? [] : state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-        state.renderOutputs = [...monthEntries, ...extra]
-        state.allOutputs = [...monthEntries, ...extra]
+        const extra = extraIndex < 0 ? [] : state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' }).map((e: Entries) => e = { ...e, date: e.date.split("T")[0] })
+        const sortOutputs = [...monthEntries, ...extra].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
+        state.renderOutputs = sortOutputs;
+        state.allOutputs = sortOutputs;
       } catch (e) {
         console.log(e)
       }
