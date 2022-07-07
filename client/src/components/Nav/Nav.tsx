@@ -9,7 +9,7 @@ import { logout } from 'redux/modules/logout'
 export default function Nav() {
 const navigate = useNavigate()
 const dispatch = useAppDispatch()
-const {usuario} = useAppSelector(({user}) => user)
+const {usuario}: any = useAppSelector(({user}) => user)
   return (
     <div className={styles.Nav_wrapper}>
         <div className={styles.image_wrapper}>
