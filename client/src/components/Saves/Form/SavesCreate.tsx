@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addSaving } from 'redux/modules/addSaving';
+import { addSaving } from 'redux/reducers/userReducer/actions/addSaving';
 import style from '../PopUpForm.module.css'
 
 export default function SavesCreate() {

@@ -1,27 +1,19 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-import { registerUser } from '../modules/registerUser'
+import { registerUser } from './actions/registerUser'
+import { loginUser } from './actions/loginUser'
+import { googleLogin } from './actions/googleLogin'
+import { logout } from './actions/logout'
+import { getUserInfo } from './actions/getUserInfo'
+import { addDato } from './actions/addDato'
+import { deleteDato } from './actions/deleteDato'
+import { addCategory } from './actions/addCategory'
+import { deleteCategory } from './actions/deleteCategory'
 
-import { loginUser } from '../modules/loginUser'
 
-import { googleLogin } from '../modules/googleLogin'
-
-import { logout } from '../modules/logout'
-
-import { getUserInfo } from '../modules/getUserInfo'
-
-import { addDato } from '../modules/addDato'
-
-import { deleteDato } from '../modules/deleteDato'
-
-import { addCategory } from '../modules/addCategory'
-
-import { deleteCategory } from '../modules/deleteCategory'
-
-import { addSaving } from '../modules/addSaving'
-
-import { deleteSaving } from '../modules/deleteSaving'
+import { addSaving } from './actions/addSaving'
+import { deleteSaving } from './actions/deleteSaving'
 
 
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",

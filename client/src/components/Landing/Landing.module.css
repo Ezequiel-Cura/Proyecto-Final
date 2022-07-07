@@ -1,15 +1,20 @@
 .wrapper {
-    height: 100vh;
-    background-image: url("assets/vieja.png");
-    background-position: center center;
+    min-height: 100vh;
+    background-color: #FFFFFF;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
 }
 
+.nav {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;
+    background-color: #2E332C;
+}
 .registerButtonContainer {
     display: flex;
-    flex-direction:column;
+    gap: 5px;
 }
 
 .registerButton {
@@ -20,9 +25,85 @@
     border-radius: 10px;
     padding: 10px 20px;
     margin: 10px 0px;
+    text-overflow: none;
+    width: min-content;
 }
 
 .registerButton:hover {
     background-color: rgba(32, 178, 171, 0.753);
     color: white;
+}
+
+
+.firstContainer {
+    margin: 100px 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 100%;
+}
+
+.landingMan {
+   width: 100%;
+}
+
+.firstContainerLeftDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 10% 0px 10%;
+    max-height: calc(100% - 20%);
+}
+
+.firstContainer h1, .firstContainer h3 {
+    font-weight: 200;
+    color: black;
+}
+
+.secondContainer {
+    background-color: #2E332C;
+    margin: 0px 40px 100px 40px;
+    min-height: 400px;
+    max-height: 400px;
+    border-radius: 15px;
+    padding: 0px 10%;
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    grid-template-rows: 1fr;
+    justify-content: center;
+    align-items: center;
+}
+.secondContainerLeftDiv{
+    padding: 50px 0px 50px 20px;
+    max-height: calc(400px - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.secondContainer h2 {
+    font-size: 1.5rem;
+} 
+.secondContainer h4 {
+    color: #545652;
+} 
+.secondContainerRightDiv {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 15% 1fr 15%;
+    align-items: center;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    max-height: 100%;
+}
+
+.reviewContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10%;
 }

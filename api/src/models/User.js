@@ -14,6 +14,7 @@ const userSchema = new mongoose_1.Schema({
     verified: { type: Boolean, default: false },
     verifyToken: { type: String },
     isEmailSubscripted: { type: Boolean, default: true },
+    review: { type: String },
     avatar: String,
     premium: { type: Boolean, default: false },
     role: { type: String, default: 'user' },
