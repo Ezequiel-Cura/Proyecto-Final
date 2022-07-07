@@ -51,7 +51,7 @@ export default function Saves() {
                           <th>Comienzo</th>
                           <th>Final</th>
                           <th>Moneda</th>
-                          <th>Total actual</th>
+                          <th>Guardado</th>
                           <th>Objetivo</th>
                         </tr>
                       </thead>
