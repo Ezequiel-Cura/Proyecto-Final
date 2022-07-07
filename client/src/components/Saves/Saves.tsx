@@ -9,6 +9,8 @@ export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
+  const idColor = 0;
+
   interface SavingUser {
     name: string,
     start: string,
@@ -35,8 +37,8 @@ export default function Saves() {
           <div className={style.wrapperAllSaves}>
             {usuario.savings.length > 0
             ? usuario.savings.map( (s: SavingUser) => (
-                <div id='amount1' className={style.wrapperSave}>
-                  <div id='amount1' className={style.wrapperName1}>
+                <div id={'amount' + (idColor + 1)} className={style.wrapperSave}>
+                  <div id={'amount' + (idColor + 1)} className={style.wrapperName1}>
                     <div className={style.divP}>
                       <p>Nombre: </p>
                     </div>
@@ -65,7 +67,7 @@ export default function Saves() {
                         </tr>
                       </tbody>
                     </table>
-                    <div className={style.wrapperGoalB}>
+                    <div  id={'amount' + (idColor + 1)} className={style.wrapperGoalB}>
                       <h3>Meta</h3>
                       <p>$ {s.goal}</p>
                     </div>
