@@ -23,22 +23,21 @@ export default function CategoryCreate() {
     allowed: valAllow
   }
 
-  
   useEffect(() => {
     validate = {msg: valMsg, allowed: valAllow}
   }, [valMsg, valAllow])
-  
+
+  let form = {
+    name: name,
+    frequency: frequency,
+    type: type
+  }
   const handleFormChange = () => { 
     !form.name ? setMsg('Proporcione un nombre') : 
     !form.frequency ? setMsg('Proporcione una frequencia') : 
     !form.type ? setMsg('Proporcione un tipo') : 
     setMsg('')
     valMsg === '' ? setAllow(true) : setAllow(false)
-  }
-  let form = {
-    name: name,
-    frequency: frequency,
-    type: type
   }
   useEffect(() => {
     handleFormChange()

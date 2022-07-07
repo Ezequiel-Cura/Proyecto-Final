@@ -10,8 +10,48 @@ import { deleteDato } from 'redux/modules/deleteDato'
 import { deleteCategory } from 'redux/modules/deleteCategory'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
+import { setIn } from 'formik';
 
 export default function InputTable() {
+  //---------------Date----------------
+  const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
+  const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
+  //-----------------------------------
+
+  // Categories
+  //Selects/button
+  function handleDelete(event: accountParameter) {
+    dispatch(deleteDato(event))
+  }
+
+  function filterByMonth(e: any) {
+    e.preventDefault();
+    dispatch(inputsFilterByMonth(e.target.value))
+    dispatch(totalInput())
+  }
+
+  function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
+    e.preventDefault();
+    dispatch(inputsOrderByAmount(e.target.value))
+  }
+
+  function handleOrderByCategories(e: any) {
+    e.preventDefault();
+    dispatch(filterInputByCategory(e.target.value));
+    dispatch(totalInput())
+  }
+
+  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
+    e.preventDefault();
+    dispatch(inputsFilterByFrequency(e.target.value))
+    dispatch(totalInput())
+  }
+
+  function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    dispatch(renderInput(date))
+    dispatch(totalInput())
+  }
 
   // Interfaces
   interface Value {
@@ -55,14 +95,7 @@ export default function InputTable() {
   const dispatch = useAppDispatch();
   const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
 
-  //---------------Date----------------
-  const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
-  const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
-  //-----------------------------------
 
-  const [selectKey, setSelectKey] = useState<keySelect>({
-    keyInput: '',
-  })
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -81,20 +114,34 @@ export default function InputTable() {
 
 
   //Controllers
+
   // Input & Validate
+  const [selectKey, setSelectKey] = useState<keySelect>({
+    keyInput: '',
+  })
+
   const [input, setInput] = useState<Value>({ // Form inputs
     category: '',
     description: '',
     amount: 0,
     date: today
   });
-  const [validate, setValidate] = useState({ // Error to display
-    category: '',
-    description: '',
-    amount: '',
-    date: '',
-    pass: false
-  })
+
+  let inputForm = {
+    type: selectKey.keyInput,
+    category: input.category,
+    description: input.description,
+    amount: input.amount,
+    date: input.date  
+  }
+
+  const [valMsg, setMsg] = useState<string>('')
+  const [valAllow, setAllow] = useState<boolean>(false)
+
+  let validate = {
+    msg: valMsg,
+    allowed: valAllow
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input changer
     setInput({
@@ -102,11 +149,29 @@ export default function InputTable() {
       [e.target.name]: e.target.value
     })
   }
-  useEffect(() => { // Validator
-    
-  }, [input])
+  useEffect(() => {
+    inputForm = {...input, type: selectKey.keyInput}
+  }, [input, selectKey])
+  const validateHandler = () => {
+      !inputForm.type || !inputForm.category ? setMsg('Proporcione un tipo y una categoria') :
+      !inputForm.description ? setMsg('Proporcione una descripcion') :
+      !inputForm.amount ? setMsg('Proporcione una cantidad') :
+      setMsg('')
 
+      valMsg === '' ? setAllow(true) : setAllow(false)
+  }
+
+  useEffect(() => { // Validator
+    validate = { msg: valMsg, allowed: valAllow }
+  }, [valAllow, valMsg])
+
+
+  useEffect(() => {
+    validateHandler()
+    console.log('button status', validate.allowed)
+  }, [input, selectKey])
   //-----------------------------------
+  
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
       ...selectKey,
@@ -119,6 +184,7 @@ export default function InputTable() {
   }
 
   function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
+    
     setInput({
       ...input,
       category: e.target.value
@@ -132,17 +198,28 @@ export default function InputTable() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+    console.log('submit')
     e.preventDefault();
-    dispatch(addDato(form));
-    setInput({
-      category: '',
-      description: '',
-      amount: 0,
-      date: ''
-    })
-    setSelectKey({
-      keyInput: ''
-    })
+    if(validate.allowed){
+      setInput({
+        category: '',
+        description: '',
+        amount: 0,
+        date: today
+      })
+      console.log(form)
+      
+    // dispatch(addDato(form));
+    // setInput({
+    //   category: '',
+    //   description: '',
+    //   amount: 0,
+    //   date: ''
+    // })
+    // setSelectKey({
+    //   keyInput: ''
+    // })
+  }
   }
   //---------------------------------
 
@@ -165,40 +242,7 @@ export default function InputTable() {
   //   dispatch(deleteCategory(formCategoryDelete))
   // }
 
-  // Categories
-  //Selects/button
-  function handleDelete(event: accountParameter) {
-    dispatch(deleteDato(event))
-  }
 
-  function filterByMonth(e: any) {
-    e.preventDefault();
-    dispatch(inputsFilterByMonth(e.target.value))
-    dispatch(totalInput())
-  }
-
-  function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
-    e.preventDefault();
-    dispatch(inputsOrderByAmount(e.target.value))
-  }
-
-  function handleOrderByCategories(e: any) {
-    e.preventDefault();
-    dispatch(filterInputByCategory(e.target.value));
-    dispatch(totalInput())
-  }
-
-  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
-    e.preventDefault();
-    dispatch(inputsFilterByFrequency(e.target.value))
-    dispatch(totalInput())
-  }
-
-  function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-    dispatch(renderInput(date))
-    dispatch(totalInput())
-  }
 
   //Paginado
   const [page, setPage] = useState(1);
@@ -262,7 +306,7 @@ export default function InputTable() {
               {usuario.categories.length > 0 &&
                 usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
                   return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
-              })
+                })
               }
             </select>
             <select onChange={(e) => handleFilterByFrequency(e)}>
@@ -278,8 +322,9 @@ export default function InputTable() {
               {
                 ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return( <button value={i < 10 ? `0${i+1}` : `${i+1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
-                  )}
+                    return (<button value={i < 10 ? `0${i + 1}` : `${i + 1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                    )
+                  }
                 )
               }
             </div>
@@ -304,23 +349,23 @@ export default function InputTable() {
               {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
                   detalles.frequency === 'monthly' ?
-                  <tr className={styles.monthlyInput} key={detalles._id}>
-                    <th>Ingreso fijo</th>
-                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
-                    <th>{detalles.description}</th>
-                    <th>$ {detalles.amount}</th>
-                    <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
-                  </tr>
-                  : <tr key={detalles._id}>
-                    <th>Ingreso extra</th>
-                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
-                  <th>{detalles.description}</th>
-                  <th>$ {detalles.amount}</th>
-                  <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
-                </tr>
-                  )
+                    <tr className={styles.monthlyInput} key={detalles._id}>
+                      <th>Ingreso fijo</th>
+                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                      <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
+                      <th>{detalles.description}</th>
+                      <th>$ {detalles.amount}</th>
+                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                    </tr>
+                    : <tr key={detalles._id}>
+                      <th>Ingreso extra</th>
+                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                      <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
+                      <th>{detalles.description}</th>
+                      <th>$ {detalles.amount}</th>
+                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                    </tr>
+                )
               }) : <></>
               }
               <tr>
@@ -343,7 +388,7 @@ export default function InputTable() {
 
           {/* Creation form */}
           <div className={styles.wrapperForms}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit(e)}>
               <div className={styles.form}>
 
                 <select value={selectKey.keyInput} onChange={handleSelectInputs}>
@@ -367,19 +412,20 @@ export default function InputTable() {
                         return (<option value={undefinedCategory}>{undefinedCategory}</option>)
                       })
                   }
-                  { selectKey.keyInput ?
-                  usuario.categories.length > 0 
-                  && selectKey.keyInput === 'monthly'
-                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
-                      return (
-                      <option value={montInput.name} key={i}>{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
-                    })
-                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
-                      return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
-                    })
-                    :  usuario.categories.length > 0 
+                  {selectKey.keyInput ?
+                    usuario.categories.length > 0
+                      && selectKey.keyInput === 'monthly'
+                      ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
+                        return (
+                          <option value={montInput.name} key={i}>{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
+                      })
+                      : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
+                        return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
+                      })
+                    : usuario.categories.length > 0
                     && usuario.categories.map((allInputs: Category, i: number) => {
-                      return (<option value={allInputs.name} key={i}>{allInputs.name.charAt(0).toUpperCase() + allInputs.name.slice(1).toLowerCase()}</option>)})
+                      return (<option value={allInputs.name} key={i}>{allInputs.name.charAt(0).toUpperCase() + allInputs.name.slice(1).toLowerCase()}</option>)
+                    })
                   }
                   <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
@@ -389,7 +435,7 @@ export default function InputTable() {
                   value={input.description}
                   placeholder='Agrega una descripción'
                   onChange={handleChange}
-                  autoFocus= {true}
+                  autoFocus={true}
                 >
                 </input>
                 <label>$</label>
@@ -411,12 +457,12 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
-                <button type='submit' disabled= {!validate.pass}>Agregar</button>
+                <button type='submit' disabled={!validate.allowed}>Agregar</button>
               </div>
             </form>
 
             {/* Error Display */}
-            <span id='validateError'></span>
+            <span id='validateError'>{validate.msg}</span>
 
             {/* Category Creation */}
             {
