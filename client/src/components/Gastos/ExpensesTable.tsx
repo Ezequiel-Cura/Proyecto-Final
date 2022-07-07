@@ -3,9 +3,9 @@ import stylesPag from "../Ingreso/Pagination.module.css"
 import React, { useState, useEffect } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { expensesFilterByMonth, expensesOrderByAmount, filterExpensesByCategory, outputsFilterByFrequency, renderOutput, totalOutput } from "redux/reducers/userReducer";
-import {addDato} from 'redux/modules/addDato'
-import {deleteDato} from 'redux/modules/deleteDato'
+import { expensesFilterByMonth, expensesOrderByAmount, filterExpensesByCategory, outputsFilterByFrequency, renderOutput, totalOutput } from "redux/reducers/userReducer/userReducer";
+import {addDato} from 'redux/reducers/userReducer/actions/addDato'
+import {deleteDato} from 'redux/reducers/userReducer/actions/deleteDato'
 import PopUp from "components/Saves/Form/PopUp";
 import CategoryCreate from "components/Category/CategoryCreate";
 

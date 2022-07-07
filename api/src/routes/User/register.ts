@@ -35,6 +35,7 @@ router.get("/:id/verify/:verifyToken", async (req: any, res: any) => {
         const user = await User.findOne({_id: req.params.id});
         if (!user) return res.status(400).send("No existe este usuario");
         if (!user.verifyToken) return res.status(400).send("El usuario ya esta verificado");
+        await User.updateOne({_id: req.params.id}, {$unset: {verifyToken: 1}})
         user.verified = true;
         await user.save()
         res.status(200).send("Se ha verificado su Email")

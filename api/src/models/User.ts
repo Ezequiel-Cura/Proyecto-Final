@@ -3,7 +3,7 @@
 import { Schema, model } from "mongoose"
 import jwt from "jsonwebtoken"
 
-interface IUser {
+export interface IUser {
   firstName: string
   lastName?: string
   email: string
@@ -12,7 +12,7 @@ interface IUser {
   verified: boolean
   verifyToken: string
   isEmailSubscripted: Boolean
-
+  review?: string
   avatar: string
   premium: boolean
   role: string
@@ -35,6 +35,7 @@ const userSchema = new Schema<IUser>({
   verified: { type: Boolean, default: false},
   verifyToken: { type: String },
   isEmailSubscripted: { type: Boolean, default: true},
+  review: { type: String },
   avatar: String,
   premium: { type: Boolean, default: false },
   role: { type: String, default: 'user' },

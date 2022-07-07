@@ -3,11 +3,11 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { inputsFilterByFrequency, totalInput, renderInput, inputsOrderByAmount, filterInputByCategory, inputsFilterByMonth } from "redux/reducers/userReducer";
-import { addDato } from 'redux/modules/addDato'
-import { deleteDato } from 'redux/modules/deleteDato'
+import { inputsFilterByFrequency, totalInput, renderInput, inputsOrderByAmount, filterInputByCategory, inputsFilterByMonth } from "redux/reducers/userReducer/userReducer";
+import { addDato } from 'redux/reducers/userReducer/actions/addDato'
+import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
 // import { addCategory } from 'redux/modules/addCategory'
-import { deleteCategory } from 'redux/modules/deleteCategory'
+import { deleteCategory } from 'redux/reducers/userReducer/actions/deleteCategory'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 

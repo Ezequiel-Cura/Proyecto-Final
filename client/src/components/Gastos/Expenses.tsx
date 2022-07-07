@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import ExpensesLanding from "./ExpensesLanding";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpensesTable from './ExpensesTable';
-import { renderOutput } from 'redux/reducers/userReducer';
+import { renderOutput } from 'redux/reducers/userReducer/userReducer';
 
 export default function Expenses() {
   const { renderOutputs, status, allOutputs } = useAppSelector(state => state.user);

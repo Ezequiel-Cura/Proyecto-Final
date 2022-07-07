@@ -1,10 +1,12 @@
 import { combineReducers, configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import user from "redux/reducers/userReducer"
+import user from "redux/reducers/userReducer/userReducer"
 import admin from "redux/reducers/adminReducer/adminReducer"
+import common from "redux/reducers/commonReducer/commonReducer"
 
 const reducer = combineReducers({
     user,
-    admin
+    admin,
+    common
 })
 
 const store = configureStore({

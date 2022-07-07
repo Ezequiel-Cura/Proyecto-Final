@@ -1,12 +1,12 @@
-import { Router, Response } from "express"
+import { Router, Response, Request } from "express"
 import User from "../../models/User"
 import authorization from "../../middleware/authorization"
 
 const router = Router()
 
-router.get("/", authorization, async (req: any, res: Response) => {
+router.get("/", authorization, async (req: Request, res: Response) => {
   try {
-    const user : any = await User.findById(req.userId).select({
+    const user = await User.findById(req.userId).select({
       _id: 0, 
       email: 1, 
       firstName: 1, 
