@@ -252,7 +252,7 @@ export default function ExpensesTable() {
                   <tr className={styles.monthlyInput} key={detalles._id}>
                     <th>Gasto fijo</th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
                     <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'output', value: detalles })}></button></th>
@@ -260,7 +260,7 @@ export default function ExpensesTable() {
                   :  <tr key={detalles._id}>
                   <th>Gasto extra</th>
                   <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category : "-"}</th>
+                  <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
                   <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'output', value: detalles })}></button></th>

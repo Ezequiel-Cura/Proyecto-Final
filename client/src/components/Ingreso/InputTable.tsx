@@ -278,7 +278,7 @@ export default function InputTable() {
                   <tr className={styles.monthlyInput} key={detalles._id}>
                     <th>Ingreso fijo</th>
                     <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                    <th>{detalles.category ? detalles.category : "-"}</th>
+                    <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                     <th>{detalles.description}</th>
                     <th>$ {detalles.amount}</th>
                     <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
@@ -286,7 +286,7 @@ export default function InputTable() {
                   : <tr key={detalles._id}>
                     <th>Ingreso extra</th>
                   <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                  <th>{detalles.category ? detalles.category : "-"}</th>
+                  <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                   <th>{detalles.description}</th>
                   <th>$ {detalles.amount}</th>
                   <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
