@@ -7,7 +7,6 @@ import style from '../PopUpForm.module.css'
 export default function SavesCreate() {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
-  console.log({usuario})
   interface SavingUser {
     name: string,
     start: string,
@@ -96,14 +95,10 @@ export default function SavesCreate() {
               </input>
               <p>
                 <label>Seleccionar tipo de moneda: </label>
-                <br/>
-                <label>
-                  <input type="radio" name="currency" value={input.currency} onChange={handleChange}/>Peso Argentino
-                </label>
-                <br/>
-                <label>
-                  <input type="radio" name="currency" value={input.currency} onChange={handleChange}/>Dolar
-                </label> 
+                <input type="radio" name="currency" value="" id="" onChange={handleChange} />Peso Argentino
+                <input type="radio" name="currency" value="Dolar" id="dolar" onChange={handleChange}/>Dolar
+                <input type="radio" name="currency" value="Euro" id="euro" onChange={handleChange}/>Euro
+                <input type="radio" name="currency" value="Libra" id="libra" onChange={handleChange}/>Libra
               </p>
               <Button type='submit'>Agregar</Button>
       </form>

@@ -9,20 +9,16 @@ export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  interface Currency {
-    type: string,
-  }
   interface SavingUser {
     name: string,
     start: string,
     end: string,
     goal?: number,
     depositPlace: string,
-    currency: Currency,
+    currency: string,
   }
 
   function handleDelete(e : any) {
-    console.log(e, 'delete')
     dispatch(deleteSaving(e))
   }
   
@@ -54,6 +50,7 @@ export default function Saves() {
                         <tr>
                           <th>Comienzo</th>
                           <th>Final</th>
+                          <th>Moneda</th>
                           <th>Total actual</th>
                           <th>Objetivo</th>
                         </tr>
@@ -62,6 +59,7 @@ export default function Saves() {
                         <tr>
                           <th>{s.start && s.start.split("T")[0]}</th>
                           <th>{s.end && s.end.split("T")[0]}</th>
+                          <th>{s.currency}</th>
                           <th>{s.depositPlace}</th>
                           <th className={style.divAmount}><div className={style.amount}>{s.goal}</div></th>
                         </tr>
