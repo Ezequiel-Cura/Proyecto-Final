@@ -1,12 +1,13 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addSaving } from 'redux/modules/addSaving';
+import { addDato } from 'redux/reducers/userReducer/actions/addDato';
+import { addSaving } from 'redux/reducers/userReducer/actions/addSaving';
 import style from '../PopUpForm.module.css'
 
 export default function SavesCreate() {
   const dispatch = useAppDispatch();
-  const { usuario, status } = useAppSelector(state => state.user);
+  const { usuario, status,  } = useAppSelector(state => state.user);
   interface SavingUser {
     name: string,
     start: string,
@@ -16,7 +17,7 @@ export default function SavesCreate() {
     currency: string,
   }
 
-  const [input, setInput] = useState<SavingUser>({
+  const [input1, setInput] = useState<SavingUser>({
     name: '', 
     start: '', 
     end: '', 
@@ -26,32 +27,65 @@ export default function SavesCreate() {
   });
 
   const form = {
-    value: input
+    value: input1
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
-      ...input,
+      ...input1,
       [e.target.name]: e.target.value
     })
   }
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+  function handleSubmit1(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-    console.log(form, 'form')
     dispatch(addSaving(form));
-    // status === 'success' 
-    //   ? <p>Se agrego! Vuelve a Ahorros</p>
-    //   : <p>Hubo algun problema, intentalo mas tarde</p>
-    
   }
+
+  interface addSave {
+    category: string,
+    description: string,
+    amount: number,
+  }
+
+  const [input2, setInput2] = useState<addSave>({
+    category: 'extra',
+    description: '',
+    amount: 0
+  })
+
+  function handleSubmit2(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+    e.preventDefault();
+    console.log(form, 'form1')
+    dispatch(addDato(form));
+  }
+
+  interface subtractSave {
+    category: string,
+    description: string,
+    amount: number,
+  }
+
+  const [input3, setInput3] = useState<subtractSave>({
+    category: 'input',
+    description: '',
+    amount: 0
+  })
+
+  function handleSubmit3(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+    e.preventDefault();
+    console.log(form, 'form3')
+    dispatch(addDato(form));
+  }
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className={style.wrapperForm}>
+      <form onSubmit={handleSubmit1}>
+              <h2>Agrega una casilla de ahorro</h2>
               <label>Nombre de la casilla: </label>
               <input
                 type='text'
                 name='name'
-                value={input.name}
+                value={input1.name}
                 placeholder='Agrega un nombre'
                 onChange={handleChange}
               >
@@ -60,7 +94,7 @@ export default function SavesCreate() {
               <input
                 type='date'
                 name='start'
-                value={input.start}
+                value={input1.start}
                 placeholder='Agrega una fecha'
                 onChange={handleChange}
               >
@@ -69,7 +103,7 @@ export default function SavesCreate() {
               <input
                 type='date'
                 name='end'
-                value={input.end}
+                value={input1.end}
                 placeholder='Agrega una descripcion'
                 onChange={handleChange}
               >
@@ -78,7 +112,7 @@ export default function SavesCreate() {
               <input
                 type='text'
                 name='depositPlace'
-                value={input.depositPlace}
+                value={input1.depositPlace}
                 placeholder='Donde esta alojado'
                 onChange={handleChange}
               >
@@ -88,19 +122,48 @@ export default function SavesCreate() {
                 type='number'
                 name='goal'
                 min='0'
-                value={input.goal}
+                value={input1.goal}
                 placeholder='Agrega un monto'
                 onChange={handleChange}
               >
               </input>
-              <p>
-                <label>Seleccionar tipo de moneda: </label>
-                <input type="radio" name="currency" value="" id="" onChange={handleChange} />Peso Argentino
-                <input type="radio" name="currency" value="Dolar" id="dolar" onChange={handleChange}/>Dolar
-                <input type="radio" name="currency" value="Euro" id="euro" onChange={handleChange}/>Euro
-                <input type="radio" name="currency" value="Libra" id="libra" onChange={handleChange}/>Libra
-              </p>
-              <Button type='submit'>Agregar</Button>
+              <div>
+              <label>Seleccionar tipo de moneda: </label>
+                <input type="radio" name="currency" value="ARS" id="" onChange={handleChange} />Peso Argentino
+                <input type="radio" name="currency" value="UYU" id="dolar" onChange={handleChange}/>Peso Uruguayo
+                <input type="radio" name="currency" value="USD" id="dolar" onChange={handleChange}/>Dolar
+                <input type="radio" name="currency" value="EUR" id="euro" onChange={handleChange}/>Euro
+                <input type="radio" name="currency" value="LBP" id="libra" onChange={handleChange}/>Libra Esterlina
+                <input type="radio" name="currency" value="JPY" id="yen" onChange={handleChange}/>Yen
+                <input type="radio" name="currency" value="CHF" id="franco suizo" onChange={handleChange}/>Franco Suizo
+              </div>
+              <button type='submit'>Agregar</button>
+      </form>
+
+      <br/>
+      <h2>Agrega una cantidad de ahorro</h2>
+      <form>
+        <label>Monto: $</label>
+        <input
+        type='number'
+        name='save'
+        placeholder='Agrega una cantidad ahorro'
+        >
+        </input>
+        <button>Agregar</button>
+      </form>
+
+      <br/>
+      <h2>Saca una cantidad de ahorro</h2>
+      <form>
+        <label>Monto: $</label>
+        <input
+        type='number'
+        name='save'
+        placeholder='Agrega una cantidad ahorro'
+        >
+        </input>
+        <button>Sacar</button>
       </form>
     </div>
   )

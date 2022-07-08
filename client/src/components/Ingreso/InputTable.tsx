@@ -3,11 +3,9 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { inputsFilterByFrequency, totalInput, renderInput, inputsOrderByAmount, filterInputByCategory, inputsFilterByMonth } from "redux/reducers/userReducer";
-import { addDato } from 'redux/modules/addDato'
-import { deleteDato } from 'redux/modules/deleteDato'
-// import { addCategory } from 'redux/modules/addCategory'
-import { deleteCategory } from 'redux/modules/deleteCategory'
+import { totalInput, renderInput, inputsOrderByAmount, changeOptions, filterInputByOptions, clearChangeOptions } from "redux/reducers/userReducer/userReducer";
+import { addDato } from 'redux/reducers/userReducer/actions/addDato'
+import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 import { setIn } from 'formik';
@@ -27,7 +25,8 @@ export default function InputTable() {
 
   function filterByMonth(e: any) {
     e.preventDefault();
-    dispatch(inputsFilterByMonth(e.target.value))
+    dispatch(changeOptions(['month', e.target.value]))
+    dispatch(filterInputByOptions())
     dispatch(totalInput())
   }
 
@@ -36,22 +35,31 @@ export default function InputTable() {
     dispatch(inputsOrderByAmount(e.target.value))
   }
 
-  function handleOrderByCategories(e: any) {
+  function handleOrderByCategories(e: any) {                              //--------!!!
     e.preventDefault();
-    dispatch(filterInputByCategory(e.target.value));
+    dispatch(changeOptions(['category', e.target.value]))
+    dispatch(filterInputByOptions());
     dispatch(totalInput())
   }
 
   function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(inputsFilterByFrequency(e.target.value))
+    dispatch(changeOptions(['frequency', e.target.value]))
+    dispatch(filterInputByOptions())
     dispatch(totalInput())
+  }
+
+  function resetAll() {
+    (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default'
   }
 
   function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     dispatch(renderInput(date))
     dispatch(totalInput())
+    dispatch(clearChangeOptions())
+    return resetAll()
   }
 
   // Interfaces
@@ -261,14 +269,14 @@ export default function InputTable() {
 
   //Paginado
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(5);
+  const [inputsPerPage, ] = useState(6);
 
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, ] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-  for (let i = 1; i <= renderInput.length && Math.ceil(renderInput.length / inputsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(renderInputs.length / inputsPerPage); i++) {
     pageNumber.push(i)
   }
 
@@ -311,7 +319,8 @@ export default function InputTable() {
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select onChange={(e) => handleOrderByCategories(e)}>
+
+            <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)}>
               <option value='default'>Ordenar por categoria</option>
               {
                 ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
@@ -323,12 +332,15 @@ export default function InputTable() {
                   return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
                 })
               }
+              <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
             </select>
-            <select onChange={(e) => handleFilterByFrequency(e)}>
+
+            <select id='selectFrequency' onChange={(e) => handleFilterByFrequency(e)}>
               <option value='default'>Ordenar por frecuencia</option>
               <option value='monthly'>Ingreso fijo</option>
               <option value='extra'>Ingreso extra</option>
             </select>
+
           </div>
 
           {/* Month */}
@@ -344,7 +356,7 @@ export default function InputTable() {
               }
             </div>
             <div className={styles.annualCard}>
-              <button className={styles.annual} onClick={handleRefresh}>Refresh</button>
+              <button type='reset' className={styles.annual} onClick={handleRefresh}>Refresh</button>
             </div>
           </div>
 
@@ -459,7 +471,7 @@ export default function InputTable() {
                   name='amount'
                   min='0'
                   value={input.amount}
-                  placeholder='Monto'
+                  placeholder='Agrega un monto'
                   onChange={handleChange}
                   className={styles.amount}
                 >

@@ -1,0 +1,28 @@
+.wrapper {
+    width: 100%;
+    height: 50%;
+    max-height: 50%;
+    background-color: #FCF8F8;
+    border: 2px solid black;
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    justify-content: center;
+}
+
+.img {
+    height: 125px;
+    margin: 0px 20px;
+    justify-self: center;
+    border-radius: 50%;
+}
+
+.reviewWrapper {
+    display: grid;
+    grid-template-rows: 1fr min-content;
+    min-height: calc(70% - 20px);
+    max-height: calc(70% - 20px);
+    padding: 20px 10px 0px 10px;
+    overflow: auto;
+}

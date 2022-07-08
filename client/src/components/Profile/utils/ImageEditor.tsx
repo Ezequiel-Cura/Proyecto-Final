@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import styles from "./ImageEditor.module.css"
 import AvatarEditor from "react-avatar-editor"
-import { uploadImage } from 'redux/reducers/userReducer'
+import { uploadImage } from 'redux/reducers/userReducer/userReducer'
 
 export default function ImageEditor({setImageEditor}: any) {
 const {usuario} = useAppSelector(({user})=> user)

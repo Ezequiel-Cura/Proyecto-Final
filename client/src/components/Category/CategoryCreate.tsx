@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addCategory } from 'redux/modules/addCategory';
+import { addCategory } from 'redux/reducers/userReducer/actions/addCategory';
 
 export default function CategoryCreate() {
 

@@ -7,15 +7,15 @@ export default function SavesForm() {
     const [open, setOpen] = useState<boolean>(false);
 
 return (
-    <>
-     <button className={style.wrapperNewSave} onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro</button>
-          <PopUp
-            open={open} 
-            setOpen={setOpen}
-            onClick={() => setOpen(open)}
-            title="Completa para agregar una casilla de ahorro!">
-            <SavesCreate/>
-          </PopUp>
-    </>
+    <div>
+     <button className={style.wrapperNewSave} onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro<div className={style.addNewSave}>+</div></button>
+      <PopUp
+        open={open} 
+        setOpen={setOpen}
+        onClick={() => setOpen(open)}
+        >
+        <SavesCreate/>
+      </PopUp>
+    </div>
 )
 }
