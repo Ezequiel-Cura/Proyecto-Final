@@ -19,6 +19,11 @@ const {usuario}: any = useAppSelector(({user}) => user)
             </Link>
         </div>
         <div className={styles.items_wrapper}>
+            <Link to="/">
+                <div className={styles.Nav_items_wrapper}>
+                    <h4>Landing</h4>
+                </div>
+            </Link>
             <Link to="/home">
                 <div className={styles.Nav_items_wrapper}>
                     <h4>Home</h4>

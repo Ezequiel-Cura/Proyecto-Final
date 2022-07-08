@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
-
 export const addDato: any = createAsyncThunk("user/addIngreso",
 async (ingreso, { rejectWithValue }) => {
   try {

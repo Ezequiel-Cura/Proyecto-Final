@@ -1,6 +1,6 @@
 import styles from "../Ingreso/Tables.module.css";
 import stylesPag from "../Ingreso/Pagination.module.css"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { changeOptions, clearChangeOptions, expensesOrderByAmount, filterOutputByOptions, renderOutput, totalOutput } from "redux/reducers/userReducer/userReducer";
@@ -14,6 +14,7 @@ export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
+  const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function ExpensesTable() {
     category: '',
     description: '',
     amount: 0,
-    date: '',
+    date: today, 
   })
 
   interface keySelect {
@@ -62,6 +63,33 @@ export default function ExpensesTable() {
     frequency: '',
   })
 
+  // Validation
+
+  const firstRender = useRef(true)
+
+  const [valMsg, setMsg] = useState('')
+  const [valDisable, setDisabled] = useState(true)
+
+  useEffect(() => {
+    if (firstRender.current === true) {
+      firstRender.current = false
+      return
+    }
+    
+    !selectKey.frequency ? setMsg('Proporcione un tipo') :
+    !input.category ? setMsg('Proporcione una categoria') :
+    !input.description ? setMsg('Proporcione una descripcion') :
+    !input.amount ? setMsg('Proporcione un monto') : 
+    setMsg('')
+
+    
+  }, [input, selectKey])
+  
+  useEffect(() => {
+    setDisabled(valMsg === '' ? false : true)
+  }, [valMsg])
+
+  //-----------------------------------
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
       ...input,
@@ -353,9 +381,12 @@ export default function ExpensesTable() {
               onChange={handleChange}
             >
             </input>
-            <button type='submit'>Agregar</button>
+            <button type='submit' disabled={valDisable}>Agregar</button>
           </div>
         </form>
+        
+        <span id="validateError">{valMsg}</span>
+
         {
           input.category === 'Crear'
           && (<div className={styles.CrearDiv}>

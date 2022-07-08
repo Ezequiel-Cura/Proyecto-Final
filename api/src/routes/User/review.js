@@ -27,11 +27,10 @@ router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0,
 }));
 router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { review } = req.body;
         const user = yield User_1.default.findById(req.userId);
-        user.review = review;
+        user.review = req.body;
         yield user.save();
-        res.status(200).send("Se ha subido tu Review");
+        res.status(200).send(user.review);
     }
     catch (err) {
         res.status(500).send(err.message);
@@ -39,8 +38,7 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
 }));
 router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield User_1.default.updateOne({ _id: req.userId }, { $unset: { review: 1 } });
-        console.log(user);
+        yield User_1.default.updateOne({ _id: req.userId }, { $unset: { review: 1 } });
         res.status(200).send("Se ha borrado tu Review");
     }
     catch (err) {

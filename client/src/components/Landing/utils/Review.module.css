@@ -9,6 +9,7 @@
     grid-template-columns: 1fr 2fr;
     align-items: center;
     justify-content: center;
+    cursor: default;
 }
 
 .img {
@@ -21,8 +22,8 @@
 .reviewWrapper {
     display: grid;
     grid-template-rows: 1fr min-content;
-    min-height: calc(70% - 20px);
-    max-height: calc(70% - 20px);
-    padding: 20px 10px 0px 10px;
+    min-height: calc(70%);
+    max-height: calc(70%);
+    padding: 0px 10px;
     overflow: auto;
 }
