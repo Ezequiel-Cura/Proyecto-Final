@@ -1,3 +1,7 @@
+.wrapperForm {
+    background-color: rgb(124, 124, 93);
+}
+
 .wrapperForm input {
     padding: 10px;
     margin-right: 20px;
@@ -23,10 +27,9 @@
     background-color: rgb(118, 189, 3) ;
 }
 
-
-select{
-background-color: blue;
-}
-input{
-background-color: blueviolet;
+.closeButton {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: red;
 }
