@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 export const deleteDato: any = createAsyncThunk("user/deleteIngreso",
 async (ingreso: any, { rejectWithValue }) => {
   try {

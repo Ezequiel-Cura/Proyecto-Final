@@ -9,30 +9,29 @@ import getAllReviews from "redux/reducers/commonReducer/Actions/getAllReviews"
 export default function Landing() {
   const navigate = useNavigate()
   const {allReviews} = useAppSelector(({common}) => common)
-  const [viewingReview, setViewingReview] = useState({})
+  const [viewingReview, setViewingReview]= useState({})
   const dispatch = useAppDispatch()
   const [index, setIndex] = useState(0)
-    
   useEffect(()=> {
     dispatch(getAllReviews())
   },[])
-
+  
   useEffect(()=> {
+    if(allReviews.length) {
+      let newIndex = Math.floor(Math.random() * allReviews.length)
+      console.log("newIndex: ",newIndex)
+      setViewingReview(allReviews[newIndex])
+      setIndex(newIndex)
+    }
+    },[allReviews])
+  useEffect(() => {
     setViewingReview(allReviews[index])
   },[index])
 
-  useEffect(()=> {
-    console.log("length: ",allReviews.length)
-    console.log("index: ",index)
-  },[index])
-
-  useEffect(()=> {
-    if (allReviews.length > 0) setIndex(Math.floor(Math.random() * allReviews.length))
-  },[allReviews])
-
   const handleLeftArrow = () => {
     setIndex(prev => prev === 0 ? allReviews.length - 1 : prev - 1)
-  }  
+  }
+
   const handleRightArrow = () => {
     setIndex(prev => prev === allReviews.length - 1 ? 0 : prev + 1)
   }
@@ -40,14 +39,24 @@ export default function Landing() {
   return (
     <div className={styles.wrapper}>
       <nav className={styles.nav}>
-        <h2 style={{paddingLeft: "10px"}}>$APP.gastos</h2>
+        <h2 style={{color: "#3DB39E"}}>Finanzas Personales</h2>
         <div className={styles.registerButtonContainer}>
-          <button className={styles.registerButton} onClick={() => navigate("/login")}>
+          {
+            localStorage.getItem("logged") ?
+            <button className={styles.registerButton} style={{width: "max-content"}} onClick={() => navigate("/home")}>
+            Vuelve al home
+            </button>
+            :
+            <>
+            <button className={styles.registerButton} onClick={() => navigate("/login")}>
             Registrate
-          </button>
-          <button className={styles.registerButton} onClick={() => navigate("/login", {state : {registered: true}})}>
+            </button>
+            <button className={styles.registerButton} onClick={() => navigate("/login", {state : {registered: true}})}>
             Ingresa
-          </button>
+            </button>
+            </>
+          }
+          
         </div>
       </nav>
       <div className={styles.firstContainer}>
@@ -61,7 +70,7 @@ export default function Landing() {
       <div className={styles.secondContainer}>
         <div className={styles.secondContainerLeftDiv}>
           <h2>Reseñas de los usuarios</h2>
-          <h4>Nos interesa las opiniones de nuestros usuarios y queremos compartirlas</h4>
+          <h4>Nos interesan las opiniones de nuestros usuarios y queremos compartirlas</h4>
         </div>
         <div className={styles.secondContainerRightDiv}>
           <div className={styles.buttonContainer}>
@@ -70,7 +79,7 @@ export default function Landing() {
             arrow_back_ios_new
             </i>
           </div>
-            <Review userReview={viewingReview}/>
+            <Review user={viewingReview}/>
           <div className={styles.buttonContainer}>
             <i className="material-icons" onClick={handleRightArrow}
             style={{width: "100%", fontSize: "60px", display: "flex", justifyContent: "center" , cursor: "pointer"}}>
