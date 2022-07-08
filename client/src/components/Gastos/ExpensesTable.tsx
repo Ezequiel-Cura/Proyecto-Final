@@ -135,6 +135,13 @@ export default function ExpensesTable() {
     dispatch(totalOutput())
   }
 
+  function handleFilterByYear(e: any) {
+    e.preventDefault();
+    dispatch(changeOptions(['year', e.target.value]))
+    dispatch(filterOutputByOptions())
+    dispatch(totalOutput())
+  }
+
   function resetAll() {
     (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
     (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default'
@@ -218,6 +225,13 @@ export default function ExpensesTable() {
             <option value='monthly'>Gasto fijo</option>
             <option value='extra'>Gasto variable</option>
           </select>
+
+          <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
+              <option value='default'>Ordenar por año</option>
+              <option value='2022'>2022</option>
+              <option value='2023'>2023</option>
+              <option value='2024'>2024</option>
+            </select>
 
         </div>
 
