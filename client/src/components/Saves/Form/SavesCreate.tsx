@@ -36,7 +36,7 @@ export default function SavesCreate() {
       [e.target.name]: e.target.value
     })
   }
-  function handleSubmit1(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+  function handleSubmit1(e: React.FormEvent<HTMLFormElement>) {         //-----Form 1 
     e.preventDefault();
     dispatch(addSaving(form));
   }
@@ -53,9 +53,9 @@ export default function SavesCreate() {
     amount: 0
   })
 
-  function handleSubmit2(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+  function handleSubmit2(e: React.FormEvent<HTMLFormElement>) {         //-----Form 2, agregar ingreso
     e.preventDefault();
-    console.log(form, 'form1')
+    console.log(form, 'form agregar ahorro')
     dispatch(addDato(form));
   }
 
@@ -71,9 +71,9 @@ export default function SavesCreate() {
     amount: 0
   })
 
-  function handleSubmit3(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+  function handleSubmit3(e: React.FormEvent<HTMLFormElement>) {         //-----Form 3, sacar ingreso
     e.preventDefault();
-    console.log(form, 'form3')
+    console.log(form, 'form3 sacar ahorro')
     dispatch(addDato(form));
   }
 
