@@ -109,6 +109,13 @@ export default function ExpensesTable() {
     dispatch(deleteDato(event))
   }
 
+  function filterByYear(e: any) {
+    e.preventDefault();
+    dispatch(changeOptions(['year', e.target.value]))
+    dispatch(filterOutputByOptions())
+    dispatch(totalOutput())
+  }
+
   function filterByMonth(e: any) {
     e.preventDefault();
     dispatch(changeOptions(['month', e.target.value]))

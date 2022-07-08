@@ -101,7 +101,8 @@ const initialState: User = {
   options: {
     frequency: 'default',
     category: 'default',
-    month: ''
+    month: '',
+    year: ''
   },
   status: 'idle',
   allInputs: [],
@@ -167,9 +168,24 @@ const reducerSlice = createSlice({
       state.options = {frequency: 'default', category: 'default', month: ''}
     },
     filterOutputByOptions: (state) => {
+      //Year
+      if (state.options.year === '') {
+        state.renderOutputs = state.allOutputs
+      } else {
+        const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
+        const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
+        const extraIndex = state.usuario.extra.output.find((e: Entries) => `${e.date.split('-')[0]}` === state.options.year)
+
+        if (!extraIndex) {
+          state.renderOutputs = [...monthEntries]
+        } else {
+          const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
+          state.renderOutputs = [...monthEntries, ...extraEntries]
+        }
+      }
       //Month
       if (state.options.month === '') {
-        state.renderOutputs = state.allOutputs
+        return
       } else {
         const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
         const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
@@ -207,9 +223,23 @@ const reducerSlice = createSlice({
       }
     },
     filterInputByOptions: (state) => {
+      if (state.options.year === '') {
+        state.renderInputs = state.allInputs
+      } else {
+        const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
+        const yearEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
+        const extraIndex = state.usuario.extra.input.find((e: Entries) => `${e.date.split('-')[0]}` === state.options.year)
+
+        if (!extraIndex) {
+          state.renderOutputs = [...yearEntries]
+        } else {
+          const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
+          state.renderOutputs = [...yearEntries, ...extraEntries]
+        }
+      }
       //Month
       if (state.options.month === '') {
-        state.renderInputs = state.allInputs
+        return
       } else {
         const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
         const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []

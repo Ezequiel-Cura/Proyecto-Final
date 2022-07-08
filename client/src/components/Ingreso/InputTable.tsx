@@ -132,6 +132,13 @@ export default function InputTable() {
     dispatch(totalInput())
   }
 
+  function filterByYear(e: any) {
+    e.preventDefault();
+    dispatch(changeOptions(['year', e.target.value]))
+    dispatch(filterInputByOptions())
+    dispatch(totalInput())
+  }
+
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     dispatch(inputsOrderByAmount(e.target.value))
