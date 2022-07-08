@@ -17,20 +17,21 @@ const dispatch = useAppDispatch()
 const divRef = useRef() as any
 const ulRef = useRef() as any
 const textRef = useRef() as any
+const makePremiumTrueRef = useRef() as any
+const makePremiumFalseRef = useRef() as any
   useEffect(()=>{
     const handlePremiumView = (e: any) => {
-      if (e.path[0] !== divRef.current && e.path[0] !== ulRef.current && e.path[0] !== textRef.current) setPremiumView(false)
+      if (e.path[0] !== divRef.current && e.path[0] !== ulRef.current && e.path[0] !== textRef.current && e.path[0] !== makePremiumTrueRef && e.path[0] !== makePremiumFalseRef) setPremiumView(false)
     }
-    window.addEventListener("click", handlePremiumView)
-    window.addEventListener("oncontextmenu", handlePremiumView)
+    window.addEventListener("mousedown", handlePremiumView)
     return () =>{
-      window.removeEventListener("click", handlePremiumView)
-      window.addEventListener("oncontextmenu", handlePremiumView)
+      window.removeEventListener("mousedown", handlePremiumView)
     }
   },[])
 
   function changeUserPremium (value: string) {
     dispatch(changePremium({value, id}))
+    .then(() => setPremiumView(false))
     .then(() => dispatch(getAllUsers()))
   }
 
@@ -38,8 +39,8 @@ const textRef = useRef() as any
     <div ref={divRef} className={styles.wrapper} style={{top: y, left: x}}>
       <ul ref={ulRef}>
         <h3 ref={textRef} style={{cursor: "default"}}>Premium {nombre}</h3>
-        <li onClick={()=> changeUserPremium("true")}>Si</li>
-        <li onClick={()=> changeUserPremium("false")}>No</li>
+        <li ref={makePremiumTrueRef} onClick={()=> changeUserPremium("true")}>Si</li>
+        <li ref={makePremiumFalseRef} onClick={()=> changeUserPremium("false")}>No</li>
       </ul>
     </div>
   )

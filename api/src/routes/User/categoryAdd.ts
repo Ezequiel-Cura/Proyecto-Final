@@ -10,7 +10,7 @@ router.post("/", authorization, async (req: any, res: Response) => {
 
   const { value } = req.body
   const id = req.userId
-console.log({value})
+
   try {
     const user = await User.findById(id)
 

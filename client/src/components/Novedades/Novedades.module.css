@@ -2,3 +2,29 @@
     margin-top:0px;
     padding: 20px;
 }
+
+.news_wrapper{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minMax(400px,1fr));
+    gap: 3rem;
+    justify-items: center;
+}
+.img_news{
+    width: 400px;
+    height: 300px;
+}
+.cointainer_news{
+    height: 100vh;
+    overflow: auto;
+
+}
+
+.newsCard{
+    width: 400px;
+    text-align: center;
+    background-color: gray;
+}
+
+.newsCard a h4{
+    margin: 10px 0 10px 0;
+}

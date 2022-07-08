@@ -3,13 +3,16 @@
 import { Schema, model } from "mongoose"
 import jwt from "jsonwebtoken"
 
-interface IUser {
+export interface IUser {
   firstName: string
   lastName?: string
   email: string
   password: string
   isGoogle: boolean
-
+  verified: boolean
+  verifyToken: string
+  isEmailSubscripted: Boolean
+  review?: string
   avatar: string
   premium: boolean
   role: string
@@ -29,18 +32,22 @@ const userSchema = new Schema<IUser>({
   email: { type: String, unique: true, lowercase: true, required: true },
   password: { type: String, required: true },
   isGoogle: { type: Boolean, default: false },
+  verified: { type: Boolean, default: false},
+  verifyToken: { type: String },
+  isEmailSubscripted: { type: Boolean, default: true},
+  review: { type: String },
   avatar: String,
   premium: { type: Boolean, default: false },
   role: { type: String, default: 'user' },
 
   savings:[{
     name: { type: String, required: true },
-    start: { type: Date, required: true, default: Date.now()},
+    start: { type: Date, default: Date.now()},
     end: Date,
     goal: Number,
     currentAmount: Number,
     depositPlace: String,
-    currency: { type: String, required: true, default: "Peso Argentino" },
+    currency: { type: String, default: "Peso Argentino" },
   }],
 
   fees: [{

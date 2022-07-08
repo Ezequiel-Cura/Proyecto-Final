@@ -1,179 +1,109 @@
-.background {
-    background-image: url("assets/vieja.png");
-    background-size: cover;
-    background-position: center;
-    filter: blur(5px);
-    position: absolute;
-    top: 0px;
-    z-index: -1;
-    height: 100vh;
-    width: 100%;
-}
 .wrapper {
-    height: 100vh;
+    min-height: 100vh;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;
+    background-color: #2E332C;
+}
+.registerButtonContainer {
+    display: flex;
+    gap: 5px;
+}
+
+.registerButton {
+    background-color: lightseagreen;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    text-overflow: none;
+    width: min-content;
+}
+
+.registerButton:hover {
+    background-color: rgba(32, 178, 171, 0.753);
+    color: white;
+}
+
+
+.firstContainer {
+    margin: 100px 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 100%;
+}
+
+.landingMan {
+   width: 100%;
+}
+
+.firstContainerLeftDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 10% 0px 10%;
+    max-height: calc(100% - 20%);
+}
+
+.firstContainer h1, .firstContainer h3 {
+    font-weight: 200;
+    color: black;
+}
+
+.secondContainer {
+    background-color: #2E332C;
+    margin: 0px 40px 100px 40px;
+    min-height: 400px;
+    max-height: 400px;
+    border-radius: 15px;
+    padding: 0px 10%;
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    grid-template-rows: 1fr;
+    justify-content: center;
+    align-items: center;
+}
+.secondContainerLeftDiv{
+    padding: 50px 0px 50px 20px;
+    max-height: calc(400px - 100px);
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.secondContainer h2 {
+    font-size: 1.5rem;
+} 
+.secondContainer h4 {
+    color: #545652;
+} 
+.secondContainerRightDiv {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 15% 1fr 15%;
     align-items: center;
-    overflow: auto;
 }
-.input {
-    border-radius: 15px;
-    height: 30px;
-    width: 80%;
-    padding: 2px 20px;
-    align-self: center;
-    justify-self: center;
-}
-.welcome{
-    padding: 20px;
-    font-size: var(--font-size-big);
-    top: 0px;
-    max-height: 20%;
-}
-.textWelcome{
-    font-size: 3.5rem;
-}
-.container {
-    width: 80%;
-    display: grid;
-    grid-template-columns: 35fr 65fr;
-    height: 60%;
-    border-radius: 4px;
-}
-.formContainer{
-    background-color: rgba(124, 132, 132, 0.286);
-    display: grid;
-    grid-template-rows: 1fr 5fr;
-    height: calc(100% - 50px);
-    padding: 25px 50px;
-}
-.textContainer {
+
+.buttonContainer {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: black;
+    max-height: 100%;
 }
-.form{
-    display:grid;
-    width: 100%;
-}
-.image {
-    background-color: rgba(124, 132, 132, 0.286);
-    background-image: url("assets/vieja.png");
-    background-size: cover;
-    background-position: center;
-}
-.buttons {
-    padding: 20px;
-    display:flex;
-    gap: 30px;
+
+.reviewContainer {
+    display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10%;
 }
-
-.errorMessage {
-    text-align: center;
-    color: red;
-}
-.button {
-    justify-self: center;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 10rem;
-    color: black;
-    text-transform: uppercase;
-    font-weight: bolder;
-    font-size: 1rem;
-    letter-spacing: 0.1rem;
-    transition: all 0.3s;
-    position: relative;
-    z-index: 1;
-    width: 90%;
-    height: 59px;
-  }
-.button:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: wheat;
-    border-radius: 10rem;
-    z-index: -2;
-  }
-.button:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%;
-    height: 100%;
-    background-color: rgb(255, 211, 129);
-    transition: all 0.3s;
-    border-radius: 10rem;
-    z-index: -1;
-  }
-.button:hover:before {
-    width: 100%;
-  }
-.googleLogin {
-    justify-self: center;
-}
-
-    @media (max-width: 1400px) {
-        .textWelcome{
-            font-size: 3rem;
-        }
-    }  
-    @media (max-width: 1200px) {
-        .textWelcome{
-            font-size: 2.5rem;
-        }
-    }
-
-    @media (max-width: 900px) {
-        .container{
-            grid-template-columns: 1fr;
-            width: 90%;
-        }
-        .button{
-            width: 60%;
-        }
-        .image{
-            display: none;
-        }
-        .formContainer{
-            padding: 50px;
-            width: calc(100% - 100px);
-            height: 50vh;
-        }
-        .textWelcome{
-            font-size: 1.5rem;
-        }
-    }
-    @media (max-width: 600px) {
-        .formContainer{
-            padding: 20px;
-            width: calc(100% - 40px);
-        }
-        .textContainer h3 {
-            font-size: 1rem;
-        }
-        .button{
-            width: 60%;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .container{
-            width: 100%;
-        }
-        .formContainer{
-            padding: 2px;
-            width: 100%
-        }
-        .button {
-            width: 80%;
-        }
-    }
