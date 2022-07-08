@@ -39,14 +39,24 @@ export default function Landing() {
   return (
     <div className={styles.wrapper}>
       <nav className={styles.nav}>
-        <h2 style={{paddingLeft: "10px"}}>$APP.gastos</h2>
+        <h2 style={{color: "#3DB39E"}}>Finanzas Personales</h2>
         <div className={styles.registerButtonContainer}>
-          <button className={styles.registerButton} onClick={() => navigate("/login")}>
+          {
+            localStorage.getItem("logged") ?
+            <button className={styles.registerButton} style={{width: "max-content"}} onClick={() => navigate("/home")}>
+            Vuelve al home
+            </button>
+            :
+            <>
+            <button className={styles.registerButton} onClick={() => navigate("/login")}>
             Registrate
-          </button>
-          <button className={styles.registerButton} onClick={() => navigate("/login", {state : {registered: true}})}>
+            </button>
+            <button className={styles.registerButton} onClick={() => navigate("/login", {state : {registered: true}})}>
             Ingresa
-          </button>
+            </button>
+            </>
+          }
+          
         </div>
       </nav>
       <div className={styles.firstContainer}>
