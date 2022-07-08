@@ -1,15 +1,22 @@
 import React  from 'react';
-import style from '../Saves.module.css';
-import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import style from '../PopUpForm.module.css';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+
 
 export default function PopUp(props : any) {
-    const {title, children, open, setOpen } = props;
+    const { children, open, setOpen } = props;
+
+    const stylesMui = {
+        paper: {
+            padding : '20px 20px 20px 20px',
+            color: "red"
+    }
+    }
 
 return (
     <Dialog open={open} maxWidth='md'>
         <DialogTitle>
-            {title}
-            <Button onClick={()=> setOpen(!open)}>Cerrar</Button>
+            <button className={style.closeButton} onClick={()=> setOpen(!open)}>X</button>
         </DialogTitle>
         <DialogContent>
             {children}
