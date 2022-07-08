@@ -119,7 +119,6 @@ export default function InputTable() {
     }
   }
 
-
   //Selects/button
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
@@ -158,9 +157,15 @@ export default function InputTable() {
     dispatch(totalInput())
   }
 
+  function handleFilterByYear(e: any) {
+    e.preventDefault();
+    
+  }
+
   function resetAll() {
     (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
-    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default'
+    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectYear") as HTMLFormElement).value = 'default'
   }
 
   function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -242,6 +247,13 @@ export default function InputTable() {
               <option value='default'>Ordenar por frecuencia</option>
               <option value='monthly'>Ingreso fijo</option>
               <option value='extra'>Ingreso extra</option>
+            </select>
+
+            <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
+              <option value='default'>Ordenar por año</option>
+              <option>2022</option>
+              <option>2023</option>
+              <option>2024</option>
             </select>
 
           </div>
