@@ -103,7 +103,6 @@ export default function InputTable() {
   const dispatch = useAppDispatch();
   const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
 
-
   const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -122,9 +121,6 @@ export default function InputTable() {
 
   //Controllers
 
-
-  
-  
   const [selectKey, setSelectKey] = useState<keySelect>({
     keyInput: '',
   })
@@ -147,21 +143,20 @@ export default function InputTable() {
         return
       }
       
-      setDisabled(validateFunc())
-  
-    }, [input, selectKey])
-  
-    const validateFunc = () => {
       !selectKey.keyInput ? setMsg('Proporcione un tipo') :
       !input.category ? setMsg('Proporcione una categoria') :
       !input.description ? setMsg('Proporcione una descripcion') :
       !input.amount ? setMsg('Proporcione un monto') : 
       setMsg('')
 
-      return valMsg === '' ? false : true
-    }
-    
       
+    }, [input, selectKey])
+    
+    useEffect(() => {
+      setDisabled(valMsg === '' ? false : true)
+    }, [valMsg])
+
+    
     
     //-----------------------------------
 
@@ -197,21 +192,18 @@ export default function InputTable() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
-    console.log('submit')
     e.preventDefault();
-    
-    console.log(form)
       
-    // dispatch(addDato(form));
-    // setInput({
-    //   category: '',
-    //   description: '',
-    //   amount: 0,
-    //   date: ''
-    // })
-    // setSelectKey({
-    //   keyInput: ''
-    // })
+    dispatch(addDato(form));
+    setInput({
+      category: '',
+      description: '',
+      amount: 0,
+      date: ''
+    })
+    setSelectKey({
+      keyInput: ''
+    })
   }
   
   //---------------------------------
