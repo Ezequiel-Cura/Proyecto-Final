@@ -11,6 +11,7 @@ import { deleteCategory } from 'redux/modules/deleteCategory'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 import { setIn } from 'formik';
+import { SelectAllSharp } from '@mui/icons-material';
 
 export default function InputTable() {
   //---------------Date----------------
@@ -132,16 +133,32 @@ export default function InputTable() {
     category: input.category,
     description: input.description,
     amount: input.amount,
-    date: input.date  
+    date: input.date
   }
 
-  const [valMsg, setMsg] = useState<string>('')
-  const [valAllow, setAllow] = useState<boolean>(false)
+  useEffect(() => {
+    inputForm = {
+      type: selectKey.keyInput,
+      category: input.category,
+      description: input.description,
+      amount: input.amount,
+      date: input.date
+    }
+  },[input, selectKey])
 
+  const [valMsg, setMsg] = useState('')
+  const [valAllow, setAllow] = useState(false)
   let validate = {
     msg: valMsg,
-    allowed: valAllow
+    allow: valAllow
   }
+  useEffect(() => {
+    validate = {
+      msg: valMsg,
+      allow: valAllow
+    }
+  }, [valMsg, valAllow])
+
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input changer
     setInput({
@@ -149,27 +166,18 @@ export default function InputTable() {
       [e.target.name]: e.target.value
     })
   }
-  useEffect(() => {
-    inputForm = {...input, type: selectKey.keyInput}
-  }, [input, selectKey])
+
   const validateHandler = () => {
-      !inputForm.type || !inputForm.category ? setMsg('Proporcione un tipo y una categoria') :
-      !inputForm.description ? setMsg('Proporcione una descripcion') :
-      !inputForm.amount ? setMsg('Proporcione una cantidad') :
-      setMsg('')
+    !inputForm.type ? setMsg('Proporcione un tipo') :
+    !inputForm.category ? setMsg('Proporcione una categoria') :
+    !inputForm.description ? setMsg('Proporcione una descripcion') :
+    !inputForm.amount ? setMsg('Proporcione un monto') : 
+    setMsg('')
 
-      valMsg === '' ? setAllow(true) : setAllow(false)
+    validate.msg === '' ? setAllow(true) : setAllow(false)
   }
+  
 
-  useEffect(() => { // Validator
-    validate = { msg: valMsg, allowed: valAllow }
-  }, [valAllow, valMsg])
-
-
-  useEffect(() => {
-    validateHandler()
-    console.log('button status', validate.allowed)
-  }, [input, selectKey])
   //-----------------------------------
   
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -198,14 +206,17 @@ export default function InputTable() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
-    console.log('submit')
+    console.log('submit', validate.allow)
     e.preventDefault();
-    if(validate.allowed){
+    if(validate.allow){
       setInput({
         category: '',
         description: '',
         amount: 0,
         date: today
+      })
+      setSelectKey({
+        keyInput: ''
       })
       console.log(form)
       
@@ -457,7 +468,7 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
-                <button type='submit' disabled={!validate.allowed}>Agregar</button>
+                <button type='submit'>Agregar</button>
               </div>
             </form>
 
