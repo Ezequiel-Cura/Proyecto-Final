@@ -8,7 +8,7 @@ const router = Router()
 
 router.post("/", authorization, async (req: any, res: Response) => {
 
-  const { value } = req.body
+  const value = req.body
   const id = req.userId
 
   try {
