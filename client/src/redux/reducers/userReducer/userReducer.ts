@@ -11,6 +11,7 @@ import { deleteDato } from './actions/deleteDato'
 import { addCategory } from './actions/addCategory'
 import { deleteCategory } from './actions/deleteCategory'
 
+import { getCurrency } from "./actions/getCurrency";
 
 import { addSaving } from './actions/addSaving'
 import { deleteSaving } from './actions/deleteSaving'
@@ -53,6 +54,7 @@ interface User {
   totalOutputsMonth: number,
   totalInputsMonth: number
   options: any
+  dataCurrency: {}
 }
 
 const initialState: User = {
@@ -85,13 +87,9 @@ const initialState: User = {
   renderInputs: [],
   renderOutputs: [],
   totalOutputsMonth: 0,
-  totalInputsMonth: 0
-
+  totalInputsMonth: 0,
+  dataCurrency: {}
 }
-
-
-// type T = keyof typeof Options;
-
 
 const reducerSlice = createSlice({
   name: "user",
@@ -226,43 +224,12 @@ const reducerSlice = createSlice({
         state.renderInputs = state.renderInputs.filter((entries: Entries) => state.options.category === entries.category)
       }
     },
-    // outputsFilterByFrequency: (state, { payload }) => {
-    //   const outputsByFrequency = payload === 'monthly'
-    //     ? state.allOutputs.filter((e: Entries) => e.frequency === 'monthly')
-    //     : payload === 'extra'
-    //     ? state.allOutputs.filter((e: Entries) => e.frequency === 'extra')
-    //     : state.allOutputs;
-    //     state.renderOutputs = outputsByFrequency
-    // },
-
     expensesOrderByAmount: (state, { payload }) => {
       const orderExpenses: Entries[] = [...state.renderOutputs];
       let orderByAmount = payload === 'menorAMayor'
         ? orderExpenses.sort((a, b) => a.amount - b.amount)
         : orderExpenses.sort((a, b) => b.amount - a.amount)
       state.renderOutputs = orderByAmount
-    },
-
-    // inputsFilterByFrequency: (state, { payload }) => {
-    //   const inputsByFrequency = payload === 'monthly'
-    //     ? state.allInputs.filter((e: Entries) => e.frequency === 'monthly')
-    //     : payload === 'extra'
-    //     ? state.allInputs.filter((e: Entries) => e.frequency === 'extra')
-    //     : state.allInputs;
-    //     state.renderInputs = inputsByFrequency
-    // },
-    inputsFilterByMonth: (state, { payload }) => {
-      const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[1]}` === payload) || []
-      // const monthFilter = month ? month.filter((e: Entries) => e.date.split('-')[0] + e.date.split('-')[1] === payload) : []
-      const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
-      const extraIndex = state.usuario.extra.input.find((e: Entries) => e.date.split('-')[1] === payload)
-
-      if (!extraIndex) {
-        state.renderInputs = [...monthEntries]
-      } else {
-        const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-        state.renderInputs = [...monthEntries, ...extraEntries]
-      }
     },
     inputsOrderByAmount: (state, { payload }) => {
       const orderInputs: Entries[] = [...state.allInputs];
@@ -271,33 +238,6 @@ const reducerSlice = createSlice({
         : orderInputs.sort((a, b) => b.amount - a.amount)
       state.renderInputs = orderByAmount;
     },
-
-    expensesFilterByMonth: (state, { payload }) => {
-      const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[1]}` === payload) || []
-      // const monthFilter = month ? month.filter((e: Entries) => e.date.split('-')[0] + e.date.split('-')[1] === payload) : []
-      const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
-      const extraIndex = state.usuario.extra.output.find((e: Entries) => e.date.split('-')[1] === payload)
-      if (!extraIndex) {
-        state.renderOutputs = [...monthEntries]
-      } else {
-        const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-        state.renderOutputs = [...monthEntries, ...extraEntries]
-      }
-    },
-
-    // filterInputByCategory (state, {payload}) {
-    //   let filterInputByCategory = payload === 'default' 
-    //   ? state.allInputs
-    //   : state.allInputs.filter( (obj : Entries) => payload === obj.category)
-    //   state.renderInputs = filterInputByCategory
-    // },
-
-    // filterExpensesByCategory (state, {payload}) {
-    //   let filterExpenseByCategory = payload === 'default' 
-    //   ? state.allOutputs
-    //   : state.allOutputs.filter( (obj : Entries) => payload === obj.category)
-    //   state.renderOutputs = filterExpenseByCategory
-    // },
   },
   extraReducers: {
     [registerUser.pending]: (state) => {
@@ -428,6 +368,16 @@ const reducerSlice = createSlice({
     [deleteSaving.rejected]: (state) => {
       state.status = "failed"
     },
+    [getCurrency.pending]: (state) => {
+      state.status = "loading"
+    },
+    [getCurrency.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.dataCurrency = payload
+    },
+    [getCurrency.rejected]: (state) => {
+      state.status = "failed"
+    },
   }
 })
 export const {
@@ -437,16 +387,10 @@ export const {
   totalOutput,
   changeOptions,
   filterOutputByOptions,
-  // outputsFilterByFrequency,
-  inputsFilterByMonth,
   inputsOrderByAmount,
   expensesOrderByAmount,
-  expensesFilterByMonth,
   filterInputByOptions,
   clearChangeOptions
-  // inputsFilterByFrequency,
-  // filterExpensesByCategory,
-  // filterInputByCategory,
 } = reducerSlice.actions;
 
 export default reducerSlice.reducer;

@@ -228,6 +228,7 @@ export default function InputTable() {
                   return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
               })
               }
+              <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
             </select>
 
             <select id='selectFrequency' onChange={(e) => handleFilterByFrequency(e)}>

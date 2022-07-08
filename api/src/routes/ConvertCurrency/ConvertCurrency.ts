@@ -5,27 +5,28 @@ let myHeaders = new Headers();
 const router = Router()
 const { API_KEY_CONVERT } = process.env
 
-if(API_KEY_CONVERT){
+if (API_KEY_CONVERT) {
     myHeaders.append("apiKey", API_KEY_CONVERT);
 }
 
 var requestOptions: RequestInit = {
     method: 'GET',
-  redirect: 'follow',
-  headers: myHeaders
+    redirect: 'follow',
+    headers: myHeaders
 };
 
-router.get("/",  async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
     const { to, from, amount } = req.query
-    console.log({to, from, amount})
+    console.log({ to, from, amount })
     try {
-        if( !to || !from || !amount){
+        if (!to || !from || !amount) {
             res.status(400).send('Faltan parámetros.')
         }
         await fetch(`https://api.apilayer.com/exchangerates_data/convert?to=${to}&from=${from}&amount=${amount}`, requestOptions)
-        .then( res => res.json())
-        .then( apiData => {
-            res.status(200).send(apiData)})
+            .then(res => res.json())
+            .then(apiData => {
+                res.status(200).send(apiData)
+            })
     } catch (error) {
         console.log(error)
         res.status(404).send(error)
