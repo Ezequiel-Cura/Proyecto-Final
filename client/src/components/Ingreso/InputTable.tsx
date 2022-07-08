@@ -131,13 +131,6 @@ export default function InputTable() {
     dispatch(totalInput())
   }
 
-  function filterByYear(e: any) {
-    e.preventDefault();
-    dispatch(changeOptions(['year', e.target.value]))
-    dispatch(filterInputByOptions())
-    dispatch(totalInput())
-  }
-
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     dispatch(inputsOrderByAmount(e.target.value))
@@ -159,7 +152,9 @@ export default function InputTable() {
 
   function handleFilterByYear(e: any) {
     e.preventDefault();
-    
+    dispatch(changeOptions(['year', e.target.value]))
+    dispatch(filterInputByOptions())
+    dispatch(totalInput())
   }
 
   function resetAll() {
@@ -251,9 +246,9 @@ export default function InputTable() {
 
             <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
               <option value='default'>Ordenar por año</option>
-              <option>2022</option>
-              <option>2023</option>
-              <option>2024</option>
+              <option value='2022'>2022</option>
+              <option value='2023'>2023</option>
+              <option value='2024'>2024</option>
             </select>
 
           </div>

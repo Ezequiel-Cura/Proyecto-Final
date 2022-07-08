@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 import { registerUser } from './actions/registerUser'
@@ -169,7 +169,7 @@ const reducerSlice = createSlice({
     },
     filterOutputByOptions: (state) => {
       //Year
-      if (state.options.year === '') {
+      if (state.options.year === '' || state.options.year === 'default') {
         state.renderOutputs = state.allOutputs
       } else {
         const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
@@ -180,23 +180,14 @@ const reducerSlice = createSlice({
           state.renderOutputs = [...monthEntries]
         } else {
           const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
+          
           state.renderOutputs = [...monthEntries, ...extraEntries]
         }
       }
       //Month
-      if (state.options.month === '') {
-        return
-      } else {
-        const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
-        const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
-        const extraIndex = state.usuario.extra.output.find((e: Entries) => `${e.date.split('-')[1]}` === state.options.month)
-
-        if (!extraIndex) {
-          state.renderOutputs = [...monthEntries]
-        } else {
-          const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderOutputs = [...monthEntries, ...extraEntries]
-        }
+      if (state.options.month !== '') {
+        const month = state.renderOutputs.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
+          state.renderOutputs = [...month]
       }
       //Frequency
       switch (state.options.frequency) {
@@ -223,34 +214,23 @@ const reducerSlice = createSlice({
       }
     },
     filterInputByOptions: (state) => {
-      if (state.options.year === '') {
+      if (state.options.year === '' || state.options.year === 'default') {
         state.renderInputs = state.allInputs
       } else {
         const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
         const yearEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
         const extraIndex = state.usuario.extra.input.find((e: Entries) => `${e.date.split('-')[0]}` === state.options.year)
-
         if (!extraIndex) {
-          state.renderOutputs = [...yearEntries]
+          state.renderInputs = [...yearEntries]
         } else {
           const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderOutputs = [...yearEntries, ...extraEntries]
+          state.renderInputs = [...yearEntries, ...extraEntries]
         }
       }
       //Month
-      if (state.options.month === '') {
-        return
-      } else {
-        const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
-        const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
-        const extraIndex = state.usuario.extra.input.find((e: Entries) => `${e.date.split('-')[1]}` === state.options.month)
-
-        if (!extraIndex) {
-          state.renderInputs = [...monthEntries]
-        } else {
-          const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderInputs = [...monthEntries, ...extraEntries]
-        }
+      if (state.options.month !== '') {
+        const month = state.renderInputs.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
+          state.renderInputs = [...month]
       }
       //Frequency
       switch (state.options.frequency) {
