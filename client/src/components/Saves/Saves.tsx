@@ -8,6 +8,7 @@ import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  console.log(usuario, "usuario")
 
   const idColor = 0;
 
@@ -16,6 +17,7 @@ export default function Saves() {
     start: string,
     end: string,
     goal?: number,
+    currentAmount: number,
     depositPlace: string,
     currency: string,
   }
@@ -63,7 +65,7 @@ export default function Saves() {
                           <th>{s.end && s.end.split("T")[0]}</th>
                           <th>{s.depositPlace}</th>
                           <th>{s.currency}</th>
-                          <th><div className={style.amount}>$ 000</div></th>
+                          <th><div className={style.amount}>$ {s.currentAmount}</div></th>
                         </tr>
                       </tbody>
                     </table>

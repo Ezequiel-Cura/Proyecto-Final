@@ -1,16 +1,4 @@
 
-<<<<<<< HEAD
-// var requestOptions = {
-//   method: 'GET',
-//   redirect: 'follow',
-//   headers: myHeaders
-// };
-
-//   fetch("https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}", requestOptions)
-//   .then(response => response.text())
-//   .then(result => console.log(result))
-//   .catch(error => console.log('error', error));
-=======
 import { Router, Request, Response } from "express"
 import fetch, { Headers, RequestInit } from 'node-fetch';
 let myHeaders = new Headers();
@@ -45,4 +33,3 @@ router.get("/",  async (req: Request, res: Response) => {
 })
 
 export default router;
->>>>>>> 2482238522a08421594ffd92064691e91c1b0853
