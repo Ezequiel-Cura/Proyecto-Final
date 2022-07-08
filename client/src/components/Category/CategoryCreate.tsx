@@ -39,6 +39,7 @@ export default function CategoryCreate() {
     setMsg('')
     valMsg === '' ? setAllow(true) : setAllow(false)
   }
+
   useEffect(() => {
     handleFormChange()
   }, [form])
@@ -77,7 +78,7 @@ export default function CategoryCreate() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //Form
     e.preventDefault();
     console.log({ form })
-    // dispatch(addCategory(form));
+    dispatch(addCategory(form));
   }
 
   return (
