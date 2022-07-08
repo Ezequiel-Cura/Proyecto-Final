@@ -1,7 +1,7 @@
 import Nav from "components/Nav/Nav";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 import styles from "./Detalles.module.css";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import {  useAppSelector } from "redux/hooks";
 import SearchBar from "components/SearchBar/SearchBar";
 
 // ICONOS
