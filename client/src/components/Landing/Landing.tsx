@@ -19,7 +19,6 @@ export default function Landing() {
   useEffect(()=> {
     if(allReviews.length) {
       let newIndex = Math.floor(Math.random() * allReviews.length)
-      console.log("newIndex: ",newIndex)
       setViewingReview(allReviews[newIndex])
       setIndex(newIndex)
     }

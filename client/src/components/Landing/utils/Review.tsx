@@ -27,7 +27,7 @@ export default function Review({user}: any) {
         <h4 style={{color: "#848282", overflowWrap: "anywhere"}}>"{user?.review?.text}"</h4>
         <div>
         <h2 style={{color: "#6B6666"}}>{user?.firstName}</h2>
-        <Rating value={user?.review?.rating} readOnly/>
+        <Rating value={user?.review?.rating || 0} readOnly/>
         </div>
       </div>
       </>
