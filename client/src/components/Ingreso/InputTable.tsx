@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
@@ -58,6 +58,7 @@ export default function InputTable() {
   interface Value {
     date: string,
     end?: string,
+    type: string,
     description: string,
     category: string,
     amount: number,
@@ -117,17 +118,23 @@ export default function InputTable() {
   //Controllers
 
   // Input & Validate
+  const firstRender = useRef(true)
+
   const [selectKey, setSelectKey] = useState<keySelect>({
     keyInput: '',
   })
+  
+  const [valMsg, setMsg] = useState('')
+  const [valDisabled, setDisabled] = useState(true)
 
   const [input, setInput] = useState<Value>({ // Form inputs
+    type: '',
     category: '',
     description: '',
     amount: 0,
     date: today
   });
-
+  
   let inputForm = {
     type: selectKey.keyInput,
     category: input.category,
@@ -145,9 +152,6 @@ export default function InputTable() {
       date: input.date
     }
   },[input, selectKey])
-
-  const [valMsg, setMsg] = useState('')
-  const [valAllow, setAllow] = useState(false)
   let validate = {
     msg: valMsg,
     allow: valAllow
