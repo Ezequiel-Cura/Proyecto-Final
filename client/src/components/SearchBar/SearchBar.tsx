@@ -18,7 +18,7 @@ export default function SearchBar(){
     setInput(e.target.value);
   }
   
-  function handleClick(e: React.SyntheticEvent){
+  function handleChange(e: React.SyntheticEvent){
     e.preventDefault()
   let inputaux = input.toLowerCase().trim()
   let busqueda = [...extraDate.entries, ...monthly.output].filter((e) => e.description.toLowerCase().includes(inputaux))
@@ -40,16 +40,13 @@ return(
         style={{width: "90%"}}
         type="text"
         placeholder="Busca gastos por su descripción!.."
-        onChange={(e) => inputChange(e)}
+        onChange={(e) =>{
+          inputChange(e)
+          handleChange(e)
+        }}
       />
-      <button
-      onClick={(e) => handleClick(e)}
-        type="submit"
-      >
-        Buscar
-      </button>
       <div>
-      {filtrado.length ?
+      {input.length ?
       filtrado.map((e: any) => (
         <div>
           <span>{e.date.split("T")[0]}</span>
