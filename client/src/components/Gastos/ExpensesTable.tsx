@@ -98,7 +98,6 @@ export default function ExpensesTable() {
   }
 
   function handleSelectI(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e.target.value)
     setSelectKey({
       frequency: e.target.value
     })
