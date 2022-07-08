@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from 'react'
 import Nav from 'components/Nav/Nav'
 import styles from "./Profile.module.css"
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import ImageEditor from './utils/ImageEditor'
 import { updatePersonalInfo } from '../../redux/reducers/userReducer/userReducer'
+import { Rating } from '@mui/material'
+import addReview from 'redux/reducers/userReducer/actions/addReview'
+import { flexbox } from '@mui/system'
+import deleteReview from 'redux/reducers/userReducer/actions/deleteReview'
 
 interface Profile {
     setImageEditor: () => Boolean
@@ -20,9 +24,15 @@ export default function Profile() {
     const [state, setState] = useState({ firstName: "", lastName: "", password: ""})
     const [msg, setMsg] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
+    const [review, setReview] = useState({
+        text: "",
+        rating: 0,
+    })
+    const [hover, setHover] = useState(0);
 
     useEffect(()=>{
     setState({firstName: usuario.firstName,lastName: usuario.lastName,password: ""})
+    setReview(usuario.review)
     },[usuario])
 
     function handleChange(event : React.ChangeEvent<HTMLInputElement>) {
@@ -37,14 +47,7 @@ export default function Profile() {
             setMsg("Tu nombre fue actualizado")
             setTimeout(() => {
                 setMsg("")
-            }, 3000);
-        })
-        .catch(() => {
-            setErrorMsg("No se pudo actualizar")
-            setTimeout(() => {
-                setErrorMsg("")
-            }, 3000);
-        })
+            }, 3000)})
     }
     function updateLastName(){
         dispatch(updatePersonalInfo({key: "lastName", value: state.lastName}))
@@ -53,14 +56,7 @@ export default function Profile() {
             setMsg("Tu apellido fue actualizado")
             setTimeout(() => {
                 setMsg("")
-            }, 3000);
-        })
-        .catch(() => {
-            setErrorMsg("No se pudo actualizar")
-            setTimeout(() => {
-                setErrorMsg("")
-            }, 3000);
-        })
+            }, 3000)})
     }
     
     function updatePassword(){
@@ -70,14 +66,21 @@ export default function Profile() {
             setMsg("Tu contraseña fue actualizada")
             setTimeout(() => {
                 setMsg("")
-            }, 3000);
-        })
-        .catch(() => {
-            setErrorMsg("No se pudo actualizar")
-            setTimeout(() => {
-                setErrorMsg("")
-            }, 3000);
-        })
+            }, 3000)})
+    }
+    function handleReviewChange (event: ChangeEvent<HTMLTextAreaElement>) {
+        setReview({...review, [event.target.name] : event.target.value})
+    }
+
+    const uploadReview = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        if (review.text.length > 200) return
+        if (review.rating > 5 || review.rating < 0) return
+        dispatch(addReview(review))
+    }
+
+    function handleDeleteReview () {
+        dispatch(deleteReview())
     }
 
   return (
@@ -86,7 +89,33 @@ export default function Profile() {
         {
             imageEditor && <ImageEditor setImageEditor={setImageEditor}/>
         }
-        <div className={styles.infoWrapper}>
+        <div className={styles.leftInfoWrapper}>
+            <h1 style={{fontSize: "3rem", fontWeight: "200", marginBottom: "20px"}}>Cuenta</h1>
+            <div className={styles.reseñas}>
+                <h3 style={{backgroundColor: "#2E332C", padding:"4px",marginBottom: "10px" , color: "#797979"}}>Deja una reseña !</h3>
+                <form onSubmit={uploadReview}>
+                <label htmlFor='review'>{usuario.review ? "Modifica tu reseña" : "escribe tu primer reseña"}:</label>
+                <textarea maxLength={200} className={styles.reviewInput} id='review' name='text' placeholder="Coloque aqui su reseña" value={review?.text || ""} onChange={handleReviewChange}/>
+                <div style={{display: "flex", justifyContent:"space-between"}}>
+                    <div>
+                        <label htmlFor='rating'>Calificacion:</label>
+                        <Rating id='rating' name="rating" value={review?.rating || 0} style={{display: "flex", alignItems: "center"}}
+                            onChange={(event, newValue: any) => {
+                                setReview({...review, rating: newValue})
+                            }}/>
+                    </div>
+                    <div style={{display: "flex", gap: "5px"}}>
+                    <button type='button' className={styles.reviewDeleteButton} onClick={handleDeleteReview}>Borrar</button>
+                    <button className={styles.reviewSendButton}>Enviar</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div className={styles.soporte}>
+
+            </div>
+        </div>
+        <div className={styles.rightInfoWrapper}>
             <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
             <div className={styles.infoContainer}>
                 { msg && <h1 className={styles.msg}>{msg}</h1>}

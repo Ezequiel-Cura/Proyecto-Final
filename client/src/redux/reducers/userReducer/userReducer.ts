@@ -10,11 +10,11 @@ import { addDato } from './actions/addDato'
 import { deleteDato } from './actions/deleteDato'
 import { addCategory } from './actions/addCategory'
 import { deleteCategory } from './actions/deleteCategory'
-
 import { getCurrency } from "./actions/getCurrency";
-
 import { addSaving } from './actions/addSaving'
 import { deleteSaving } from './actions/deleteSaving'
+import addReview from "./actions/addReview";
+import deleteReview from "./actions/deleteReview";
 
 
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
@@ -45,7 +45,27 @@ interface Entries {
   amount: number
 }
 interface User {
-  usuario: any
+  usuario: any,
+  // {
+  //   firstName: string
+  //   lastName: string
+  //   email: string
+  //   password: string
+  //   savings: []
+  //   monthly: {
+  //     input: [],
+  //     output: []
+  //   },
+  //   extra: {
+  //     input: [],
+  //     output: []
+  //   },
+  //   categories: [],
+  //   review: {
+  //     text: string
+  //     rating: number
+  //   }
+  // }
   status: 'idle' | 'loading' | 'success' | 'failed'
   allInputs: Entries[] | [],
   allOutputs: Entries[] | [],
@@ -59,13 +79,15 @@ interface User {
 
 const initialState: User = {
   usuario: {
-    _id: '',
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     savings: [],
-
+    review: {
+      text: "",
+      rating: 0
+    },
     monthly: {
       input: [],
       output: []
@@ -376,6 +398,26 @@ const reducerSlice = createSlice({
       state.dataCurrency = payload
     },
     [getCurrency.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [addReview.pending]: (state) => {
+      state.status = "loading"
+    },
+    [addReview.fulfilled]: (state, { payload }) => {
+      state.status = "success"
+      state.usuario.review = payload
+    },
+    [addReview.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [deleteReview.pending]: (state) => {
+      state.status = "loading"
+    },
+    [deleteReview.fulfilled]: (state) => {
+      state.status = "success"
+      state.usuario.review = undefined
+    },
+    [deleteReview.rejected]: (state) => {
       state.status = "failed"
     },
   }
