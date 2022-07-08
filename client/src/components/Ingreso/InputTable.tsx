@@ -17,7 +17,7 @@ export default function InputTable() {
   const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
   //-----------------------------------
 
-  // Categories
+
   //Selects/button
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
@@ -66,7 +66,6 @@ export default function InputTable() {
   interface Value {
     date: string,
     end?: string,
-    type: string,
     description: string,
     category: string,
     amount: number,
@@ -100,11 +99,9 @@ export default function InputTable() {
     }
   }
   //---------------------------------
-
   // Variables & States
   const dispatch = useAppDispatch();
   const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
-
 
 
   const [open, setOpen] = useState<boolean>(false);
@@ -125,52 +122,48 @@ export default function InputTable() {
 
   //Controllers
 
-  // Input & Validate
-  const firstRender = useRef(true)
 
+  
+  
   const [selectKey, setSelectKey] = useState<keySelect>({
     keyInput: '',
   })
-  
-  const [valMsg, setMsg] = useState('')
-  const [valDisabled, setDisabled] = useState(true)
-
   const [input, setInput] = useState<Value>({ // Form inputs
-    type: '',
     category: '',
     description: '',
     amount: 0,
     date: today
   });
+
+    // Validate
+    const firstRender = useRef(true)
+
+    const [valMsg, setMsg] = useState('')
+    const [valDisable, setDisabled] = useState(true)
   
-  let inputForm = {
-    type: selectKey.keyInput,
-    category: input.category,
-    description: input.description,
-    amount: input.amount,
-    date: input.date
-  }
+    useEffect(() => {
+      if (firstRender.current === true) {
+        firstRender.current = false
+        return
+      }
+      
+      setDisabled(validateFunc())
+  
+    }, [input, selectKey])
+  
+    const validateFunc = () => {
+      !selectKey.keyInput ? setMsg('Proporcione un tipo') :
+      !input.category ? setMsg('Proporcione una categoria') :
+      !input.description ? setMsg('Proporcione una descripcion') :
+      !input.amount ? setMsg('Proporcione un monto') : 
+      setMsg('')
 
-  useEffect(() => {
-    inputForm = {
-      type: selectKey.keyInput,
-      category: input.category,
-      description: input.description,
-      amount: input.amount,
-      date: input.date
+      return valMsg === '' ? false : true
     }
-  },[input, selectKey])
-  let validate = {
-    msg: valMsg,
-    allow: valAllow
-  }
-  useEffect(() => {
-    validate = {
-      msg: valMsg,
-      allow: valAllow
-    }
-  }, [valMsg, valAllow])
-
+    
+      
+    
+    //-----------------------------------
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input changer
     setInput({
@@ -178,20 +171,6 @@ export default function InputTable() {
       [e.target.name]: e.target.value
     })
   }
-
-  const validateHandler = () => {
-    !inputForm.type ? setMsg('Proporcione un tipo') :
-    !inputForm.category ? setMsg('Proporcione una categoria') :
-    !inputForm.description ? setMsg('Proporcione una descripcion') :
-    !inputForm.amount ? setMsg('Proporcione un monto') : 
-    setMsg('')
-
-    validate.msg === '' ? setAllow(true) : setAllow(false)
-  }
-  
-
-  //-----------------------------------
-  
   function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
       ...selectKey,
@@ -218,19 +197,10 @@ export default function InputTable() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
-    console.log('submit', validate.allow)
+    console.log('submit')
     e.preventDefault();
-    if(validate.allow){
-      setInput({
-        category: '',
-        description: '',
-        amount: 0,
-        date: today
-      })
-      setSelectKey({
-        keyInput: ''
-      })
-      console.log(form)
+    
+    console.log(form)
       
     // dispatch(addDato(form));
     // setInput({
@@ -243,7 +213,7 @@ export default function InputTable() {
     //   keyInput: ''
     // })
   }
-  }
+  
   //---------------------------------
 
 
@@ -484,12 +454,12 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
-                <button type='submit'>Agregar</button>
+                <button type='submit' disabled={valDisable}>Agregar</button>
               </div>
             </form>
 
             {/* Error Display */}
-            <span id='validateError'>{validate.msg}</span>
+            <span id='validateError'>{valMsg}</span>
 
             {/* Category Creation */}
             {
