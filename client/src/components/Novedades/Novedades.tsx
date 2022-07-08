@@ -30,7 +30,7 @@ export default function Novedades() {
                 }else{
                   return (
                     <div key={i} className={styles.newsCard}>
-                      <a href={e.url} target="_blank" >
+                      <a href={e.url} target="_blank" rel="noreferrer">
                         <img src={e.urlToImage} alt="" className={styles.img_news}/>
                         <h4>{e.title} </h4>
                         <span> {e.publishedAt.split("T")[0]} </span>
