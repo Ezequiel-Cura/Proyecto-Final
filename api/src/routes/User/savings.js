@@ -14,21 +14,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const User_1 = __importDefault(require("../../models/User"));
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const router = (0, express_1.Router)();
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, value } = req.body;
+router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { value } = req.body;
+    const id = req.userId;
     try {
         const user = yield User_1.default.findById(id);
         if (!user) {
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
-            user.Saving.push(value);
+            user.savings.push(value);
             yield user.save();
             res.status(200).send(user);
         }
     }
     catch (err) {
+        console.log(err);
         res.status(400).send(err.message);
     }
 }));

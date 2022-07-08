@@ -7,31 +7,20 @@ import User from "../../models/User";
 const router = Router()
 
 router.delete("/", authorization, async (req: any, res: Response) => {
-
-  const { key, value } = req.body
-
+  // router.delete("/", async (req: any, res: Response) => {
+  const { _id } = req.body
   const id = req.userId
+  // const id = "62c0a45f6ffc62c777c647de"
+
   try {
     const user = await User.findById(id)
-    if (!user) {
-      res.status(404).send(`No se encontró al usuario con id: ${id}`)
-    } else {
-      const { email, firstName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user
-      if (key === 'CategoriesExpenses') {
 
-        const index = user.CategoriesExpenses.indexOf(value)
-        user.CategoriesExpenses.splice(index, 1)
-        await user.save()
-        res.status(200).send({ email, firstName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs })
-     
-      } else if (key === 'CategoriesInputs') {
-        
-        const indexIn = user.CategoriesInputs.indexOf(value)
-        user.CategoriesExpenses.splice(indexIn, 1)
-        await user.save()
-        res.status(200).send({ email, firstName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs })
-      }
-    }
+    if (!user) return res.status(404).send(`No se encontró al usuario con id: ${req.userId}`)
+
+    await user.categories.remove({"_id": new ObjectId(_id)})
+    await user.save()
+    res.status(200).send(user) 
+    
   }
   catch (err) {
     console.log(err)

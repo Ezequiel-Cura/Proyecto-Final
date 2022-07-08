@@ -1,7 +1,7 @@
 import Nav from "components/Nav/Nav";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 import styles from "./Detalles.module.css";
-import { useAppSelector } from "redux/hooks";
+import {  useAppSelector } from "redux/hooks";
 import SearchBar from "components/SearchBar/SearchBar";
 
 // ICONOS
@@ -27,42 +27,48 @@ import {
   totalOther,
 } from "./Controladores";
 
+
 export default function Detalles() {
+  const status = useAppSelector((state)=>state.user.status)
   const usuario = useAppSelector((state) => state.user.usuario);
 
+  const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
+ 
   const styleBar = {
     border: "2px solid white",
     borderRadius: "10px",
     overflow: "hidden",
     display: "flex",
   };
+
+
   function calculate() {
-    const ingresos = usuario?.Account.extraInput.reduce((prev, actual) => {
+
+    let ingresos = status === "success" && usuario?.extra.input?.find((e:any)=>e.date === date)
+    ingresos = ingresos ? ingresos.entries?.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
-    }, 0);
-    const ingresosFijos = usuario?.Account.monthlyInput.reduce(
-      (prev, actual) => {
-        return prev + actual.amount;
-      },
-      0
-    );
-
-    const gastos = usuario?.Account.variableExpenses.reduce((prev, actual) => {
+    }, 0) : 0
+    
+    let gastos = status === "success" && usuario.extra.output?.find((e:any)=>e.date === date)
+    gastos = gastos ? gastos.entries.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
-    }, 0);
-    const gastosFijos = usuario?.Account.monthlyExpenses.reduce(
-      (prev, actual) => {
+    }, 0) : 0
+
+    const ingresosFijos = usuario?.monthly.input.reduce(
+      (prev: any, actual: any) => {
         return prev + actual.amount;
-      },
-      0
-    );
+    },0);
 
-    const totalGastos = gastos + gastosFijos;
-    const totalIngresos = ingresos + ingresosFijos;
+    const gastosFijos = usuario?.monthly?.output.reduce(
+      (prev: any, actual: any) => {
+        return prev + actual.amount;
+    },0);
 
-    const total = totalGastos + totalIngresos;
-    const porcentajeGastos = Math.round((totalGastos * 100) / total);
-    const porcentajeIngreso = 100 - porcentajeGastos;
+    const totalGastos = gastos + gastosFijos;       // 800
+    const totalIngresos = ingresos + ingresosFijos; // 1000 + 1000
+    const porcentajeGastos = Math.round((totalGastos * 100) / totalIngresos)
+    const porcentajeIngreso = 100 - porcentajeGastos
+
     return { porcentajeGastos, porcentajeIngreso };
   }
 
@@ -79,26 +85,25 @@ export default function Detalles() {
   };
 
   const data1 = () => {
-    const gastos = usuario.Account.variableExpenses.reduce((prev, actual) => {
+    let gastos = status === "success" && usuario.extra.output?.find((e:any)=>e.date === date)
+    gastos = gastos ? gastos.entries.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
-    }, 0);
-    const gastosFijos = usuario?.Account.monthlyExpenses.reduce(
-      (prev, actual) => {
+    }, 0) : 0
+    const gastosFijos = usuario?.monthly?.output.reduce(
+      (prev: any, actual: any) => {
         return prev + actual.amount;
-      },
-      0
-    );
+    },0);
+    
     const total = gastos + gastosFijos
-    console.log(total)
-    let data1 = usuario?.Account.variableExpenses.reduce((c, v) => {
+    let data1 = usuario?.extra.output.find((e:any)=>e.date === date)
+    data1 = data1 ? data1.entries.reduce((c: any, v: any) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
-    }, {});
-    let data2 = usuario?.Account.monthlyExpenses.reduce((c, v) => {
+    }, {}) : 0
+    let data2 = usuario?.monthly.output.reduce((c: any, v: any) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
     }, {})
-  
     const data = [];
 
     for (const key in data1) {
@@ -115,10 +120,11 @@ export default function Detalles() {
         unit: "%",
       })
     }
-    const ulData = data.reduce((c, v) => {
+    const ulData = data.reduce((c: any, v: any) => {
       c[v.name] = (c[v.name] || 0) + v.value;
       return c;
     }, {})
+    console.log(ulData)
     const elData = []
     for (const key in ulData) {
      elData.push({
@@ -127,9 +133,10 @@ export default function Detalles() {
         unit: "%",
      })
     }
+    console.log(elData)
     return elData;
   };
-  const labelFormatter = ({ value }) => {
+  const labelFormatter = ({ value }: any) => {
     return value + "%";
   };
   

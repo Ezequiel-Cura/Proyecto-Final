@@ -18,7 +18,7 @@ server.use(body_parser_1.default.json());
 server.use((0, cookie_parser_1.default)());
 server.use((0, morgan_1.default)("dev"));
 server.use((0, cors_1.default)({
-    origin: ["http://localhost:3000", process.env.FRONT_URL, process.env.FRONT_URL1, process.env.FRONT_URL2],
+    origin: [process.env.FRONT_URL, process.env.FRONT_URL1, process.env.FRONT_URL2],
     methods: ["POST", "PUT", "GET", "DELETE"],
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
     credentials: true

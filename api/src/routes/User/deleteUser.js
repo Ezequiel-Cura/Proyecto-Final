@@ -15,18 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.delete("/user", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.query;
     User_1.default.findByIdAndDelete(id)
         .then((user) => {
+        console.log(user);
         if (user) {
-            res.status(200).send(`Usuario ${user} eliminado`);
+            return res.status(200).send(`Usuario ${user} eliminado`);
         }
         else {
-            res.status(404).send(`Usuario ${user} eliminado`);
+            console.log(user);
+            return res.status(404).send(`Usuario ${user} eliminado`);
         }
     })
-        .catch(() => {
+        .catch((e) => {
         res.status(400).send('Error en protocolo de borrado');
     });
 }));

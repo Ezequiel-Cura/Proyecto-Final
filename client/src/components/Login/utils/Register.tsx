@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
-import styles from "../Landing.module.css"
+import React, { useEffect, useState } from 'react'
+import styles from "../index.module.css"
 import { Link, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { googleLogin, registerUser } from "redux/reducers/userReducer"
+import { registerUser } from "redux/reducers/userReducer/actions/registerUser"
 import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
+import { googleLogin } from 'redux/reducers/userReducer/actions/googleLogin'
 
 export default function Register() {
   const navigate = useNavigate()
+  const [registeredMsg, setRegisteredMsg] = useState("")
   const SignupSchema = Yup.object().shape({
     firstName: Yup.string().max(30, 'Re largo tu nombre').required("Tu nombre es requerido"),
     lastName: Yup.string().max(30, 'Re largo tu apellido').required("Tu apellido es requerido"),
@@ -42,7 +44,7 @@ export default function Register() {
           return dispatch(registerUser(values))
           .then((resp: any) => {
               if (resp.error) return setFieldError("email", resp.payload)
-              window.location.reload()
+              setRegisteredMsg(resp.payload.message)
           })}}>
         {() => (
             <Form className={styles.form}>
@@ -54,10 +56,11 @@ export default function Register() {
             <ErrorMessage className={styles.errorMessage} name="email" component="span"/>
             <Field className={styles.input} name="password" type="password" placeholder="Contraseña"/>
             <ErrorMessage className={styles.errorMessage} name="password" component="span"/>
+            {registeredMsg && <h3 style={{color: "lightGreen", textAlign: "center", margin: "5px 0px"}}>{registeredMsg}</h3>}
             <div className={styles.buttons}>
               <div style={{display: "flex", marginTop: "2px", flexDirection: "row", alignItems: "top"}}>
                 <h4 style={{margin: "0px"}}>Ya tienes cuenta?</h4>
-                <Link to="/" state={{registered: true}} style={{marginLeft: "3px", textDecoration: 'none', color: "var(--btn-color)"}}>Inicia Sesión</Link>
+                <Link to="/login" state={{registered: true}} style={{marginLeft: "3px", textDecoration: 'none', color: "var(--btn-color)"}}>Inicia Sesión</Link>
               </div>
             </div>
             <button type="submit" className={styles.button}>Registrarme</button>

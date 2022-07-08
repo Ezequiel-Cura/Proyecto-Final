@@ -3,45 +3,50 @@ import styles from "./Tables.module.css";
 import stylesPag from "./Pagination.module.css"
 import Nav from "../Nav/Nav";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-
-//Actions
-import { addDato, deleteDato, getAllInputs, inputsFilterByMonth, inputsOrderByAmount, inputsFilterByFrequency, filterInputByCategory, totalInput, addCategory, deleteCategory } from "redux/reducers/userReducer";
+import { totalInput, renderInput, inputsOrderByAmount, changeOptions, filterInputByOptions, clearChangeOptions } from "redux/reducers/userReducer/userReducer";
+import { addDato } from 'redux/reducers/userReducer/actions/addDato'
+import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
+import PopUp from 'components/Saves/Form/PopUp';
+import CategoryCreate from 'components/Category/CategoryCreate';
 
 export default function InputTable() {
-  const { usuario, allInputs, totalInputsMonth, status } = useAppSelector(state => state.user);
+
+  const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+
+  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
-      dispatch(getAllInputs())
+      dispatch(renderInput(date))
       dispatch(totalInput())
-    }
-  }, [status])
+      dispatch(clearChangeOptions())
+    };
+  }, [status, date, dispatch])
 
   //Typescript
   interface Value {
+    date: string,
+    end?: string,
     description: string,
+    category: string,
     amount: number,
-    category?: string,
-    date?: string,
-    _id?: string,
-    source?: string
+    frequency?: string
   }
   interface AgregarIngresos {
     id?: string,
+    frequency: string,
     key: string,
     value: Value,
   }
 
   //Delete
-  interface idUndefined {
-    _id: string | undefined
-  }
 
   interface accountParameter {
     id?: string,
-    key: string | undefined,
-    value: idUndefined
+    type: string,
+    frequency: string,
+    value: any
   }
 
   interface keySelect {
@@ -59,10 +64,7 @@ export default function InputTable() {
     keyInput: '',
   })
 
-  const form: AgregarIngresos = {
-    key: selectKey.keyInput,
-    value: input,
-  }
+  const [open, setOpen] = useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
@@ -79,16 +81,21 @@ export default function InputTable() {
   }
 
   function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
+    console.log(e.target.value, 'categorrrrri')
     setInput({
       ...input,
       category: e.target.value
     })
   }
 
-  //Form
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) { 
+  const form: AgregarIngresos = {
+    frequency: selectKey.keyInput,
+    key: 'input',
+    value: input,
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-    console.log(form, 'form')
     dispatch(addDato(form));
     setInput({
       category: '',
@@ -102,47 +109,14 @@ export default function InputTable() {
   }
 
   //Form de categorias
-  interface category {
-    id?: string,
-    key: string | undefined,
-    value: string
-  }
 
-  const [formCategory, setFormCategory] = useState<category>({
-    key: 'CategoriesInputs',
-    value: ''
-  })
-
-  function handleChangeCategory(e: React.ChangeEvent<HTMLInputElement>){
-    setFormCategory({
-      ...formCategory,
-      value: e.target.value
-    })
-  }
-
-  function handleSubmitCategory(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log(formCategory)
-    dispatch(deleteCategory(formCategory))
-  }
-
-  //Form DELETE categorias
-  const [formCategoryDelete, setFormCategoryDelete] = useState<category>({
-    key: 'CategoriesInputs',
-    value: ''
-  })
-
-  function handleChangeCategoryDelete(e: any){
-    setFormCategoryDelete({
-      ...formCategoryDelete,
-      value: e.target.value
-    })
-  }
-
-  function handleSubmitCategoryDelete(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log(formCategoryDelete)
-    dispatch(deleteCategory(formCategoryDelete))
+  interface Category {
+    name: string,
+    frequency: string,
+    type: string,
+    _id: {
+      $oid: string
+    }
   }
 
 
@@ -153,7 +127,9 @@ export default function InputTable() {
 
   function filterByMonth(e: any) {
     e.preventDefault();
-    dispatch(inputsFilterByMonth(e.target.value))
+    dispatch(changeOptions(['month', e.target.value]))
+    dispatch(filterInputByOptions())
+    dispatch(totalInput())
   }
 
   function handleOrderAmount(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -161,31 +137,43 @@ export default function InputTable() {
     dispatch(inputsOrderByAmount(e.target.value))
   }
 
-  function handleOrderByCategories(e: any) {
+  function handleOrderByCategories(e: any) {                              //--------!!!
     e.preventDefault();
-    dispatch(filterInputByCategory(e.target.value));
+    dispatch(changeOptions(['category', e.target.value]))
+    dispatch(filterInputByOptions());
+    dispatch(totalInput())
   }
 
-  function handleOrderByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleFilterByFrequency(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
-    dispatch(inputsFilterByFrequency(e.target.value))
+    dispatch(changeOptions(['frequency', e.target.value]))
+    dispatch(filterInputByOptions())
+    dispatch(totalInput())
   }
 
-  function handleRefresh(e: any) {
+  function resetAll() {
+    (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default'
+  }
+
+  function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    dispatch(getAllInputs())
+    dispatch(renderInput(date))
+    dispatch(totalInput())
+    dispatch(clearChangeOptions())
+    return resetAll()
   }
 
   //Paginado
   const [page, setPage] = useState(1);
-  const [inputsPerPage, setinputsPerPage] = useState(5);
+  const [inputsPerPage, ] = useState(6);
 
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, ] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
   const pageNumber = [];
-  for (let i = 1; i <= Math.ceil(allInputs.length / inputsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(renderInputs.length / inputsPerPage); i++) {
     pageNumber.push(i)
   }
 
@@ -212,94 +200,101 @@ export default function InputTable() {
   }
 
   return (
-    <div style={{display: "grid", gridTemplateColumns: "178px 1fr"}}>
+    <div style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
       <Nav />
       <div className={styles.background}>
         <div className={styles.wrapperAllIngreso}>
+
           <div className={styles.title}>
             <h1>Tus Ingresos </h1>
           </div>
+
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
-              <option>Ordenar por monto</option>
+              <option value='default'>Ordenar por monto</option>
               <option value='mayorAMenor'>De mayor a menor</option>
               <option value='menorAMayor'>De menor a mayor</option>
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByCategories(e)}>
-              <option>Ordenar por categoria</option>
+
+            <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)}>
+              <option value='default'>Ordenar por categoria</option>
               {
-                usuario.CategoriesInputs.length > 0
-                  ? usuario.CategoriesInputs.map((category: string) => (<option value={category}>{category}</option>))
-                  : <option value="Otros"></option>
+                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map( undefinedCategory => {
+                  return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                })
               }
+              { usuario.categories.length > 0 &&
+                usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
+                  return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
+              })
+              }
+              <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
             </select>
-            <select value='Ordenar' onChange={(e) => handleOrderByFrequency(e)}>
-              <option>Ordenar por frecuencia</option>
-              <option value='fijo'>Ingreso Fijo</option>
-              <option value='extra'>Ingreso Extra</option>
+
+            <select id='selectFrequency' onChange={(e) => handleFilterByFrequency(e)}>
+              <option value='default'>Ordenar por frecuencia</option>
+              <option value='monthly'>Ingreso fijo</option>
+              <option value='extra'>Ingreso extra</option>
             </select>
+
           </div>
 
           <div className={styles.allMonths}>
             <div className={styles.monthCard}>
-              <button value='01' className={styles.month} id="Enero" onClick={(e) => filterByMonth(e)}>Enero</button>
-              <button value='02' className={styles.month} id="Febrero" onClick={(e) => filterByMonth(e)}>Febrero</button>
-              <button value='03' className={styles.month} id="Marzo" onClick={(e) => filterByMonth(e)}>Marzo</button>
-              <button value='04' className={styles.month} id="Abril" onClick={(e) => filterByMonth(e)}>Abril</button>
-              <button value='05' className={styles.month} id="Mayo" onClick={(e) => filterByMonth(e)}>Mayo</button>
-              <button value='06' className={styles.month} id="Junio" onClick={(e) => filterByMonth(e)}>Junio</button>
-              <button value='07' className={styles.month} id="Julio" onClick={(e) => filterByMonth(e)}>Julio</button>
-              <button value='08' className={styles.month} id="Agosto" onClick={(e) => filterByMonth(e)}>Agosto</button>
-              <button value='09' className={styles.month} id="Septiembre" onClick={(e) => filterByMonth(e)}>Septiembre</button>
-              <button value='10' className={styles.month} id="Octubre" onClick={(e) => filterByMonth(e)}>Octubre</button>
-              <button value='11' className={styles.month} id="Noviembre" onClick={(e) => filterByMonth(e)}>Noviembre</button>
-              <button value='12' className={styles.month} id="Diciembre" onClick={(e) => filterByMonth(e)}>Diciembre</button>
+              {
+                ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
+                  (month, i) => {
+                    return( <button value={i < 10 ? `0${i+1}` : `${i+1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                  )}
+                )
+              }
             </div>
             <div className={styles.annualCard}>
-              <button className={styles.annual} onClick={handleRefresh}>Refresh</button>
+              <button type='reset' className={styles.annual} onClick={handleRefresh}>Refresh</button>
             </div>
           </div>
 
           <table className={styles.table}>
             <thead className={styles.head}>
               <tr>
-                <th></th>
-                <th>Fecha</th>
+                <th>Frecuencia</th>
+              <th>Fecha</th>
                 <th>Categoria</th>
                 <th>Descripción</th>
                 <th>Monto</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {allInputs.length > 0 ? allInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: Value) => {
+              {renderInputs?.length > 0 ? renderInputs.slice((page - 1) * inputsPerPage, (page - 1) * inputsPerPage + inputsPerPage).map((detalles: any) => {
                 return (
-                  detalles.source === 'monthlyInput'
-                    ? (<tr className={styles.monthlyInput}>
-                      <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
-                      <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                      <th>{detalles.category ? detalles.category : "-"}</th>
-                      <th>{detalles.description}</th>
-                      <th>$ {detalles.amount}</th>
-                    </tr>)
-                    : (
-                      <tr>
-                        <th><button onClick={() => handleDelete({ id: usuario._id, key: detalles.source, value: { _id: detalles._id } })}></button></th>
-                        <th>{detalles.date && detalles.date.split("T")[0]}</th>
-                        <th>{detalles.category ? detalles.category : "-"}</th>
-                        <th>{detalles.description}</th>
-                        <th>$ {detalles.amount}</th>
-                      </tr>
-                    )
-                )
-              })
-                : <></>
+                  detalles.frequency === 'monthly' ?
+                  <tr className={styles.monthlyInput} key={detalles._id}>
+                    <th>Ingreso fijo</th>
+                    <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                    <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
+                    <th>{detalles.description}</th>
+                    <th>$ {detalles.amount}</th>
+                    <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                  </tr>
+                  : <tr key={detalles._id}>
+                    <th>Ingreso extra</th>
+                  <th>{detalles.date && detalles.date.split("T")[0]}</th>
+                  <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
+                  <th>{detalles.description}</th>
+                  <th>$ {detalles.amount}</th>
+                  <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                </tr>
+                  )
+              }) : <></>
               }
               <tr>
-                <th className={styles.lastBox}></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
                 <th className={styles.totalAmount}><b>Total: ${totalInputsMonth}</b></th>
+                <th className={styles.lastBox}></th>
               </tr>
             </tbody>
           </table>
@@ -309,80 +304,90 @@ export default function InputTable() {
             {indice}
             <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
           </div>
-          
+
           <div className={styles.wrapperForms}>
-          <form onSubmit={handleSubmit}>
-            <div className={styles.form}>
-              <select value={selectKey.keyInput} onChange={handleSelectInputs}>
-                <option>Selecciona el tipo</option>
-                <option value='monthlyInput'>Ingreso fijo</option>
-                <option value='extraInput'>Ingreso extra</option>
-              </select>
+            <form onSubmit={handleSubmit}>
+              <div className={styles.form}>
+                <select value={selectKey.keyInput} onChange={handleSelectInputs}>
+                  <option>Selecciona el tipo</option>
+                  <option value='monthly'>Ingreso fijo</option>
+                  <option value='extra'>Ingreso extra</option>
+                </select>
 
-              <select value={input.category} onChange={handleSelectCategories}>
-                <option>Selecciona una categoría</option>
-                {usuario.CategoriesInputs.length > 0
-                  ? usuario.CategoriesInputs.map((category: string) =>
-                    (<option value={category}>{category}</option>))
-                  : (<option value="Otros">Otros</option>)
+                <select value={input.category} onChange={handleSelectCategories}>
+                  <option>Selecciona una categoría</option>
+                  {
+                    selectKey.keyInput ?
+                      selectKey.keyInput === 'monthly'
+                        ? ['Salario', 'Préstamo'].map(montInput => {
+                          return (<option value={montInput}>{montInput}</option>)
+                        })
+                        : ['Changa', 'Herencia', 'Encontrado', 'Préstamo'].map(extraInput => {
+                          return (<option value={extraInput}>{extraInput}</option>)
+                        })
+                      : ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
+                        return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+                      })
                   }
-              </select>
-
-              <input
-                type='text'
-                name='description'
-                value={input.description}
-                placeholder='Agrega una descripción'
-                onChange={handleChange}
-              >
-              </input>
-              <label>$</label>
-              <input
-                type='number'
-                name='amount'
-                min='0'
-                value={input.amount}
-                placeholder='Monto'
-                onChange={handleChange}
-                className={styles.amount}
-              >
-              </input>
-              <input
-                type='date'
-                name='date'
-                value={input.date}
-                placeholder='Agrega una fecha'
-                onChange={handleChange}
-              >
-              </input>
-              <button type='submit'>Agregar</button>
-            </div>
-          </form>
-          <form onSubmit={handleSubmitCategory}>
-          <div className={styles.form2}>
-            <label>Elige las categorias por default o crea una: </label>
-              <input
+                  { selectKey.keyInput ?
+                  usuario.categories.length > 0 
+                  && selectKey.keyInput === 'monthly'
+                    ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
+                      return (
+                      <option value={montInput.name} key={i}>{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
+                    })
+                    : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
+                      return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
+                    })
+                    :  usuario.categories.length > 0 
+                    && usuario.categories.map((allInputs: Category, i: number) => {
+                      return (<option value={allInputs.name} key={i}>{allInputs.name.charAt(0).toUpperCase() + allInputs.name.slice(1).toLowerCase()}</option>)})
+                  }
+                       <option value='Crear' className={styles.Crear}>Crear</option>
+                </select>
+                <input
                   type='text'
-                  name='value'
-                  placeholder='Agrega el nombre'
-                  onChange={handleChangeCategory}
-                  >
-              </input>
-              <button type='submit'>Crear</button>
-          </div>
-          </form>
-          <div>
-            <form onSubmit={handleSubmitCategoryDelete}>
-              <select value={formCategoryDelete.value} onChange={handleChangeCategoryDelete}>
-                {usuario.CategoriesInputs.length > 0
-                ? usuario.CategoriesInputs.map((category: string) =>
-                  (<option value={category}>{category}</option>))
-                : (<option value="Otros">Otros</option>)
-                }
-              </select>
-              <button type='submit'>Delete</button>
+                  name='description'
+                  value={input.description}
+                  placeholder='Agrega una descripción'
+                  onChange={handleChange}
+                >
+                </input>
+                <label>$</label>
+                <input
+                  type='number'
+                  name='amount'
+                  min='0'
+                  value={input.amount}
+                  placeholder='Agrega un monto'
+                  onChange={handleChange}
+                  className={styles.amount}
+                >
+                </input>
+                <input
+                  type='date'
+                  name='date'
+                  value={input.date}
+                  placeholder='Agrega una fecha'
+                  onChange={handleChange}
+                >
+                </input>
+                <button type='submit'>Agregar</button>
+              </div>
             </form>
-          </div>
+            {
+                    input.category === 'Crear' 
+                    && (<div className={styles.CrearDiv}>
+                      <button onClick={() => setOpen(!open)} className={styles.CrearButton}>Agregar una nueva categoría</button>
+                    <PopUp
+                      open={open} 
+                      setOpen={setOpen}
+                      onClick={() => setOpen(open)}
+                      title="Completa para agregar una categoría!">
+                      <CategoryCreate/>
+                    </PopUp>
+                    </div> )
+                  }
           </div>
         </div>
       </div>

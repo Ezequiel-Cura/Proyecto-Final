@@ -14,17 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const mongodb_1 = require("mongodb");
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, value } = req.body;
+router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { value } = req.body;
+    const id = req.userId;
     try {
+        const id = req.userId;
         const user = yield User_1.default.findById(id);
         if (!user) {
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
-            user.Saving.remove({ "_id": new mongodb_1.ObjectId(value._id) });
+            user.savings.remove({ "_id": new mongodb_1.ObjectId(value._id) });
             yield user.save();
             res.status(200).send(user);
         }

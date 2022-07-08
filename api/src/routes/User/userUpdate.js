@@ -17,13 +17,16 @@ const authorization_1 = __importDefault(require("../../middleware/authorization"
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.put("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.userId;
     try {
         const { key, value } = req.body;
-        const result = yield User_1.default.updateOne({ _id: req.userId }, { $set: { [key]: value } });
-        const user = yield User_1.default.findById(req.userId).select({ _id: 0, [key]: 1 });
-        result
-            ? res.status(200).send({ key, value: user[key] })
-            : res.status(304).send("Failed update");
+        const result = yield User_1.default.updateOne({ _id: id }, { $set: { [key]: value } });
+        const user = yield User_1.default.findById(id).select({ _id: 0, [key]: 1 });
+        if (user) {
+            result
+                ? res.status(200).send({ key, value: user[key] })
+                : res.status(304).send("Failed update");
+        }
     }
     catch (error) {
         res.status(400).send(error.message);

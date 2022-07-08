@@ -13,18 +13,21 @@ import deleteUser from './deleteUser'
 import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
 import savingsDelete from './savingsDelete'
+import review from "./review"
 
 router.use('/login', login)
+router.use('/register', register)
 router.use('/googleLogin', googleLogin)
 router.use('/logout', logout)
 router.use('/getUserInfo', getUserInfo)
-router.use('/account', accountAdd)
-router.use('/category', categoryAdd)
-router.use('/saving', savings)
-router.use('/register', register)
 router.use('/update', userUpdate)
-router.use('/account', accountDelete)
-router.use('/category', categoryDelete)
 router.use('/delete', deleteUser)
+router.use('/account', accountAdd)
+router.use('/account', accountDelete)
+router.use('/category', categoryAdd)
+router.use('/category', categoryDelete)
+router.use('/savings', savings)
+router.use('/savings', savingsDelete)
+router.use("/review", review)
 
 export default router

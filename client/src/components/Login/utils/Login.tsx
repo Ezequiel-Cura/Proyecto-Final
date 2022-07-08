@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import styles from "../Landing.module.css"
+import styles from "../index.module.css"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
-import { googleLogin, loginUser } from "redux/reducers/userReducer"
+import { googleLogin } from '../../../redux/reducers/userReducer/actions/googleLogin'
+import { loginUser } from '../../../redux/reducers/userReducer/actions/loginUser'
 import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
 
@@ -59,7 +60,7 @@ export default function Login() {
                     <div className={styles.buttons}>
                         <div style={{display: "flex", marginTop: "2px", flexDirection: "row", alignItems: "top"}}>
                             <h4 style={{margin: "0px"}}>No tienes cuenta?</h4>
-                            <Link to="/" state={{registered: false}} style={{marginLeft: "3px", color: "var(--btn-color)"}}>Registrate</Link>
+                            <Link to="/login" state={{registered: false}} style={{marginLeft: "3px", color: "var(--btn-color)"}}>Registrate</Link>
                         </div>
                     </div>
                     <button type="submit" className={styles.button}>Conectate</button>

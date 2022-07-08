@@ -18,21 +18,34 @@ const authorization_1 = __importDefault(require("../../middleware/authorization"
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { key, value } = req.body.source;
+    // router.delete("/", async (req: any, res: Response) => {
+    const { frequency, type, value } = req.body;
     const id = req.userId;
+    console.log({ frequency, type, value });
+    // const id = "62c0a45f6ffc62c777c647de"
     try {
         const user = yield User_1.default.findById(id);
         if (!user) {
             res.status(404).send(`No se encontró al usuario con id: ${id}`);
         }
         else {
-            const { email, firstName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs } = user;
-            yield user.Account[key].remove({ "_id": new mongodb_1.ObjectId(value._id) });
-            yield user.save();
-            res.status(200).send({ email, firstName, lastName, avatar, Account, Saving, premium, CategoriesExpenses, CategoriesInputs });
+            if (frequency === 'monthly') {
+                yield user.monthly[type].remove({ "_id": new mongodb_1.ObjectId(value._id) });
+                yield user.save();
+                return res.status(200).send(user);
+            }
+            else if (frequency === 'extra') {
+                const dateSplit = value.date.split('-');
+                const targetDate = `${dateSplit[0]}-${dateSplit[1]}`; //transform date into format mm-yyyy
+                const targetIndex = user.extra[type].map((e) => e.date).indexOf(targetDate);
+                yield user.extra[type][targetIndex].entries.remove({ "_id": new mongodb_1.ObjectId(value._id) }); //{date, entries: []}
+                yield user.save();
+                return res.status(200).send(user);
+            }
         }
     }
     catch (err) {
+        console.log(err);
         res.status(400).send(err);
     }
 }));

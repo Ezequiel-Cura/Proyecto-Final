@@ -3,13 +3,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import styles from "./Nav.module.css"
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
-import { logout } from 'redux/reducers/userReducer'
+import { logout } from 'redux/reducers/userReducer/actions/logout'
 
 
 export default function Nav() {
 const navigate = useNavigate()
 const dispatch = useAppDispatch()
-const {usuario} = useAppSelector(({user}) => user)
+const {usuario}: any = useAppSelector(({user}) => user)
   return (
     <div className={styles.Nav_wrapper}>
         <div className={styles.image_wrapper}>
@@ -19,6 +19,11 @@ const {usuario} = useAppSelector(({user}) => user)
             </Link>
         </div>
         <div className={styles.items_wrapper}>
+            <Link to="/">
+                <div className={styles.Nav_items_wrapper}>
+                    <h4>Landing</h4>
+                </div>
+            </Link>
             <Link to="/home">
                 <div className={styles.Nav_items_wrapper}>
                     <h4>Home</h4>
@@ -47,7 +52,7 @@ const {usuario} = useAppSelector(({user}) => user)
             {usuario.role === "admin" &&
             <Link to="/admin/controlPanel">
                 <div>   
-                    <h4>Panel de Control</h4>
+                    <h4 style={{textAlign: "center"}}>Panel de Control</h4>
                 </div>
             </Link>
             }
