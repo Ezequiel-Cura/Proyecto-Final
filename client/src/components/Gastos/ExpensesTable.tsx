@@ -319,30 +319,27 @@ export default function ExpensesTable() {
         <form onSubmit={handleSubmit}>
           <div className={styles.form}>
             <select onChange={handleSelectI}>
-              <option>Selecciona el tipo</option>
+              <option value='' disabled={true}>Selecciona el tipo</option>
               <option value='monthly'>Gasto fijo</option>
               <option value='extra'>Gasto variable</option>
             </select>
 
             <select value={input.category} onChange={handleSelectC}>
-              <option>Selecciona una categoría</option>
+              <option value='' disabled={true}>Selecciona una categoría</option>
               {
                 selectKey.frequency ?
-                  selectKey.frequency === 'monthly'
-                    ? ['Transporte', 'Alquiler', 'Deuda', 'Impuestos'].map(montOutput => {
+                  selectKey.frequency === 'monthly' ?
+                  ['Transporte', 'Alquiler', 'Deuda', 'Impuestos'].map(montOutput => {
                       return (<option value={montOutput}>{montOutput}</option>)
-                    })
-                    : ['Regalo', 'Super', 'Transporte'].map(extraOutput => {
+                    }) :
+                    ['Regalo', 'Super', 'Transporte'].map(extraOutput => {
                       return (<option value={extraOutput}>{extraOutput}</option>)
-                    })
-                  : ['Impuestos', 'Transporte', 'Alquiler', 'Deuda', 'Ocio', 'Regalo', 'Super'].map(undefinedCategory => {
-                    return (<option value={undefinedCategory}>{undefinedCategory}</option>)
-                  })
+                    }) :
+                    <></>
               }
               {selectKey.frequency ?
-                selectKey.frequency === 'monthly'
-                  && usuario.categories.length > 0
-                  ? usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
+                selectKey.frequency === 'monthly' && usuario.categories.length > 0 ? 
+                usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
                     return (<option value={montOutput.name}>{montOutput.name.charAt(0).toUpperCase() + montOutput.name.slice(1).toLowerCase()}</option>)
                   })
                   : usuario.categories.filter((extraOutput: Category) => extraOutput.frequency === 'extra' && extraOutput.type === 'output').map((extraOutput: Category) => {
