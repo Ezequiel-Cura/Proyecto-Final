@@ -16,6 +16,7 @@ const userSchema = new mongoose_1.Schema({
     isEmailSubscripted: { type: Boolean, default: true },
     review: { type: Object },
     avatar: String,
+    supportMessages: [],
     premium: { type: Boolean, default: false },
     role: { type: String, default: 'user' },
     savings: [{

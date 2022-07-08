@@ -16,9 +16,6 @@ const {allUsers} = useAppSelector(({admin}) => admin)
     <div className={styles.wrapper}>
       <Nav />
       <div className={styles.pannelWrapper}>
-        <div>
-          <h1 style={{fontSize: "3rem", padding: "10px 0px" }}>Panel de control</h1>
-        </div>
         <div className={styles.topPannelWrapper}>
           <div style={{display: "grid", gridTemplateRows: "min-content 1fr", paddingTop: "5px"}}>
             <h3>Estadisticas de usuarios registrados semanalmente: </h3>
@@ -45,8 +42,8 @@ const {allUsers} = useAppSelector(({admin}) => admin)
             </table>
           </div>
         </div>
-        <div>
-          <table>
+        <div className={styles.bottomPannelWrapper}>
+          <table className={styles.table2}>
             <thead>
               <tr className={styles.tr}>
                 <th>Nombre</th>

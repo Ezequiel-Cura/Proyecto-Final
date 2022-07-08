@@ -15,7 +15,8 @@ export interface IUser {
   review?: {
     text: string
     rating: number
-  }
+  },
+  supportMessages: string[]
   avatar: string
   premium: boolean
   role: string
@@ -40,6 +41,7 @@ const userSchema = new Schema<IUser>({
   isEmailSubscripted: { type: Boolean, default: true},
   review: { type: Object },
   avatar: String,
+  supportMessages: [],
   premium: { type: Boolean, default: false },
   role: { type: String, default: 'user' },
 

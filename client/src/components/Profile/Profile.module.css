@@ -6,8 +6,15 @@
 
 .leftInfoWrapper {
     background-color: #FFFFFF;
-    padding: 100px 20px;
+    padding: 75px 20px 20px 20px;
     color: black;
+}
+
+.formsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: calc(100% - 95px);
 }
 
 .reseñas {
