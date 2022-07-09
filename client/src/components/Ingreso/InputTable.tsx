@@ -223,7 +223,6 @@ export default function InputTable() {
 
   // function handleSubmitCategoryDelete(e: React.FormEvent<HTMLFormElement>) {
   //   e.preventDefault();
-  //   console.log(formCategoryDelete)
   //   dispatch(deleteCategory(formCategoryDelete))
   // }
 
@@ -381,13 +380,13 @@ export default function InputTable() {
               <div className={styles.form}>
 
                 <select value={selectKey.keyInput} onChange={handleSelectInputs}>
-                  <option>Selecciona el tipo</option>
+                  <option value='' disabled={true}>Selecciona el tipo</option>
                   <option value='monthly'>Ingreso fijo</option>
                   <option value='extra'>Ingreso extra</option>
                 </select>
 
                 <select value={input.category} onChange={handleSelectCategories}>
-                  <option>Selecciona una categoría</option>
+                  <option value='' disabled={true}>Selecciona una categoría</option>
                   {
                     selectKey.keyInput ?
                       selectKey.keyInput === 'monthly'
@@ -397,9 +396,9 @@ export default function InputTable() {
                         : ['Changa', 'Herencia', 'Encontrado', 'Préstamo'].map(extraInput => {
                           return (<option value={extraInput}>{extraInput}</option>)
                         })
-                      : ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
-                        return (<option value={undefinedCategory}>{undefinedCategory}</option>)
-                      })
+                        : <></>
+
+                      
                   }
                   {selectKey.keyInput ?
                     usuario.categories.length > 0
