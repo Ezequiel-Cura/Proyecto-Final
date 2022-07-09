@@ -1,0 +1,24 @@
+.wrapper {
+    position: absolute;
+    background-color: #2E332C;
+    width: min-content;
+    border-radius: 5px;
+    padding: 5px 8px;
+    min-width: 100px;
+}
+
+.wrapper ul {
+    list-style-type: none;
+}
+
+.wrapper ul h3 {
+    color: white;
+}
+
+.wrapper ul li {
+    background-color: #5c5f5bd8;
+    margin: 5px 0px;
+    padding: 4px 2px;
+    border-radius: 4px;
+    cursor: pointer;
+}

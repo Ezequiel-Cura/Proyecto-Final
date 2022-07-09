@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import changePremium from "./Actions/changePremium";
 import changeRole from "./Actions/changeRole";
+import deleteUser from "./Actions/deleteUser";
 import deleteUserReview from "./Actions/deleteUserReview";
 import getAllUsers from "./Actions/getAllUsers";
 import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
+import banUser from "./Actions/banUser";
 
 interface User {
     _id: string,
@@ -18,7 +20,13 @@ interface User {
         text: string,
         rating: number
     }
-    supportMessages: string[]
+    banned?: boolean,
+    supportMessages: {
+        id: string,
+        message: string
+    }
+    createdAt: Date | null
+    updatedAt: Date | null
 }
 
 interface adminState {
@@ -41,7 +49,13 @@ const initialState: adminState = {
             text: "",
             rating: 0
         },
-        supportMessages: []
+        supportMessages: {
+            id: "",
+            message: ""
+        },
+        banned: false,
+        updatedAt: null,
+        createdAt: null,
 },
     status: "idle",
 }
@@ -50,22 +64,27 @@ const reducerSlice = createSlice({
     name:"admin",
     initialState,
     reducers: {
-        cleanUserCard: (state) => {
-            state.userCard = {
-                _id: "",
-                email: "",
-                firstName: "",
-                lastName: "",
-                role: "",
-                premium: false,
-                avatar: "",
-                review: {
-                    text: "",
-                    rating: 0
-                },
-                supportMessages: []
-            }
+    cleanUserCard: (state) => {
+        state.userCard = {
+            _id: "",
+            email: "",
+            firstName: "",
+            lastName: "",
+            role: "",
+            premium: false,
+            avatar: "",
+            review: {
+                text: "",
+                rating: 0
+            },
+            supportMessages: {
+                id: "",
+                message: ""
+            },
+            createdAt: null,
+            updatedAt: null,
         }
+    },
     },
     extraReducers:{
         [getAllUsers.pending]: (state) => {
@@ -120,10 +139,27 @@ const reducerSlice = createSlice({
         },
         [deleteUserReview.fulfilled]: (state, {payload}) => {
             state.status = "success"
-            console.log("payload: ",payload)
             state.userCard.review = payload
         },
         [deleteUserReview.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [deleteUser.pending]: (state) => {
+            state.status = "loading"
+        },
+        [deleteUser.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [deleteUser.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [banUser.pending]: (state) => {
+            state.status = "loading"
+        },
+        [banUser.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [banUser.rejected]: (state) => {
             state.status = "failed"
         },
     }

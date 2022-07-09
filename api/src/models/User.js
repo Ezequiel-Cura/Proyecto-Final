@@ -16,6 +16,7 @@ const userSchema = new mongoose_1.Schema({
     isEmailSubscripted: { type: Boolean, default: true },
     review: { type: Object },
     avatar: String,
+    banned: { type: Boolean, default: false },
     supportMessages: [],
     premium: { type: Boolean, default: false },
     role: { type: String, default: 'user' },
@@ -84,6 +85,8 @@ const userSchema = new mongoose_1.Schema({
                 required: true
             },
         }]
+}, {
+    timestamps: true
 });
 userSchema.methods.generateAuthToken = function () {
     const token = jsonwebtoken_1.default.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, { expiresIn: "7d" });

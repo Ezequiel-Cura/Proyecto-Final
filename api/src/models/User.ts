@@ -16,11 +16,11 @@ export interface IUser {
     text: string
     rating: number
   },
+  banned: boolean,
   supportMessages: string[]
   avatar: string
   premium: boolean
   role: string
-
   savings: any
   fees: Array<object>
   monthly: any
@@ -41,6 +41,7 @@ const userSchema = new Schema<IUser>({
   isEmailSubscripted: { type: Boolean, default: true},
   review: { type: Object },
   avatar: String,
+  banned: { type: Boolean, default: false},
   supportMessages: [],
   premium: { type: Boolean, default: false },
   role: { type: String, default: 'user' },
@@ -114,6 +115,8 @@ const userSchema = new Schema<IUser>({
       enum: ['input', 'output'],
       required: true},
   }]
+},{
+  timestamps: true
 })
 
 userSchema.methods.generateAuthToken = function () {
