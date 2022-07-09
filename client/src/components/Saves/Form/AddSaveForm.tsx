@@ -56,6 +56,13 @@ export default function AddSaveForm(props : any) {
     <div>
       <h2>Agrega una cantidad de ahorro</h2>
       <form onSubmit={handleSubmit}>
+        <label>Fecha: </label>
+        <input
+          type='date'
+          name='date'
+        >
+          
+        </input>
         <label>Monto: $</label>
         <input
           type='number'
