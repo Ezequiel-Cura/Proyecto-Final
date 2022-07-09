@@ -106,6 +106,7 @@ export default function InputTable() {
     setSelectKey({
       keyInput: ''
     })
+    resetAll()
   }
 
   //Form de categorias
@@ -136,7 +137,7 @@ export default function InputTable() {
     dispatch(inputsOrderByAmount(e.target.value))
   }
 
-  function handleOrderByCategories(e: any) {                              //--------!!!
+  function handleOrderByCategories(e: any) {                          //--------!!!
     e.preventDefault();
     dispatch(changeOptions(['category', e.target.value]))
     dispatch(filterInputByOptions());
@@ -160,7 +161,7 @@ export default function InputTable() {
   function resetAll() {
     (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
     (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default';
-    (document.getElementById("selectYear") as HTMLFormElement).value = 'default'
+    (document.getElementById("selectYear") as HTMLFormElement).value = ''
   }
 
   function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -245,7 +246,7 @@ export default function InputTable() {
             </select>
 
             <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
-              <option value='default'>Ordenar por año</option>
+              <option value=''>Ordenar por año</option>
               <option value='2022'>2022</option>
               <option value='2023'>2023</option>
               <option value='2024'>2024</option>

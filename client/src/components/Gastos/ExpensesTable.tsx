@@ -103,6 +103,7 @@ export default function ExpensesTable() {
     setSelectKey({
       frequency: ''
     })
+    resetAll()
   }
 
   function handleDelete(event: any) {
@@ -144,7 +145,8 @@ export default function ExpensesTable() {
 
   function resetAll() {
     (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
-    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default'
+    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectYear") as HTMLFormElement).value = ''
   }
 
   function handleRefresh(e: any) {
@@ -227,7 +229,7 @@ export default function ExpensesTable() {
           </select>
 
           <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
-              <option value='default'>Ordenar por año</option>
+              <option value=''>Ordenar por año</option>
               <option value='2022'>2022</option>
               <option value='2023'>2023</option>
               <option value='2024'>2024</option>

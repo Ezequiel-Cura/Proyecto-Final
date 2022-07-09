@@ -16,7 +16,7 @@ import { deleteSaving } from './actions/deleteSaving'
 import addReview from "./actions/addReview";
 import deleteReview from "./actions/deleteReview";
 
-
+const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
   async (info: any) => {
     const { data } = await axios.put("/user/update", info)
@@ -165,11 +165,11 @@ const reducerSlice = createSlice({
       state.options[payload[0]] = payload[1]
     },
     clearChangeOptions: (state) => {
-      state.options = {frequency: 'default', category: 'default', month: ''}
+      state.options = {frequency: 'default', category: 'default', month: '', year: ''}
     },
     filterOutputByOptions: (state) => {
       //Year
-      if (state.options.year === '' || state.options.year === 'default') {
+      if (!state.options.year) {
         state.renderOutputs = state.allOutputs
       } else {
         const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
@@ -185,9 +185,16 @@ const reducerSlice = createSlice({
         }
       }
       //Month
-      if (state.options.month !== '') {
+      if (!!state.options.month) {
         const month = state.renderOutputs.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
-          state.renderOutputs = [...month]
+        state.renderOutputs = [...month]
+      } else{
+       const monthFilter = state.renderOutputs.filter((e: Entries) => `${e.date.split('-')[1]}` === date.split('-')[1]) 
+       if(monthFilter.length < 1){
+        state.renderOutputs = state.renderOutputs.filter((e: Entries) => `${e.date.split('-')[1]}` === '01')
+       } else{
+         state.renderOutputs = monthFilter
+       }
       }
       //Frequency
       switch (state.options.frequency) {
@@ -214,7 +221,7 @@ const reducerSlice = createSlice({
       }
     },
     filterInputByOptions: (state) => {
-      if (state.options.year === '' || state.options.year === 'default') {
+      if (!state.options.year) {
         state.renderInputs = state.allInputs
       } else {
         const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
@@ -228,9 +235,16 @@ const reducerSlice = createSlice({
         }
       }
       //Month
-      if (state.options.month !== '') {
+      if (!!state.options.month) {
         const month = state.renderInputs.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
-          state.renderInputs = [...month]
+        state.renderInputs = [...month]
+      } else{
+       const monthFilter = state.renderInputs.filter((e: Entries) => `${e.date.split('-')[1]}` === date.split('-')[1]) 
+       if(monthFilter.length < 1){
+        state.renderInputs = state.renderInputs.filter((e: Entries) => `${e.date.split('-')[1]}` === '01')
+       } else{
+         state.renderInputs = monthFilter
+       }
       }
       //Frequency
       switch (state.options.frequency) {
@@ -250,10 +264,10 @@ const reducerSlice = createSlice({
         }
       }
       //Category
-      if (state.options.category === 'default') {
-        return;
-      } else {
+      if (state.options.category !== 'default') {
         state.renderInputs = state.renderInputs.filter((entries: Entries) => state.options.category === entries.category)
+      } else{
+        console.log(state.renderInputs)
       }
     },
     expensesOrderByAmount: (state, { payload }) => {
