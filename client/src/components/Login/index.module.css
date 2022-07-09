@@ -121,59 +121,59 @@
     justify-self: center;
 }
 
-    @media (max-width: 1400px) {
-        .textWelcome{
-            font-size: 3rem;
-        }
-    }  
-    @media (max-width: 1200px) {
-        .textWelcome{
-            font-size: 2.5rem;
-        }
+@media (max-width: 1400px) {
+    .textWelcome{
+        font-size: 3rem;
     }
+}  
+@media (max-width: 1200px) {
+    .textWelcome{
+        font-size: 2.5rem;
+    }
+}
 
-    @media (max-width: 900px) {
-        .container{
-            grid-template-columns: 1fr;
-            width: 90%;
-        }
-        .button{
-            width: 60%;
-        }
-        .image{
-            display: none;
-        }
-        .formContainer{
-            padding: 50px;
-            width: calc(100% - 100px);
-            height: 50vh;
-        }
-        .textWelcome{
-            font-size: 1.5rem;
-        }
+@media (max-width: 900px) {
+    .container{
+        grid-template-columns: 1fr;
+        width: 90%;
     }
-    @media (max-width: 600px) {
-        .formContainer{
-            padding: 20px;
-            width: calc(100% - 40px);
-        }
-        .textContainer h3 {
-            font-size: 1rem;
-        }
-        .button{
-            width: 60%;
-        }
+    .button{
+        width: 60%;
     }
+    .image{
+        display: none;
+    }
+    .formContainer{
+        padding: 50px;
+        width: calc(100% - 100px);
+        height: 50vh;
+    }
+    .textWelcome{
+        font-size: 1.5rem;
+    }
+}
+@media (max-width: 600px) {
+    .formContainer{
+        padding: 20px;
+        width: calc(100% - 40px);
+    }
+    .textContainer h3 {
+        font-size: 1rem;
+    }
+    .button{
+        width: 60%;
+    }
+}
 
-    @media (max-width: 400px) {
-        .container{
-            width: 100%;
-        }
-        .formContainer{
-            padding: 2px;
-            width: 100%
-        }
-        .button {
-            width: 80%;
-        }
+@media (max-width: 400px) {
+    .container{
+        width: 100%;
     }
+    .formContainer{
+        padding: 2px;
+        width: 100%
+    }
+    .button {
+        width: 80%;
+    }
+}
