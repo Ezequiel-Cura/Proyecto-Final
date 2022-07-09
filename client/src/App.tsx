@@ -22,18 +22,20 @@ import SavesDetail from 'components/Saves/SavesDetail';
 import Landing from 'components/Landing/Landing';
 import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
 import UserCard from 'components/Admin/UserCard/UserCard';
+import CryptoLanding from 'components/CryptoInvest/CryptoLanding';
+import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
 
 
 
 function App() {
   const dispatch = useAppDispatch()
-  const { usuario }: any = useAppSelector((({user}) => user))
+  const { usuario }: any = useAppSelector((({ user }) => user))
   const [logged, setLogged] = useState(true)
 
-  useEffect(()=> {
-    if(localStorage.getItem("logged")) dispatch(getUserInfo())
+  useEffect(() => {
+    if (localStorage.getItem("logged")) dispatch(getUserInfo())
     else setLogged(false)
-  },[])
+  }, [])
 
   return (
     <Routes>
@@ -52,13 +54,15 @@ function App() {
         <Route path='/home/saving/add/:id' element={<SavesDetail/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
         <Route path="/home/novedades" element={<Novedades/>} />
+        <Route path="/home/crypto/currency" element={<CryptoInvest />} />
+        <Route path="/home/crypto" element={<CryptoLanding />} />
       </Route>
       <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={logged && usuario.role === "admin"}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
         <Route path="/admin/userCard" element={<UserCard/>}/>
       </Route>
-      
-      <Route path="*" element={<LostPage/>}/>
+
+      <Route path="*" element={<LostPage />} />
     </Routes>
   );
 }

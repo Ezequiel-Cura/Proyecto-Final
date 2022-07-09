@@ -53,8 +53,8 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(400).send('Faltan parámetros.');
         }
         yield (0, node_fetch_1.default)(`https://api.apilayer.com/exchangerates_data/convert?to=${to}&from=${from}&amount=${amount}`, requestOptions)
-            .then(res => res.json())
-            .then(apiData => {
+            .then((res) => res.json())
+            .then((apiData) => {
             res.status(200).send(apiData);
         });
     }
