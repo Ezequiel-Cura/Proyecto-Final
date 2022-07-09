@@ -20,41 +20,45 @@ import SavesLanding from 'components/Saves/SavesLanding';
 import Saves from 'components/Saves/Saves';
 import Landing from 'components/Landing/Landing';
 import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
+import CryptoLanding from 'components/CryptoInvest/CryptoLanding';
+import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
 
 
 
 function App() {
   const dispatch = useAppDispatch()
-  const { usuario }: any = useAppSelector((({user}) => user))
+  const { usuario }: any = useAppSelector((({ user }) => user))
   const [logged, setLogged] = useState(true)
 
-  useEffect(()=> {
-    if(localStorage.getItem("logged")) dispatch(getUserInfo())
+  useEffect(() => {
+    if (localStorage.getItem("logged")) dispatch(getUserInfo())
     else setLogged(false)
-  },[])
+  }, [])
 
   return (
     <Routes>
-      <Route path="/" element={<Landing/>}/>
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
-      <Route element={<ProtectedRoute isAllowed={logged} redirectPath={"/login"} state={{registered: true}}/>}>
-        <Route path='/home' element={<Home/>}/>
-        <Route path='/profile' element={<Profile/>}/>
-        <Route path='/home/ingresos' element={<Input/>}/>
-        <Route path='/home/ingresos/add' element={<InputTable/>}/>
-        <Route path='/home/gastos' element={<Expenses/>}/>
-        <Route path='/home/gastos/add' element={<ExpensesTable/>}/>
-        <Route path='/home/saving' element={<SavesLanding/>}/>
-      <Route path='/home/saving/add' element={<Saves/>}/>
-        <Route path='/home/detalles' element={<Detalles/>}/>
-        <Route path="/home/novedades" element={<Novedades/>} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail />} />
+      <Route element={<ProtectedRoute isAllowed={logged} redirectPath={"/login"} state={{ registered: true }} />}>
+        <Route path='/home' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/home/ingresos' element={<Input />} />
+        <Route path='/home/ingresos/add' element={<InputTable />} />
+        <Route path='/home/gastos' element={<Expenses />} />
+        <Route path='/home/gastos/add' element={<ExpensesTable />} />
+        <Route path='/home/saving' element={<SavesLanding />} />
+        <Route path='/home/saving/add' element={<Saves />} />
+        <Route path='/home/detalles' element={<Detalles />} />
+        <Route path="/home/novedades" element={<Novedades />} />
+        <Route path="/home/crypto/currency" element={<CryptoInvest />} />
+        <Route path="/home/crypto" element={<CryptoLanding />} />
       </Route>
-      <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={logged && usuario.role === "admin"}/>}>
-        <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
+      <Route path='/admin' element={<ProtectedRoute redirectPath={"/login"} state={{ registered: true }} isAllowed={logged && usuario.role === "admin"} />}>
+        <Route path="/admin/controlPanel" element={<ControlPanel />} />
       </Route>
-      
-      <Route path="*" element={<LostPage/>}/>
+
+      <Route path="*" element={<LostPage />} />
     </Routes>
   );
 }
