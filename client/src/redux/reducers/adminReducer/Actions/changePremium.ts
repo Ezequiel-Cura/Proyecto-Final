@@ -4,8 +4,7 @@ import axios from "axios";
 
 const changePremium: any = createAsyncThunk("admin/changePremium",
 async (info) => {
-    const {data} = await axios.put("/admin/changePremium", info)
-    return data
+    await axios.put("/admin/changePremium", info)
 })
 
 export default changePremium;

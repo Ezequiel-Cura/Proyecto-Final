@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addCategory } from 'redux/reducers/userReducer/actions/addCategory';
 
@@ -6,80 +6,104 @@ export default function CategoryCreate(props : any) {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
 
-  const { open, setOpen } = props;
-  interface input{
-    name: string
+  const [name, setName] = useState('');
+
+  const [frequency, setFrequency] = useState('')
+  
+  const [type, setType] = useState('')
+
+    // Validate
+    const firstRender = useRef(true)
+
+    const [valMsg, setMsg] = useState('')
+    const [valDisable, setDisabled] = useState(true)
+
+
+    useEffect(() => {
+      handleFormChange()
+    }, [name, frequency, type])
+    useEffect(() => {
+      setDisabled(valMsg === '' ? false : true)
+    }, [valMsg])
+    //-----------------------------------
+
+
+  let form = {
+    name: name,
+    frequency: frequency,
+    type: type
   }
 
-  interface select {
-    frequency: string,
-    type: string,
+  const handleFormChange = () => { 
+    !form.name ? setMsg('Proporcione un nombre') : 
+    !form.frequency ? setMsg('Proporcione una frequencia') : 
+    !form.type ? setMsg('Proporcione un tipo') : 
+    setMsg('')
   }
 
-  const [inputName, setInput] = useState<input>({
-    name: ''
-  });
 
-  const [selectOpt, setSelectOpt] = useState<select>({
-    frequency: '',
-    type: '',
-  })
-
-  const form = {
-    value:{
-        name: inputName.name,
-        frequency: selectOpt.frequency,
-        type: selectOpt.type
-    }
+  //NameControl
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault()
+    setName(e.target.value)
   }
+  useEffect(() => {
+    form = {...form, name: name}
+  }, [name])
+  //-----------------------------------
+  
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setInput({ 
-      ...inputName,
-        name: e.target.value
-    })
+  //FrequencyControl
+  function handleFreqChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    e.preventDefault()
+    setFrequency(e.target.value)
   }
-  function handleSelectInputs(e: React.ChangeEvent<HTMLSelectElement>) {
+  useEffect(() => {
+    form = {...form, frequency: frequency}
+  }, [frequency])
+  //-----------------------------------
+  
+  //TypeControl
+  function handleTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    e.preventDefault()
+    setType(e.target.value)
+  }
+  useEffect(() => {
+    form = {...form, type: type}
+  }, [type])
+  //-----------------------------------
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //Form
     e.preventDefault();
-    if(e.target.value === 'monthly' || e.target.value === 'extra'){
-      setSelectOpt({
-        ...selectOpt,
-        frequency: e.target.value
-      })} else{
-        setSelectOpt({
-          ...selectOpt,
-          type: e.target.value
-      })
-  }
-}
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
-    e.preventDefault();
-    console.log({form})
     dispatch(addCategory(form));
-    }
+  }
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-              <label>Nombre de la categoría: </label>
-              <input
-                type='text'
-                name='name'
-                value={inputName.name}
-                placeholder='Agrega un nombre'
-                onChange={handleChange}
-              >
-              </input>
-              <select onChange={(e) => handleSelectInputs(e)}>
-                  <option>Selecciona su frecuencia</option>
-                  <option value='monthly' >Ingreso fijo</option>
-                  <option value='extra'>Ingreso extra</option>
-                </select>
-                <select onChange={(e) => handleSelectInputs(e)}>
-                  <option>Selecciona su tipo</option>
-                  <option value='input'>Ingreso</option>
-                  <option value='output'>Gasto</option>
-                </select>
-              <button type='submit' onClick={()=> setOpen(!open)}>Agregar</button>
+      <span>{valMsg}</span>
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <label>Nombre de la categoría: </label>
+        <input
+          autoFocus={true}
+          type='text'
+          name='name'
+          value={name}
+          placeholder='Agrega un nombre'
+          onChange={e => handleNameChange(e)}
+        >
+        </input>
+
+        <select  value={frequency} onChange={(e) => handleFreqChange(e)} >
+          <option value='' disabled={true}>Selecciona su frecuencia</option>
+          <option value='monthly' >Ingreso fijo</option>
+          <option value='extra'>Ingreso extra</option>
+        </select>
+        <select value={type} onChange={(e) => handleTypeChange(e)} >
+          <option value='' disabled={true}>Selecciona su tipo</option>
+          <option value='input'>Ingreso</option>
+          <option value='output'>Gasto</option>
+        </select>
+        <button type='submit' disabled={valDisable}>Agregar</button>
       </form>
     </div>
   )

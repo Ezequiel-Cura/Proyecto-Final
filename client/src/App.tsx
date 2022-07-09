@@ -21,6 +21,7 @@ import Saves from 'components/Saves/Saves';
 import SavesDetail from 'components/Saves/SavesDetail';
 import Landing from 'components/Landing/Landing';
 import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
+import UserCard from 'components/Admin/UserCard/UserCard';
 
 
 
@@ -54,6 +55,7 @@ function App() {
       </Route>
       <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={logged && usuario.role === "admin"}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
+        <Route path="/admin/userCard" element={<UserCard/>}/>
       </Route>
       
       <Route path="*" element={<LostPage/>}/>

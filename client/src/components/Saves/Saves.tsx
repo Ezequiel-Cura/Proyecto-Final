@@ -34,7 +34,7 @@ export default function Saves() {
       <div className={style.background}>
         <div className={style.wrapperAll}>
           <div className={style.title}>
-            <h1>Ahorros</h1>
+            <h1 className={style.h1}>Ahorros</h1>
           </div>
 
           <div className={style.wrapperAllSaves}>

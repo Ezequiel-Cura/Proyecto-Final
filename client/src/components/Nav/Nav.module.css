@@ -1,7 +1,8 @@
 .Nav_wrapper{
-    /* float: left; */
+    position: sticky;
+    top: 0px;
     height: calc(100vh - 12px);
-    width: 150px;
+    width: calc(100% - 28px);
     padding: 6px 14px;
     background-color: #2E332C;
     display: flex;

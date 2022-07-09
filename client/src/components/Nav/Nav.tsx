@@ -14,7 +14,7 @@ const {usuario}: any = useAppSelector(({user}) => user)
     <div className={styles.Nav_wrapper}>
         <div className={styles.image_wrapper}>
             <Link to="/profile">
-                <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} className={styles.image_container}alt="foto de perfil"/>
+                <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} className={styles.image_container} referrerPolicy="no-referrer" alt="foto de perfil"/>
                 {usuario ? <span>{usuario.firstName} </span> : null}
             </Link>
         </div>

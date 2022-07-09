@@ -14,6 +14,7 @@ import categoryAdd from './categoryAdd'
 import categoryDelete from './categoryDelete'
 import savingsDelete from './savingsDelete'
 import review from "./review"
+import supportMessages from "./supportMessages"
 
 router.use('/login', login)
 router.use('/register', register)
@@ -29,5 +30,6 @@ router.use('/category', categoryDelete)
 router.use('/savings', savings)
 router.use('/savings', savingsDelete)
 router.use("/review", review)
+router.use("/supportMessages", supportMessages)
 
 export default router
