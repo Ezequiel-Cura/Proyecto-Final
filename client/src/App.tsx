@@ -18,6 +18,7 @@ import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
 import Novedades from 'components/Novedades/Novedades';
 import SavesLanding from 'components/Saves/SavesLanding';
 import Saves from 'components/Saves/Saves';
+import SavesDetail from 'components/Saves/SavesDetail';
 import Landing from 'components/Landing/Landing';
 import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
 import CryptoLanding from 'components/CryptoInvest/CryptoLanding';
@@ -37,6 +38,7 @@ function App() {
 
   return (
     <Routes>
+<<<<<<< HEAD
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail />} />
@@ -53,6 +55,23 @@ function App() {
         <Route path="/home/novedades" element={<Novedades />} />
         <Route path="/home/crypto/currency" element={<CryptoInvest />} />
         <Route path="/home/crypto" element={<CryptoLanding />} />
+=======
+      <Route path="/" element={<Landing/>}/>
+      <Route path="/login" element={<Login/>}/>
+      <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
+      <Route element={<ProtectedRoute isAllowed={logged} redirectPath={"/login"} state={{registered: true}}/>}>
+        <Route path='/home' element={<Home/>}/>
+        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/home/ingresos' element={<Input/>}/>
+        <Route path='/home/ingresos/add' element={<InputTable/>}/>
+        <Route path='/home/gastos' element={<Expenses/>}/>
+        <Route path='/home/gastos/add' element={<ExpensesTable/>}/>
+        <Route path='/home/saving' element={<SavesLanding/>}/>
+        <Route path='/home/saving/add' element={<Saves/>}/>
+        <Route path='/home/saving/add/:id' element={<SavesDetail/>}/>
+        <Route path='/home/detalles' element={<Detalles/>}/>
+        <Route path="/home/novedades" element={<Novedades/>} />
+>>>>>>> bdc5150eeb49c651672f6daa2661881859e7406b
       </Route>
       <Route path='/admin' element={<ProtectedRoute redirectPath={"/login"} state={{ registered: true }} isAllowed={logged && usuario.role === "admin"} />}>
         <Route path="/admin/controlPanel" element={<ControlPanel />} />

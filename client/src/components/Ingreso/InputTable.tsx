@@ -399,7 +399,10 @@ export default function InputTable() {
                       setOpen={setOpen}
                       onClick={() => setOpen(open)}
                       title="Completa para agregar una categoría!">
-                      <CategoryCreate/>
+                      <CategoryCreate
+                      open={open} 
+                      setOpen={setOpen}
+                      />
                     </PopUp>
                     </div> )
                   }

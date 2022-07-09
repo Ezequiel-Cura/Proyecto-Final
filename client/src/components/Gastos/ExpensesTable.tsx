@@ -13,6 +13,7 @@ import CategoryCreate from "components/Category/CategoryCreate";
 export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  console.log(usuario, "usuario")
 
   const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
@@ -93,6 +94,7 @@ export default function ExpensesTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log(form, "form en Expenses")
     dispatch(addDato(form));
     setInput({
       category: '',
@@ -381,7 +383,10 @@ export default function ExpensesTable() {
               setOpen={setOpen}
               onClick={() => setOpen(open)}
               title="Completa para agregar una categoría!">
-              <CategoryCreate />
+              <CategoryCreate 
+              open={open} 
+              setOpen={setOpen}
+              />
             </PopUp>
           </div>)
         }
