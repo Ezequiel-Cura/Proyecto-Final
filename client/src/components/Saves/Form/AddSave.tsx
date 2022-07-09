@@ -1,20 +1,18 @@
 import React, { useState }  from 'react';
-import SavesCreate from './SavesCreate';
+import AddSaveForm from './AddSaveForm';
 import PopUp from './PopUp';
-import style from '../Saves.module.css';
 
-export default function SavesForm() {
+export default function AddSave() {
     const [open, setOpen] = useState<boolean>(false);
-
 return (
     <div>
-     <button className={style.wrapperNewSave} onClick={() => setOpen(!open)}>Agregar una nueva casilla de ahorro<div className={style.addNewSave}>+</div></button>
+     <button onClick={() => setOpen(!open)}>Agrega un nuevo monto<div>+</div></button>
       <PopUp
         open={open} 
         setOpen={setOpen}
         onClick={() => setOpen(open)}
         >
-        <SavesCreate
+        <AddSaveForm
         open={open}
         setOpen={setOpen}
         />

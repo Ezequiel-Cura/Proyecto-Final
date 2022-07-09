@@ -18,6 +18,7 @@ import ControlPanel from 'components/Admin/ControlPanel/ControlPanel';
 import Novedades from 'components/Novedades/Novedades';
 import SavesLanding from 'components/Saves/SavesLanding';
 import Saves from 'components/Saves/Saves';
+import SavesDetail from 'components/Saves/SavesDetail';
 import Landing from 'components/Landing/Landing';
 import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
 
@@ -46,7 +47,8 @@ function App() {
         <Route path='/home/gastos' element={<Expenses/>}/>
         <Route path='/home/gastos/add' element={<ExpensesTable/>}/>
         <Route path='/home/saving' element={<SavesLanding/>}/>
-      <Route path='/home/saving/add' element={<Saves/>}/>
+        <Route path='/home/saving/add' element={<Saves/>}/>
+        <Route path='/home/saving/add/:id' element={<SavesDetail/>}/>
         <Route path='/home/detalles' element={<Detalles/>}/>
         <Route path="/home/novedades" element={<Novedades/>} />
       </Route>

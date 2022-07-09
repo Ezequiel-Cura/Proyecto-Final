@@ -1,5 +1,9 @@
 .wrapperForm {
-    background-color: rgb(124, 124, 93);
+    color: black
+}
+
+.wrapperForm h2{
+    color: black
 }
 
 .wrapperForm input {

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addCategory } from 'redux/reducers/userReducer/actions/addCategory';
 
-export default function CategoryCreate() {
-
+export default function CategoryCreate(props : any) {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
 
+  const { open, setOpen } = props;
   interface input{
     name: string
   }
@@ -79,7 +79,7 @@ export default function CategoryCreate() {
                   <option value='input'>Ingreso</option>
                   <option value='output'>Gasto</option>
                 </select>
-              <button type='submit'>Agregar</button>
+              <button type='submit' onClick={()=> setOpen(!open)}>Agregar</button>
       </form>
     </div>
   )

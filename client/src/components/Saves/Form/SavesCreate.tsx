@@ -5,9 +5,10 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { addSaving } from 'redux/reducers/userReducer/actions/addSaving';
 import style from '../PopUpForm.module.css'
 
-export default function SavesCreate() {
+export default function SavesCreate(props : any) {
   const dispatch = useAppDispatch();
   const { usuario, status,  } = useAppSelector(state => state.user);
+  const { open, setOpen } = props;
   interface SavingUser {
     name: string,
     start: string,
@@ -137,33 +138,7 @@ export default function SavesCreate() {
                 <input type="radio" name="currency" value="JPY" id="yen" onChange={handleChange}/>Yen
                 <input type="radio" name="currency" value="CHF" id="franco suizo" onChange={handleChange}/>Franco Suizo
               </div>
-              <button type='submit'>Agregar</button>
-      </form>
-
-      <br/>
-      <h2>Agrega una cantidad de ahorro</h2>
-      <form>
-        <label>Monto: $</label>
-        <input
-        type='number'
-        name='save'
-        placeholder='Agrega una cantidad ahorro'
-        >
-        </input>
-        <button>Agregar</button>
-      </form>
-
-      <br/>
-      <h2>Saca una cantidad de ahorro</h2>
-      <form>
-        <label>Monto: $</label>
-        <input
-        type='number'
-        name='save'
-        placeholder='Agrega una cantidad ahorro'
-        >
-        </input>
-        <button>Sacar</button>
+              <button type='submit' onClick={()=> setOpen(!open)}>Agregar</button>
       </form>
     </div>
   )

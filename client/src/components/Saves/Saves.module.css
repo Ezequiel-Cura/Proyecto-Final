@@ -44,9 +44,9 @@ h1 {
     position: relative;
 }
 
-.wrapperSave:global(#amount1){background: linear-gradient(to right, #C6EC59 35%, #444444 85%, #DB0808)}
+.wrapperSave:global(#amount3){background: linear-gradient(to right, #C6EC59 35%, #444444 85%, #DB0808)}
 .wrapperSave:global(#amount2){background: linear-gradient(to right, #68A2FA 35%, #444444 85%, #DB0808)}
-.wrapperSave:global(#amount3){background: linear-gradient(to right, #A0479D 35%, #444444 85%, #DB0808)}
+.wrapperSave:global(#amount1){background: linear-gradient(to right, #A0479D 35%, #444444 85%, #DB0808)}
 
 .wrapperName1 {
     display: flex;
@@ -57,9 +57,9 @@ h1 {
     border-bottom-left-radius: 20px;
 }
 
-.wrapperName1:global(#amount1){background-color: #C6EC59;}
+.wrapperName1:global(#amount3){background-color: #C6EC59;}
 .wrapperName1:global(#amount2){background-color: #68A2FA;}
-.wrapperName1:global(#amount3){background-color: #A0479D;}
+.wrapperName1:global(#amount1){background-color: #A0479D;}
 
 .divP {
     display: flex;
@@ -132,20 +132,21 @@ h1 {
     align-items: center;
     justify-content: center;
     border-radius: 20px;
-    background-color: #C6EC59;
+    background-color: #A0479D;
 }
 
-.wrapperGoalB:global(#amount1){background-color: #C6EC59;}
+.wrapperGoalB:global(#amount1){background-color: #A0479D;}
 .wrapperGoalB:global(#amount2){background-color: #68A2FA;}
-.wrapperGoalB:global(#amount3){background-color: #A0479D;}
+.wrapperGoalB:global(#amount3){background-color: #C6EC59;}
 
 .divDelete3 {
     width: 3%;
 }
 
 .divDelete3 button{
-    width: 100%;
-    height: 100%;
+    width: 35px;
+
+    height: 50px;
     border: none;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -155,6 +156,10 @@ h1 {
     background-position: center;
     background-color: #DB0808;
     cursor: pointer;
+}
+
+.divDelete3 button:hover{
+    background-color: rgb(113, 39, 106) ;
 }
 
 .wrapperNewSave {
