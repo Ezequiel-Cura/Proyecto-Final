@@ -2,3 +2,7 @@
     text-align: center;
     background-color: #5C5A5A;
 }
+
+.name {
+    cursor: pointer;
+}

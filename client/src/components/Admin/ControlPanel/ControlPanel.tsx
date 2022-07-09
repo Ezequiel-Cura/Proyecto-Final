@@ -16,9 +16,6 @@ const {allUsers} = useAppSelector(({admin}) => admin)
     <div className={styles.wrapper}>
       <Nav />
       <div className={styles.pannelWrapper}>
-        <div>
-          <h1 style={{fontSize: "3rem", padding: "10px 0px" }}>Panel de control</h1>
-        </div>
         <div className={styles.topPannelWrapper}>
           <div style={{display: "grid", gridTemplateRows: "min-content 1fr", paddingTop: "5px"}}>
             <h3>Estadisticas de usuarios registrados semanalmente: </h3>
@@ -28,25 +25,14 @@ const {allUsers} = useAppSelector(({admin}) => admin)
           </div>
           <div style={{display: "grid", gridTemplateRows: "min-content 1fr"}}>
             <h3>Administradores actuales: </h3>
-            <table>
+            <table style={{backgroundColor: "#444444", width: "100%", height: "100%"}}>
               <tbody>
-                {
-                 allUsers.map(user => <UserRow
-                  key={user._id}
-                  id={user._id}
-                  email={user.email}
-                  nombre={user.firstName}
-                  apellido={user.lastName}
-                  role={user.role}
-                  premium={user.premium}
-                  />)
-                }
               </tbody>
             </table>
           </div>
         </div>
-        <div>
-          <table>
+        <div className={styles.bottomPannelWrapper}>
+          <table className={styles.table2}>
             <thead>
               <tr className={styles.tr}>
                 <th>Nombre</th>
