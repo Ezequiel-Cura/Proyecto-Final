@@ -10,10 +10,6 @@
     align-items: center;
 }
 
-h1 {
-    margin: 0px;
-}
-
 .btn {
     cursor: pointer;
     border: none;

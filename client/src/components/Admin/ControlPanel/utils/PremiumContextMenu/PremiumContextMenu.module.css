@@ -7,15 +7,15 @@
     min-width: 100px;
 }
 
-ul {
+.wrapper ul {
     list-style-type: none;
 }
 
-h2 {
+.wrapper ul h3 {
     color: white;
 }
 
-li {
+.wrapper ul li {
     background-color: #5c5f5bd8;
     margin: 5px 0px;
     padding: 4px 2px;

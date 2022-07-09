@@ -1,0 +1,149 @@
+.wrapper{
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 178px 1fr;
+    background-color: #2D2D2D;
+}
+.userCardWrapper {
+    height: calc(100vh - 60px);
+    padding: 30px 50px;
+    display: grid;
+    grid-template-rows: 25% 2fr;
+}
+.topContainer {
+    position: relative;
+}
+.ficha {
+    position: absolute;
+    top: -5px;
+    left: -20px;
+    font-size: 3rem;
+    font-weight: 100;
+}
+
+.userPresentation {
+    position: absolute;
+    top: -80px;
+    left: 0px;
+    width: 40%;
+    height: 100px;
+    background-color: #000000;
+    border-radius: 15px;
+    padding: 3px 0px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.img {
+    height: 100%;
+    border-radius: 15px;
+}
+
+.bottomContainer {
+    background-color: #575757;
+    border-radius: 15px;
+    padding: 35px 10px 10px 10px;
+    position: relative;
+    display: grid;
+    grid-template-rows: min-content 1fr .3fr;
+}
+
+.ulContainer ul li {
+    margin-left: 50px;
+    color: black;
+    font-weight: bold;
+}
+
+.formsContainer {
+    padding: 15px 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.leftFormContainer {
+    position: relative;
+}
+.rating {
+    position: absolute;
+    left: 35px;
+    bottom: 40px;
+    display: flex;
+    align-items: center;
+    color: #0A0A0A;
+}
+.textArea {
+    font-size: 1rem;
+    margin: 0px 20px;
+    min-width: calc(100% - 60px);
+    max-width: calc(100% - 60px);
+    min-height: calc(100% - 80px);
+    max-height: calc(100% - 80px);
+    padding: 10px;
+    resize: none;
+    cursor: default;
+    background-color: #C5C5C5;
+    border-radius: 15px;
+    color: #000000;
+}
+
+.rightFormContainer {
+    position: relative;
+}
+
+.sendEmailButton {
+    background-color: lightseagreen;
+    cursor: pointer;
+    color: #151515;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px 5px 15px;
+    margin: 10px 0px;
+    text-overflow: none;
+    width: max-content;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+.deleteReviewButton {
+    background-color: #DB0808;
+    cursor: pointer;
+    color: #151515;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px 5px 15px;
+    margin: 10px 0px;
+    width: max-content;
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr min-content;
+    align-self: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+.buttonsContainer {
+    padding: 0px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: bottom;
+    align-content: bottom;
+}
+
+.buttonsContainer button {
+    background-color: #DB0808;
+    cursor: pointer;
+    color: #151515;
+    border: none;
+    border-radius: 25px;
+    padding: 0px 15px;
+    margin: 22px 0px 10px 0px;
+    font-size: larger;
+    font-weight: 500;
+    width: max-content;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    align-items: center;
+}

@@ -21,7 +21,9 @@ const makePremiumTrueRef = useRef() as any
 const makePremiumFalseRef = useRef() as any
   useEffect(()=>{
     const handlePremiumView = (e: any) => {
-      if (e.path[0] !== divRef.current && e.path[0] !== ulRef.current && e.path[0] !== textRef.current && e.path[0] !== makePremiumTrueRef && e.path[0] !== makePremiumFalseRef) setPremiumView(false)
+      if (e.path[0] !== divRef.current && e.path[0] !== ulRef.current && e.path[0] !== textRef.current && e.path[0] !== makePremiumTrueRef.current && e.path[0] !== makePremiumFalseRef.current) {
+        setPremiumView(false)
+      }
     }
     window.addEventListener("mousedown", handlePremiumView)
     return () =>{
@@ -31,8 +33,8 @@ const makePremiumFalseRef = useRef() as any
 
   function changeUserPremium (value: string) {
     dispatch(changePremium({value, id}))
-    .then(() => setPremiumView(false))
     .then(() => dispatch(getAllUsers()))
+    setPremiumView(false)
   }
 
   return (
