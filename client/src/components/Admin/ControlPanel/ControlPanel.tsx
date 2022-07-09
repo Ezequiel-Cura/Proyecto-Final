@@ -25,19 +25,8 @@ const {allUsers} = useAppSelector(({admin}) => admin)
           </div>
           <div style={{display: "grid", gridTemplateRows: "min-content 1fr"}}>
             <h3>Administradores actuales: </h3>
-            <table>
+            <table style={{backgroundColor: "#444444", width: "100%", height: "100%"}}>
               <tbody>
-                {
-                 allUsers.map(user => <UserRow
-                  key={user._id}
-                  id={user._id}
-                  email={user.email}
-                  nombre={user.firstName}
-                  apellido={user.lastName}
-                  role={user.role}
-                  premium={user.premium}
-                  />)
-                }
               </tbody>
             </table>
           </div>

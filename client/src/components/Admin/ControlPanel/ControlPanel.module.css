@@ -10,6 +10,7 @@
     padding: 2.5vh 2.5%;
     display: grid;
     grid-gap: 20px;
+    grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
     justify-content: center;
     align-items: center;

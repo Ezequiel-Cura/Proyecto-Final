@@ -89,6 +89,7 @@ export default function Profile() {
 
     function handleSupportMessage (event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
+        if (!supportMessage.length) return
         dispatch(sendSupportMessage(supportMessage))
         .then(() => {
             setSupportMessage("")
@@ -142,7 +143,7 @@ export default function Profile() {
                     <h3 style={{backgroundColor: "#2E332C", padding:"4px",marginBottom: "10px" , color: "#797979"}}>Comunicate con soporte:</h3>
                     }
                     <form onSubmit={handleSupportMessage}>
-                    <textarea maxLength={500} className={styles.reviewInput} placeholder="Coloque aqui su mensaje para soporte" value={supportMessage||""} onChange={handleSupportMessageChange}/>
+                    <textarea maxLength={500} className={styles.reviewInput} placeholder="Coloque aqui su mensaje para soporte" value={supportMessage || ""} onChange={handleSupportMessageChange}/>
                     <div style={{display: "flex", justifyContent:"right"}}>
                         <button className={styles.reviewSendButton}>Enviar</button>
                     </div>
@@ -151,7 +152,7 @@ export default function Profile() {
             </div>
         </div>
         <div className={styles.rightInfoWrapper}>
-            <img src={usuario.avatar ? usuario.avatar : imagePlaceholder} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
+            <img referrerPolicy="no-referrer" src={usuario.avatar ? usuario.avatar : imagePlaceholder} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
             <div className={styles.infoContainer}>
                 { msg && <h1 className={styles.msg}>{msg}</h1>}
                 <form className={styles.separator} onSubmit={updateFirstName}>
