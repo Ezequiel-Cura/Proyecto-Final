@@ -8,7 +8,11 @@ const { id, supported } = req.body
 
     try {
       const cryptoSearch = await axios(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${supported}`)
-
+      if(cryptoSearch){
+        res.status(200).send(cryptoSearch.data)
+      } else {
+        res.status(404).send(cryptoSearch)
+      }
     } catch (error) {
         console.log(error)
         res.status(404).send(error)

@@ -16,6 +16,9 @@ import { deleteSaving } from './actions/deleteSaving'
 import addReview from "./actions/addReview";
 import deleteReview from "./actions/deleteReview";
 import sendSupportMessage from "./actions/sendSupportMessages";
+import { searchCrypto } from "./actions/searchCrypto";
+import { getSupportedCurrency } from "./actions/getSupportedCurrency";
+import { getCryptoList } from "./actions/getCryptoList";
 
 const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
@@ -452,6 +455,33 @@ const reducerSlice = createSlice({
       state.status = "success"
     },
     [sendSupportMessage.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [getCryptoList.pending]: (state) => {
+      state.status = "loading"
+    },
+    [getCryptoList.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [getCryptoList.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [getSupportedCurrency.pending]: (state) => {
+      state.status = "loading"
+    },
+    [getSupportedCurrency.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [getSupportedCurrency.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [searchCrypto.pending]: (state) => {
+      state.status = "loading"
+    },
+    [searchCrypto.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [searchCrypto.rejected]: (state) => {
       state.status = "failed"
     },
   }

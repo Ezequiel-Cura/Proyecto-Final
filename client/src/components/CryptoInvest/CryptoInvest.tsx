@@ -1,9 +1,12 @@
 import Nav from 'components/Nav/Nav';
-import React from 'react';
-import { Link } from "react-router-dom"
+import React, { useEffect } from 'react';
 import styles from './Crypto.module.css'
 
 export default function CryptoInvest() {
+
+  useEffect(() => {
+    
+  }, [])
 
   return (
     <div>
