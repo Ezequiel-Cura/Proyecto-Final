@@ -10,7 +10,7 @@ export default function CryptoLanding() {
       <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
           <Nav/>
           <div className={styles.wrapperText}>
-            <h1>Estás pensando en invertir en criptomonedas?</h1>
+            <h1>Estás pensando invertir en criptomonedas?</h1>
             <div className={styles.wrapperLink}>
               <p>¡Mira las distintas opciones que ofrece el mercado actual!</p>
               <Link to="/home/crypto/currency">

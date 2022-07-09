@@ -19,6 +19,12 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, supported } = req.body;
     try {
         const cryptoSearch = yield (0, axios_1.default)(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${supported}`);
+        if (cryptoSearch) {
+            res.status(200).send(cryptoSearch.data);
+        }
+        else {
+            res.status(404).send(cryptoSearch);
+        }
     }
     catch (error) {
         console.log(error);

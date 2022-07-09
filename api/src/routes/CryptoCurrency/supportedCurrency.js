@@ -18,7 +18,7 @@ const axios_1 = __importDefault(require("axios"));
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const supported_vs_currencies = yield (0, axios_1.default)('https://api.coingecko.com/api/v3/simple/supported_vs_currencies');
-        res.status(200).send(supported_vs_currencies);
+        res.status(200).send(supported_vs_currencies.data);
     }
     catch (error) {
         console.log(error);
