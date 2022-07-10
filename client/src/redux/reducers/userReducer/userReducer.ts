@@ -16,6 +16,7 @@ import { deleteSaving } from './actions/deleteSaving'
 import addReview from "./actions/addReview";
 import deleteReview from "./actions/deleteReview";
 import sendSupportMessage from "./actions/sendSupportMessages";
+import reportReview from "./actions/reportReview";
 
 
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
@@ -428,6 +429,15 @@ const reducerSlice = createSlice({
       state.status = "success"
     },
     [sendSupportMessage.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [reportReview.pending]: (state) => {
+      state.status = "loading"
+    },
+    [reportReview.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [reportReview.rejected]: (state) => {
       state.status = "failed"
     },
   }

@@ -1,6 +1,6 @@
 import styles from "./UserCard.module.css"
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useLocation } from "react-router-dom"  
+import { useLocation, useNavigate } from "react-router-dom"  
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import getUserById from "redux/reducers/adminReducer/Actions/getUserById"
 import Nav from "components/Nav/Nav"
@@ -8,14 +8,25 @@ import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import { Rating } from "@mui/material"
 import sendEmail from "redux/reducers/adminReducer/Actions/sendEmail"
 import deleteUserReview from "redux/reducers/adminReducer/Actions/deleteUserReview"
+import banUser from "redux/reducers/adminReducer/Actions/banUser"
+import deleteUser from "redux/reducers/adminReducer/Actions/deleteUser"
+import Select from "react-select"
 
 export default function UserCard() {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const {userCard} = useAppSelector(({admin}) => admin)
+    const {userCard, allUsers } = useAppSelector(({admin}) => admin)
     const {state}: any = useLocation()
     const [emailMsg, setEmailMsg] = useState("")
     const [emailVerificationMsg, setEmailVerificationMsg] = useState("")
     const [emailFailMsg, setEmailFailMsg] = useState("")
+    const [allUsersSelector, setAllUsersSelector] = useState<any>([])
+    const [searchValue, setSearchValue] = useState<any>("")
+    useEffect(() => {
+      setAllUsersSelector(allUsers.map(user=> {
+        return {...user, value: user.lastName ? user.firstName + " " + user.lastName : user.firstName , label: user.lastName ? user.firstName + " " + user.lastName : user.firstName }
+      }))
+    },[allUsers])
 
     useEffect(()=>{
         dispatch(getUserById(state.id))
@@ -24,6 +35,7 @@ export default function UserCard() {
     function handleEmailMessageChange (event: ChangeEvent<HTMLTextAreaElement>) {
       setEmailMsg(event.target.value)
     }
+
     function handleSubmit (event: FormEvent<HTMLFormElement>) {
       event.preventDefault()
       if (emailMsg.length) {
@@ -48,24 +60,52 @@ export default function UserCard() {
     function handleDeleteReview () {
       dispatch(deleteUserReview(userCard._id))
     }
+
+    function handleBanUser () {
+      dispatch(banUser({id: userCard._id, value: true}))
+    }
+
+    function handleDeleteUser () {
+      dispatch(deleteUser(userCard._id))
+      .then((resp: any) => {
+        if (resp.error) return
+        navigate("/admin/controlPanel")
+      })
+    }
+
+    function selectChange (value: any) {
+      setSearchValue(value)
+    }
+
+    function searchUser (e: FormEvent<HTMLFormElement>) {
+      e.preventDefault()
+      if (!searchValue) return
+      dispatch(getUserById(searchValue._id))
+    }
+
+    console.log(userCard)
+
   return (
     <div className={styles.wrapper}>
       <Nav />
       <div className={styles.userCardWrapper}>
-       <div className={styles.topContainer}>
-      <h1 className={styles.ficha}>Ficha de usuario</h1>
-       </div>
-       <div className={styles.bottomContainer}>
+       <div className={styles.container}>
+        <form onSubmit={searchUser} className={styles.searchForm}>
+          <Select isClearable={true} className={styles.select} options={allUsersSelector} value={searchValue} onChange={selectChange}/>
+          <button className={styles.searchButton}>Buscar</button>
+        </form>
+        <button className={styles.returnButton} onClick={() => navigate(-1)}><span className="material-icons">arrow_back</span> Volver</button>
         <div className={styles.userPresentation}>
           <img src={userCard?.avatar || imagePlaceholder} referrerPolicy="no-referrer" className={styles.img}/>
           <h1>{userCard.firstName} {userCard.lastName}</h1>
         </div>
         <div className={styles.ulContainer}>
           <ul>
-            <li>Fecha de creacion del usuario: <span style={{color: "white"}}>aun no</span></li>
+            <li>Fecha de creacion del usuario: <span style={{color: "white"}}>{userCard.createdAt?.toString().substring(0,10).split("-").reverse().join(" ")}</span></li>
             <li>Correo: <span style={{color: "white"}}>{userCard.email}</span></li>
             <li>Tipo de usuario: <span style={{color: "white"}}>{userCard.role}</span></li>
             <li>Categoria: <span style={{color: "white"}}>{userCard.premium ? "Premium" : "No premium"}</span></li>
+            <li>Status: <span style={{color: "white"}}>{userCard.banned ? "Banned" : "Normal"}</span></li>
           </ul>
         </div>
         <div className={styles.formsContainer}>
@@ -75,7 +115,8 @@ export default function UserCard() {
               </ul>
               <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
               <textarea className={styles.textArea} placeholder="este usuario aun no ha dejado una reseña" value={userCard?.review?.text || ""} readOnly/>
-              <button onClick={handleDeleteReview} className={styles.deleteReviewButton}>Borrar Review<span className="material-icons" style={{width: "min-content"}}>delete_forever</span></button>
+              <button onClick={handleDeleteReview} className={styles.deleteReviewButton}>Borrar Review
+              <span className="material-icons" style={{width: "min-content"}}>delete_forever</span></button>
               </div>
               <div className={styles.rating}>
               <span>Calificacion:</span>
@@ -100,8 +141,10 @@ export default function UserCard() {
           </div>
         </div>
         <div className={styles.buttonsContainer}>
-          <button>Sancionar cuenta</button>
-          <button>Eliminar cuenta<span className="material-icons" style={{width: "min-content"}}>delete_forever</span></button>
+          <button onClick={handleBanUser} style={{backgroundColor: "#E8A700"}}>Sancionar cuenta
+          <span className="material-icons" style={{width: "min-content", fontSize: "2rem",fontWeight: "bolder" , color: "#D15241"}}>block</span></button>
+          <button onClick={handleDeleteUser}>Eliminar cuenta
+          <span className="material-icons" style={{width: "min-content", fontSize: "2rem"}}>delete_forever</span></button>
         </div>
        </div>
       </div>

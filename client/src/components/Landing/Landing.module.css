@@ -108,3 +108,37 @@
     align-items: center;
     padding: 10%;
 }
+
+.form {
+    position: absolute;
+    z-index: 2;
+    left: calc(25% - 50px);
+    border-radius: 10px;
+    padding: 25px;
+    width: 50%;
+    height: 50vh;
+    background-color: rgb(15, 15, 15);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 25% 50% 25%;
+    align-items: center;
+    justify-items: center;
+}
+
+.reportInput {
+    padding: 10px;
+    min-width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    min-height: calc(100% - 20px);
+    max-height: calc(100% - 20px);
+    border-radius: 4px;
+    resize: none;
+}
+
+.sendReportButton {
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: #20B2AA;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+}

@@ -13,14 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const admin_1 = __importDefault(require("../../middleware/admin"));
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allReviews = yield User_1.default.find({}).where("review").exists(true).select({ _id: 1, firstName: 1, lastName: 1, avatar: 1, review: 1 });
-        if (!allReviews)
-            return res.status(404).send("Aun no hay reviews");
-        res.status(200).send(allReviews);
+        const result = yield User_1.default.deleteOne({ _id: req.query.id });
+        if (result.deletedCount === 0)
+            return res.status(404).send("There has been an error deleting this user");
+        res.status(200).end();
     }
     catch (err) {
         res.status(500).send(err.message);
