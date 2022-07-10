@@ -3,6 +3,13 @@
     grid-template-columns: 178px 1fr;
 }
 
+.title h1 {
+    padding: 20px 20px 5px 0px;
+    font-size: 3.0em;
+    color: #D2D2D2;
+    font-weight: lighter;
+}
+
 .wrapperText {
     width: 40%;
     padding:60px 0px 20px 20px;
@@ -69,9 +76,9 @@
     padding: 15px;
 }
 
-.cryptoPrice{
+/* .cryptoPrice{
     visibility: hidden;
-}
+} */
 
 .cryptoList img{
     width: 50px;
