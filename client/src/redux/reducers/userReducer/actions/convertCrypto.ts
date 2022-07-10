@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 
-export const convertCrypto: any = createAsyncThunk("crypto",
+export const convertCrypto: any = createAsyncThunk("crypto/convertCrypto",
 async (ingreso: any, { rejectWithValue }) => {
   try {
     let convertCryptoData: any = await axios.get("/crypto/convertCrypto", {

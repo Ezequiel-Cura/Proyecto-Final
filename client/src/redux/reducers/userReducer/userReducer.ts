@@ -16,8 +16,6 @@ import { deleteSaving } from './actions/deleteSaving'
 import addReview from "./actions/addReview";
 import deleteReview from "./actions/deleteReview";
 import sendSupportMessage from "./actions/sendSupportMessages";
-import { searchCrypto } from "./actions/searchCrypto";
-import { getSupportedCurrency } from "./actions/getSupportedCurrency";
 import { getCryptoList } from "./actions/getCryptoList";
 import { convertCrypto } from "./actions/convertCrypto";
 
@@ -80,6 +78,8 @@ interface User {
   totalInputsMonth: number
   options: any
   dataCurrency: {}
+  cryptoList: []
+  cryptoData: {}
 }
 
 const initialState: User = {
@@ -116,7 +116,9 @@ const initialState: User = {
   renderOutputs: [],
   totalOutputsMonth: 0,
   totalInputsMonth: 0,
-  dataCurrency: {}
+  dataCurrency: {},
+  cryptoList: [],
+  cryptoData: {}
 }
 
 const reducerSlice = createSlice({
@@ -461,35 +463,19 @@ const reducerSlice = createSlice({
     [getCryptoList.pending]: (state) => {
       state.status = "loading"
     },
-    [getCryptoList.fulfilled]: (state) => {
+    [getCryptoList.fulfilled]: (state, {payload}) => {
       state.status = "success"
+      state.cryptoList = payload
     },
     [getCryptoList.rejected]: (state) => {
-      state.status = "failed"
-    },
-    [getSupportedCurrency.pending]: (state) => {
-      state.status = "loading"
-    },
-    [getSupportedCurrency.fulfilled]: (state) => {
-      state.status = "success"
-    },
-    [getSupportedCurrency.rejected]: (state) => {
-      state.status = "failed"
-    },
-    [searchCrypto.pending]: (state) => {
-      state.status = "loading"
-    },
-    [searchCrypto.fulfilled]: (state) => {
-      state.status = "success"
-    },
-    [searchCrypto.rejected]: (state) => {
       state.status = "failed"
     },
     [convertCrypto.pending]: (state) => {
       state.status = "loading"
     },
-    [convertCrypto.fulfilled]: (state) => {
+    [convertCrypto.fulfilled]: (state, {payload}) => {
       state.status = "success"
+      state.cryptoData = payload
     },
     [convertCrypto.rejected]: (state) => {
       state.status = "failed"

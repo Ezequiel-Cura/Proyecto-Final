@@ -60,6 +60,27 @@
     padding: 20px;
 }
 
+.cryptoList{
+    list-style: none;
+    background-color: #4a41cc;
+    border-radius: 5px;
+    width: 250px;
+    margin: 15px;
+    padding: 15px;
+}
+
+.cryptoPrice{
+    visibility: hidden;
+}
+
+.cryptoList img{
+    width: 50px;
+}
+
+.cryptoList p{
+    margin: 15px;
+}
+
 
 @media screen and (max-width:1300px)  {
     .wrapperText{
