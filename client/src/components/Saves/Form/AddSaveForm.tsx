@@ -5,7 +5,7 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 
 export default function AddSaveForm(props : any) {
   const dispatch = useAppDispatch();
-  const { open, setOpen } = props;
+  const { open, setOpen, name } = props;
 
   interface Form {
     category: string,
@@ -15,10 +15,10 @@ export default function AddSaveForm(props : any) {
   }
   
   const [input, setInput] = useState<Form>({
-    category: 'extra',
+    category: 'Ahorro',
     amount: 0,
     date: '',
-    description: 'Nuevo Ahorro',
+    description: name,
   })
 
   interface AgregarAhorro {
@@ -42,13 +42,12 @@ export default function AddSaveForm(props : any) {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(form, "form en Expenses")
     dispatch(addDato(form));
     setInput({
-      category: 'extra',
+      category: 'Ahorro',
       amount: 0,
       date: '',
-      description: 'Nuevo Ahorro',
+      description: name,
     })
   }
 
@@ -56,6 +55,15 @@ export default function AddSaveForm(props : any) {
     <div>
       <h2>Agrega una cantidad de ahorro</h2>
       <form onSubmit={handleSubmit}>
+        <label>Fecha: </label>
+        <input
+          type='date'
+          name='date'
+          value={input.date}
+          onChange={handleChange}
+        >
+
+        </input>
         <label>Monto: $</label>
         <input
           type='number'
