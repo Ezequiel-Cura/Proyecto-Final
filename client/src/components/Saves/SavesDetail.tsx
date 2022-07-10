@@ -6,9 +6,10 @@ import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import AddSave from './Form/AddSave';
 
 export default function SavesDetail() {
-  const { usuario } = useAppSelector(state => state.user);
+  const { usuario, allOutputs } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   let { id } = useParams();
+  console.log(allOutputs, 'ALL OUTPUTS')
 
   interface Save {
     currency: string,
@@ -22,6 +23,8 @@ export default function SavesDetail() {
 
   const detail = usuario.savings.find((el : Save) => el._id === id)
 
+  const savingsList = allOutputs.filter(sav => sav.description === detail.name)
+  console.log(savingsList, "Que chucha trajo")
 
   function handleDelete(e : any) {
     dispatch(deleteSaving(e))
@@ -73,15 +76,20 @@ export default function SavesDetail() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th>2022-09-13</th>
-                  <th>- $5.222</th>
-                  <th><div>$ 20.222</div></th>
-                  <th><button>Delete</button></th>
-                </tr>
+                {
+                  savingsList.length > 0 ? savingsList.map( (save : any) => (
+                    <tr>
+                      <th>{save.date}</th>
+                      <th>+ ${save.amount}</th>
+                      <th>Total</th>
+                      <th><button>Delete</button></th>
+                    </tr>
+                  ))
+                  : <p>No tienes movimientos en esta casilla</p>
+                }
               </tbody>
             </table>
-            <AddSave/>
+            <AddSave name={detail.name} />
           </div>
           <div>
             <p>Conoce tu monto de ahorro en otra moneda: </p>
