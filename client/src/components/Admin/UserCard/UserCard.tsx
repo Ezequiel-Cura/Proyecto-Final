@@ -24,7 +24,7 @@ export default function UserCard() {
     const [searchValue, setSearchValue] = useState<any>("")
     useEffect(() => {
       setAllUsersSelector(allUsers.map(user=> {
-        return {...user, value: user.firstName, label: user.firstName}
+        return {...user, value: user.lastName ? user.firstName + " " + user.lastName : user.firstName , label: user.lastName ? user.firstName + " " + user.lastName : user.firstName }
       }))
     },[allUsers])
 
@@ -83,13 +83,15 @@ export default function UserCard() {
       dispatch(getUserById(searchValue._id))
     }
 
+    console.log(userCard)
+
   return (
     <div className={styles.wrapper}>
       <Nav />
       <div className={styles.userCardWrapper}>
        <div className={styles.container}>
         <form onSubmit={searchUser} className={styles.searchForm}>
-          <Select className={styles.select} options={allUsersSelector} value={searchValue} onChange={selectChange}/>
+          <Select isClearable={true} className={styles.select} options={allUsersSelector} value={searchValue} onChange={selectChange}/>
           <button className={styles.searchButton}>Buscar</button>
         </form>
         <button className={styles.returnButton} onClick={() => navigate(-1)}><span className="material-icons">arrow_back</span> Volver</button>
@@ -99,7 +101,7 @@ export default function UserCard() {
         </div>
         <div className={styles.ulContainer}>
           <ul>
-            <li>Fecha de creacion del usuario: <span style={{color: "white"}}>aun no</span></li>
+            <li>Fecha de creacion del usuario: <span style={{color: "white"}}>{userCard.createdAt?.toString().substring(0,10).split("-").reverse().join(" ")}</span></li>
             <li>Correo: <span style={{color: "white"}}>{userCard.email}</span></li>
             <li>Tipo de usuario: <span style={{color: "white"}}>{userCard.role}</span></li>
             <li>Categoria: <span style={{color: "white"}}>{userCard.premium ? "Premium" : "No premium"}</span></li>

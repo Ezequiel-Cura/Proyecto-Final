@@ -21,9 +21,9 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
     try {
         const user = yield User_1.default.findById(req.userId);
         if ((_a = user === null || user === void 0 ? void 0 : user.supportMessages) === null || _a === void 0 ? void 0 : _a.length)
-            user === null || user === void 0 ? void 0 : user.supportMessages.push(req.body.message);
+            user === null || user === void 0 ? void 0 : user.supportMessages.push({ message: req.body.message });
         else
-            user.supportMessages = [req.body.message];
+            user.supportMessages = [{ message: req.body.message }];
         yield user.save();
         res.status(201).end();
     }

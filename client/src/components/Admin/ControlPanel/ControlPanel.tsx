@@ -26,7 +26,7 @@ const {allUsers} = useAppSelector(({admin}) => admin)
             </div>
           </div>
           <div style={{display: "grid", gridTemplateRows: "min-content 1fr"}}>
-            <h3>Administradores actuales: </h3>
+            <h3>Reviews reportados: </h3>
             <table style={{backgroundColor: "#444444", width: "100%", height: "100%"}}>
               <tbody>
               </tbody>

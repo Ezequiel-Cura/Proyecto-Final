@@ -14,10 +14,19 @@ const userSchema = new mongoose_1.Schema({
     verified: { type: Boolean, default: false },
     verifyToken: { type: String },
     isEmailSubscripted: { type: Boolean, default: true },
-    review: { type: Object },
+    review: {
+        text: String,
+        rating: Number,
+        reports: [{
+                reportedBy: String,
+                reason: String
+            }]
+    },
     avatar: String,
     banned: { type: Boolean, default: false },
-    supportMessages: [],
+    supportMessages: [{
+            message: String
+        }],
     premium: { type: Boolean, default: false },
     role: { type: String, default: 'user' },
     savings: [{
