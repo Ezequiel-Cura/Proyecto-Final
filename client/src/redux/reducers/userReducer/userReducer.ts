@@ -19,6 +19,7 @@ import sendSupportMessage from "./actions/sendSupportMessages";
 import { searchCrypto } from "./actions/searchCrypto";
 import { getSupportedCurrency } from "./actions/getSupportedCurrency";
 import { getCryptoList } from "./actions/getCryptoList";
+import { convertCrypto } from "./actions/convertCrypto";
 
 const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
@@ -482,6 +483,15 @@ const reducerSlice = createSlice({
       state.status = "success"
     },
     [searchCrypto.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [convertCrypto.pending]: (state) => {
+      state.status = "loading"
+    },
+    [convertCrypto.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [convertCrypto.rejected]: (state) => {
       state.status = "failed"
     },
   }

@@ -2,6 +2,7 @@ import Nav from 'components/Nav/Nav';
 import React from 'react';
 import { Link } from "react-router-dom"
 import styles from './Crypto.module.css'
+import img from './../../assets/imgCrypto.svg'
 
 export default function CryptoLanding() {
 
@@ -17,7 +18,7 @@ export default function CryptoLanding() {
                 <button>+</button>
               </Link>
             </div>
-            {/* <img src={img} alt="not found"/> */}
+            <img src={img} alt="not found"/>
           </div>
           </div>
     </div>
