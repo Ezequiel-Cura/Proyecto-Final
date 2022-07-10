@@ -1,4 +1,4 @@
-import styles from "./RoleContextMenu.module.css"
+import styles from "../PremiumContextMenu/PremiumContextMenu.module.css"
 import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import { useAppDispatch } from "redux/hooks"
 import changeRole from "redux/reducers/adminReducer/Actions/changeRole"
@@ -21,7 +21,9 @@ const makeUserRef = useRef() as any
 const makeAdminRef = useRef() as any
   useEffect(()=>{
     const handleRoleView = (e: any) => {
-      if (e.path[0] !== divRef.current && e.path[0] !== ulRef.current && e.path[0] !== textRef.current && e.path[0] !== makeAdminRef.current && e.path[0] !== makeUserRef.current) setRoleView(false)
+      if (e.path[0] !== divRef.current && e.path[0] !== ulRef.current && e.path[0] !== textRef.current && e.path[0] !== makeAdminRef.current && e.path[0] !== makeUserRef.current) {
+        setRoleView(false)
+      }
     }
     window.addEventListener("mousedown", handleRoleView)
     return () =>{
@@ -31,9 +33,9 @@ const makeAdminRef = useRef() as any
 
   function changeUserRole (value: string) {
     dispatch(changeRole({value, id}))
-    .then(() => setRoleView(false))
     .then(() => dispatch(getAllUsers()))
-  } 
+    setRoleView(false)
+  }
 
   return (
     <div ref={divRef} className={styles.wrapper} style={{top: y, left: x}}>

@@ -2,6 +2,9 @@ import styles from "./UserRow.module.css"
 import React, { useEffect, useState } from 'react'
 import RoleContextMenu from "./RoleContextMenu/RoleContextMenu"
 import PremiumContextMenu from "./PremiumContextMenu/PremiumContextMenu"
+import { useNavigate } from "react-router-dom"
+import { useAppDispatch } from "redux/hooks"
+import { cleanUserCard } from "redux/reducers/adminReducer/adminReducer"
 
 interface UserRow {
 id: string,
@@ -13,13 +16,19 @@ premium: boolean,
 }
 
 export default function UserRow({id, email, nombre, apellido, role, premium}: UserRow) {
+  const dispatch = useAppDispatch()
   const [roleView, setRoleView] = useState(false)
   const [premiumView, setPremiumView] = useState(false)
   const [position, setPosition] = useState({x: 0, y: 0})
+  const navigate = useNavigate()
+  function handleNavigation () {
+    dispatch(cleanUserCard())
+    navigate("/admin/userCard", {state: {id}})
+  }
 
   return (
     <tr className={styles.tr}>
-    <td>{nombre} {apellido === undefined ? null : apellido}</td>
+    <td onMouseDown={handleNavigation} className={styles.name}>{nombre} {apellido === undefined ? null : apellido}</td>
     <td>{email}</td>
     <td
       onContextMenu={e => {

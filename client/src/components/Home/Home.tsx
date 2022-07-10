@@ -37,7 +37,7 @@ export default function Home() {
           <div >
               <Link to="/home/ingresos">
                 <div className={styles.ingresoLink}>
-                    <h2>INGRESOS</h2> 
+                    <h2 className={styles.h2}>INGRESOS</h2> 
                     {/* <span>Monto actual: ${datos().allInputs} </span> */}
                 </div>
               </Link>
@@ -45,7 +45,7 @@ export default function Home() {
           <div>
             <Link to="/home/gastos">
               <div className={styles.gastos_link}>
-                  <h2>GASTOS</h2>
+                  <h2 className={styles.h2}>GASTOS</h2>
                   {/* <span>Monto actual: ${datos().allGastos} </span> */}
               </div>
             </Link>
@@ -53,7 +53,7 @@ export default function Home() {
           <div>
             <Link to="/home/saving">
               <div className={styles.ahorros_link}>
-                  <h2>AHORROS</h2>
+                  <h2 className={styles.h2}>AHORROS</h2>
                   <span>Monto actual: ${} </span>
               </div>
             </Link>
@@ -61,7 +61,7 @@ export default function Home() {
           <div>
               <Link to="/home/detalles">
                 <div className={styles.detalles_link}>
-                    <h2>DETALLES</h2>            
+                    <h2 className={styles.h2}>DETALLES</h2>            
                 </div>
               </Link>
           </div>
@@ -69,7 +69,7 @@ export default function Home() {
           <div className={styles.expand_columns}>
               <Link to="/home/novedades">
                 <div className={styles.novedades_link}>
-                    <h2>NOVEDADES</h2>            
+                    <h2 className={styles.h2}>NOVEDADES</h2>            
                 </div>
               </Link>
           </div>

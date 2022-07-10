@@ -13,6 +13,7 @@
     background-color: #2E332C;
     padding: 10px 20px;
 }
+
 .registerButtonContainer {
     display: flex;
     gap: 5px;
@@ -34,7 +35,6 @@
     background-color: rgba(32, 178, 171, 0.753);
     color: white;
 }
-
 
 .firstContainer {
     margin: 100px 0px;
