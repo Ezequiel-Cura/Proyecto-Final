@@ -410,13 +410,11 @@ export default function InputTable() {
                       : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
                         return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
                       })
-                    : usuario.categories.length > 0
-                    && usuario.categories.map((allInputs: Category, i: number) => {
-                      return (<option value={allInputs.name} key={i}>{allInputs.name.charAt(0).toUpperCase() + allInputs.name.slice(1).toLowerCase()}</option>)
-                    })
-                  }
-                  <option value='Crear' className={styles.Crear}>Crear</option>
+                    : <></>
+		    }
+		    <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
+
                 <input
                   type='text'
                   name='description'
@@ -426,6 +424,7 @@ export default function InputTable() {
                   autoFocus={true}
                 >
                 </input>
+
                 <label>$</label>
                 <input
                   type='number'
@@ -436,7 +435,8 @@ export default function InputTable() {
                   onChange={handleChange}
                   className={styles.amount}
                 >
-                </input>
+		</input>
+
                 <input
                   type='date'
                   name='date'
@@ -445,6 +445,7 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
+
                 <button type='submit' disabled={valDisable}>Agregar</button>
               </div>
             </form>

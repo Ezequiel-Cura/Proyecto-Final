@@ -318,7 +318,7 @@ export default function ExpensesTable() {
 
         <form onSubmit={handleSubmit}>
           <div className={styles.form}>
-            <select onChange={handleSelectI}>
+            <select value={input.category} onChange={handleSelectI}>
               <option value='' disabled={true}>Selecciona el tipo</option>
               <option value='monthly'>Gasto fijo</option>
               <option value='extra'>Gasto variable</option>
@@ -329,7 +329,7 @@ export default function ExpensesTable() {
               {
                 selectKey.frequency ?
                   selectKey.frequency === 'monthly' ?
-                  ['Transporte', 'Alquiler', 'Deuda', 'Impuestos'].map(montOutput => {
+                  ['Alquiler', 'Deuda', 'Impuestos'].map(montOutput => {
                       return (<option value={montOutput}>{montOutput}</option>)
                     }) :
                     ['Regalo', 'Super', 'Transporte'].map(extraOutput => {
@@ -341,15 +341,12 @@ export default function ExpensesTable() {
                 selectKey.frequency === 'monthly' && usuario.categories.length > 0 ? 
                 usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
                     return (<option value={montOutput.name}>{montOutput.name.charAt(0).toUpperCase() + montOutput.name.slice(1).toLowerCase()}</option>)
-                  })
-                  : usuario.categories.filter((extraOutput: Category) => extraOutput.frequency === 'extra' && extraOutput.type === 'output').map((extraOutput: Category) => {
+                  }) :
+		  usuario.categories.filter((extraOutput: Category) => extraOutput.frequency === 'extra' && extraOutput.type === 'output').map((extraOutput: Category) => {
                     return (<option value={extraOutput.name}>{extraOutput.name.charAt(0).toUpperCase() + extraOutput.name.slice(1).toLowerCase()}</option>)
-                  })
-                : usuario.categories.length > 0
-                && usuario.categories.map((allOutputs: Category, i: number) => {
-                  return (<option value={allOutputs.name} key={i}>{allOutputs.name.charAt(0).toUpperCase() + allOutputs.name.slice(1).toLowerCase()}</option>)
-                })
-              }
+                  }) :
+		  <></>
+		}
               <option value='Crear' className={styles.Crear}>Crear</option>
             </select>
             <input
@@ -392,7 +389,7 @@ export default function ExpensesTable() {
               setOpen={setOpen}
               onClick={() => setOpen(open)}
               title="Completa para agregar una categoría!">
-              <CategoryCreate />
+              <CategoryCreate/>
             </PopUp>
           </div>)
         }
