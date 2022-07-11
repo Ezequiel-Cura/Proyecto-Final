@@ -325,7 +325,7 @@ export default function InputTable() {
               {
                 ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return (<button value={i < 10 ? `0${i + 1}` : `${i + 1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                    return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                     )
                   }
                 )

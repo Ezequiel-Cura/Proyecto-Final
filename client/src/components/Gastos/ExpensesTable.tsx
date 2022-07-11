@@ -13,7 +13,6 @@ import CategoryCreate from "components/Category/CategoryCreate";
 export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-  console.log(usuario, "usuario")
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -24,7 +23,7 @@ export default function ExpensesTable() {
       dispatch(totalOutput())
       dispatch(clearChangeOptions())
     };
-  }, [status, dispatch])
+  }, [status, dispatch, date])
 
   interface AgregarGastos {
     id?: string,
@@ -141,6 +140,7 @@ export default function ExpensesTable() {
 
   function filterByMonth(e: any) {
     e.preventDefault();
+    console.log(e.target.value, "meeeeeeeeeeeeeeeeees")
     dispatch(changeOptions(['month', e.target.value]))
     dispatch(filterOutputByOptions())
     dispatch(totalOutput())
@@ -239,7 +239,7 @@ export default function ExpensesTable() {
           <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)} >
             <option value='default'>Ordenar por categoria</option>
             {
-              ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler'].map(undefinedCategory => {
+              ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler', 'Salud', 'Viaje', 'Restaurante', 'Vestimenta', 'Shopping'].map(undefinedCategory => {
                 return (<option value={undefinedCategory}>{undefinedCategory}</option>)
               })
             }
@@ -271,7 +271,7 @@ export default function ExpensesTable() {
             {
               ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                 (month, i) => {
-                  return (<button value={i < 10 ? `0${i + 1}` : `${i + 1}`} className={styles.months} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                  return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.months} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                   )
                 }
               )
@@ -347,10 +347,10 @@ export default function ExpensesTable() {
               {
                 selectKey.frequency ?
                   selectKey.frequency === 'monthly' ?
-                  ['Transporte', 'Alquiler', 'Deuda', 'Impuestos'].map(montOutput => {
+                  ['Transporte', 'Alquiler', 'Deuda', 'Impuestos', 'Salud', 'Viaje'].map(montOutput => {
                       return (<option value={montOutput}>{montOutput}</option>)
                     }) :
-                    ['Regalo', 'Super', 'Transporte'].map(extraOutput => {
+                    ['Regalo', 'Super', 'Transporte', 'Salud', 'Viaje', 'Restaurante', 'Vestimenta', 'Shopping'].map(extraOutput => {
                       return (<option value={extraOutput}>{extraOutput}</option>)
                     }) :
                     <></>

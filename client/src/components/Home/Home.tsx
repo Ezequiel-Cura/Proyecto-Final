@@ -15,8 +15,8 @@ export default function Home() {
      if(status === 'success'){ 
       dispatch(renderInput(date));
       dispatch(renderOutput(date))
-      totalInput();
-      totalOutput();
+      dispatch(totalInput());
+      dispatch(totalOutput());
     }
   }, [date, dispatch, status])
   return (
