@@ -17,7 +17,6 @@ export default function InputTable() {
   const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
   //-----------------------------------
 
-
   //Selects/button
   function handleDelete(event: accountParameter) {
     dispatch(deleteDato(event))
@@ -35,7 +34,7 @@ export default function InputTable() {
     dispatch(inputsOrderByAmount(e.target.value))
   }
 
-  function handleOrderByCategories(e: any) {                              //--------!!!
+  function handleOrderByCategories(e: any) {                          //--------!!!
     e.preventDefault();
     dispatch(changeOptions(['category', e.target.value]))
     dispatch(filterInputByOptions());
@@ -49,9 +48,17 @@ export default function InputTable() {
     dispatch(totalInput())
   }
 
+  function handleFilterByYear(e: any) {
+    e.preventDefault();
+    dispatch(changeOptions(['year', e.target.value]))
+    dispatch(filterInputByOptions())
+    dispatch(totalInput())
+  }
+
   function resetAll() {
     (document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
-    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default'
+    (document.getElementById("selectFrequency") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectYear") as HTMLFormElement).value = ''
   }
 
   function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -193,7 +200,7 @@ export default function InputTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-      
+    console.log(form)
     dispatch(addDato(form));
     setInput({
       category: '',
@@ -204,6 +211,7 @@ export default function InputTable() {
     setSelectKey({
       keyInput: ''
     })
+    resetAll()
   }
   
   //---------------------------------
@@ -302,6 +310,13 @@ export default function InputTable() {
               <option value='extra'>Ingreso extra</option>
             </select>
 
+            <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
+              <option value=''>Ordenar por año</option>
+              <option value='2022'>2022</option>
+              <option value='2023'>2023</option>
+              <option value='2024'>2024</option>
+            </select>
+
           </div>
 
           {/* Month */}
@@ -310,7 +325,7 @@ export default function InputTable() {
               {
                 ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                   (month, i) => {
-                    return (<button value={i < 10 ? `0${i + 1}` : `${i + 1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                    return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                     )
                   }
                 )

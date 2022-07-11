@@ -23,8 +23,8 @@ router.get("/", async (req: Request, res: Response) => {
             res.status(400).send('Faltan parámetros.')
         }
         await fetch(`https://api.apilayer.com/exchangerates_data/convert?to=${to}&from=${from}&amount=${amount}`, requestOptions)
-            .then(res => res.json())
-            .then(apiData => {
+            .then((res: any) => res.json())
+            .then((apiData: any) => {
                 res.status(200).send(apiData)
             })
     } catch (error) {

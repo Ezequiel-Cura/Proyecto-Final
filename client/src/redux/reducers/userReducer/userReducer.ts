@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 import { registerUser } from './actions/registerUser'
@@ -17,8 +17,10 @@ import addReview from "./actions/addReview";
 import deleteReview from "./actions/deleteReview";
 import sendSupportMessage from "./actions/sendSupportMessages";
 import reportReview from "./actions/reportReview";
+import { getCryptoList } from "./actions/getCryptoList";
+import { convertCrypto } from "./actions/convertCrypto";
 
-
+const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
   async (info: any) => {
     const { data } = await axios.put("/user/update", info)
@@ -44,7 +46,11 @@ interface Entries {
   frequency?: string,
   description: string,
   category: string,
-  amount: number
+  amount: number,
+}
+interface Extra{
+  date: string,
+  entries: Entries[]
 }
 interface User {
   usuario: any,
@@ -77,6 +83,8 @@ interface User {
   totalInputsMonth: number
   options: any
   dataCurrency: {}
+  cryptoList: []
+  cryptoData: {}
 }
 
 const initialState: User = {
@@ -103,7 +111,8 @@ const initialState: User = {
   options: {
     frequency: 'default',
     category: 'default',
-    month: ''
+    month: '',
+    year: ''
   },
   status: 'idle',
   allInputs: [],
@@ -112,7 +121,9 @@ const initialState: User = {
   renderOutputs: [],
   totalOutputsMonth: 0,
   totalInputsMonth: 0,
-  dataCurrency: {}
+  dataCurrency: {},
+  cryptoList: [],
+  cryptoData: {}
 }
 
 const reducerSlice = createSlice({
@@ -166,22 +177,47 @@ const reducerSlice = createSlice({
       state.options[payload[0]] = payload[1]
     },
     clearChangeOptions: (state) => {
-      state.options = {frequency: 'default', category: 'default', month: ''}
+      state.options = {frequency: 'default', category: 'default', month: '', year: ''}
     },
     filterOutputByOptions: (state) => {
-      //Month
-      if (state.options.month === '') {
-        state.renderOutputs = state.allOutputs
-      } else {
-        const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
+      //Year
+      if (!state.options.year) {
+        const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
+        const currState = current(state.usuario)
+        const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[0]}` === `${date.split('-')[0]}`) || []
         const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
-        const extraIndex = state.usuario.extra.output.find((e: Entries) => `${e.date.split('-')[1]}` === state.options.month)
-
-        if (!extraIndex) {
+        const extraIndex = currState.extra.output.filter((e: Extra) => `${e.date.split('-')[0]}` === `${date.split('-')[0]}`)
+       
+        if (extraIndex.length < 1) {
+          state.renderOutputs = [...monthEntries]
+        } else {         //[{date, entries},{}]
+          // no me trae bien la data este map
+          const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
+          state.renderOutputs = [...monthEntries, ...extraEntries]
+        }
+      } else {
+        const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
+        const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
+        const currState = current(state.usuario)
+        const extraIndex = currState.extra.output.filter((e: Extra) => `${e.date.split('-')[0]}` === state.options.year)
+        
+        if (extraIndex.length < 1) {
           state.renderOutputs = [...monthEntries]
         } else {
-          const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
+          const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
           state.renderOutputs = [...monthEntries, ...extraEntries]
+        }
+      }
+      //Month
+      if (!!state.options.month) {
+        const month = state.renderOutputs.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
+        state.renderOutputs = [...month]
+      } else{
+        const monthFilter = state.renderOutputs.filter((e: Entries) => `${e.date.split('-')[1]}` === `${date.split('-')[1]}`) 
+        if(monthFilter.length < 1){
+          state.renderOutputs = state.renderOutputs.filter((e: Entries) => `${e.date.split('-')[1]}` === '01')
+        } else{
+          state.renderOutputs = monthFilter
         }
       }
       //Frequency
@@ -209,20 +245,46 @@ const reducerSlice = createSlice({
       }
     },
     filterInputByOptions: (state) => {
-      //Month
-      if (state.options.month === '') {
-        state.renderInputs = state.allInputs
-      } else {
-        const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
-        const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
-        const extraIndex = state.usuario.extra.input.find((e: Entries) => `${e.date.split('-')[1]}` === state.options.month)
-
-        if (!extraIndex) {
-          state.renderInputs = [...monthEntries]
+      
+      if (!state.options.year) {
+        const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
+        
+        const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[0]}` === `${date.split('-')[0]}`) || []
+        const yearEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
+        const currState = current(state.usuario)
+        const extraIndex = currState.extra.input.filter((e: Extra) => `${e.date.split('-')[0]}` === `${date.split('-')[0]}`)
+        
+        
+        if (extraIndex.length < 1) {
+          state.renderInputs = [...yearEntries]
         } else {
-          const extraEntries = extraIndex.entries.map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderInputs = [...monthEntries, ...extraEntries]
+          const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
+          state.renderInputs = [...yearEntries, ...extraEntries]
         }
+
+      } else {
+        const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
+        const yearEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
+        const currState = current(state.usuario)
+        const extraIndex = currState.extra.input.filter((e: Extra) => `${e.date.split('-')[0]}` === state.options.year)
+        if (extraIndex.length < 1) {
+          state.renderInputs = [...yearEntries]
+        } else {
+          const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
+          state.renderInputs = [...yearEntries, ...extraEntries]
+        }
+      }
+      //Month
+      if (!!state.options.month) {
+        const month = state.renderInputs.filter((e: Entries) => `${e.date.split('-')[1]}` === state.options.month) || []
+        state.renderInputs = [...month]
+      } else{
+       const monthFilter = state.renderInputs.filter((e: Entries) => `${e.date.split('-')[1]}` === `${date.split('-')[1]}`) 
+       if(monthFilter.length < 1){
+        state.renderInputs = state.renderInputs.filter((e: Entries) => `${e.date.split('-')[1]}` === '01')
+       } else{
+         state.renderInputs = monthFilter
+       }
       }
       //Frequency
       switch (state.options.frequency) {
@@ -242,10 +304,10 @@ const reducerSlice = createSlice({
         }
       }
       //Category
-      if (state.options.category === 'default') {
-        return;
-      } else {
+      if (state.options.category !== 'default') {
         state.renderInputs = state.renderInputs.filter((entries: Entries) => state.options.category === entries.category)
+      } else{
+        console.log(state.renderInputs)
       }
     },
     expensesOrderByAmount: (state, { payload }) => {
@@ -429,6 +491,26 @@ const reducerSlice = createSlice({
       state.status = "success"
     },
     [sendSupportMessage.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [getCryptoList.pending]: (state) => {
+      state.status = "loading"
+    },
+    [getCryptoList.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.cryptoList = payload
+    },
+    [getCryptoList.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [convertCrypto.pending]: (state) => {
+      state.status = "loading"
+    },
+    [convertCrypto.fulfilled]: (state, {payload}) => {
+      state.status = "success"
+      state.cryptoData = payload
+    },
+    [convertCrypto.rejected]: (state) => {
       state.status = "failed"
     },
     [reportReview.pending]: (state) => {
