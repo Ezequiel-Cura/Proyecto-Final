@@ -46,7 +46,7 @@ var requestOptions = {
     headers: myHeaders
 };
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { to, from, amount } = req.body;
+    const { to, from, amount } = req.query;
     console.log({ to, from, amount });
     try {
         if (!to || !from || !amount) {
