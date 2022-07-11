@@ -5,13 +5,15 @@ import getAllUsers from "redux/reducers/adminReducer/Actions/getAllUsers"
 import Nav from "components/Nav/Nav"
 import UserRow from "./utils/allUsersChart/UserRow"
 import InfoChart from "./utils/InfoChart/InfoChart"
+import getAllReports from "redux/reducers/adminReducer/Actions/getAllReports"
 
 export default function ControlPanel() {
 const dispatch = useAppDispatch()
-const {allUsers} = useAppSelector(({admin}) => admin)
+const {allUsers, allReports} = useAppSelector(({admin}) => admin)
 
   useEffect(()=>{
     dispatch(getAllUsers())
+    dispatch(getAllReports())
   },[])
 
   return (
@@ -28,6 +30,12 @@ const {allUsers} = useAppSelector(({admin}) => admin)
           <div style={{display: "grid", gridTemplateRows: "min-content 1fr"}}>
             <h3>Reviews reportados: </h3>
             <table style={{backgroundColor: "#444444", width: "100%", height: "100%"}}>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Reports</th>
+                </tr>
+              </thead>
               <tbody>
               </tbody>
             </table>

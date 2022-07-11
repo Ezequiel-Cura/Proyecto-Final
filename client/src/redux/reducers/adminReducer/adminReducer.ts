@@ -7,6 +7,7 @@ import getAllUsers from "./Actions/getAllUsers";
 import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
 import banUser from "./Actions/banUser";
+import getAllReports from "./Actions/getAllReports";
 
 interface User {
     _id: string,
@@ -32,6 +33,10 @@ interface User {
 interface adminState {
     allUsers: User[]  
     userCard: User
+    allReports: {
+        reportedBy: string
+        reason: string
+    }
     status: 'idle' | 'loading' | 'success' | 'failed'
   }
 
@@ -56,7 +61,11 @@ const initialState: adminState = {
         banned: false,
         updatedAt: null,
         createdAt: null,
-},
+    },
+    allReports: {
+        reportedBy: "",
+        reason: ""
+    },
     status: "idle",
 }
 
@@ -95,6 +104,16 @@ const reducerSlice = createSlice({
             state.allUsers = payload
         },
         [getAllUsers.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [getAllReports.pending]: (state) => {
+            state.status = "loading"
+        },
+        [getAllReports.fulfilled]: (state, {payload}) => {
+            state.status = "success"
+            state.allReports = payload
+        },
+        [getAllReports.rejected]: (state) => {
             state.status = "failed"
         },
         [changeRole.pending]: (state) => {
