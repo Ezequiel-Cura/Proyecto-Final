@@ -43,6 +43,7 @@ export default function SavesDetail() {
   const detail = usuario.savings.find((el : Save) => el._id === id)
 
   const savingsList = allOutputs.filter(sav => sav.description === detail.name)
+  console.log(savingsList,"lista de saving")
 
   // let total = 0
   // const totalAmount = savingsList.forEach(el => total += el.amount)
@@ -68,8 +69,10 @@ export default function SavesDetail() {
   })
 
   function handleSelectCurrent(e: React.ChangeEvent<HTMLSelectElement>) {
+    console.log(e, "select e")
     setSelect({
-      to:''
+      ...select,
+      to: e.target.value
     })
   }
 
@@ -81,7 +84,7 @@ export default function SavesDetail() {
 
   const form: current = {
     to: select.to,
-    from: '',
+    from: detail.currency,
     amount: 500
   }
 
