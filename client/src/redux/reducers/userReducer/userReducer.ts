@@ -16,6 +16,7 @@ import { deleteSaving } from './actions/deleteSaving'
 import addReview from "./actions/addReview";
 import deleteReview from "./actions/deleteReview";
 import sendSupportMessage from "./actions/sendSupportMessages";
+import reportReview from "./actions/reportReview";
 import { getCryptoList } from "./actions/getCryptoList";
 import { convertCrypto } from "./actions/convertCrypto";
 
@@ -510,6 +511,15 @@ const reducerSlice = createSlice({
       state.cryptoData = payload
     },
     [convertCrypto.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [reportReview.pending]: (state) => {
+      state.status = "loading"
+    },
+    [reportReview.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [reportReview.rejected]: (state) => {
       state.status = "failed"
     },
   }

@@ -13,14 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const admin_1 = __importDefault(require("../../middleware/admin"));
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allReviews = yield User_1.default.find({}).where("review").exists(true).select({ _id: 1, firstName: 1, lastName: 1, avatar: 1, review: 1 });
-        if (!allReviews)
-            return res.status(404).send("Aun no hay reviews");
-        res.status(200).send(allReviews);
+        const { id, value } = req.body;
+        if (typeof value !== "boolean")
+            return res.status(404).send("huh");
+        const result = yield User_1.default.updateOne({ _id: id }, { $set: { banned: value } });
+        if (result.modifiedCount === 0)
+            return res.status(500).send("There was an error");
+        const user = yield User_1.default.findById({ _id: id });
+        res.status(200).send(user === null || user === void 0 ? void 0 : user.banned);
     }
     catch (err) {
         res.status(500).send(err.message);

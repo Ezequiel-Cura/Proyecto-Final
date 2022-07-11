@@ -1,10 +1,10 @@
 import styles from "./Review.module.css"
-import React from 'react'
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import { Rating } from "@mui/material"
-
+import { useNavigate } from "react-router-dom"
 export interface userReview {
-  user: { 
+  user: {
+    id: string
     avatar: string
     text : string
     firstName: string
@@ -15,7 +15,8 @@ export interface userReview {
   }
 }
 
-export default function Review({user}: any) {
+export default function Review({user, setMenuPreview, reported}: any) {
+  const navigate = useNavigate()
   return (
     <div className={styles.wrapper}>
       {user ? 
@@ -30,6 +31,11 @@ export default function Review({user}: any) {
         <Rating value={user?.review?.rating || 0} readOnly/>
         </div>
       </div>
+      {localStorage.getItem("logged") ?
+        <button className={styles.reportButton} onClick={() => setMenuPreview((prev : any) => !prev)}><span className="material-icons">report</span></button>
+        :
+        <button className={styles.reportButton} onClick={() => navigate("/login")}><span className="material-icons">report</span></button>
+      }
       </>
       : <h1 style={{color: "black", fontSize: "2rem"}}>There are currently no reviews</h1>
       }

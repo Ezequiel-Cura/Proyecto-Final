@@ -5,10 +5,9 @@
     background-color: #2D2D2D;
 }
 .userCardWrapper {
-    height: calc(100vh - 60px);
-    padding: 30px 50px;
+    height: calc(100vh - 120px);
+    padding: 100px 50px 20px 50px;
     display: grid;
-    grid-template-rows: 25% 2fr;
 }
 .topContainer {
     position: relative;
@@ -40,7 +39,51 @@
     border-radius: 15px;
 }
 
-.bottomContainer {
+.searchForm {
+    position: absolute;
+    top: -50px;
+    right: 20%;
+    width: max-content;
+    display: flex;
+    gap: 10px;
+}
+.searchButton{
+    display: flex;
+    width: max-content;
+    padding: 5px 15px 5px 10px;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background-color: #20B2AA;
+    font-weight: 600;
+}
+
+.select {
+    color: black;
+    width: 200px;
+}
+
+.returnButton {
+    position: absolute;
+    top: -50px;
+    right: 20px;
+    display: flex;
+    width: 125px;
+    padding: 5px 15px 5px 10px;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background-color: #20B2AA;
+    font-weight: 600;
+}
+
+.container {
     background-color: #575757;
     border-radius: 15px;
     padding: 35px 10px 10px 10px;
@@ -128,8 +171,6 @@
     padding: 0px 15px;
     display: flex;
     justify-content: space-between;
-    align-items: bottom;
-    align-content: bottom;
 }
 
 .buttonsContainer button {
@@ -139,11 +180,14 @@
     border: none;
     border-radius: 25px;
     padding: 0px 15px;
-    margin: 22px 0px 10px 0px;
     font-size: larger;
-    font-weight: 500;
+    font-weight: 600;
     width: max-content;
     display: grid;
     grid-template-columns: 1fr min-content;
+    align-self: end;
     align-items: center;
+    letter-spacing: .5px;
+    height: max-content;
+    margin-bottom: 10px;
 }
