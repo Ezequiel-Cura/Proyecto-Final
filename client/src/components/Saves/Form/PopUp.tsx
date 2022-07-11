@@ -9,7 +9,9 @@ export default function PopUp(props : any) {
 return (
     <Dialog open={open} maxWidth='md'>
         <DialogTitle>
-            <button className={style.closeButton} onClick={()=> setOpen(!open)}>X</button>
+            <div className={style.divCloseButton}>
+                <button className={style.closeButton} onClick={()=> setOpen(!open)}>X</button>
+            </div>
         </DialogTitle>
         <DialogContent>
             {children}

@@ -200,7 +200,7 @@ export default function InputTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-      
+    console.log(form)
     dispatch(addDato(form));
     setInput({
       category: '',

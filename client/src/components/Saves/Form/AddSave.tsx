@@ -1,13 +1,14 @@
 import React, { useState }  from 'react';
 import AddSaveForm from './AddSaveForm';
 import PopUp from './PopUp';
+import style from '../SavesDetail.module.css';
 
 export default function AddSave(props : any) {
-  const { name } = props;
+  const { name, currentAmount } = props;
   const [open, setOpen] = useState<boolean>(false);
 return (
     <div>
-     <button onClick={() => setOpen(!open)}>Agrega un nuevo monto<div>+</div></button>
+     <button className={style.buttonAddSave} onClick={() => setOpen(!open)}>Agrega un nuevo monto<div className={style.addNewSave}>+</div></button>
       <PopUp
         open={open} 
         setOpen={setOpen}
@@ -17,6 +18,7 @@ return (
         open={open}
         setOpen={setOpen}
         name={name}
+        currentAmount={currentAmount}
         />
       </PopUp>
     </div>

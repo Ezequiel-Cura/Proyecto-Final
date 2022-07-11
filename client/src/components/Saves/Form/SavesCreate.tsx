@@ -42,61 +42,29 @@ export default function SavesCreate(props : any) {
     dispatch(addSaving(form));
   }
 
-  interface addSave {
-    category: string,
-    description: string,
-    amount: number,
-  }
-
-  const [input2, setInput2] = useState<addSave>({
-    category: 'extra',
-    description: '',
-    amount: 0
-  })
-
-  function handleSubmit2(e: React.FormEvent<HTMLFormElement>) {         //-----Form 2, agregar ingreso
-    e.preventDefault();
-    console.log(form, 'form agregar ahorro')
-    dispatch(addDato(form));
-  }
-
-  interface subtractSave {
-    category: string,
-    description: string,
-    amount: number,
-  }
-
-  const [input3, setInput3] = useState<subtractSave>({
-    category: 'input',
-    description: '',
-    amount: 0
-  })
-
-  function handleSubmit3(e: React.FormEvent<HTMLFormElement>) {         //-----Form 3, sacar ingreso
-    e.preventDefault();
-    console.log(form, 'form3 sacar ahorro')
-    dispatch(addDato(form));
-  }
-
   return (
     <div className={style.wrapperForm}>
       <form onSubmit={handleSubmit1}>
               <h2>Agrega una casilla de ahorro</h2>
+              <br/>
               <label>Nombre de la casilla: </label>
               <input
                 type='text'
                 name='name'
                 value={input1.name}
                 placeholder='Agrega un nombre'
+                className={style.inputText}
                 onChange={handleChange}
               >
               </input>
+              <br/>
               <label>Fecha de inicio: </label>
               <input
                 type='date'
                 name='start'
                 value={input1.start}
                 placeholder='Agrega una fecha'
+                className={style.inputDate}
                 onChange={handleChange}
               >
               </input>
@@ -106,18 +74,22 @@ export default function SavesCreate(props : any) {
                 name='end'
                 value={input1.end}
                 placeholder='Agrega una descripcion'
+                className={style.inputDate}
                 onChange={handleChange}
               >
               </input>
+              <br/>
               <label>Deposito: </label>
               <input
                 type='text'
                 name='depositPlace'
                 value={input1.depositPlace}
                 placeholder='Donde esta alojado'
+                className={style.inputText}
                 onChange={handleChange}
               >
               </input>
+              <br/>
               <label>Meta: $ </label>
               <input
                 type='number'
@@ -125,18 +97,30 @@ export default function SavesCreate(props : any) {
                 min='0'
                 value={input1.goal}
                 placeholder='Agrega un monto'
+                className={style.inputText}
                 onChange={handleChange}
               >
               </input>
-              <div>
-              <label>Seleccionar tipo de moneda: </label>
-                <input type="radio" name="currency" value="ARS" id="" onChange={handleChange} />Peso Argentino
-                <input type="radio" name="currency" value="UYU" id="dolar" onChange={handleChange}/>Peso Uruguayo
-                <input type="radio" name="currency" value="USD" id="dolar" onChange={handleChange}/>Dolar
-                <input type="radio" name="currency" value="EUR" id="euro" onChange={handleChange}/>Euro
-                <input type="radio" name="currency" value="LBP" id="libra" onChange={handleChange}/>Libra Esterlina
-                <input type="radio" name="currency" value="JPY" id="yen" onChange={handleChange}/>Yen
-                <input type="radio" name="currency" value="CHF" id="franco suizo" onChange={handleChange}/>Franco Suizo
+              <br/>
+              <label className={style.labelCurrent}>Selecciona el tipo de moneda: </label>
+              <div className={style.wrapperAllCurrents}>
+                <div className={style.wrapperCurrentsA}>
+                  <input type="radio" name="currency" value="ARS" className={style.inputCurrent} onChange={handleChange}/>Peso Argentino
+                  <br/>
+                  <input type="radio" name="currency" value="UYU" className={style.inputCurrent} onChange={handleChange}/>Peso Uruguayo
+                  <br/>
+                  <input type="radio" name="currency" value="USD" className={style.inputCurrent} onChange={handleChange}/>Dolar
+                  <br/>
+                  <input type="radio" name="currency" value="EUR" className={style.inputCurrent} onChange={handleChange}/>Euro
+                </div>
+                <br/>
+                <div className={style.wrapperCurrentsB}>
+                  <input type="radio" name="currency" value="LBP" className={style.inputCurrent} onChange={handleChange}/>Libra Esterlina
+                  <br/>
+                  <input type="radio" name="currency" value="JPY" className={style.inputCurrent} onChange={handleChange}/>Yen
+                  <br/>
+                  <input type="radio" name="currency" value="CHF" className={style.inputCurrent} onChange={handleChange}/>Franco Suizo
+                </div>
               </div>
               <button type='submit' onClick={()=> setOpen(!open)}>Agregar</button>
       </form>

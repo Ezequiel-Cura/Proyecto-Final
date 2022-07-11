@@ -5,13 +5,17 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 
 export default function AddSaveForm(props : any) {
   const dispatch = useAppDispatch();
-  const { open, setOpen, name } = props;
+  const { open, setOpen, name, currentAmount } = props;
 
   interface Form {
     category: string,
     amount: number,
     date: string,
     description: string,
+  }
+
+  interface keySelect {
+    frequency: string
   }
   
   const [input, setInput] = useState<Form>({
@@ -21,6 +25,10 @@ export default function AddSaveForm(props : any) {
     description: name,
   })
 
+  const [select, setSelect] = useState<keySelect>({
+    frequency: '',
+  })
+
   interface AgregarAhorro {
     frequency: string,            
     key: string,
@@ -28,7 +36,7 @@ export default function AddSaveForm(props : any) {
   }
 
   const form: AgregarAhorro = {
-    frequency:'extra',
+    frequency: select.frequency,
     key: 'output',
     value: input,
   }
@@ -37,6 +45,12 @@ export default function AddSaveForm(props : any) {
     setInput({
       ...input,
       [e.target.name]: e.target.value
+    })
+  }
+
+  function handleSelectI(e: React.ChangeEvent<HTMLSelectElement>) {
+    setSelect({
+      frequency: e.target.value
     })
   }
 
@@ -73,6 +87,11 @@ export default function AddSaveForm(props : any) {
           onChange={handleChange}
         >
         </input>
+        <select onChange={handleSelectI}>
+          <option value=''>Selecciona el tipo</option>
+          <option value='monthly'>Fijo mensualmente</option>
+          <option value='extra'>Agregar manualmente</option>
+        </select>
         <button type='submit' onClick={()=> setOpen(!open)}>Agregar</button>
       </form>
     </div>

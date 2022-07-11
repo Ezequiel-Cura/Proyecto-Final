@@ -18,10 +18,9 @@
 .title {
     width: 100%;
     color: #D2D2D2;
-    
 }
 
-.h1 {
+.title h1 {
     font-weight: lighter;
     font-size: 3rem;
 }
@@ -41,27 +40,27 @@
     height: 130px;
     border-radius: 20px;
     margin: 20px;
-    position: relative;
+    background: linear-gradient(to right, #C6EC59 25% , #333333 88%, #DB0808);
 }
 
-.wrapperSave:global(#amount3){background: linear-gradient(to right, #C6EC59 35%, #444444 85%, #DB0808)}
-.wrapperSave:global(#amount2){background: linear-gradient(to right, #68A2FA 35%, #444444 85%, #DB0808)}
-.wrapperSave:global(#amount1){background: linear-gradient(to right, #A0479D 35%, #444444 85%, #DB0808)}
+.wrapperSave .wrapperSaveLink {
+    width: 1070px;
+    height: 100%;
+    display: flex;
+}
 
-.wrapperName1 {
+.wrapperSaveLink .wrapperName1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 22%;
+    width: 25%;
+    height: 100%;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
+    background-color: #C6EC59;
 }
 
-.wrapperName1:global(#amount3){background-color: #C6EC59;}
-.wrapperName1:global(#amount2){background-color: #68A2FA;}
-.wrapperName1:global(#amount1){background-color: #A0479D;}
-
-.divP {
+.wrapperName1 .divP {
     display: flex;
     align-items: center;
     width: 100%;
@@ -69,30 +68,31 @@
     padding: 15px 5px 5px 30px;
 }
 
-.wrapperName1 p {
+.wrapperName1 .divP p {
     font-weight: lighter;
     font-size: 1.4rem;
+    color: white;
 }
 
-.divH1 {
+.wrapperName1 .divH1 {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 80%;
     color: white;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
-.wrapperName1 h1 {
+.wrapperName1 .divH1 h1 {
     font-weight: 300;
 }
 
-
-.wrapperTable2{
+.wrapperSaveLink .wrapperTable2{
     display: flex;
     flex-direction: row;
     width: 75%;
+    height: 100%;
     position: relative;
     border-radius: 20px;
 }
@@ -103,6 +103,7 @@
     border-collapse: collapse;
     border-bottom-left-radius: 20px;
     border-top-left-radius: 20px;
+    background-color: #333333;
 }
 
 .tableA thead th {
@@ -114,7 +115,7 @@
 }
 
 .amount {
-    width: 110px;
+    width: 100px;
     height: 30px;
     border-radius: 20px;
     padding: 5px;
@@ -132,21 +133,17 @@
     align-items: center;
     justify-content: center;
     border-radius: 20px;
-    background-color: #A0479D;
+    background-color: #C6EC59;;
+    color: white;
 }
 
-.wrapperGoalB:global(#amount1){background-color: #A0479D;}
-.wrapperGoalB:global(#amount2){background-color: #68A2FA;}
-.wrapperGoalB:global(#amount3){background-color: #C6EC59;}
-
-.divDelete3 {
-    width: 3%;
+.divDelete {
+    width: 10%;
 }
 
-.divDelete3 button{
-    width: 35px;
-
-    height: 50px;
+.divDelete button{
+    width: 100%;
+    height: 100%;
     border: none;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -158,7 +155,7 @@
     cursor: pointer;
 }
 
-.divDelete3 button:hover{
+.divDelete button:hover{
     background-color: rgb(113, 39, 106) ;
 }
 
@@ -192,7 +189,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 10px;
     border-radius: 10px;
     color:#00BFA6;
     background-color: white;
+}
+
+.divNothing {
+    padding: 20px;
 }

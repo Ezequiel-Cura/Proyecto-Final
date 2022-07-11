@@ -24,7 +24,6 @@ export default function Saves() {
   }
 
   function handleDelete(e : any) {
-    console.log(e, "e form")
     dispatch(deleteSaving(e))
   }
   
@@ -33,17 +32,19 @@ export default function Saves() {
       <Nav/>
       <div className={style.background}>
         <div className={style.wrapperAll}>
+
           <div className={style.title}>
-            <h1 className={style.h1}>Ahorros</h1>
+            <h1>Ahorros</h1>
           </div>
 
           <div className={style.wrapperAllSaves}>
             {usuario.savings.length > 0
             ? usuario.savings.map( (s: SavingUser) => (
-              <div className={style.wrapperSaveDelete}>
+              <div className={style.wrapperSave}>
                 <Link to={`/home/saving/add/${s._id}`}>
-                  <div id={'amount' + (idColor + 1)} className={style.wrapperSave}>
-                    <div id={'amount' + (idColor + 1)} className={style.wrapperName1}>
+                  <div className={style.wrapperSaveLink}>
+
+                    <div className={style.wrapperName1}>
                       <div className={style.divP}>
                         <p>Nombre: </p>
                       </div>
@@ -51,9 +52,10 @@ export default function Saves() {
                         <h1>{s.name}</h1>
                       </div>
                     </div>
+
                     <div className={style.wrapperTable2}>
                       <table className={style.tableA}>
-                        <thead className={style.head}>
+                        <thead>
                           <tr>
                             <th>Comienzo</th>
                             <th>Final</th>
@@ -72,18 +74,20 @@ export default function Saves() {
                           </tr>
                         </tbody>
                       </table>
-                      <div  id={'amount' + (idColor + 1)} className={style.wrapperGoalB}>
+                      <div className={style.wrapperGoalB}>
                         <h3>Meta</h3>
                         <p>$ {s.goal}</p>
                       </div>
                     </div>
                   </div>
                 </Link> 
-                <div className={style.divDelete3}>
+                <div className={style.divDelete}>
                   <button onClick={() => handleDelete({value: s})}></button>
                 </div>
               </div>))
-            : <p>No tienes casillas de ahorros actualmente, agrega una!</p>
+            : (<div className={style.divNothing}>
+              <p>No tienes casillas de ahorros</p>
+              </div>)
             }
           </div>
 

@@ -7,6 +7,12 @@
 }
 
 .wrapperForm input {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.wrapperForm .inputText {
+    width: 250px;
     padding: 10px;
     margin-right: 20px;
     border: 1px solid rgb(142, 140, 140);
@@ -14,6 +20,27 @@
     color: rgb(142, 140, 140);
     background-color: #E3E3E3;
 }
+
+.wrapperForm .inputDate {
+    width: 100px;
+    padding: 10px;
+    margin-right: 20px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background-color: #E3E3E3;
+}
+
+.labelCurrent {
+    color: black;
+    font-weight: bold;
+}
+
+.wrapperForm .inputCurrent {
+    width: 10px;
+    margin-right: 20px;
+}
+
 
 .wrapperForm button {
     padding: 12px;
@@ -31,9 +58,31 @@
     background-color: rgb(118, 189, 3) ;
 }
 
+.divCloseButton {
+    display: flex;
+    justify-content: end;
+}
+
 .closeButton {
     width: 30px;
     height: 30px;
     border: none;
     background-color: red;
+    cursor: pointer;
+}
+
+.wrapperAllCurrents {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin: 5px;
+}
+
+.wrapperCurrentsA {
+    padding: 10px;
+    margin-right: 50px;
+}
+
+.wrapperCurrentsB {
+    padding: 10px;
 }
