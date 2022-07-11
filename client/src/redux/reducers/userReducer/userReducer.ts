@@ -85,8 +85,8 @@ interface User {
   totalSaving: number,
   options: any
   dataCurrency: {}
-  cryptoList: []
-  cryptoData: {}
+  cryptoList: any
+  cryptoData: any
 }
 
 const initialState: User = {

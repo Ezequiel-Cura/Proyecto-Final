@@ -16,7 +16,7 @@ var requestOptions: RequestInit = {
 };
 
 router.get("/", async (req: Request, res: Response) => {
-    const { to, from, amount } = req.query
+    const { to, from, amount } = req.body
     console.log({ to, from, amount })
     try {
         if (!to || !from || !amount) {
