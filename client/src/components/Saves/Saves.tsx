@@ -10,8 +10,6 @@ export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const idColor = 0;
-
   interface SavingUser {
     _id: string,
     name: string,

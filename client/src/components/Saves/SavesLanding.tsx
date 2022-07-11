@@ -5,23 +5,21 @@ import styles from "./../Ingreso/Input.module.css";
 import img from '../../assets/imgSaving.svg';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import Saves from './Saves';
-import { renderOutput } from 'redux/reducers/userReducer/userReducer';
+import { renderSaving } from 'redux/reducers/userReducer/userReducer';
 
 export default function SavesLanding() {
-  const { usuario, status } = useAppSelector(state => state.user);
+  const { usuario, status, renderSavings } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  let currentDate = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
-
-  // useEffect(() => {
-  //   if (status === 'success'){
-  //     dispatch()
-  //   }
-  // }, [status])
+  useEffect(() => {
+    if (status === 'success'){
+      dispatch(renderSaving());
+    }
+  }, [status])
 
   return (
     <div>
-      { usuario.savings > 0 
+      { renderSavings.length > 0 
       ? <Saves/>
       :(<div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
           <Nav/>

@@ -1,19 +1,26 @@
 import Nav from 'components/Nav/Nav';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato';
 import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
+import { getCurrency } from 'redux/reducers/userReducer/actions/getCurrency';
+import { renderOutput, totalSave } from 'redux/reducers/userReducer/userReducer';
 import AddSave from './Form/AddSave';
 import style from './SavesDetail.module.css';
 
 export default function SavesDetail() {
-  const { usuario, allOutputs } = useAppSelector(state => state.user);
+  const { usuario,status, allOutputs, totalSaving } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   let { id } = useParams();
-  console.log(allOutputs, 'ALL OUTPUTS')
 
+  //Si se agrega un nombre repetido en las casillas "ahorro" se pisan
+  //Mensaje de que logro la meta
+  //
+
+
+  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
   interface Save {
     _id: string,
     name: string,
@@ -25,23 +32,68 @@ export default function SavesDetail() {
     currency: string,
   }
 
+  useEffect(() => {
+    if (status === 'success') {
+      dispatch(renderOutput(date))
+      dispatch(totalSave(detail))
+    }
+  }, [status])
+
+
   const detail = usuario.savings.find((el : Save) => el._id === id)
 
   const savingsList = allOutputs.filter(sav => sav.description === detail.name)
-  console.log(savingsList, "Que chucha trajo")
 
-
+  // let total = 0
+  // const totalAmount = savingsList.forEach(el => total += el.amount)
+  
+  // savingsList.forEach( amount => dispatch(addDato({frequency:"extra", key: "input", value: amount})))
+  // savingsList.forEach( amount => dispatch(deleteDato({frequency: amount.frequency, type: 'output', value: amount})))
 
   function handleDeleteSave(e : any) {
     dispatch(deleteSaving(e));
-    // savingsList.forEach( amount => dispatch(addDato({frequency:"extra", key: "input", value: amount})))
-    // savingsList.forEach( amount => dispatch(deleteDato({frequency: amount.frequency, type: 'output', value: amount})))
   }
 
   function handleDeleteAmount(e: any) {
     dispatch(deleteDato(e))
     dispatch(addDato({frequency:"extra", key: "input", value: e.value}))
   }
+
+  interface SelectCurrent {
+    to: string,
+  }
+
+  const [select, setSelect] = useState<SelectCurrent>({
+    to: '',
+  })
+
+  function handleSelectCurrent(e: React.ChangeEvent<HTMLSelectElement>) {
+    setSelect({
+      to:''
+    })
+  }
+
+  interface current {
+    to: string,
+    from: string, 
+    amount: number
+  }
+
+  const form: current = {
+    to: select.to,
+    from: '',
+    amount: 500
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(form, 'form current')
+    dispatch(getCurrency(form));
+    setSelect({
+      to: ''
+    })
+  }
+
   
   return (
     <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
@@ -72,7 +124,7 @@ export default function SavesDetail() {
                       <th>{detail.start && detail.start.split("T")[0]}</th>
                       <th>{detail.currency}</th>
                       <th>{detail.depositPlace}</th>
-                      <th><div>$ {detail.currentAmount}</div></th>
+                      <th>$ {totalSaving}</th>
                       <th>{detail.end && detail.end.split("T")[0]}</th>
                     </tr>
                   </tbody>
@@ -92,8 +144,7 @@ export default function SavesDetail() {
                   <thead>
                     <tr>
                       <th>Fecha</th>
-                      <th>Ahorrado/Sacado</th>
-                      <th>Monto actual</th>
+                      <th>Ahorrado</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -103,7 +154,6 @@ export default function SavesDetail() {
                         <tr>
                           <th>{save.date}</th>
                           <th>+ ${save.amount}</th>
-                          <th>Total</th>
                           <th><button onClick={ () => handleDeleteAmount({frequency: save.frequency, type: 'output', value: save})}></button></th>
                         </tr>
                     ))
@@ -121,20 +171,23 @@ export default function SavesDetail() {
             <div className={style.divAmountB}>
               <div className={style.divCurrentConvert}>
                 <p>Conoce tu monto de ahorro en otra moneda: </p>
-                <select>
-                  <option>Peso Argentino</option>
-                  <option>Peso Uruguayo</option>
-                  <option>Dolar</option>
-                  <option>Euro</option>
-                  <option>Libra Esterlina</option>
-                  <option>Yen</option>
-                  <option>Franco Suizo</option>
-                </select>
+                <form onSubmit={handleSubmit}>
+                  <select onChange={handleSelectCurrent}>
+                    <option value=''>Selecciona el tipo</option>
+                    <option value="ARS">Peso Argentino</option>
+                    <option value="UYU">Peso Uruguayo</option>
+                    <option value="USD">Dolar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="LBP">Libra Esterlina</option>
+                    <option value="JPY">Yen</option>
+                    <option value="CHF">Franco Suizo</option>
+                  </select>
+                  <button type='submit'>Calcular</button>
+                </form>
                 <h2>ARS</h2>
                 <h3>$1.320.000</h3>
               </div>
             </div>
-
           </div>
 
           <div className={style.divButtonDelete}>

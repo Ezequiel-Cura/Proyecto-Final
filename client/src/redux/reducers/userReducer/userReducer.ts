@@ -74,8 +74,10 @@ interface User {
   allOutputs: Entries[] | [],
   renderInputs: Entries[] | [],
   renderOutputs: Entries[] | [],
+  renderSavings: Entries [] | [],
   totalOutputsMonth: number,
-  totalInputsMonth: number
+  totalInputsMonth: number,
+  totalSaving: number,
   options: any
   dataCurrency: {}
   cryptoList: []
@@ -114,8 +116,10 @@ const initialState: User = {
   allOutputs: [],
   renderInputs: [],
   renderOutputs: [],
+  renderSavings: [],
   totalOutputsMonth: 0,
   totalInputsMonth: 0,
+  totalSaving: 0,
   dataCurrency: {},
   cryptoList: [],
   cryptoData: {}
@@ -163,10 +167,19 @@ const reducerSlice = createSlice({
         console.log(e)
       }
     },
+    renderSaving: (state) => {
+      state.renderSavings = state.usuario.savings.map((el : any) => el)
+    },
     totalOutput: (state) => {
       let reduceTotal = 0
       state.renderOutputs.forEach(entrie => reduceTotal += entrie.amount)
       state.totalOutputsMonth = reduceTotal;
+    },
+    totalSave: (state, {payload}) => {
+      let total = 0;
+      let savings = state.allOutputs.filter(sav => sav.description === payload.name)
+      const totalAmount = savings.forEach(el => total += el.amount)
+      state.totalSaving = total
     },
     changeOptions: (state, { payload }) => {
       state.options[payload[0]] = payload[1]
@@ -486,7 +499,9 @@ export const {
   totalInput,
   renderOutput,
   renderInput,
+  renderSaving,
   totalOutput,
+  totalSave,
   changeOptions,
   filterOutputByOptions,
   inputsOrderByAmount,
