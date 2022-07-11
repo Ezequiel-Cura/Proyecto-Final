@@ -17,7 +17,7 @@ const router = (0, express_1.Router)();
 const axios_1 = __importDefault(require("axios"));
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const cryptoList = yield (0, axios_1.default)('https://api.coingecko.com/api/v3/coins/list?include_platform=true');
+        const cryptoList = yield (0, axios_1.default)('https://api.coingecko.com/api/v3/coins');
         res.status(200).send(cryptoList.data);
     }
     catch (error) {

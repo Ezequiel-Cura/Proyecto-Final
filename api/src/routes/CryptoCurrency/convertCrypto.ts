@@ -4,9 +4,10 @@ const router = Router()
 import axios from 'axios'
 
 router.get("/", async (req: Request, res: Response) => {
+    const { id, to, amount } = req.body;
     try {
-      const supported_vs_currencies = await axios('https://api.coingecko.com/api/v3/simple/supported_vs_currencies')
-      res.status(200).send(supported_vs_currencies.data)
+      const convertCrypto = await axios(`https://criptoya.com/api/${id}/${to}/${amount}`)
+      res.status(200).send(convertCrypto.data)
     } catch (error) {
         console.log(error)
         res.status(404).send(error)

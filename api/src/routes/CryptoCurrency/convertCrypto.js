@@ -16,15 +16,10 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 const axios_1 = __importDefault(require("axios"));
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, supported } = req.body;
+    const { id, to, amount } = req.body;
     try {
-        const cryptoSearch = yield (0, axios_1.default)(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=${supported}`);
-        if (cryptoSearch) {
-            res.status(200).send(cryptoSearch.data);
-        }
-        else {
-            res.status(404).send(cryptoSearch);
-        }
+        const convertCrypto = yield (0, axios_1.default)(`https://criptoya.com/api/${id}/${to}/${amount}`);
+        res.status(200).send(convertCrypto.data);
     }
     catch (error) {
         console.log(error);
