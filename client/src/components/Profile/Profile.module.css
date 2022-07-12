@@ -75,11 +75,12 @@
 
 .infoContainer {
     display: flex;
-    padding: 25px;
+    padding: 40px 25px;
     width: calc(100% - 50px);
     flex-direction: column;
     background-color: #252525;
     justify-content: space-around;
+    position: relative;
 }
     
 .profilePic {
@@ -130,4 +131,44 @@ input {
     background-color: rgb(28, 202, 28);
     color: rgb(249, 255, 249);
     text-align: center;
+}
+.deleteAccountButton {
+    background-color: red;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    text-overflow: none;
+    width: max-content;
+    position: absolute;
+    right: 25px;
+}
+
+.deleteAccountModal {
+    position: absolute;
+    top: 25vh;
+    left: 25%;
+    width: calc(50% - 50px);
+    height: calc(40vh - 50px);
+    padding: 25px 25px;
+    z-index: 2;
+    background-color: #252525;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.confirmButton {
+    background-color: red;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    text-overflow: none;
+    width: min-content;
 }

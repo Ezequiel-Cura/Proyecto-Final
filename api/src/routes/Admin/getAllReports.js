@@ -13,15 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const admin_1 = __importDefault(require("../../middleware/admin"));
 const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield User_1.default.findById(req.body.id);
-        user.review.reports.push({ reportedBy: req.userId, reason: req.body.reason });
-        yield user.save();
-        res.status(200).send(user);
+        const allReviews = yield User_1.default.find({}).where("review").exists(true).select({ review: 1 });
+        res.status(200).send(allReviews.filter((review) => { var _a, _b; return (_b = (_a = review === null || review === void 0 ? void 0 : review.review) === null || _a === void 0 ? void 0 : _a.reports) === null || _b === void 0 ? void 0 : _b.length; }));
     }
     catch (err) {
         res.status(500).send(err.message);

@@ -16,12 +16,12 @@ const express_1 = require("express");
 const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield User_1.default.findById(req.body.id);
-        user.review.reports.push({ reportedBy: req.userId, reason: req.body.reason });
-        yield user.save();
-        res.status(200).send(user);
+        const result = yield User_1.default.deleteOne({ _id: req.userId });
+        if (result.deletedCount === 0)
+            return res.status(404).send("There has been an error deleting this user");
+        res.status(200).end();
     }
     catch (err) {
         res.status(500).send(err.message);

@@ -141,4 +141,18 @@
     background-color: #20B2AA;
     font-weight: 600;
     letter-spacing: 1.2px;
+    cursor: pointer;
+    width: max-content;
+}
+
+.quitMenuButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
 }
