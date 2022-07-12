@@ -48,7 +48,7 @@ export default function Home() {
             <Link to="/home/saving">
               <div className={styles.ahorros_link}>
                   <h2 className={styles.h2}>AHORROS</h2>
-                  <span>Monto actual: ${} </span>
+                  {/* <span>Monto actual: ${} </span> */}
               </div>
             </Link>
           </div>
