@@ -83,6 +83,7 @@ interface User {
   totalOutputsMonth: number,
   totalInputsMonth: number,
   totalSaving: number,
+  savingGoalCompleted: boolean,
   options: any
   dataCurrency: any,
   cryptoList: any
@@ -125,6 +126,7 @@ const initialState: User = {
   totalOutputsMonth: 0,
   totalInputsMonth: 0,
   totalSaving: 0,
+  savingGoalCompleted: false,
   dataCurrency: {},
   cryptoList: [],
   cryptoData: {}
@@ -138,9 +140,9 @@ const reducerSlice = createSlice({
       try {
         // Bring monthly inputs
         const month = state.usuario.monthly.input.filter((e: Entries) => `${e.date.split('-')[0]}-${e.date.split('-')[1]}` === payload)
-        // const monthFilter = month ? month.filter((e: Entries) => e.date.split('-')[0] + e.date.split('-')[1] === payload) : []
+
         const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
-        // const month = state.usuario.monthly.input.slice().map((e:Entries) => e = {...e, frequency: 'monthly'} ) || []
+       
         // Bring extra inputs
         const extraIndex = state.usuario.extra.input.map((e: Entries) => e.date).indexOf(payload) || 0
         const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' }).map((e: Entries) => e = { ...e, date: e.date.split("T")[0] })
@@ -163,7 +165,7 @@ const reducerSlice = createSlice({
         const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
 
         // Bring extra inputs
-        const extraIndex = state.usuario.extra.output.map((e: Entries) => e.date).indexOf(payload) || 0
+        const extraIndex = state.usuario.extra.output.map((e: Extra) => e.date).indexOf(payload) || 0
         const extra = extraIndex < 0 ? [] : state.usuario.extra.output[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' }).map((e: Entries) => e = { ...e, date: e.date.split("T")[0] })
         const sortOutputs = [...monthEntries, ...extra].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         state.renderOutputs = sortOutputs;
@@ -172,9 +174,6 @@ const reducerSlice = createSlice({
         console.log(e)
       }
     },
-    renderSaving: (state) => {
-      state.renderSavings = state.usuario.savings.map((el : any) => el)
-    },
     totalOutput: (state) => {
       let reduceTotal = 0
       state.renderOutputs.forEach(entrie => reduceTotal += entrie.amount)
@@ -182,12 +181,28 @@ const reducerSlice = createSlice({
     },
     totalSave: (state, {payload}) => {
       let total = 0;
+      
+      const currency = current(state.usuario)
+      const month = currency.monthly.output.filter((e: Entries) => e.description === payload.name) || []
+      const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
+
+      const extra = currency.extra.output.map( (e: Extra) => e.entries).flat(Infinity)
+      const extraFilter = extra.filter((e: Entries) => e.description === payload.name) || []
+      const extraFrequency = extraFilter.length > 0 ? extraFilter.map((e: Entries) => e = { ...e, frequency: 'extra' }) : []
 
       //TOTAL SAVINGS POR AQUI
-      // const currency = current(state.usuario)
-      let savings = state.allOutputs.filter(sav => sav.description === payload.name)
-      const totalAmount = savings.forEach(el => total += el.amount)
+      const savingsFilter = [...monthEntries, ...extraFrequency]
+      state.renderSavings = savingsFilter
+      savingsFilter.forEach( (el: Entries) => total += el.amount)
       state.totalSaving = total
+      const detailIndex = state.usuario.savings.map( (e: any) => e._id).indexOf(payload._id) || 0
+      state.usuario.savings[detailIndex].currentAmount = total
+      total >= state.usuario.savings[detailIndex].goal 
+      ? state.savingGoalCompleted = true
+      : state.savingGoalCompleted = false
+    },
+    setGoalSaves: (state) => {
+      state.savingGoalCompleted = false
     },
     changeOptions: (state, { payload }) => {
       state.options[payload[0]] = payload[1]
@@ -207,7 +222,7 @@ const reducerSlice = createSlice({
         if (extraIndex.length < 1) {
           state.renderOutputs = [...monthEntries]
         } else {         //[{date, entries},{}]
-          // no me trae bien la data este map
+
           const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
           state.renderOutputs = [...monthEntries, ...extraEntries]
         }
@@ -544,7 +559,7 @@ export const {
   totalInput,
   renderOutput,
   renderInput,
-  renderSaving,
+  setGoalSaves,
   totalOutput,
   totalSave,
   changeOptions,

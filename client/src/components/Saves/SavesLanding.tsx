@@ -3,23 +3,21 @@ import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import styles from "./../Ingreso/Input.module.css";
 import img from '../../assets/imgSaving.svg';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppSelector } from 'redux/hooks';
 import Saves from './Saves';
-import { renderSaving } from 'redux/reducers/userReducer/userReducer';
 
 export default function SavesLanding() {
-  const { usuario, status, renderSavings } = useAppSelector(state => state.user);
-  const dispatch = useAppDispatch();
+  const { usuario } = useAppSelector(state => state.user);
 
-  useEffect(() => {
-    if (status === 'success'){
-      dispatch(renderSaving());
-    }
-  }, [status])
+  // useEffect(() => {
+  //   if (status === 'success'){
+  //     dispatch(renderSaving());
+  //   }
+  // }, [status])
 
   return (
     <div>
-      { renderSavings.length > 0 
+      { usuario.savings.length > 0 
       ? <Saves/>
       :(<div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
           <Nav/>

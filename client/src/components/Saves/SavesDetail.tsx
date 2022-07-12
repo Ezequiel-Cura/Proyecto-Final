@@ -1,3 +1,4 @@
+import { Alert } from '@mui/material';
 import Nav from 'components/Nav/Nav';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -6,12 +7,12 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato';
 import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { getCurrency } from 'redux/reducers/userReducer/actions/getCurrency';
-import { renderOutput, totalSave } from 'redux/reducers/userReducer/userReducer';
+import { renderOutput, setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
 import AddSave from './Form/AddSave';
 import style from './SavesDetail.module.css';
 
 export default function SavesDetail() {
-  const { usuario,status, allOutputs, totalSaving, dataCurrency } = useAppSelector(state => state.user);
+  const { usuario,status, totalSaving, dataCurrency, renderSavings, savingGoalCompleted } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   let { id } = useParams();
 
@@ -31,19 +32,19 @@ export default function SavesDetail() {
     depositPlace: string,
     currency: string,
   }
+  
+  const detail = usuario.savings.find((el : Save) => el._id === id)
+
+  const savingsList = renderSavings.filter(sav => sav.description === detail.name)
+  console.log({detail}, {savingsList})
 
   useEffect(() => {
     if (status === 'success') {
-      dispatch(renderOutput(date))
       dispatch(totalSave(detail))
     }
   }, [status])
 
 
-  const detail = usuario.savings.find((el : Save) => el._id === id)
-
-  const savingsList = allOutputs.filter(sav => sav.description === detail.name)
-  console.log(dataCurrency,"currency")
 
   // let total = 0
   // const totalAmount = savingsList.forEach(el => total += el.amount)
@@ -103,13 +104,21 @@ export default function SavesDetail() {
       <Nav/>
       <div className={style.background}>
         <div className={style.wrapperAll}>
+          
           <div className={style.wrapperHead}>
 
             <div className={style.title}>
               <Link to={"/home/saving/add"}><button></button></Link>
               <h1>Detalle de "{detail.name}"</h1>
             </div>
-
+            {
+              savingGoalCompleted 
+              ?
+              <Alert onClose={() => dispatch(setGoalSaves())}>
+                     `¡Felicidades {usuario.firstName}! Llegaste a la meta de tu ahorro {detail.name}`
+              </Alert>
+              : <></>
+            }
             <div className={style.wrapperDetail}>
               <div className={style.tableDetail}>
                 <table>

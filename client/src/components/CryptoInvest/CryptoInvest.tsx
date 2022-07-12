@@ -36,6 +36,8 @@ export default function CryptoInvest() {
     time: number
   }
 
+  // SEARCH CRIPTO
+
   interface Crypto {
     name: string,
     id: string,
