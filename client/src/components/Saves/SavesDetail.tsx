@@ -11,7 +11,7 @@ import AddSave from './Form/AddSave';
 import style from './SavesDetail.module.css';
 
 export default function SavesDetail() {
-  const { usuario,status, allOutputs, totalSaving } = useAppSelector(state => state.user);
+  const { usuario,status, allOutputs, totalSaving, dataCurrency } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   let { id } = useParams();
 
@@ -43,7 +43,7 @@ export default function SavesDetail() {
   const detail = usuario.savings.find((el : Save) => el._id === id)
 
   const savingsList = allOutputs.filter(sav => sav.description === detail.name)
-  console.log(savingsList,"lista de saving")
+  console.log(dataCurrency,"currency")
 
   // let total = 0
   // const totalAmount = savingsList.forEach(el => total += el.amount)
@@ -85,7 +85,7 @@ export default function SavesDetail() {
   const form: current = {
     to: select.to,
     from: detail.currency,
-    amount: 500
+    amount: totalSaving
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -187,8 +187,16 @@ export default function SavesDetail() {
                   </select>
                   <button type='submit'>Calcular</button>
                 </form>
-                <h2>ARS</h2>
-                <h3>$1.320.000</h3>
+                {
+                  dataCurrency.query
+                  ? <h2>{dataCurrency.query.to}</h2>
+                  : <p>Hubo un problema</p>
+                }
+                {
+                  dataCurrency.result
+                  ? <h3> $ {parseFloat(dataCurrency.result).toFixed(2)}</h3> 
+                  : <p>Hubo un problema</p>
+                }
               </div>
             </div>
           </div>

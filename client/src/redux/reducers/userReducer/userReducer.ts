@@ -84,7 +84,7 @@ interface User {
   totalInputsMonth: number,
   totalSaving: number,
   options: any
-  dataCurrency: {}
+  dataCurrency: any,
   cryptoList: any
   cryptoData: any
 }
@@ -182,6 +182,9 @@ const reducerSlice = createSlice({
     },
     totalSave: (state, {payload}) => {
       let total = 0;
+
+      //TOTAL SAVINGS POR AQUI
+      // const currency = current(state.usuario)
       let savings = state.allOutputs.filter(sav => sav.description === payload.name)
       const totalAmount = savings.forEach(el => total += el.amount)
       state.totalSaving = total
