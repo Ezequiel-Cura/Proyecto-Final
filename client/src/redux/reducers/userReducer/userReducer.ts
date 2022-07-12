@@ -142,13 +142,12 @@ const reducerSlice = createSlice({
         // Bring monthly inputs
 
         const month = state.usuario.monthly.input.filter((e: Entries) => e ? `${e.date.split('-')[0]}-${e.date.split('-')[1]}` === payload : '')  || []
-        console.log({month})
+
         const monthEntries = month.length > 0 ? month.map((e: Entries) => e = { ...e, frequency: 'monthly' }) : []
        
         // Bring extra inputs
-        const extraIndex = state.usuario.extra.input.map((e: Entries) => e.date).indexOf(payload) || 0
-        const extra = extraIndex > 0 ? state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' }).map((e: Entries) => e = { ...e, date: e.date.split("T")[0] }) : [] 
-        console.log({extra})
+        const extraIndex = state.usuario.extra.input.map((e: Extra) => e.date).indexOf(payload) || 0
+        const extra = extraIndex < 0 ? [] : state.usuario.extra.input[extraIndex].entries.map((e: Entries) => e = { ...e, frequency: 'extra' }).map((e: Entries) => e = { ...e, date: e.date.split("T")[0] })
         const sortInputs = [...monthEntries, ...extra].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         state.renderInputs = sortInputs;
         state.allInputs = sortInputs;
@@ -224,11 +223,11 @@ const reducerSlice = createSlice({
         const extraIndex = currState.extra.output.filter((e: Extra) => `${e.date.split('-')[0]}` === `${date.split('-')[0]}`)
        
         if (extraIndex.length < 1) {
-          state.renderOutputs = [...monthEntries]
+          state.renderOutputs = [...monthEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         } else {         //[{date, entries},{}]
 
           const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderOutputs = [...monthEntries, ...extraEntries]
+          state.renderOutputs = [...monthEntries, ...extraEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         }
       } else {
         const month = state.usuario.monthly.output.filter((e: Entries) => `${e.date.split('-')[0]}` === state.options.year) || []
@@ -237,10 +236,10 @@ const reducerSlice = createSlice({
         const extraIndex = currState.extra.output.filter((e: Extra) => `${e.date.split('-')[0]}` === state.options.year)
         
         if (extraIndex.length < 1) {
-          state.renderOutputs = [...monthEntries]
+          state.renderOutputs = [...monthEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         } else {
           const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderOutputs = [...monthEntries, ...extraEntries]
+          state.renderOutputs = [...monthEntries, ...extraEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         }
       }
       //Month
@@ -292,10 +291,10 @@ const reducerSlice = createSlice({
         
         
         if (extraIndex.length < 1) {
-          state.renderInputs = [...yearEntries]
+          state.renderInputs = [...yearEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         } else {
           const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderInputs = [...yearEntries, ...extraEntries]
+          state.renderInputs = [...yearEntries, ...extraEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         }
 
       } else {
@@ -304,10 +303,10 @@ const reducerSlice = createSlice({
         const currState = current(state.usuario)
         const extraIndex = currState.extra.input.filter((e: Extra) => `${e.date.split('-')[0]}` === state.options.year)
         if (extraIndex.length < 1) {
-          state.renderInputs = [...yearEntries]
+          state.renderInputs = [...yearEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         } else {
           const extraEntries = extraIndex.map((e: Extra) => e.entries ).flat(Infinity).map((e: Entries) => e = { ...e, frequency: 'extra' })
-          state.renderInputs = [...yearEntries, ...extraEntries]
+          state.renderInputs = [...yearEntries, ...extraEntries].sort((a, b) => b.date.split('-')[2] - a.date.split('-')[2])
         }
       }
       //Month

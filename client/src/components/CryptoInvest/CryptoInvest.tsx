@@ -1,3 +1,4 @@
+import { Alert } from '@mui/material';
 import Nav from 'components/Nav/Nav';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,7 +9,7 @@ import styles from './Crypto.module.css'
 
 export default function CryptoInvest() {
 
-  const { cryptoList, status, cryptoData } = useAppSelector(state => state.user);
+  const { cryptoList, status, cryptoData, usuario } = useAppSelector(state => state.user);
 
   const dispatch = useDispatch()
   //Pagination
@@ -103,13 +104,17 @@ export default function CryptoInvest() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    dispatch(convertCrypto(form))
-    resetAll()
-    setForm({
-      id: '',
-      to: '',
-      amount: 0
-    })
+    if(usuario.premium){
+      dispatch(convertCrypto(form))
+      resetAll()
+      setForm({
+        id: '',
+        to: '',
+        amount: 0
+      })
+    } else{
+      return alert('Debes ser un usuario premium para poder convertir la moneda.')
+    }
   }
 
   return (
