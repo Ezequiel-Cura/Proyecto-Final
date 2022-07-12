@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { totalInput, renderInput, inputsOrderByAmount, changeOptions, filterInputByOptions, clearChangeOptions } from "redux/reducers/userReducer/userReducer";
 import { addDato } from 'redux/reducers/userReducer/actions/addDato'
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
+import { deleteCategory } from 'redux/reducers/userReducer/actions/deleteCategory'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 
@@ -107,7 +108,7 @@ export default function InputTable() {
     }
   }
   //---------------------------------
-  // Variables & States
+
   const dispatch = useAppDispatch();
   const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
 
@@ -120,10 +121,7 @@ export default function InputTable() {
     }
   }, [status])
 
-  // const [formCategoryDelete, setFormCategoryDelete] = useState<Category>({
-  //   key: 'CategoriesInputs',
-  //   value: ''
-  // })
+
   //-----------------------------------
 
 
@@ -139,34 +137,34 @@ export default function InputTable() {
     date: today
   });
 
-    // Validate
-    const firstRender = useRef(true)
+  // Validate
+  const firstRender = useRef(true)
 
-    const [valMsg, setMsg] = useState('')
-    const [valDisable, setDisabled] = useState(true)
-  
-    useEffect(() => {
-      if (firstRender.current === true) {
-        firstRender.current = false
-        return
-      }
-      
-      !selectKey.keyInput ? setMsg('Proporcione un tipo') :
+  const [valMsg, setMsg] = useState('')
+  const [valDisable, setDisabled] = useState(true)
+
+  useEffect(() => {
+    if (firstRender.current === true) {
+      firstRender.current = false
+      return
+    }
+
+    !selectKey.keyInput ? setMsg('Proporcione un tipo') :
       !input.category ? setMsg('Proporcione una categoria') :
-      !input.description ? setMsg('Proporcione una descripcion') :
-      !input.amount ? setMsg('Proporcione un monto') : 
-      setMsg('')
+        !input.description ? setMsg('Proporcione una descripcion') :
+          !input.amount ? setMsg('Proporcione un monto') :
+            setMsg('')
 
-      
-    }, [input, selectKey])
-    
-    useEffect(() => {
-      setDisabled(valMsg === '' ? false : true)
-    }, [valMsg])
 
-    
-    
-    //-----------------------------------
+  }, [input, selectKey])
+
+  useEffect(() => {
+    setDisabled(valMsg === '' ? false : true)
+  }, [valMsg])
+
+
+
+  //-----------------------------------
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input changer
     setInput({
@@ -186,12 +184,13 @@ export default function InputTable() {
   }
 
   function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
-    
+
     setInput({
       ...input,
       category: e.target.value
     })
   }
+
 
   const form: AgregarIngresos = {
     frequency: selectKey.keyInput,
@@ -201,20 +200,19 @@ export default function InputTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-    console.log(form)
     dispatch(addDato(form));
     setInput({
       category: '',
       description: '',
       amount: 0,
-      date: ''
+      date: today
     })
     setSelectKey({
       keyInput: ''
     })
     resetAll()
   }
-  
+
   //---------------------------------
 
 
@@ -239,9 +237,9 @@ export default function InputTable() {
 
   //Paginado
   const [page, setPage] = useState(1);
-  const [inputsPerPage, ] = useState(6);
+  const [inputsPerPage,] = useState(6);
 
-  const [pageLimit, ] = useState(10);
+  const [pageLimit,] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
@@ -272,6 +270,36 @@ export default function InputTable() {
     }
   }
 
+  const catFilterArr = () => {
+
+    let returnArr: Array<string> = []
+    const mInput = usuario?.monthly.input
+    const eInput = usuario.extra.input.map((e: any) => e.entries)
+    const aInput = eInput.concat(mInput).flat()
+    const catArr = aInput.map((e: any) => e.category)
+    catArr.forEach((e: any) => {
+      if (!returnArr.includes(e)) {
+        returnArr.push(e)
+      }
+    })
+    return returnArr
+  }
+
+  const defVals = ['Changa', 'Herencia', 'Encontrado', 'Préstamo', 'Salario', 'Crear', '']
+
+  const handleCategoryDelete = (e: any) => {
+    e.preventDefault()
+    const prompt = window.confirm('Seguro que deseas borrar esta categoria?')
+    if (prompt) {
+      const delCat = usuario.categories.find((e: any) => e.name === input.category)
+      dispatch(deleteCategory(delCat._id))
+      setInput({ ...input, category: '' })
+    } else {
+      return
+    }
+
+  }
+
   return (
     <div style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
       <Nav />
@@ -283,6 +311,19 @@ export default function InputTable() {
           </div>
 
           {/* Order */}
+          {
+
+            //{
+            //  ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
+            //    return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+            //  })
+            //}
+            //{usuario.categories.length > 0 &&
+            //  usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
+            //    return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
+            //  })
+            //}
+          }
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option value='default'>Ordenar por monto</option>
@@ -291,15 +332,10 @@ export default function InputTable() {
             </select>
 
             <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)}>
-              <option value='default'>Ordenar por categoria</option>
+              <option value='default'>Filtrar por categoria</option>
               {
-                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
-                  return (<option value={undefinedCategory}>{undefinedCategory}</option>)
-                })
-              }
-              {usuario.categories.length > 0 &&
-                usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
-                  return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
+                catFilterArr().map((e: any) => {
+                  return (<option value={e}>{e}</option>)
                 })
               }
               <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
@@ -406,6 +442,7 @@ export default function InputTable() {
 
                 <select value={input.category} onChange={handleSelectCategories}>
                   <option value='' disabled={true}>Selecciona una categoría</option>
+
                   {
                     selectKey.keyInput ?
                       selectKey.keyInput === 'monthly'
@@ -415,27 +452,24 @@ export default function InputTable() {
                         : ['Changa', 'Herencia', 'Encontrado', 'Préstamo'].map(extraInput => {
                           return (<option value={extraInput}>{extraInput}</option>)
                         })
-                        : <></>
-
-                      
+                      : <></>
                   }
+
                   {selectKey.keyInput ?
                     usuario.categories.length > 0
                       && selectKey.keyInput === 'monthly'
                       ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
                         return (
-                          <option value={montInput.name} key={i}>{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
+                          <option value={montInput.name} key={i} >{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
                       })
                       : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
                         return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
                       })
-                    : usuario.categories.length > 0
-                    && usuario.categories.map((allInputs: Category, i: number) => {
-                      return (<option value={allInputs.name} key={i}>{allInputs.name.charAt(0).toUpperCase() + allInputs.name.slice(1).toLowerCase()}</option>)
-                    })
+                    : <></>
                   }
                   <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
+
                 <input
                   type='text'
                   name='description'
@@ -445,6 +479,7 @@ export default function InputTable() {
                   autoFocus={true}
                 >
                 </input>
+
                 <label>$</label>
                 <input
                   type='number'
@@ -456,6 +491,7 @@ export default function InputTable() {
                   className={styles.amount}
                 >
                 </input>
+
                 <input
                   type='date'
                   name='date'
@@ -464,12 +500,17 @@ export default function InputTable() {
                   onChange={handleChange}
                 >
                 </input>
+
                 <button type='submit' disabled={valDisable}>Agregar</button>
               </div>
             </form>
 
             {/* Error Display */}
             <span id='validateError'>{valMsg}</span>
+
+            {
+              !defVals.includes(input.category) ? <button className={styles.catDeleteButton} onClick={(e: any) => handleCategoryDelete(e)}>Borrar Categoria?</button> : <></>
+            }
 
             {/* Category Creation */}
             {

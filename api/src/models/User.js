@@ -19,7 +19,8 @@ const userSchema = new mongoose_1.Schema({
         rating: Number,
         reports: [{
                 reportedBy: String,
-                reason: String
+                reason: String,
+                status: { type: String, default: "unReviewed" }
             }]
     },
     avatar: String,

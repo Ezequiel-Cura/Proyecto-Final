@@ -276,3 +276,15 @@
     font-weight: bold;
     color: black;
 }
+
+.catDeleteButton{
+    padding: 1rem;
+    width: fit-content;
+    margin-right: auto;
+    border-radius: 25rem;
+    border: 2px #333333 solid;
+    background: #d16c6c;
+    color: rgb(59, 59, 59);
+    font-size: medium;
+    margin-top: 25px;
+}

@@ -1,0 +1,11 @@
+.wrapper {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 178px 1fr;
+}
+
+.ReportsPanelWrapper {
+    background-color: black;
+    margin: 75px;
+    border-radius: 10px;
+}

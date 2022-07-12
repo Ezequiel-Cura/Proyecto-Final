@@ -7,6 +7,7 @@ import getAllUsers from "./Actions/getAllUsers";
 import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
 import banUser from "./Actions/banUser";
+import getAllReports from "./Actions/getAllReports";
 
 interface User {
     _id: string,
@@ -18,7 +19,13 @@ interface User {
     avatar: string
     review: {
         text: string,
-        rating: number
+        rating: number,
+        reports: [{
+            reportedBy: string
+            reason: string
+            _id: string
+            status: string
+        }]
     }
     banned?: boolean,
     supportMessages: {
@@ -47,7 +54,13 @@ const initialState: adminState = {
         avatar: "",
         review: {
             text: "",
-            rating: 0
+            rating: 0,
+            reports: [{
+                reportedBy: "",
+                reason: "",
+                _id: "",
+                status: "",
+            }],
         },
         supportMessages: {
             id: "",
@@ -56,7 +69,7 @@ const initialState: adminState = {
         banned: false,
         updatedAt: null,
         createdAt: null,
-},
+    },
     status: "idle",
 }
 
@@ -75,7 +88,13 @@ const reducerSlice = createSlice({
             avatar: "",
             review: {
                 text: "",
-                rating: 0
+                rating: 0,
+                reports: [{
+                    reportedBy: "",
+                    reason: "",
+                    _id: "",
+                    status: "",
+                }]
             },
             supportMessages: {
                 id: "",
@@ -95,6 +114,15 @@ const reducerSlice = createSlice({
             state.allUsers = payload
         },
         [getAllUsers.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [getAllReports.pending]: (state) => {
+            state.status = "loading"
+        },
+        [getAllReports.fulfilled]: (state, {payload}) => {
+            state.status = "success"
+        },
+        [getAllReports.rejected]: (state) => {
             state.status = "failed"
         },
         [changeRole.pending]: (state) => {

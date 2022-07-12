@@ -16,6 +16,8 @@ export default function Landing() {
   const [menuPreview, setMenuPreview] = useState(false)
   const [index, setIndex] = useState(0)
   const [reported, setReported] = useState("")
+  const [reportMessage, setReportMessage] = useState("")
+  const [errorReportMessage,setErrorReportMessage] = useState("")
   const menuRef = useRef() as MutableRefObject<null>
   useEffect(()=> {
     dispatch(getAllReviews())
@@ -40,10 +42,19 @@ export default function Landing() {
     setIndex(prev => prev === allReviews.length - 1 ? 0 : prev + 1)
   }
 
-  function handleReport () {
-    dispatch(reportReview(viewingReview._id))
+  function handleReportChange (e: any) {
+    setErrorReportMessage("")
+    setReportMessage(e.target.value)
+  }
+
+  function handleReport (e: any) {
+    e.preventDefault()
+    if(!reportMessage) return setErrorReportMessage("No puedes enviar un report vacio")
+    dispatch(reportReview({reason: reportMessage, id: viewingReview._id}))
     .then((resp: any) => {
       if (resp.error) return
+      setMenuPreview(false)
+      setReportMessage("")
       setReported("Has reportado a este usuario")
       setTimeout(() => {
         setReported("")
@@ -59,7 +70,7 @@ export default function Landing() {
           {
             localStorage.getItem("logged") ?
             <>
-            <button className={styles.registerButton}  onClick={() => dispatch(logout())}>Salir</button>
+            <button className={styles.registerButton} style={{backgroundColor: "red"}}  onClick={() => dispatch(logout())}>Salir</button>
             <button className={styles.registerButton} style={{width: "max-content"}} onClick={() => navigate("/home")}>
             Vuelve al home
             </button>
@@ -100,8 +111,12 @@ export default function Landing() {
             {menuPreview &&
               <form ref={menuRef} className={styles.form} onSubmit={handleReport}>
                 <h3 style={{textAlign: "center",color: "red", fontWeight: "900"}}>Tenga en cuenta que los administradores podran ver quien envio el reporte</h3>
-                <textarea maxLength={200} className={styles.reportInput} placeholder="Coloque aqui la razon del reporte" value={"" || ""} onChange={() => {}}/>
+                <textarea maxLength={200} className={styles.reportInput} placeholder="Coloque aqui la razon del reporte" value={reportMessage || ""} onChange={handleReportChange}/>
+                <div style={{display: "grid", gridTemplateColumns: "1fr", gridTemplateRows: "1fr 1fr", justifyContent: "center", alignItems: "center", justifyItems: "center"}}>
+                <h3 style={{textAlign: "center",color: "red", fontWeight: "900"}}>{errorReportMessage}</h3>
                 <button className={styles.sendReportButton}>Envia tu reporte</button>
+                </div>
+                <button type="button" className={styles.quitMenuButton} onClick={()=> setMenuPreview(false)}><span className="material-icons">close</span></button>
               </form>
             }
             <Review reported={reported} user={viewingReview} setMenuPreview={setMenuPreview}/>
