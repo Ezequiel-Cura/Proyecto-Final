@@ -283,6 +283,22 @@ export default function InputTable() {
     })
     return returnArr
   }
+
+  const defVals = ['Changa', 'Herencia', 'Encontrado', 'Préstamo', 'Salario', 'Crear', '']
+
+  const handleCategoryDelete = (e: any) => {
+    e.preventDefault()
+    const prompt = window.confirm('Seguro que deseas borrar esta categoria?')
+    if (prompt) {
+      const delCat = usuario.categories.find((e: any) => e.name === input.category)
+      dispatch(deleteCategory(delCat._id))
+      setInput({ ...input, category: '' })
+    } else {
+      return
+    }
+
+  }
+
   return (
     <div style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
       <Nav />
@@ -317,13 +333,13 @@ export default function InputTable() {
             <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)}>
               <option value='default'>Filtrar por categoria</option>
               {
-                catFilterArr().map((e:any) => {
+                catFilterArr().map((e: any) => {
                   return (<option value={e}>{e}</option>)
                 })
               }
               <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
             </select>
-              
+
             <select id='selectFrequency' onChange={(e) => handleFilterByFrequency(e)}>
               <option value='default'>Ordenar por frecuencia</option>
               <option value='monthly'>Ingreso fijo</option>
@@ -447,7 +463,6 @@ export default function InputTable() {
                       })
                     : <></>
                   }
-
                   <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
 
@@ -488,6 +503,10 @@ export default function InputTable() {
 
             {/* Error Display */}
             <span id='validateError'>{valMsg}</span>
+
+            {
+              !defVals.includes(input.category) ? <button onClick={(e: any) => handleCategoryDelete(e)}>Borrar Categoria</button> : <></>
+            }
 
             {/* Category Creation */}
             {
