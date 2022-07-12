@@ -4,7 +4,7 @@ import { useAppDispatch } from 'redux/hooks';
 import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import style from '../Css/PopUpForm.module.css'
 
-export default function ConfirmDelete(props : any) {
+export default function ConfirmDeleteDetail(props : any) {
   const dispatch = useAppDispatch();
   const { data } = props;
 

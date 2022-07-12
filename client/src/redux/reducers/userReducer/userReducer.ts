@@ -202,6 +202,9 @@ const reducerSlice = createSlice({
       ? state.savingGoalCompleted = true
       : state.savingGoalCompleted = false
     },
+    clearCurrency: (state) => {
+      state.dataCurrency = {}
+    },
     setGoalSaves: (state) => {
       state.savingGoalCompleted = false
     },
@@ -574,6 +577,7 @@ export const {
   totalInput,
   renderOutput,
   renderInput,
+  clearCurrency,
   setGoalSaves,
   totalOutput,
   totalSave,

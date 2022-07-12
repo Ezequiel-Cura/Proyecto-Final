@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Css/Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
@@ -6,10 +6,19 @@ import SavesForm from './Form/SavesForm';
 import { Link } from 'react-router-dom';
 import ConfirmDelete from './Delete/ConfirmDelete';
 import PopUpDelete from './Delete/PopUpDelete';
+import { clearCurrency } from 'redux/reducers/userReducer/userReducer';
 
 export default function Saves() {
-  const { usuario } = useAppSelector(state => state.user);
+  const { usuario, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+
+  console.log({usuario})
+
+  useEffect(() => {
+    if (status === 'success') {
+      dispatch(clearCurrency())
+    }
+  }, [status])
 
   interface SavingUser {
     _id: string,

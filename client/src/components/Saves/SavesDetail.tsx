@@ -5,7 +5,6 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato';
-import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { getCurrency } from 'redux/reducers/userReducer/actions/getCurrency';
 import { setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
 import AddSave from './Form/AddSave';
@@ -37,7 +36,6 @@ export default function SavesDetail() {
       dispatch(totalSave(detail))
     }
   }, [status])
-
 
 
   function handleDeleteAmount(e: any) {
@@ -197,7 +195,7 @@ export default function SavesDetail() {
           </div>
 
           <div className={style.divButtonDelete}>
-            <button onClick={() => setOpen(!open)}></button>
+            <button onClick={() => setOpen(!open)}>Eliminar ahorro</button>
             <PopUpDelete
             open={open} 
             setOpen={setOpen}
