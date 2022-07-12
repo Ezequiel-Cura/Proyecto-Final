@@ -15,7 +15,7 @@ export default function ExpensesTable() {
   const dispatch = useAppDispatch();
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
+  const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
@@ -27,7 +27,7 @@ export default function ExpensesTable() {
 
   interface AgregarGastos {
     id?: string,
-    frequency: string,               //monthlyExpenses, variableExpenses
+    frequency: string,             
     key: string,
     value: Value,
   }
@@ -205,7 +205,7 @@ export default function ExpensesTable() {
     } else return null;
   })
 
-  const handlePrevButton = () => {       // 3 === 1 ?
+  const handlePrevButton = () => {    
     setPage((prev) => prev === 1 ? prev : prev - 1);
     if (page !== 1 && (page - 1) % pageLimit === 0) {
       setMaxPageLimit(maxPageLimit - pageLimit);
@@ -220,6 +220,7 @@ export default function ExpensesTable() {
       setMinPageLimit(minPageLimit + pageLimit);
     }
   }
+
 
   return (
     <div className={styles.background}>

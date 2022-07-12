@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from 'redux/hooks';
 import style from '../Css/PopUpForm.module.css'
 
 export default function BuyPremium(props : any) {

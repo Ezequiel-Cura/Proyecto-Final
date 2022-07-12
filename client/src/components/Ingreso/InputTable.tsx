@@ -8,13 +8,11 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato'
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
-import { setIn } from 'formik';
-import { SelectAllSharp } from '@mui/icons-material';
 
 export default function InputTable() {
   //---------------Date----------------
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
-  const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
+  const [date, ] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
   //-----------------------------------
 
   //Selects/button
