@@ -1,7 +1,7 @@
 import styles from "./Home.module.css"
 import Nav from "components/Nav/Nav"
 import { Link } from 'react-router-dom'
-import { useAppSelector } from "redux/hooks"
+import { useAppSelector } from "redux/hooks"//eslint-disable-line
 
 export default function Home() {
   // const usuario = useAppSelector((state)=> state.user.usuario)
@@ -54,7 +54,7 @@ export default function Home() {
             <Link to="/home/saving">
               <div className={styles.ahorros_link}>
                   <h2 className={styles.h2}>AHORROS</h2>
-                  <span>Monto actual: ${} </span>
+                  {/* <span>Monto actual: ${} </span> */}
               </div>
             </Link>
           </div>
