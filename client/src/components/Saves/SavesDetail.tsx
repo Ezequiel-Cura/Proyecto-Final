@@ -7,7 +7,7 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato';
 import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { getCurrency } from 'redux/reducers/userReducer/actions/getCurrency';
-import { renderOutput, setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
+import { setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
 import AddSave from './Form/AddSave';
 import style from './SavesDetail.module.css';
 
@@ -43,14 +43,6 @@ export default function SavesDetail() {
       dispatch(totalSave(detail))
     }
   }, [status])
-
-
-
-  // let total = 0
-  // const totalAmount = savingsList.forEach(el => total += el.amount)
-  
-  // savingsList.forEach( amount => dispatch(addDato({frequency:"extra", key: "input", value: amount})))
-  // savingsList.forEach( amount => dispatch(deleteDato({frequency: amount.frequency, type: 'output', value: amount})))
 
   function handleDeleteSave(e : any) {
     dispatch(deleteSaving(e));
