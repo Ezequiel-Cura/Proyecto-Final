@@ -5,7 +5,7 @@ import axios from "axios";
 export const getCurrency: any = createAsyncThunk("currency",
 async (ingreso: any, { rejectWithValue }) => {
   try {
-    let getCurrencyData: any = await axios.delete("/currency", {
+    let getCurrencyData: any = await axios.get("/currency", {
       data: ingreso
     });
     return getCurrencyData.data

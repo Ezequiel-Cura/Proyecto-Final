@@ -50,6 +50,11 @@ return (
                     <h4>Detalles</h4>
                 </div>
             </Link>
+            <Link to="/home/crypto">
+                <div>
+                    <h4>Finanzas Digitales</h4>
+                </div>
+            </Link>
             {usuario.role === "admin" &&
             <Link to="/admin/controlPanel">
                 <div style={{position: "relative"}}>
