@@ -1,10 +1,11 @@
-import React from 'react';
-import style from './Saves.module.css';
+import React, { useState } from 'react';
+import style from './Css/Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import SavesForm from './Form/SavesForm';
-import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { Link } from 'react-router-dom';
+import ConfirmDelete from './Delete/ConfirmDelete';
+import PopUpDelete from './Delete/PopUpDelete';
 
 export default function Saves() {
   const { usuario } = useAppSelector(state => state.user);
@@ -21,9 +22,8 @@ export default function Saves() {
     currency: string,
   }
 
-  function handleDelete(e : any) {
-    dispatch(deleteSaving(e))
-  }
+  const [open, setOpen] = useState<boolean>(false);
+
   
   return (
     <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
@@ -78,10 +78,22 @@ export default function Saves() {
                   </div>
                 </Link> 
                 <div className={style.divDelete}>
-                  <button onClick={() => handleDelete({value: s})}></button>
+                  <button onClick={() => setOpen(!open)}></button>
+                  <PopUpDelete
+                  open={open} 
+                  setOpen={setOpen}
+                  onClick={() => setOpen(open)}
+                  >
+                    <ConfirmDelete
+                    open={open}
+                    setOpen={setOpen}
+                    data={{value: s}}
+                    />
+                  </PopUpDelete>
                 </div>
+
               </div>))
-            : (<div className={style.divNothing}>
+            : (<div className={style.divNothing}> 
               <p>No tienes casillas de ahorros</p>
               </div>)
             }

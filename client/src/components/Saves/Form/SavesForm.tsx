@@ -1,7 +1,7 @@
 import React, { useState }  from 'react';
 import SavesCreate from './SavesCreate';
 import PopUp from './PopUp';
-import style from '../Saves.module.css';
+import style from '../Css/Saves.module.css';
 
 export default function SavesForm() {
     const [open, setOpen] = useState<boolean>(false);

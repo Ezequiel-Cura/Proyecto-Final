@@ -9,7 +9,9 @@ import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { getCurrency } from 'redux/reducers/userReducer/actions/getCurrency';
 import { setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
 import AddSave from './Form/AddSave';
-import style from './SavesDetail.module.css';
+import style from './Css/SavesDetail.module.css';
+import ConfirmDeleteDetail from './Delete/ConfirmDeleteDetail';
+import PopUpDelete from './Delete/PopUpDelete';
 
 export default function SavesDetail() {
   const { usuario, status, totalSaving, dataCurrency, renderSavings, savingGoalCompleted } = useAppSelector(state => state.user);
@@ -28,12 +30,7 @@ export default function SavesDetail() {
   }
   
   const detail = usuario.savings.find((el : Save) => el._id === id)
-
   const savingsList = renderSavings.filter(sav => sav.description === detail.name)
-  console.log({detail}, {savingsList})
-
-  //Esta observando el estado global y no lo 
-  //console.log({dataCurrency})
 
   useEffect(() => {
     if (status === 'success') {
@@ -41,9 +38,7 @@ export default function SavesDetail() {
     }
   }, [status])
 
-  function handleDeleteSave(e : any) {
-    dispatch(deleteSaving(e));
-  }
+
 
   function handleDeleteAmount(e: any) {
     dispatch(deleteDato(e))
@@ -86,7 +81,9 @@ export default function SavesDetail() {
       to: ''
     })
   }
-
+  
+  //Modal
+  const [open, setOpen] = useState<boolean>(false);
   
   return (
     <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
@@ -200,10 +197,20 @@ export default function SavesDetail() {
           </div>
 
           <div className={style.divButtonDelete}>
-            <Link to={'/home/saving/add'}>
-              <button onClick={() => handleDeleteSave({value: detail})}>Elimina este ahorro</button>
-            </Link>
+            <button onClick={() => setOpen(!open)}></button>
+            <PopUpDelete
+            open={open} 
+            setOpen={setOpen}
+            onClick={() => setOpen(open)}
+            >
+              <ConfirmDeleteDetail
+              open={open}
+              setOpen={setOpen}
+              data={{value: detail}}
+              />
+            </PopUpDelete>
           </div>
+
         </div>
       </div>
     </div>
