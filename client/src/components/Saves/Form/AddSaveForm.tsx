@@ -35,7 +35,7 @@ export default function AddSaveForm(props : any) {
   //Validacion
   const firstRender = useRef(true)
 
-  const [valMsg, setMsg] = useState('')
+  const [valMsg, setMsg] = useState('Completar los datos')
   const [valDisable, setDisabled] = useState(true)
 
   useEffect(() => {
@@ -66,7 +66,9 @@ export default function AddSaveForm(props : any) {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    dispatch(addDato(form));
+    if(valMsg === ''){
+      dispatch(addDato(form));
+    }
     setInput({
       category: 'Ahorro',
       amount: 0,
@@ -98,7 +100,7 @@ export default function AddSaveForm(props : any) {
         >
         </input>
 
-        <button type='submit' disabled={valDisable} onClick={valDisable === true ? ()=> setOpen(!open) : () => setOpen(open)}>Agregar</button>
+        <button type='submit' disabled={valDisable} onClick={valDisable === false ? ()=> setOpen(!open) : () => setOpen(open)}>Agregar</button>
       </form>
       <span id="validateError">{valMsg}</span>
     </div>

@@ -7,7 +7,7 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato';
 import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { getCurrency } from 'redux/reducers/userReducer/actions/getCurrency';
-import { renderOutput, setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
+import { setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
 import AddSave from './Form/AddSave';
 import style from './SavesDetail.module.css';
 
@@ -16,12 +16,6 @@ export default function SavesDetail() {
   const dispatch = useAppDispatch();
   let { id } = useParams();
 
-  //Si se agrega un nombre repetido en las casillas "ahorro" se pisan
-  //Mensaje de que logro la meta
-  //
-
-
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
   interface Save {
     _id: string,
     name: string,
@@ -38,19 +32,15 @@ export default function SavesDetail() {
   const savingsList = renderSavings.filter(sav => sav.description === detail.name)
   console.log({detail}, {savingsList})
 
+  //Esta observando el estado global y no lo 
+  //console.log({dataCurrency})
+
   useEffect(() => {
     if (status === 'success') {
       dispatch(totalSave(detail))
     }
   }, [status])
 
-
-
-  // let total = 0
-  // const totalAmount = savingsList.forEach(el => total += el.amount)
-  
-  // savingsList.forEach( amount => dispatch(addDato({frequency:"extra", key: "input", value: amount})))
-  // savingsList.forEach( amount => dispatch(deleteDato({frequency: amount.frequency, type: 'output', value: amount})))
 
   function handleDeleteSave(e : any) {
     dispatch(deleteSaving(e));
@@ -164,7 +154,7 @@ export default function SavesDetail() {
                     {
                       savingsList.length > 0 ? savingsList.map( (save : any) => (
                         <tr>
-                          <th>{save.date}</th>
+                          <th>{save.date && save.date.split("T")[0]}</th>
                           <th>+ ${save.amount}</th>
                           <th><button onClick={ () => handleDeleteAmount({frequency: save.frequency, type: 'output', value: save})}></button></th>
                         </tr>
@@ -177,7 +167,7 @@ export default function SavesDetail() {
                 </table>
               </div>
 
-              <AddSave name={detail.name} currentAmount={detail.currentAmount}/>
+              <AddSave name={detail.name}/>
             </div>
 
             <div className={style.divAmountB}>

@@ -59,7 +59,6 @@ export default function Saves() {
                             <th>Final</th>
                             <th>Lugar</th>
                             <th>Moneda</th>
-                            <th>Actual</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -68,7 +67,6 @@ export default function Saves() {
                             <th>{s.end && s.end.split("T")[0]}</th>
                             <th>{s.depositPlace}</th>
                             <th>{s.currency}</th>
-                            <th><div className={style.amount}>$ {s.currentAmount}</div></th>
                           </tr>
                         </tbody>
                       </table>
