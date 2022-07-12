@@ -1,5 +1,5 @@
 import Nav from 'components/Nav/Nav';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'redux/hooks';
 import { convertCrypto } from 'redux/reducers/userReducer/actions/convertCrypto';
@@ -36,6 +36,23 @@ export default function CryptoInvest() {
     time: number
   }
 
+      // Validate
+
+      const [valMsg, setMsg] = useState('')
+      const [valDisable, setDisabled] = useState(true)
+    
+      useEffect(() => {
+        !form.id ? setMsg('Proporcione la moneda que quiere convertir') :
+        !form.to ? setMsg('Proporcione la moneda a la cual convertirá') :
+        !form.amount ? setMsg('Proporcione un monto') : 
+        setMsg('') 
+
+      }, [form])
+      
+      useEffect(() => {
+        setDisabled(valMsg === '' ? false : true)
+      }, [valMsg])
+
   // SEARCH CRIPTO
 
   interface Crypto {
@@ -63,8 +80,12 @@ export default function CryptoInvest() {
     }
   }, [])
 
+  function resetAll() {
+    (document.getElementById("selectTo") as HTMLFormElement).value = '';
+    (document.getElementById("selectCoin") as HTMLFormElement).value = '';
+  }
+
   function handleSelectSearch(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e.target.value, 'selecttttt form')
     e.preventDefault()
     setForm({
       ...form,
@@ -73,7 +94,6 @@ export default function CryptoInvest() {
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.value, "valueee")
     e.preventDefault()
     setForm({
       ...form,
@@ -82,9 +102,14 @@ export default function CryptoInvest() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    console.log('FORMMMMMM', { form })
     e.preventDefault()
     dispatch(convertCrypto(form))
+    resetAll()
+    setForm({
+      id: '',
+      to: '',
+      amount: 0
+    })
   }
 
   return (
@@ -127,7 +152,7 @@ export default function CryptoInvest() {
                 placeholder='Agrega un monto'
                 onChange={handleInputChange}
               />
-              <button type='submit'>Valor actual</button>
+              <button type='submit' disabled={valDisable}>Valor actual</button>
             </form>
           </div>
           {
@@ -149,7 +174,8 @@ export default function CryptoInvest() {
                   })
                 }
               </div>
-              : <></>
+              :   // {/* Error Display */}
+              <span id='validateError'>{valMsg}</span>
           }
           {/* <div>
         <h2>Criptomonedas</h2>
@@ -182,13 +208,6 @@ export default function CryptoInvest() {
                 })
                 : <li>Loading...</li>
             }
-            <li className={styles.cryptoList}>
-              <p>Nombre: 01Coin</p>
-              <p>Símbolo: zoc</p>
-              <p>Id: idCoin</p>
-              <span className={styles.cryptoPrice}>
-                <p>Precio actual</p></span>
-            </li>
           </ul>
         </div>
       </div>
