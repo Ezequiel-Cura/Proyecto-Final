@@ -307,8 +307,6 @@ const reducerSlice = createSlice({
       //Category
       if (state.options.category !== 'default') {
         state.renderInputs = state.renderInputs.filter((entries: Entries) => state.options.category === entries.category)
-      } else{
-        console.log(state.renderInputs)
       }
     },
     expensesOrderByAmount: (state, { payload }) => {

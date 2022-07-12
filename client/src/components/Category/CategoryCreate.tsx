@@ -73,9 +73,16 @@ export default function CategoryCreate(props : any) {
   }, [type])
   //-----------------------------------
 
+  const categoryType = usuario.categories.map((e:any)=> e.type)
+  const categoryName = usuario.categories.map((e:any)=> e.name)
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //Form
     e.preventDefault();
-    dispatch(addCategory(form));
+    if (categoryName.includes(form.name) && categoryType.includes(form.type)){
+      setMsg('Esta categoria ya existe')
+    } else {
+      dispatch(addCategory({value: form}))
+    }
   }
 
   return (
@@ -93,15 +100,16 @@ export default function CategoryCreate(props : any) {
         >
         </input>
 
-        <select  value={frequency} onChange={(e) => handleFreqChange(e)} >
-          <option value='' disabled={true}>Selecciona su frecuencia</option>
-          <option value='monthly' >Ingreso fijo</option>
-          <option value='extra'>Ingreso extra</option>
-        </select>
         <select value={type} onChange={(e) => handleTypeChange(e)} >
           <option value='' disabled={true}>Selecciona su tipo</option>
           <option value='input'>Ingreso</option>
           <option value='output'>Gasto</option>
+        </select>
+
+        <select  value={frequency} onChange={(e) => handleFreqChange(e)} >
+          <option value='' disabled={true}>Selecciona su frecuencia</option>
+          <option value='monthly' >Fijo</option>
+          <option value='extra'>Extra</option>
         </select>
         <button type='submit' disabled={valDisable}>Agregar</button>
       </form>
