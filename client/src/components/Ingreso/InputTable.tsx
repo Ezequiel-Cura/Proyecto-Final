@@ -199,13 +199,12 @@ export default function InputTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //-----Form
     e.preventDefault();
-    console.log(form)
     dispatch(addDato(form));
     setInput({
       category: '',
       description: '',
       amount: 0,
-      date: ''
+      date: today
     })
     setSelectKey({
       keyInput: ''
@@ -270,6 +269,20 @@ export default function InputTable() {
     }
   }
 
+  const catFilterArr = () => {
+
+    let returnArr: Array<string> = []
+    const mInput = usuario?.monthly.input
+    const eInput = usuario.extra.input.map((e: any) => e.entries)
+    const aInput = eInput.concat(mInput).flat()
+    const catArr = aInput.map((e: any) => e.category)
+    catArr.forEach((e: any) => {
+      if (!returnArr.includes(e)) {
+        returnArr.push(e)
+      }
+    })
+    return returnArr
+  }
   return (
     <div style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
       <Nav />
@@ -281,6 +294,19 @@ export default function InputTable() {
           </div>
 
           {/* Order */}
+          {
+
+            //{
+            //  ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
+            //    return (<option value={undefinedCategory}>{undefinedCategory}</option>)
+            //  })
+            //}
+            //{usuario.categories.length > 0 &&
+            //  usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
+            //    return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
+            //  })
+            //}
+          }
           <div className={styles.selectsOrder}>
             <select value='Ordenar' onChange={(e) => handleOrderAmount(e)}>
               <option value='default'>Ordenar por monto</option>
@@ -289,20 +315,15 @@ export default function InputTable() {
             </select>
 
             <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)}>
-              <option value='default'>Ordenar por categoria</option>
+              <option value='default'>Filtrar por categoria</option>
               {
-                ['Salario', 'Préstamo', 'Herencia', 'Changa', 'Encontrado'].map(undefinedCategory => {
-                  return (<option value={undefinedCategory}>{undefinedCategory}</option>)
-                })
-              }
-              {usuario.categories.length > 0 &&
-                usuario.categories.filter((category: Category) => category.type === 'input').map((category: Category) => {
-                  return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
+                catFilterArr().map((e:any) => {
+                  return (<option value={e}>{e}</option>)
                 })
               }
               <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
             </select>
-
+              
             <select id='selectFrequency' onChange={(e) => handleFilterByFrequency(e)}>
               <option value='default'>Ordenar por frecuencia</option>
               <option value='monthly'>Ingreso fijo</option>
@@ -429,7 +450,7 @@ export default function InputTable() {
 
                   <option value='Crear' className={styles.Crear}>Crear</option>
                 </select>
-                  {}
+
                 <input
                   type='text'
                   name='description'

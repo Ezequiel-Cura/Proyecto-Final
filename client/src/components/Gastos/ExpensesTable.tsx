@@ -224,17 +224,22 @@ export default function ExpensesTable() {
   return (
     <div className={styles.background}>
       <Nav />
+          {/* Title */}
       <div className={styles.wrapperAllIngreso}>
         <div className={styles.title}>
           <h1>Tus Gastos </h1>
         </div>
 
+
+
+          {/* Order */}
         <div className={styles.selectsOrder}>
           <select onChange={(e) => handleOrderAmount(e)}>
             <option value='default'>Ordenar por monto</option>
             <option value='mayorAMenor'>De mayor a menor</option>
             <option value='menorAMayor'>De menor a mayor</option>
           </select>
+
 
           <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)} >
             <option value='default'>Ordenar por categoria</option>
@@ -266,6 +271,12 @@ export default function ExpensesTable() {
 
         </div>
 
+
+
+
+
+          {/* Month */}
+
         <div className={styles.allMonths}>
           <div className={styles.monthCard}>
             {
@@ -274,7 +285,7 @@ export default function ExpensesTable() {
                   return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.months} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                   )
                 }
-              )
+                )
             }
           </div>
           <div className={styles.annualCard}>
@@ -282,6 +293,7 @@ export default function ExpensesTable() {
           </div>
         </div>
 
+                {/* Table */}
         <table className={styles.table}>
           <thead className={styles.head}>
             <tr>
@@ -328,12 +340,14 @@ export default function ExpensesTable() {
           </tbody>
         </table>
 
+                {/* Pagination */}
         <div className={stylesPag.wrapperPag}>
           <button className={page <= 1 ? stylesPag.disabledPrev : stylesPag.paginationPrev} onClick={() => handlePrevButton()}>Prev</button>
           {indice}
           <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
         </div>
 
+                {/* Creation form */}
         <form onSubmit={handleSubmit}>
           <div className={styles.form}>
             <select value={input.category} onChange={handleSelectI}>
@@ -382,7 +396,7 @@ export default function ExpensesTable() {
               value={input.amount}
               placeholder='Agrega un monto'
               onChange={handleChange}
-            >
+              >
             </input>
             <input
               type='date'
@@ -390,14 +404,16 @@ export default function ExpensesTable() {
               value={input.date}
               placeholder='Agrega una fecha'
               onChange={handleChange}
-            >
+              >
             </input>
             <button type='submit' disabled={valDisable}>Agregar</button>
           </div>
         </form>
         
+        {/* Error Display */}
         <span id="validateError">{valMsg}</span>
 
+        {/* Category Creation */}
         {
           input.category === 'Crear'
           && (<div className={styles.CrearDiv}>

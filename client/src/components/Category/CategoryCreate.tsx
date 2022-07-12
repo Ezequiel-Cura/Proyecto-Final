@@ -73,9 +73,16 @@ export default function CategoryCreate(props : any) {
   }, [type])
   //-----------------------------------
 
+  const categoryType = usuario.categories.map((e:any)=> e.type)
+  const categoryName = usuario.categories.map((e:any)=> e.name)
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //Form
     e.preventDefault();
-    dispatch(addCategory({value: form}));
+    if (categoryName.includes(form.name) && categoryType.includes(form.type)){
+      setMsg('Esta categoria ya existe')
+    } else {
+      dispatch(addCategory({value: form}))
+    }
   }
 
   return (
