@@ -19,7 +19,9 @@ export default function InputTable() {
 
   //Selects/button
   function handleDelete(event: accountParameter) {
-    dispatch(deleteDato(event))
+    const { e, frequency, type, value} = event
+    e.preventDefault()
+    dispatch(deleteDato({frequency, type, value}))
   }
 
   function filterByMonth(e: any) {
@@ -90,7 +92,8 @@ export default function InputTable() {
     id?: string,
     type: string,
     frequency: string,
-    value: any
+    value: any,
+    e?: any
   }
 
   interface keySelect {
@@ -312,11 +315,14 @@ export default function InputTable() {
 
             <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
               <option value=''>Ordenar por año</option>
-              <option value='2022'>2022</option>
-              <option value='2023'>2023</option>
-              <option value='2024'>2024</option>
+              {
+                ['2020', '2021', '2022', '2023', '2024', '2025'].map( (year: string) => {
+                  return(
+                    <option value={year}>{year}</option>
+                  )
+                })
+              }
             </select>
-
           </div>
 
           {/* Month */}
@@ -358,7 +364,7 @@ export default function InputTable() {
                       <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                       <th>{detalles.description}</th>
                       <th>$ {detalles.amount}</th>
-                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                      <th><button onClick={(e) => handleDelete({e, frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
                     </tr>
                     : <tr key={detalles._id}>
                       <th>Ingreso extra</th>
@@ -366,7 +372,7 @@ export default function InputTable() {
                       <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                       <th>{detalles.description}</th>
                       <th>$ {detalles.amount}</th>
-                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                      <th><button onClick={(e) => handleDelete({e, frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
                     </tr>
                 )
               }) : <></>
