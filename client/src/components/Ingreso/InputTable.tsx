@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { totalInput, renderInput, inputsOrderByAmount, changeOptions, filterInputByOptions, clearChangeOptions } from "redux/reducers/userReducer/userReducer";
 import { addDato } from 'redux/reducers/userReducer/actions/addDato'
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
+import { deleteCategory } from 'redux/reducers/userReducer/actions/deleteCategory'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
 import { setIn } from 'formik';
@@ -106,7 +107,7 @@ export default function InputTable() {
     }
   }
   //---------------------------------
-  // Variables & States
+
   const dispatch = useAppDispatch();
   const { usuario, totalInputsMonth, status, renderInputs } = useAppSelector(state => state.user);
 
@@ -119,10 +120,7 @@ export default function InputTable() {
     }
   }, [status])
 
-  // const [formCategoryDelete, setFormCategoryDelete] = useState<Category>({
-  //   key: 'CategoriesInputs',
-  //   value: ''
-  // })
+
   //-----------------------------------
 
 
@@ -138,34 +136,34 @@ export default function InputTable() {
     date: today
   });
 
-    // Validate
-    const firstRender = useRef(true)
+  // Validate
+  const firstRender = useRef(true)
 
-    const [valMsg, setMsg] = useState('')
-    const [valDisable, setDisabled] = useState(true)
-  
-    useEffect(() => {
-      if (firstRender.current === true) {
-        firstRender.current = false
-        return
-      }
-      
-      !selectKey.keyInput ? setMsg('Proporcione un tipo') :
+  const [valMsg, setMsg] = useState('')
+  const [valDisable, setDisabled] = useState(true)
+
+  useEffect(() => {
+    if (firstRender.current === true) {
+      firstRender.current = false
+      return
+    }
+
+    !selectKey.keyInput ? setMsg('Proporcione un tipo') :
       !input.category ? setMsg('Proporcione una categoria') :
-      !input.description ? setMsg('Proporcione una descripcion') :
-      !input.amount ? setMsg('Proporcione un monto') : 
-      setMsg('')
+        !input.description ? setMsg('Proporcione una descripcion') :
+          !input.amount ? setMsg('Proporcione un monto') :
+            setMsg('')
 
-      
-    }, [input, selectKey])
-    
-    useEffect(() => {
-      setDisabled(valMsg === '' ? false : true)
-    }, [valMsg])
 
-    
-    
-    //-----------------------------------
+  }, [input, selectKey])
+
+  useEffect(() => {
+    setDisabled(valMsg === '' ? false : true)
+  }, [valMsg])
+
+
+
+  //-----------------------------------
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	//Input changer
     setInput({
@@ -185,12 +183,13 @@ export default function InputTable() {
   }
 
   function handleSelectCategories(e: React.ChangeEvent<HTMLSelectElement>) {
-    
+
     setInput({
       ...input,
       category: e.target.value
     })
   }
+
 
   const form: AgregarIngresos = {
     frequency: selectKey.keyInput,
@@ -213,7 +212,7 @@ export default function InputTable() {
     })
     resetAll()
   }
-  
+
   //---------------------------------
 
 
@@ -238,9 +237,9 @@ export default function InputTable() {
 
   //Paginado
   const [page, setPage] = useState(1);
-  const [inputsPerPage, ] = useState(6);
+  const [inputsPerPage,] = useState(6);
 
-  const [pageLimit, ] = useState(10);
+  const [pageLimit,] = useState(10);
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
@@ -402,6 +401,7 @@ export default function InputTable() {
 
                 <select value={input.category} onChange={handleSelectCategories}>
                   <option value='' disabled={true}>Selecciona una categoría</option>
+
                   {
                     selectKey.keyInput ?
                       selectKey.keyInput === 'monthly'
@@ -411,25 +411,25 @@ export default function InputTable() {
                         : ['Changa', 'Herencia', 'Encontrado', 'Préstamo'].map(extraInput => {
                           return (<option value={extraInput}>{extraInput}</option>)
                         })
-                        : <></>
-
-                      
+                      : <></>
                   }
+
                   {selectKey.keyInput ?
                     usuario.categories.length > 0
                       && selectKey.keyInput === 'monthly'
                       ? usuario.categories.filter((montInput: Category) => montInput.frequency === 'monthly' && montInput.type === 'input').map((montInput: Category, i: number) => {
                         return (
-                          <option value={montInput.name} key={i}>{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
+                          <option value={montInput.name} key={i} >{montInput.name.charAt(0).toUpperCase() + montInput.name.slice(1).toLowerCase()}</option>)
                       })
                       : usuario.categories.filter((extraInput: Category) => extraInput.frequency === 'extra' && extraInput.type === 'input').map((extraInput: Category, i: number) => {
                         return (<option value={extraInput.name} key={i}>{extraInput.name.charAt(0).toUpperCase() + extraInput.name.slice(1).toLowerCase()}</option>)
                       })
                     : <></>
-		    }
-		    <option value='Crear' className={styles.Crear}>Crear</option>
-                </select>
+                  }
 
+                  <option value='Crear' className={styles.Crear}>Crear</option>
+                </select>
+                  {}
                 <input
                   type='text'
                   name='description'
@@ -450,7 +450,7 @@ export default function InputTable() {
                   onChange={handleChange}
                   className={styles.amount}
                 >
-		</input>
+                </input>
 
                 <input
                   type='date'
