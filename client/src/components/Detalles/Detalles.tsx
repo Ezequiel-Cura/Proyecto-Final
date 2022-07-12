@@ -1,19 +1,22 @@
 import Nav from "components/Nav/Nav";
-import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
+import { Cell, Legend, Pie, PieChart, Tooltip ,BarChart,CartesianGrid,XAxis,YAxis,Bar} from "recharts";
 import styles from "./Detalles.module.css";
-import {  useAppSelector } from "redux/hooks";
+import {  useAppSelector,useAppDispatch } from "redux/hooks";
 import SearchBar from "components/SearchBar/SearchBar";
+import { useEffect, useState } from "react";
+
+import { Switch } from "@mui/material";
 
 // ICONOS
 import carrito from "assets/cart.png";
-import viaje from "assets/travel.png";
+import viaje from "assets/travel.png";//eslint-disable-line
 import salud from "assets/medic.png";
 import combustible from "assets/car.png";
 import ocio from "assets/ocio.png";
 import lock from "assets/lock.png";
 import dumbell from "assets/dumbell.png";
 import taxes from "assets/taxes.png";
-import box from "assets/other.png";
+import box from "assets/other.png";//eslint-disable-line
 import gift from "assets/gift.png"
 import balance from "assets/balance.png"
 
@@ -27,32 +30,35 @@ import {
   totalAlquiler,
   totalGimnasio,
   totalImpuestos,
+  calcularInputsPorMes,
+  calcularOutputsPorMes,
 } from "./Controladores";
+import { renderInput } from "redux/reducers/userReducer/userReducer";
 
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 export default function Detalles() {
+  const dispatch = useAppDispatch()
   const status = useAppSelector((state)=>state.user.status)
   const usuario = useAppSelector((state) => state.user.usuario);
-
   const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
- 
-  const styleBar = {
-    border: "2px solid white",
-    borderRadius: "10px",
-    overflow: "hidden",
-    display: "flex",
-  };
+  useEffect(()=>{
+    dispatch(renderInput(date))
+  },[dispatch])//eslint-disable-line
 
+  const [switchValue,setSwitchvalue] = useState(false)
 
   function calculate() {
 
-    let ingresos = status === "success" && usuario?.extra.input?.find((e:any)=>e.date === date)
-    ingresos = ingresos ? ingresos.entries?.reduce((prev: any, actual: any) => {
+    let ingresos = usuario?.extra.input?.filter((e:any)=>e.date.includes("2022"))
+    ingresos = ingresos.map((e:any)=> e.entries ).flat()
+    ingresos = ingresos ? ingresos.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0) : 0
-    
-    let gastos = status === "success" && usuario.extra.output?.find((e:any)=>e.date === date)
-    gastos = gastos ? gastos.entries.reduce((prev: any, actual: any) => {
+
+    let gastos = usuario.extra.output?.filter((e:any)=>e.date.includes("2022"))
+    gastos = gastos.map((e:any)=>e.entries).flat()
+    gastos = gastos ? gastos.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0) : 0
 
@@ -70,20 +76,20 @@ export default function Detalles() {
     const totalIngresos = ingresos + ingresosFijos; // 1000 + 1000
     const porcentajeGastos = Math.round((totalGastos * 100) / totalIngresos)
     const porcentajeIngreso = 100 - porcentajeGastos
-
-    return { porcentajeGastos, porcentajeIngreso };
+    
+    return { porcentajeGastos, porcentajeIngreso,totalIngresos,totalGastos };
   }
 
   const incomes = {
-    background: "green",
+    background: "#dfd527",
     width: calculate().porcentajeIngreso + "%",
-    height: "100px",
+    
   };
 
   const gastos = {
     background: "red",
     width: calculate().porcentajeGastos + "%",
-    height: "100px",
+    height: "70px",
   };
 
   const data1 = () => {
@@ -138,11 +144,80 @@ export default function Detalles() {
  
     return elData;
   };
+  const data2 = ()=>{
+    let ingresos = status === "success" && usuario.extra.input?.find((e:any)=>e.date === date)
+    ingresos = ingresos ? ingresos.entries.reduce((prev: any, actual: any) => {
+      return prev + actual.amount;
+    }, 0) : 0
+    const ingresosFijos = usuario?.monthly?.input.reduce(
+      (prev: any, actual: any) => {
+        return prev + actual.amount;
+    },0);
+    
+    const total = ingresos + ingresosFijos
+    let data1 = usuario?.extra.input.find((e:any)=>e.date === date)
+    data1 = data1 ? data1.entries.reduce((c: any, v: any) => {
+      c[v.category] = (c[v.category] || 0) + v.amount;
+      return c;
+    }, {}) : 0
+    let data2 = usuario?.monthly.input.reduce((c: any, v: any) => {
+      c[v.category] = (c[v.category] || 0) + v.amount;
+      return c;
+    }, {})
+    const data = [];
+
+    for (const key in data1) {
+      data.push({
+        name: key,
+        value: Math.round((data1[key] * 100) / total),
+        unit: "%",
+      });
+    }
+    for (const key in data2) {
+      data.push({
+        name: key,
+        value: Math.round((data2[key] * 100) / total),
+        unit: "%",
+      })
+    }
+    const ulData = data.reduce((c: any, v: any) => {
+      c[v.name] = (c[v.name] || 0) + v.value;
+      return c;
+    }, {})
+ 
+    const elData = []
+    for (const key in ulData) {
+     elData.push({
+        name: key,
+        value: ulData[key],
+        unit: "%",
+     })
+    }
+    return elData;
+  }
+
   const labelFormatter = ({ value }: any) => {
     return value + "%";
   };
   
- 
+  const meses:any = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
+
+  const barChartData = ()=>{
+    const arrayBarChart = []
+    const inputs = calcularInputsPorMes(usuario)
+    const gastos = calcularOutputsPorMes(usuario)
+
+    for (let i = 0; i < 12; i++) {
+     arrayBarChart.push({
+      "name":meses[i],
+      "Ingresos" : inputs[i],
+      "Gastos": gastos[i]
+     })
+    }
+
+    return arrayBarChart
+  }
+
   const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e","#7fffd4","#a864ca"];
   return (
     <div className={styles.wrapper}>
@@ -151,20 +226,42 @@ export default function Detalles() {
         <h1>Detalles</h1>
         <div>
           <div>
+            <h4>Resumen anualmente</h4>
             <div style={{ display: "flex" }}>
-              <h5>Ingresos</h5>
-              <h5 style={{ marginLeft: "200px" }}>gastos</h5>
+              <h5 className={styles.barra_nombres}>Ganancias</h5>
+              <h5 className={styles.barra_nombres2}>Gastos</h5>
             </div>
-            <div style={styleBar}>
-              <div style={incomes}>{calculate().porcentajeIngreso} %</div>
-              <div style={gastos}>{calculate().porcentajeGastos} %</div>
+            <div className={styles.barra_wrapper}>
+              <div style={incomes}>{calculate().porcentajeIngreso} %(${calculate().totalIngresos})</div>
+              <div style={gastos}>{calculate().porcentajeGastos} %(${calculate().totalGastos})</div>
+              <div className={styles.div_popOut} ></div>
+            </div>
+            <div>
+              <span>Resumen mensualmente</span>
+            <BarChart width={900} height={250} data={barChartData()}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="Ingresos" fill="#008000" />
+              <Bar dataKey="Gastos" fill="#ff0000" />
+            </BarChart>
             </div>
           </div>
           <div className={styles.seccion_wrapper}>
             <div className={styles.primer_wrapper}>
+              <div>
+                <span>Gastos</span>
+                <Switch onChange={()=>{
+                  
+                  setSwitchvalue(!switchValue)
+                }}/>
+                <span>Ingresos</span>
+              </div>
               <PieChart width={500} height={400}>
                 <Pie
-                  data={data1()}
+                  data={switchValue ? data2() : data1()}
                   dataKey="value"
                   nameKey={"name"}
                   cx="50%"
