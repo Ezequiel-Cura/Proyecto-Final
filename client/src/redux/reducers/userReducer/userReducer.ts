@@ -19,6 +19,7 @@ import sendSupportMessage from "./actions/sendSupportMessages";
 import reportReview from "./actions/reportReview";
 import { getCryptoList } from "./actions/getCryptoList";
 import { convertCrypto } from "./actions/convertCrypto";
+import deleteAccount from "./actions/deleteAccount";
 
 const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
 export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
@@ -520,6 +521,15 @@ const reducerSlice = createSlice({
       state.status = "success"
     },
     [reportReview.rejected]: (state) => {
+      state.status = "failed"
+    },
+    [deleteAccount.pending]: (state) => {
+      state.status = "loading"
+    },
+    [deleteAccount.fulfilled]: (state) => {
+      state.status = "success"
+    },
+    [deleteAccount.rejected]: (state) => {
       state.status = "failed"
     },
   }

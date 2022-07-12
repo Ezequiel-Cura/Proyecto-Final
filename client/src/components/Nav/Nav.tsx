@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import styles from "./Nav.module.css"
@@ -10,7 +10,8 @@ export default function Nav() {
 const navigate = useNavigate()
 const dispatch = useAppDispatch()
 const {usuario}: any = useAppSelector(({user}) => user)
-  return (
+const [adminHover, setAdminHover] = useState(false)
+return (
     <div className={styles.Nav_wrapper}>
         <div className={styles.image_wrapper}>
             <Link to="/profile">
@@ -56,8 +57,19 @@ const {usuario}: any = useAppSelector(({user}) => user)
             </Link>
             {usuario.role === "admin" &&
             <Link to="/admin/controlPanel">
-                <div>   
-                    <h4 style={{textAlign: "center"}}>Panel de Control</h4>
+                <div style={{position: "relative"}}>
+                    <h4>Admin panel</h4>
+                    {/* <h4 style={{textAlign: "center"}} onMouseOver={() => setAdminHover(true)} onMouseLeave={() => setAdminHover(false)}>Admin</h4>
+                    {adminHover &&
+                        <div>
+                            <ul>
+                                <li>hola</li>
+                                <li>hola</li>
+                                <li>hola</li>
+                                <li>hola</li>
+                                </ul>
+                                </div>
+                            } */}
                 </div>
             </Link>
             }
