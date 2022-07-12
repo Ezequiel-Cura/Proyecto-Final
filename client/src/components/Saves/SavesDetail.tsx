@@ -12,7 +12,7 @@ import AddSave from './Form/AddSave';
 import style from './SavesDetail.module.css';
 
 export default function SavesDetail() {
-  const { usuario,status, totalSaving, dataCurrency, renderSavings, savingGoalCompleted } = useAppSelector(state => state.user);
+  const { usuario, status, totalSaving, dataCurrency, renderSavings, savingGoalCompleted } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   let { id } = useParams();
 
