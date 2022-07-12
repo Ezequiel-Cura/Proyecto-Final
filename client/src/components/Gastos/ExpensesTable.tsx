@@ -8,6 +8,7 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato'
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
 import PopUp from "components/Saves/Form/PopUp";
 import CategoryCreate from "components/Category/CategoryCreate";
+import { deleteCategory } from "redux/reducers/userReducer/actions/deleteCategory";
 
 
 export default function ExpensesTable() {
@@ -236,6 +237,20 @@ export default function ExpensesTable() {
     return returnArr
   }
 
+  const defVals = ['Alquiler', 'Deuda', 'Impuestos', 'Salud', 'Viaje', 'Regalo', 'Super', 'Transporte', 'Restaurante', 'Vestimenta', 'Shopping', '', 'Crear']
+
+  const handleCategoryDelete = (e: any) => {
+    e.preventDefault()
+    const prompt = window.confirm('Seguro que deseas borrar esta categoria?')
+    if (prompt) {
+      const delCat = usuario.categories.find((e: any) => e.name === input.category)
+      dispatch(deleteCategory(delCat._id))
+      setInput({ ...input, category: '' })
+    } else {
+      return
+    }
+  }
+
   return (
     <div className={styles.background}>
       <Nav />
@@ -244,8 +259,6 @@ export default function ExpensesTable() {
         <div className={styles.title}>
           <h1>Tus Gastos </h1>
         </div>
-
-
 
         {/* Order */}
         <div className={styles.selectsOrder}>
@@ -282,10 +295,6 @@ export default function ExpensesTable() {
           </select>
 
         </div>
-
-
-
-
 
         {/* Month */}
 
@@ -424,6 +433,11 @@ export default function ExpensesTable() {
 
         {/* Error Display */}
         <span id="validateError">{valMsg}</span>
+        <br />
+
+        {
+          !defVals.includes(input.category) ? <button className={styles.catDeleteButton} onClick={(e: any) => handleCategoryDelete(e)}>Borrar Categoria?</button> : <></>
+        }
 
         {/* Category Creation */}
         {

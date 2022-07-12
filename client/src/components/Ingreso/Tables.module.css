@@ -280,7 +280,7 @@
 .catDeleteButton{
     padding: 1rem;
     width: fit-content;
-    margin: auto;
+    margin-right: auto;
     border-radius: 25rem;
     border: 2px #333333 solid;
     background: #d16c6c;

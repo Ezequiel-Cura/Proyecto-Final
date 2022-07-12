@@ -505,7 +505,7 @@ export default function InputTable() {
             <span id='validateError'>{valMsg}</span>
 
             {
-              !defVals.includes(input.category) ? <button className={styles.catDeleteButton} onClick={(e: any) => handleCategoryDelete(e)}>Borrar Categoria</button> : <></>
+              !defVals.includes(input.category) ? <button className={styles.catDeleteButton} onClick={(e: any) => handleCategoryDelete(e)}>Borrar Categoria?</button> : <></>
             }
 
             {/* Category Creation */}
