@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from 'redux/hooks';
 import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 
 
 export default function AddSaveForm(props : any) {
   const dispatch = useAppDispatch();
-  const { open, setOpen, name, currentAmount } = props;
+  const { open, setOpen, name } = props;
 
   interface Form {
     category: string,
@@ -14,21 +14,12 @@ export default function AddSaveForm(props : any) {
     description: string,
   }
 
-  interface keySelect {
-    frequency: string
-  }
-  
   const [input, setInput] = useState<Form>({
     category: 'Ahorro',
     amount: 0,
     date: '',
     description: name,
   })
-
-  const [select, setSelect] = useState<keySelect>({
-    frequency: '',
-  })
-
   interface AgregarAhorro {
     frequency: string,            
     key: string,
@@ -36,21 +27,40 @@ export default function AddSaveForm(props : any) {
   }
 
   const form: AgregarAhorro = {
-    frequency: select.frequency,
+    frequency: 'extra',
     key: 'output',
     value: input,
   }
+
+  //Validacion
+  const firstRender = useRef(true)
+
+  const [valMsg, setMsg] = useState('')
+  const [valDisable, setDisabled] = useState(true)
+
+  useEffect(() => {
+    if (firstRender.current === true) {
+      firstRender.current = false
+      return
+    }
+    
+    !input.date ? setMsg('Proporcione una fecha') :
+    !input.amount ? setMsg('Proporcione un monto') : 
+    input.amount <= 0 ? setMsg('Colocar un numero valido') :
+    setMsg('')
+    
+  }, [input])
+  
+  useEffect(() => {
+    setDisabled(valMsg === '' ? false : true)
+  }, [valMsg])
+
+  //------------
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
       ...input,
       [e.target.name]: e.target.value
-    })
-  }
-
-  function handleSelectI(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelect({
-      frequency: e.target.value
     })
   }
 
@@ -87,13 +97,10 @@ export default function AddSaveForm(props : any) {
           onChange={handleChange}
         >
         </input>
-        <select onChange={handleSelectI}>
-          <option value=''>Selecciona el tipo</option>
-          <option value='monthly'>Fijo mensualmente</option>
-          <option value='extra'>Agregar manualmente</option>
-        </select>
-        <button type='submit' onClick={()=> setOpen(!open)}>Agregar</button>
+
+        <button type='submit' disabled={valDisable} onClick={valDisable === true ? ()=> setOpen(!open) : () => setOpen(open)}>Agregar</button>
       </form>
+      <span id="validateError">{valMsg}</span>
     </div>
   )
 }
