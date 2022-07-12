@@ -14,7 +14,10 @@ return (
         setOpen={setOpen}
         onClick={() => setOpen(open)}
         >
-        <SavesCreate/>
+        <SavesCreate
+        open={open}
+        setOpen={setOpen}
+        />
       </PopUp>
     </div>
 )

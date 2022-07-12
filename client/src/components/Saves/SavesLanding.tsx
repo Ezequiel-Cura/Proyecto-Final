@@ -1,13 +1,23 @@
 import Nav from 'components/Nav/Nav';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import styles from "./../Ingreso/Input.module.css";
 import img from '../../assets/imgSaving.svg';
-import { useAppSelector } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import Saves from './Saves';
+import { renderOutput } from 'redux/reducers/userReducer/userReducer';
 
 export default function SavesLanding() {
-  const { usuario } = useAppSelector(state => state.user);
+  const { usuario, status } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
+
+  let currentDate = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth()+1) : String(new Date().getMonth())}`
+
+  // useEffect(() => {
+  //   if (status === 'success'){
+  //     dispatch()
+  //   }
+  // }, [status])
 
   return (
     <div>

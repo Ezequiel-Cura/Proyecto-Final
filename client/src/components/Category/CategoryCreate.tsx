@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addCategory } from 'redux/reducers/userReducer/actions/addCategory';
 
-export default function CategoryCreate() {
-
+export default function CategoryCreate(props : any) {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
 
