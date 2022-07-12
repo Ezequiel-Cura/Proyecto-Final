@@ -18,7 +18,6 @@ return (
         open={open}
         setOpen={setOpen}
         name={name}
-        currentAmount={currentAmount}
         />
       </PopUp>
     </div>

@@ -187,10 +187,10 @@ export default function ExpensesTable() {
   }
 
   //Paginado---------------------------------------------------------------
-  const [page, setPage] = useState(1);
-  const [inputsPerPage,] = useState(6);
+  const [page, setPage] = useState(1);            
+  const [inputsPerPage,] = useState(6);           
 
-  const [pageLimit,] = useState(10);
+  const [pageLimit,] = useState(10);  
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
@@ -199,13 +199,13 @@ export default function ExpensesTable() {
     pageNumber.push(i)
   }
 
-  const indice = pageNumber && pageNumber.map(pag => {
-    if (pag <= maxPageLimit && pag > minPageLimit) {
+  const indice = pageNumber && pageNumber.map(pag => {        
+    if (pag <= maxPageLimit && pag > minPageLimit) {          
       return <button className={pag === page ? stylesPag.active : styles.normal} onClick={() => setPage(pag)}>{pag}</button>
     } else return null;
   })
 
-  const handlePrevButton = () => {
+  const handlePrevButton = () => {       // 3 === 1 ?
     setPage((prev) => prev === 1 ? prev : prev - 1);
     if (page !== 1 && (page - 1) % pageLimit === 0) {
       setMaxPageLimit(maxPageLimit - pageLimit);

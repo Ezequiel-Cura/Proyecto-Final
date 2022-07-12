@@ -199,12 +199,12 @@ export default function SavesDetail() {
                 {
                   dataCurrency.query
                   ? <h2>{dataCurrency.query.to}</h2>
-                  : <p>Hubo un problema</p>
+                  : <h2>{detail.currency}</h2>
                 }
                 {
                   dataCurrency.result
                   ? <h3> $ {parseFloat(dataCurrency.result).toFixed(2)}</h3> 
-                  : <p>Hubo un problema</p>
+                  : <h3>$ {totalSaving}</h3>
                 }
               </div>
             </div>
