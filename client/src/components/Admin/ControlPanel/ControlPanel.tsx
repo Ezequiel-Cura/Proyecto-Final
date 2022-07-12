@@ -6,14 +6,14 @@ import Nav from "components/Nav/Nav"
 import UserRow from "./utils/allUsersChart/UserRow"
 import InfoChart from "./utils/InfoChart/InfoChart"
 import getAllReports from "redux/reducers/adminReducer/Actions/getAllReports"
+import Reports from "./utils/Reports/Reports"
 
 export default function ControlPanel() {
 const dispatch = useAppDispatch()
-const {allUsers, allReports} = useAppSelector(({admin}) => admin)
+const {allUsers} = useAppSelector(({admin}) => admin)
 
   useEffect(()=>{
     dispatch(getAllUsers())
-    dispatch(getAllReports())
   },[])
 
   return (
@@ -28,15 +28,19 @@ const {allUsers, allReports} = useAppSelector(({admin}) => admin)
             </div>
           </div>
           <div style={{display: "grid", gridTemplateRows: "min-content 1fr"}}>
-            <h3>Reviews reportados: </h3>
+            <h3>Reports sin evaluar:</h3>
             <table style={{backgroundColor: "#444444", width: "100%", height: "100%"}}>
               <thead>
                 <tr>
-                  <th>Nombre</th>
                   <th>Reports</th>
                 </tr>
               </thead>
               <tbody>
+                {
+                  allUsers.map(user => user.review.reports
+                    .filter(report => report.status !== "reviewed")
+                    .map(report =>  <Reports key={report._id} id={user._id} report={report}/>))
+                }
               </tbody>
             </table>
           </div>

@@ -30,7 +30,7 @@ export default function UserRow({id, email, nombre, apellido, role, premium}: Us
     <tr className={styles.tr}>
     <td onMouseDown={handleNavigation} className={styles.name}>{nombre} {apellido === undefined ? null : apellido}</td>
     <td>{email}</td>
-    <td
+    <td className={styles.clickable}
       onContextMenu={e => {
         e.preventDefault()
         setPosition({x: e.pageX, y:e.pageY})
@@ -38,7 +38,7 @@ export default function UserRow({id, email, nombre, apellido, role, premium}: Us
         setPremiumView(false)
       }}
       >{role}</td>
-    <td
+    <td className={styles.clickable}
       onContextMenu={e => {
         e.preventDefault()
         setPosition({x: e.pageX, y:e.pageY})

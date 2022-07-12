@@ -19,7 +19,13 @@ interface User {
     avatar: string
     review: {
         text: string,
-        rating: number
+        rating: number,
+        reports: [{
+            reportedBy: string
+            reason: string
+            _id: string
+            status: string
+        }]
     }
     banned?: boolean,
     supportMessages: {
@@ -33,10 +39,6 @@ interface User {
 interface adminState {
     allUsers: User[]  
     userCard: User
-    allReports: {
-        reportedBy: string
-        reason: string
-    }
     status: 'idle' | 'loading' | 'success' | 'failed'
   }
 
@@ -52,7 +54,13 @@ const initialState: adminState = {
         avatar: "",
         review: {
             text: "",
-            rating: 0
+            rating: 0,
+            reports: [{
+                reportedBy: "",
+                reason: "",
+                _id: "",
+                status: "",
+            }],
         },
         supportMessages: {
             id: "",
@@ -61,10 +69,6 @@ const initialState: adminState = {
         banned: false,
         updatedAt: null,
         createdAt: null,
-    },
-    allReports: {
-        reportedBy: "",
-        reason: ""
     },
     status: "idle",
 }
@@ -84,7 +88,13 @@ const reducerSlice = createSlice({
             avatar: "",
             review: {
                 text: "",
-                rating: 0
+                rating: 0,
+                reports: [{
+                    reportedBy: "",
+                    reason: "",
+                    _id: "",
+                    status: "",
+                }]
             },
             supportMessages: {
                 id: "",
@@ -111,7 +121,6 @@ const reducerSlice = createSlice({
         },
         [getAllReports.fulfilled]: (state, {payload}) => {
             state.status = "success"
-            state.allReports = payload
         },
         [getAllReports.rejected]: (state) => {
             state.status = "failed"

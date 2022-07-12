@@ -19,7 +19,7 @@ const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.get("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allReviews = yield User_1.default.find({}).where("review").exists(true).select({ _id: 0, review: 1 });
+        const allReviews = yield User_1.default.find({}).where("review").exists(true).select({ review: 1 });
         res.status(200).send(allReviews.filter((review) => { var _a, _b; return (_b = (_a = review === null || review === void 0 ? void 0 : review.review) === null || _a === void 0 ? void 0 : _a.reports) === null || _b === void 0 ? void 0 : _b.length; }));
     }
     catch (err) {
