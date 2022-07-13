@@ -1,20 +1,46 @@
 import Nav from 'components/Nav/Nav';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'redux/hooks';
 import { convertCrypto } from 'redux/reducers/userReducer/actions/convertCrypto';
 import { getCryptoList } from 'redux/reducers/userReducer/actions/getCryptoList';
 import styles from './Crypto.module.css'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 export default function CryptoInvest() {
 
-  const { cryptoList, status, cryptoData } = useAppSelector(state => state.user);
+  const { cryptoList, status, cryptoData, usuario } = useAppSelector(state => state.user);
 
   const dispatch = useDispatch()
+
   //Pagination
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const maxCryptos = 6
-  const totalPages = cryptoList.length / maxCryptos
+  const maxCryptos = 3
+
+  const lastCrypto = currentPage * maxCryptos
+  const firstCrypto = lastCrypto - maxCryptos
+
+  const currentCrypto = cryptoList.length > 2 ? cryptoList.slice(firstCrypto, lastCrypto) : cryptoList
+
+  function prevPage(e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
+    e.preventDefault();
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+    else {
+      alert("No hay más páginas previas")
+    }
+  };
+  function nextPage(e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
+    e.preventDefault();
+    if (Math.ceil(cryptoList.length / 3) > currentPage) {
+      setCurrentPage(currentPage + 1);
+    }
+    else {
+      alert("No hay más páginas posteriores")
+    }
+  }
 
   interface Form {
     id: string,
@@ -36,22 +62,22 @@ export default function CryptoInvest() {
     time: number
   }
 
-      // Validate
+  // Validate
 
-      const [valMsg, setMsg] = useState('')
-      const [valDisable, setDisabled] = useState(true)
-    
-      useEffect(() => {
-        !form.id ? setMsg('Proporcione la moneda que quiere convertir') :
-        !form.to ? setMsg('Proporcione la moneda a la cual convertirá') :
-        !form.amount ? setMsg('Proporcione un monto') : 
-        setMsg('') 
+  const [valMsg, setMsg] = useState('')
+  const [valDisable, setDisabled] = useState(true)
 
-      }, [form])
-      
-      useEffect(() => {
-        setDisabled(valMsg === '' ? false : true)
-      }, [valMsg])
+  useEffect(() => {
+    !form.id ? setMsg('Proporcione la moneda que quiere convertir') :
+      !form.to ? setMsg('Proporcione la moneda a la cual convertirá') :
+        !form.amount ? setMsg('Proporcione un monto') :
+          setMsg('')
+
+  }, [form])
+
+  useEffect(() => {
+    setDisabled(valMsg === '' ? false : true)
+  }, [valMsg])
 
   // SEARCH CRIPTO
 
@@ -103,13 +129,17 @@ export default function CryptoInvest() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    dispatch(convertCrypto(form))
-    resetAll()
-    setForm({
-      id: '',
-      to: '',
-      amount: 0
-    })
+    // if (usuario.premium) {
+      dispatch(convertCrypto(form))
+      resetAll()
+      setForm({
+        id: '',
+        to: '',
+        amount: 0
+      })
+    // } else {
+    //   return alert('Debes ser un usuario premium para poder convertir la moneda.')
+    // }
   }
 
   return (
@@ -122,7 +152,7 @@ export default function CryptoInvest() {
             <h1>Finanzas Digitales </h1>
           </div>
           {/* Search form */}
-          <div >
+          <div className={styles.formCrypto}>
             <form onSubmit={handleSubmit}>
               <select id="selectCoin" name='id' onChange={(e) => handleSelectSearch(e)}>
                 <option value="default">Criptomoneda</option>
@@ -186,41 +216,42 @@ export default function CryptoInvest() {
         : <div> Loading... </div>
         }
     </div> */}
-          <ul className={styles.cryptos}>
-            {
-              cryptoList.length > 0
-                ? cryptoList.slice(0, 50).map((crypto: Crypto, i: any) => {
-                  return (
-                    <li className={styles.cryptoList} key={i}>
-                      <img src={crypto.image.large} alt="Not found" />
-                      <p>Nombre: {crypto.name}</p>
-                      <p>Símbolo: {crypto.symbol}</p>
-                      <p>Id: {crypto.id}</p>
-                      <span className={styles.cryptoPrice}>
-                        <p>Precio actual</p>
-                        <p>En peso argentino: {crypto.market_data.current_price.ars}</p>
-                        <p>En dólares: {crypto.market_data.current_price.usd}</p>
-                        <p>En euros: {crypto.market_data.current_price.eur}</p>
-                        <p>En bitcoin: {crypto.market_data.current_price.btc}</p>
-                      </span>
-                    </li>
-                  )
-                })
-                : <li>Loading...</li>
-            }
-          </ul>
+
+    <div>
+      <div className={styles.carrouselPretty}>
+<ArrowBackIosNewIcon onClick={(e) => prevPage(e)} cursor='pointer' />
+    <ul className={styles.cryptos}>
+
+
+{
+  cryptoList.length > 0
+    ? currentCrypto.slice(0, 50).map((crypto: Crypto, i: any) => {
+      return (
+        <li className={styles.cryptoList} key={i}>
+          <img src={crypto.image.large} alt="Not found" />
+          <p>Nombre: {crypto.name}</p>
+          <p>Símbolo: {crypto.symbol}</p>
+          <p>Id: {crypto.id}</p>
+          <span className={styles.cryptoPrice}>
+            <p>Precio actual</p>
+            <p>En peso argentino: {crypto.market_data.current_price.ars}</p>
+            <p>En dólares: {crypto.market_data.current_price.usd}</p>
+            <p>En euros: {crypto.market_data.current_price.eur}</p>
+            <p>En bitcoin: {crypto.market_data.current_price.btc}</p>
+          </span>
+        </li>
+      )
+    })
+    : <li>Loading...</li>
+}
+</ul>
+<ArrowForwardIosIcon onClick={(e) => nextPage(e)} cursor='pointer' />
+
+      </div>
+    </div>
+         
         </div>
       </div>
     </div>
   )
 }
-
-// Possible coins: ["btc", "eth", "dai", "usdc",
-// "usdt", "busd", "ust", "usdp",
-//  "xrp", "bch", "ltc", "ada",
-//   "link", "eos", "tusd", "bnb",
-//    "xlm", "uni", "matic", "sol",
-//    "dot", "luna", "avax", "ftm",
-//    "axs", "slp", "mana", "ubi", "bat", "trx", "doge"]
-
-// es un objeto con props. no un array, ver funciones
