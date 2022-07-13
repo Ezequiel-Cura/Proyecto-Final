@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
-// COMPONENTS
 import Home from 'components/Home/Home';
 import Login from 'components/Login';
 import Profile from 'components/Profile/Profile';
@@ -10,7 +8,7 @@ import InputTable from 'components/Ingreso/InputTable';
 import Expenses from 'components/Gastos/Expenses';
 import ExpensesTable from 'components/Gastos/ExpensesTable';
 import Detalles from 'components/Detalles/Detalles';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppDispatch } from 'redux/hooks';
 import { getUserInfo } from 'redux/reducers/userReducer/actions/getUserInfo';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
 import LostPage from 'components/LostPage/LostPage';
@@ -26,9 +24,12 @@ import ReportsPanel from 'components/Admin/ReportsPanel/ReportsPanel';
 import CryptoLanding from 'components/CryptoInvest/CryptoLanding';
 import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
 import MessagesPanel from 'components/Admin/MessagesPanel/MessagesPanel';
+import Banned from 'components/Banned/Banned';
+import UnVerified from 'components/UnVerified/UnVerified';
 
 function App() {
   const dispatch = useAppDispatch()
+  
   useEffect(() => {
     if (localStorage.getItem("logged")) dispatch(getUserInfo())
   }, [])
@@ -38,7 +39,10 @@ function App() {
       <Route path="/" element={<Landing/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
-      <Route element={<ProtectedRoute isAllowed={localStorage.getItem("logged")} redirectPath={"/login"} state={{registered: true}}/>}>
+      <Route path="/banned" element={<Banned/>}/>
+      <Route path="/unVerified" element={<UnVerified/>}/>
+      <Route element={<ProtectedRoute isAllowed={{boolean : localStorage.getItem("logged"), 
+      reason: localStorage.getItem("banned") ? "banned" : localStorage.getItem("unVerified") ? "unVerified" : ""}}/>}>
         <Route path='/home' element={<Home/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/home/ingresos' element={<Input/>}/>
@@ -53,7 +57,7 @@ function App() {
         <Route path="/home/crypto/currency" element={<CryptoInvest />} />
         <Route path="/home/crypto" element={<CryptoLanding />} />
       </Route>
-      <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={localStorage.getItem("admin")}/>}>
+      <Route path='/admin' element={<ProtectedRoute isAllowed={{boolean: localStorage.getItem("admin")}}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
         <Route path="/admin/userCard" element={<UserCard/>}/>
         <Route path="/admin/reports" element={<ReportsPanel/>}/>
