@@ -8,7 +8,7 @@ export default function BuyPremium(props : any) {
     <div className={style.wrapperForm}>
         <p>Tienes un limite de 1 casilla de ahorro. Para crear mas convierte tu cuenta a premium</p>
         <Link to={'/home/saving/add'}>
-            <button>Comprar cuenta premium</button>
+            <button>Entendido</button>
         </Link>
     </div>
   )

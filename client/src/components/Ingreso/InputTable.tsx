@@ -25,6 +25,7 @@ export default function InputTable() {
 
   function filterByMonth(e: any) {
     e.preventDefault();
+    setMonth({nameMonth: e.target.value})
     dispatch(changeOptions(['month', e.target.value]))
     dispatch(filterInputByOptions())
     dispatch(totalInput())
@@ -51,6 +52,7 @@ export default function InputTable() {
 
   function handleFilterByYear(e: any) {
     e.preventDefault();
+    setYear({numberYear: e.target.value})
     dispatch(changeOptions(['year', e.target.value]))
     dispatch(filterInputByOptions())
     dispatch(totalInput())
@@ -107,6 +109,16 @@ export default function InputTable() {
       $oid: string
     }
   }
+
+  //Render Date
+  interface Month {
+    nameMonth: string,
+  }
+
+  interface Year {
+    numberYear: string
+  }
+
   //---------------------------------
 
   const dispatch = useAppDispatch();
@@ -136,6 +148,15 @@ export default function InputTable() {
     amount: 0,
     date: today
   });
+
+  const [month, setMonth] = useState<Month>({
+    nameMonth: '',
+  })
+
+  const [year, setYear ] =useState<Year>({
+    numberYear: ''
+  })
+  //---------------
 
   // Validate
   const firstRender = useRef(true)
@@ -308,6 +329,7 @@ export default function InputTable() {
           {/* Title */}
           <div className={styles.title}>
             <h1>Tus Ingresos </h1>
+            <p>{renderInputs.length > 0 ? "Año: " + (renderInputs[0].date.split("-")[0]) + " - Mes: " + renderInputs[0].date.split("-")[1] : (year.numberYear === "" ? "Año: 2022": "Año: " + year.numberYear) + " - Mes: " + month.nameMonth}</p> 
           </div>
 
           {/* Order */}
