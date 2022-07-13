@@ -1,11 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
-
 export const getUserInfo: any = createAsyncThunk("user/getUserInfo",
 async () => {
   const { data } = await axios.get("/user/getUserInfo")
-  console.log(data)
   if(data?.role !== "admin") {
     localStorage.removeItem("admin")
   } else {
@@ -31,8 +29,5 @@ async () => {
       window.location.reload()
     }
   }
-  
-  
-  
   return data
 })

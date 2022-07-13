@@ -14,7 +14,6 @@ import { deleteCategory } from "redux/reducers/userReducer/actions/deleteCategor
 export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-  console.log({renderOutputs})
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -186,12 +185,18 @@ export default function ExpensesTable() {
     dispatch(totalOutput())
   }
 
-  function handleFilterByYear(e: any) {
-    e.preventDefault();
-    setYear({numberYear: e.target.value})
-    dispatch(changeOptions(['year', e.target.value]))
-    dispatch(filterOutputByOptions())
-    dispatch(totalOutput())
+	const options = useAppSelector(state => state.user.options)
+	function handleFilterByYear(op: string) {
+		const year = Number(options.year)
+
+		dispatch(changeOptions([
+			'year',
+			op === '+' ? (year + 1).toString() :
+			op === '-' ? (year - 1).toString() :
+			today.split('-')[0]
+		]))
+		dispatch(filterOutputByOptions())
+		dispatch(totalOutput())
   }
 
   function resetAll() {
@@ -296,7 +301,7 @@ export default function ExpensesTable() {
             <option value='default'>Ordenar por categoria</option>
             {
               catFilterArr().map((e: any) => {
-                return (<option value={e}>{e}</option>)
+                return (<option value={e} key={e}>{e}</option>)
               })
             }
             <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
@@ -310,8 +315,14 @@ export default function ExpensesTable() {
             <option value='extra'>Gasto variable</option>
           </select>
 
-          <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
-            <option value=''>Ordenar por año</option>
+          <div className={styles.yearSelect}>
+							<button className={styles.yearLeft} onClick={() => handleFilterByYear('-')}>{'<'}</button>
+							<button className={styles.yearCenter} onClick={() => handleFilterByYear('')}>{options.year}</button>
+							<button className={styles.yearRight} onClick={() => handleFilterByYear('+')}>{'>'}</button>
+					</div>
+          
+          {/* <select id='selectYear' onChange={(e) => handleFilterByYear(e)}> */}
+            {/* <option value=''>Ordenar por año</option>
             {
                 ['2020', '2021', '2022', '2023', '2024', '2025'].map( (year: string) => {
                   return(
@@ -319,7 +330,7 @@ export default function ExpensesTable() {
                   )
                 })
               }
-          </select>
+          </select> */}
 
         </div>
 
