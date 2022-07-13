@@ -1,31 +1,39 @@
 
 .background {
-    display: grid;
-    grid-template-columns: 178px 1fr;
-    min-height: 100vh;
-    justify-content: center;
-    align-items: center;
+		display: grid;
+		grid-template-columns: 178px 1fr;
+		min-height: 100vh;
+		justify-content: center;
+		align-items: center;
 }
 
 .wrapperAllIngreso {
-    width: 1200px;
-    padding: 20px;
+		width: 1200px;
+		padding: 20px;
 }
 
 .title{
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .title h1 {
-    padding: 20px 20px 5px 0px;
+    padding: 20px 10px 0px 0px;
     font-size: 3.0em;
     color: #D2D2D2;
     font-weight: lighter;
 }
 
+.title p {
+    color: rgb(142, 140, 140);
+    padding: 0px 0px 0px 20px;
+}
+
 .selectsOrder {
-    width: 100%;
-    padding: 20px 20px 20px 0px;
+		width: 100%;
+		padding: 20px 20px 20px 0px;
+		display: flex;
 }
 
 .selectsOrder select {
@@ -34,18 +42,20 @@
     border: 1px solid rgb(142, 140, 140);
     border-radius: 20px;
     color: rgb(142, 140, 140);
-    background-color: #1f1f1f;;
+    background-color: #1f1f1f;
 }
 
 .allMonths {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+		display: flex;
+		flex-direction: row;
+		width: 100%;
 }
 
 .monthCard {
-    width: 100%;
+		width: 100%;
 }
+
+.months07:global(#Julio){ background-color: #43aa8b;}
 
 .months:global(#Enero){ background-color: #f94144; border-bottom-left-radius: 20px;}
 .months:global(#Febrero){ background-color: #f3722c}
@@ -74,217 +84,268 @@
 .month:global(#Diciembre){ background-color: #003459;}
 
 .allMonths button {
-    width: 80px;
-    height: 50px;
-    font-size: 15px;
-    font-weight:lighter;
-    border: none;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    color: rgb(255, 255, 255);
-    transition: background-color .2s;
-    cursor: pointer;
+		width: 80px;
+		height: 50px;
+		font-size: 15px;
+		font-weight:lighter;
+		border: none;
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+		color: rgb(255, 255, 255);
+		transition: background-color .2s;
+		cursor: pointer;
 }
 
 .allMonths button:hover {
-    font-weight: bold;
-    color: rgb(118, 118, 118);
-    opacity: 0.8;
+		font-weight: bold;
+		color: rgb(118, 118, 118);
+		opacity: 0.8;
 }
 
 .annual {
-    border-radius: 20px;
-    background-color: black;
+		border-radius: 20px;
+		background-color: black;
 }
 
 .table {
-    width: 100%;
-    background-color: #333333;
-    border-collapse: collapse;
-    border-radius: 20px;
+		width: 100%;
+		background-color: #333333;
+		border-collapse: collapse;
+		border-radius: 20px;
 }
 
 .monthlyInput {
-    color: #08a4e2;
+		color: #08a4e2;
 }
 
 .table thead th {
-    padding: 15px;
-    font-size: 20px;
-    color: #00BFA6;
-    border-bottom: 1px solid white;
+		padding: 15px;
+		font-size: 20px;
+		color: #00BFA6;
+		border-bottom: 1px solid white;
 }
 
 .table tbody tr, th {
-    padding: 7px;
-    font-weight: lighter;
+		padding: 7px;
+		font-weight: lighter;
 }
 
 .table button {
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
-    border: none;
-    background-image: url(../../assets/delete.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: transparent;
-    transition: background-color .2s;
-    cursor: pointer;
+		width: 30px;
+		height: 30px;
+		border-radius: 10px;
+		border: none;
+		background-image: url(../../assets/delete.png);
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-color: transparent;
+		transition: background-color .2s;
+		cursor: pointer;
 }
 
 .table button:hover {
-    background-color: #00BFA6;;
+		background-color: #00BFA6;;
 }
 
 .table .lastBox {
-    border-bottom-right-radius: 20px;
-    background-color: #00BFA6;
+		border-bottom-right-radius: 20px;
+		background-color: #00BFA6;
 }
 
 .table .totalAmount {
-    background-color: #00BFA6;
+		background-color: #00BFA6;
 }
 
 .table .vacia {
-    border-bottom-right-radius: 20px;
-    background-color: #1f1f1f;
+		border-bottom-right-radius: 20px;
+		background-color: #1f1f1f;
 }
 
 .table tr:nth-child(even){
-    background-color: #555555;
+		background-color: #555555;
 }
 
 .wrapperForms {
-    display: flex;
-    flex-direction: column;
+		display: flex;
+		flex-direction: column;
 }
 
 .form{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    padding: 15px;
-    justify-content: center;
-    align-items: center;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		padding: 15px;
+		justify-content: center;
+		align-items: center;
 }
 
 .form input{
-    padding: 10px;
-    margin-right: 20px;
-    border: 1px solid rgb(142, 140, 140);
-    border-radius: 20px;
-    color: rgb(142, 140, 140);
-    background: none;
-    color: white;
+		padding: 10px;
+		margin-right: 20px;
+		border: 1px solid rgb(142, 140, 140);
+		border-radius: 20px;
+		color: rgb(142, 140, 140);
+		background: none;
+		color: white;
 }
 
 .form .inputCreated {
-    color: white;
-    border: 1px solid rgb(118, 189, 3);
-    background-color: rgb(118, 189, 3);
+		color: white;
+		border: 1px solid rgb(118, 189, 3);
+		background-color: rgb(118, 189, 3);
 }
 
 .form select {
-    padding: 10px;
-    margin-right: 20px;
-    border: 1px solid rgb(142, 140, 140);
-    border-radius: 20px;
-    color: rgb(142, 140, 140);
-    background-color: #1f1f1f;
+		padding: 10px;
+		margin-right: 20px;
+		border: 1px solid rgb(142, 140, 140);
+		border-radius: 20px;
+		color: rgb(142, 140, 140);
+		background-color: #1f1f1f;
 }
 .amount{
-    width: 80px;
+		width: 80px;
 }
 
 .form button {
-    padding: 12px;
-    margin-right: 20px;
-    border: none;
-    border-radius: 20px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    background-color: #00BFA6;
-    transition: background-color .2s;
-    cursor: pointer;
+		padding: 12px;
+		margin-right: 20px;
+		border: none;
+		border-radius: 20px;
+		font-weight: bold;
+		color: rgb(255, 255, 255);
+		background-color: #00BFA6;
+		transition: background-color .2s;
+		cursor: pointer;
 }
 
 .form button:hover {
-    background-color: rgb(118, 189, 3) ;
+		background-color: rgb(118, 189, 3) ;
 }
 
 .form2 {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 800px;
-    background-color: #003459;
-    border-radius: 20px;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		width: 800px;
+		background-color: #003459;
+		border-radius: 20px;
 }
 
 
 .form2 button {
-    padding: 12px;
-    margin-right: 20px;
-    border: none;
-    border-radius: 20px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    background-color: #333333;
-    transition: background-color .2s;
-    cursor: pointer;
+		padding: 12px;
+		margin-right: 20px;
+		border: none;
+		border-radius: 20px;
+		font-weight: bold;
+		color: rgb(255, 255, 255);
+		background-color: #333333;
+		transition: background-color .2s;
+		cursor: pointer;
 }
 
 .form2 button:hover {
-    background-color: rgb(118, 189, 3) ;
+		background-color: rgb(118, 189, 3) ;
 }
 
 .form2 input {
-    padding: 10px;
-    margin-right: 20px;
-    border: 1px solid rgb(142, 140, 140);
-    border-radius: 20px;
-    color: rgb(142, 140, 140);
-    background: none;
-    color: white;
+		padding: 10px;
+		margin-right: 20px;
+		border: 1px solid rgb(142, 140, 140);
+		border-radius: 20px;
+		color: rgb(142, 140, 140);
+		background: none;
+		color: white;
 }
+
+.errorForm {
+    color: red,
+}
+
 .CrearDiv{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
 }
 .Crear{
-    background-color: #e8f038;
-    font-weight: bold;
-    color: black;
+		background-color: #e8f038;
+		font-weight: bold;
+		color: black;
 }
 
 .CrearButton{
-    padding: 1rem;
-    border-radius: 25rem;
-    border: 2px #333333 solid;
-    background: #e8f038;
-    color: rgb(59, 59, 59);
-    font-size: medium;
-    margin-top: 25px;
+		padding: 1rem;
+		border-radius: 25rem;
+		border: 2px #333333 solid;
+		background: #e8f038;
+		color: rgb(59, 59, 59);
+		font-size: medium;
+		margin-top: 25px;
 }
 
 .Ahorros{
-    background-color: #C6EC59;
-    font-weight: bold;
-    color: black;
+		background-color: #C6EC59;
+		font-weight: bold;
+		color: black;
 }
 
 .catDeleteButton{
-    padding: 1rem;
-    width: fit-content;
-    margin-right: auto;
-    border-radius: 25rem;
-    border: 2px #333333 solid;
-    background: #d16c6c;
-    color: rgb(59, 59, 59);
-    font-size: medium;
-    margin-top: 25px;
+		padding: 1rem;
+		width: fit-content;
+		margin-right: auto;
+		border-radius: 25rem;
+		border: 2px #333333 solid;
+		background: #d16c6c;
+		color: rgb(59, 59, 59);
+		font-size: medium;
+		margin-top: 25px;
+}
+
+/* padding: 10px;
+		margin-right: 20px;
+		border: 1px solid rgb(142, 140, 140);
+		border-radius: 20px;
+		color: rgb(142, 140, 140);
+		background-color: #1f1f1f; */
+
+.yearLeft{
+	padding: 10px;
+	border: 1px solid rgb(142, 140, 140) ;
+	border-right: 0px;
+	border-radius: 20px 0px 0px 20px;
+	color: rgb(142, 140, 140);
+	background-color: #1f1f1f;
+}
+.yearCenter{
+	padding: 10px;	
+	border: 1px solid rgb(142, 140, 140);
+	border-left: 0px;
+	border-right: 0px;
+	color: rgb(142, 140, 140);
+	background-color: #1f1f1f;
+}
+.yearRight{
+	padding: 10px;
+	border: 1px solid rgb(142, 140, 140);
+	border-radius: 0px 20px 20px 0px;
+	border-left: 0px;
+	color: rgb(142, 140, 140);
+	background-color: #1f1f1f;
+}
+
+
+.yearLeft:hover{
+	background-color: grey;
+	color: black;
+}
+.yearCenter:hover{
+	background-color: grey;
+	color: black;
+}
+.yearRight:hover{
+	background-color: grey;
+	color: black;
 }

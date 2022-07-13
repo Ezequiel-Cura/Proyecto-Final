@@ -14,6 +14,7 @@ import { deleteCategory } from "redux/reducers/userReducer/actions/deleteCategor
 export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  console.log({renderOutputs})
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -26,6 +27,7 @@ export default function ExpensesTable() {
     };
   }, [status, dispatch, date])
 
+    // Interfaces
   interface AgregarGastos {
     id?: string,
     frequency: string,             
@@ -48,6 +50,17 @@ export default function ExpensesTable() {
       $oid: string
     }
   }
+  interface Month {
+    nameMonth: string,
+  }
+
+  interface Year {
+    numberYear: string
+  }
+  interface keySelect {
+    frequency: string
+  }
+  //-----------------------
 
   const [input, setInput] = useState<Value>({
     category: '',
@@ -56,13 +69,19 @@ export default function ExpensesTable() {
     date: today,
   })
 
-  interface keySelect {
-    frequency: string
-  }
-
   const [selectKey, setSelectKey] = useState<keySelect>({
     frequency: '',
   })  
+
+  //Render Date
+  const [month, setMonth] = useState<Month>({
+    nameMonth: '',
+  })
+
+  const [year, setYear ] =useState<Year>({
+    numberYear: ''
+  })
+  //---------------
 
   // Validation
 
@@ -139,8 +158,10 @@ export default function ExpensesTable() {
     dispatch(deleteDato(event))
   }
 
+
   function filterByMonth(e: any) {
     e.preventDefault();
+    setMonth({nameMonth: e.target.value})
     dispatch(changeOptions(['month', e.target.value]))
     dispatch(filterOutputByOptions())
     dispatch(totalOutput())
@@ -165,11 +186,18 @@ export default function ExpensesTable() {
     dispatch(totalOutput())
   }
 
-  function handleFilterByYear(e: any) {
-    e.preventDefault();
-    dispatch(changeOptions(['year', e.target.value]))
-    dispatch(filterOutputByOptions())
-    dispatch(totalOutput())
+	const options = useAppSelector(state => state.user.options)
+	function handleFilterByYear(op: string) {
+		const year = Number(options.year)
+
+		dispatch(changeOptions([
+			'year',
+			op === '+' ? (year + 1).toString() :
+			op === '-' ? (year - 1).toString() :
+			today.split('-')[0]
+		]))
+		dispatch(filterOutputByOptions())
+		dispatch(totalOutput())
   }
 
   function resetAll() {
@@ -250,13 +278,15 @@ export default function ExpensesTable() {
     }
   }
 
+
   return (
     <div className={styles.background}>
       <Nav />
       {/* Title */}
       <div className={styles.wrapperAllIngreso}>
         <div className={styles.title}>
-          <h1>Tus Gastos </h1>
+          <h1>Tus Gastos:</h1>
+          <p>{renderOutputs.length > 0 ? "Año: " + (renderOutputs[0].date.split("-")[0]) + " - Mes: " + renderOutputs[0].date.split("-")[1] : (year.numberYear === "" ? "Año: 2022": "Año: " + year.numberYear) + " - Mes: " + month.nameMonth}</p> 
         </div>
 
         {/* Order */}
@@ -286,8 +316,14 @@ export default function ExpensesTable() {
             <option value='extra'>Gasto variable</option>
           </select>
 
-          <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
-            <option value=''>Ordenar por año</option>
+          <div className={styles.yearSelect}>
+							<button className={styles.yearLeft} onClick={() => handleFilterByYear('-')}>{'<'}</button>
+							<button className={styles.yearCenter} onClick={() => handleFilterByYear('')}>{options.year}</button>
+							<button className={styles.yearRight} onClick={() => handleFilterByYear('+')}>{'>'}</button>
+					</div>
+          
+          {/* <select id='selectYear' onChange={(e) => handleFilterByYear(e)}> */}
+            {/* <option value=''>Ordenar por año</option>
             {
                 ['2020', '2021', '2022', '2023', '2024', '2025'].map( (year: string) => {
                   return(
@@ -295,7 +331,7 @@ export default function ExpensesTable() {
                   )
                 })
               }
-          </select>
+          </select> */}
 
         </div>
 
@@ -435,7 +471,7 @@ export default function ExpensesTable() {
         </form>
 
         {/* Error Display */}
-        <span id="validateError">{valMsg}</span>
+        <span id="validateError" className={styles.errorForm}>{valMsg}</span>
         <br />
 
         {
