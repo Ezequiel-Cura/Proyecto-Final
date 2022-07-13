@@ -1,40 +1,45 @@
-.Nav_wrapper{
+.wrapper {
     position: sticky;
     top: 0px;
     height: calc(100vh - 12px);
     width: calc(100% - 28px);
     padding: 6px 14px;
     background-color: #2E332C;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content 1fr max-content;
     text-align: center;
 }
-.image_wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 24px;
-}
-.image_wrapper span{
-    display: flex;
-    justify-content: center;
-}
-.image_container{
+
+.image{
     width: 100px;
     height: 100px;
     border-radius: 20%;
     object-fit: cover;
-}
-.items_wrapper div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+    cursor: pointer;
 }
 
-.items_wrapper div:hover{
+.topContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0px;
+    gap: 2px;
+}
+
+.bottomContainer {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    justify-content: space-evenly;
+}
+
+.bottomContainer li {
+    padding: 10px;
+}
+
+.bottomContainer li:hover{
     background-color: lightslategray;
     border-radius: 30px;
 }
@@ -44,9 +49,11 @@
     padding: 10px 20px;
     border: none;
     border-radius: 12px;
-    letter-spacing: 1.5px;
-    width: min-content;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    width: max-content;
     color: white;
     cursor: pointer;
     align-self: center;
+    justify-self: center;
 }

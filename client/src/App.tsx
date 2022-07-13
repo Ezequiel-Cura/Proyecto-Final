@@ -25,15 +25,12 @@ import UserCard from 'components/Admin/UserCard/UserCard';
 import ReportsPanel from 'components/Admin/ReportsPanel/ReportsPanel';
 import CryptoLanding from 'components/CryptoInvest/CryptoLanding';
 import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
+import MessagesPanel from 'components/Admin/MessagesPanel/MessagesPanel';
 
 function App() {
   const dispatch = useAppDispatch()
-  const { usuario }: any = useAppSelector((({ user }) => user))
-  const [logged, setLogged] = useState(true)
-
   useEffect(() => {
     if (localStorage.getItem("logged")) dispatch(getUserInfo())
-    else setLogged(false)
   }, [])
 
   return (
@@ -41,7 +38,7 @@ function App() {
       <Route path="/" element={<Landing/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
-      <Route element={<ProtectedRoute isAllowed={logged} redirectPath={"/login"} state={{registered: true}}/>}>
+      <Route element={<ProtectedRoute isAllowed={localStorage.getItem("logged")} redirectPath={"/login"} state={{registered: true}}/>}>
         <Route path='/home' element={<Home/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/home/ingresos' element={<Input/>}/>
@@ -56,10 +53,11 @@ function App() {
         <Route path="/home/crypto/currency" element={<CryptoInvest />} />
         <Route path="/home/crypto" element={<CryptoLanding />} />
       </Route>
-      <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={logged && usuario.role === "admin"}/>}>
+      <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={localStorage.getItem("admin")}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
         <Route path="/admin/userCard" element={<UserCard/>}/>
         <Route path="/admin/reports" element={<ReportsPanel/>}/>
+        <Route path="/admin/messagesPanel" element={<MessagesPanel/>}/>
       </Route>
       <Route path="*" element={<LostPage />} />
     </Routes>

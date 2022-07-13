@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
-
 export const registerUser: any = createAsyncThunk("user/registerUser",
 async (user, { rejectWithValue }) => {
   try {

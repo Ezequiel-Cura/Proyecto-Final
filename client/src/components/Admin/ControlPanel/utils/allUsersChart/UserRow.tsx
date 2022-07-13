@@ -17,10 +17,11 @@ premium: boolean,
 
 export default function UserRow({id, email, nombre, apellido, role, premium}: UserRow) {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const [roleView, setRoleView] = useState(false)
   const [premiumView, setPremiumView] = useState(false)
   const [position, setPosition] = useState({x: 0, y: 0})
-  const navigate = useNavigate()
+
   function handleNavigation () {
     dispatch(cleanUserCard())
     navigate("/admin/userCard", {state: {id}})
@@ -28,7 +29,7 @@ export default function UserRow({id, email, nombre, apellido, role, premium}: Us
 
   return (
     <tr className={styles.tr}>
-    <td onMouseDown={handleNavigation} className={styles.name}>{nombre} {apellido === undefined ? null : apellido}</td>
+    <td onMouseDown={handleNavigation} style={{cursor: "pointer"}}>{nombre} {apellido === undefined ? null : apellido}</td>
     <td>{email}</td>
     <td className={styles.clickable}
       onContextMenu={e => {
