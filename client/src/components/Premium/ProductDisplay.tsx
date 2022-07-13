@@ -2,7 +2,7 @@ import Nav from 'components/Nav/Nav';
 import React from 'react';
 
 export const ProductDisplay = () => (
-    <section>
+    <section style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
         <Nav/>
         <div className="product">
             <img
