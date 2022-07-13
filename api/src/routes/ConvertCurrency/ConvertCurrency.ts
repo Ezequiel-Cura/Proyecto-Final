@@ -17,7 +17,7 @@ var requestOptions: RequestInit = {
 
 router.get("/", async (req: Request, res: Response) => {
     const { to, from, amount } = req.query
-    console.log({ to, from, amount })
+
     try {
         if (!to || !from || !amount) {
             res.status(400).send('Faltan parámetros.')
@@ -28,7 +28,6 @@ router.get("/", async (req: Request, res: Response) => {
                 res.status(200).send(apiData)
             })
     } catch (error) {
-        console.log(error)
         res.status(404).send(error)
     }
 })

@@ -99,7 +99,6 @@ export default function CryptoInvest() {
   }
 
   useEffect(() => {
-    console.log('entre')
     if (status === 'success') {
       dispatch(getCryptoList())
       // .then((json: Crypto[]) => { setData(json); setLoading(false);});

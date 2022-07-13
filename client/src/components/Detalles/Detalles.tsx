@@ -85,7 +85,6 @@ export default function Detalles() {
     const sobrante = totalIngresos - totalGastos
     let sobrantePorcentaje = porcentajeIngreso - porcentajeGastos
     let dificit = totalGastos - totalIngresos
-    console.log("deficit",dificit)
     let deficitPorcentaje = porcentajeGastos - porcentajeIngreso
     if(deficitPorcentaje < 0){
       
@@ -94,7 +93,6 @@ export default function Detalles() {
     if(sobrantePorcentaje < 0){
       sobrantePorcentaje = 0
     }
-    console.log(deficitPorcentaje)
 
     return { porcentajeGastos, porcentajeIngreso,totalIngresos,totalGastos,sobrante,sobrantePorcentaje,deficitPorcentaje };
   }
