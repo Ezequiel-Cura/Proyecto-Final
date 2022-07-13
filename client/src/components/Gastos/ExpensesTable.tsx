@@ -27,6 +27,7 @@ export default function ExpensesTable() {
     };
   }, [status, dispatch, date])
 
+    // Interfaces
   interface AgregarGastos {
     id?: string,
     frequency: string,             
@@ -49,6 +50,17 @@ export default function ExpensesTable() {
       $oid: string
     }
   }
+  interface Month {
+    nameMonth: string,
+  }
+
+  interface Year {
+    numberYear: string
+  }
+  interface keySelect {
+    frequency: string
+  }
+  //-----------------------
 
   const [input, setInput] = useState<Value>({
     category: '',
@@ -57,13 +69,19 @@ export default function ExpensesTable() {
     date: today,
   })
 
-  interface keySelect {
-    frequency: string
-  }
-
   const [selectKey, setSelectKey] = useState<keySelect>({
     frequency: '',
   })  
+
+  //Render Date
+  const [month, setMonth] = useState<Month>({
+    nameMonth: '',
+  })
+
+  const [year, setYear ] =useState<Year>({
+    numberYear: ''
+  })
+  //---------------
 
   // Validation
 
@@ -123,7 +141,6 @@ export default function ExpensesTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(form, "form en Expenses")
     dispatch(addDato(form));
     setInput({
       category: '',
@@ -141,9 +158,11 @@ export default function ExpensesTable() {
     dispatch(deleteDato(event))
   }
 
+
   function filterByMonth(e: any) {
     e.preventDefault();
     console.log(e.target.value, "meeeeeeeeeeeeeeeeees")
+    setMonth({nameMonth: e.target.value})
     dispatch(changeOptions(['month', e.target.value]))
     dispatch(filterOutputByOptions())
     dispatch(totalOutput())
@@ -170,6 +189,7 @@ export default function ExpensesTable() {
 
   function handleFilterByYear(e: any) {
     e.preventDefault();
+    setYear({numberYear: e.target.value})
     dispatch(changeOptions(['year', e.target.value]))
     dispatch(filterOutputByOptions())
     dispatch(totalOutput())
@@ -260,7 +280,8 @@ export default function ExpensesTable() {
       {/* Title */}
       <div className={styles.wrapperAllIngreso}>
         <div className={styles.title}>
-          <h1>Tus Gastos </h1>
+          <h1>Tus Gastos:</h1>
+          <p>{renderOutputs.length > 0 ? "Año: " + (renderOutputs[0].date.split("-")[0]) + " - Mes: " + renderOutputs[0].date.split("-")[1] : (year.numberYear === "" ? "Año: 2022": "Año: " + year.numberYear) + " - Mes: " + month.nameMonth}</p> 
         </div>
 
         {/* Order */}
@@ -306,7 +327,7 @@ export default function ExpensesTable() {
             {
               ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                 (month, i) => {
-                  return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                  return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.months} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                   )
                 }
               )
@@ -435,7 +456,7 @@ export default function ExpensesTable() {
         </form>
 
         {/* Error Display */}
-        <span id="validateError">{valMsg}</span>
+        <span id="validateError" className={styles.errorForm}>{valMsg}</span>
         <br />
 
         {

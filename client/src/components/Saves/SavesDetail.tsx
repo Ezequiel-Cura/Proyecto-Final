@@ -27,16 +27,16 @@ export default function SavesDetail() {
     depositPlace: string,
     currency: string,
   }
-  
-  const detail = usuario.savings.find((el : Save) => el._id === id)
-  const savingsList = renderSavings.filter(sav => sav.description === detail.name)
-
   useEffect(() => {
     if (status === 'success') {
       dispatch(totalSave(detail))
     }
   }, [status])
-
+  
+  const detail = usuario.savings.find((el : Save) => el._id === id) 
+  const savingsList = renderSavings.filter(sav => sav.description === detail.name)
+  console.log({detail})
+  console.log({usuario})
 
   function handleDeleteAmount(e: any) {
     dispatch(deleteDato(e))
@@ -52,7 +52,6 @@ export default function SavesDetail() {
   })
 
   function handleSelectCurrent(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e, "select e")
     setSelect({
       ...select,
       to: e.target.value
@@ -84,7 +83,7 @@ export default function SavesDetail() {
   const [open, setOpen] = useState<boolean>(false);
   
   return (
-    <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
+    (<div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
       <Nav/>
       <div className={style.background}>
         <div className={style.wrapperAll}>
@@ -116,10 +115,10 @@ export default function SavesDetail() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr key={detail.id}>
                       <th>{detail.start && detail.start.split("T")[0]}</th>
-                      <th>{detail.currency}</th>
-                      <th>{detail.depositPlace}</th>
+                      <th>{detail.currency && detail.currency}</th>
+                      <th>{detail.depositPlace && detail.depositPlace}</th>
                       <th>$ {totalSaving}</th>
                       <th>{detail.end && detail.end.split("T")[0]}</th>
                     </tr>
@@ -128,7 +127,7 @@ export default function SavesDetail() {
               </div>
               <div className={style.tableGoal}>
                 <h3>Meta</h3>
-                <p>$ {detail.goal}</p>
+                <p>$ {detail.goal && detail.goal}</p>
               </div>
             </div>
           </div>
@@ -147,9 +146,9 @@ export default function SavesDetail() {
                   <tbody>
                     {
                       savingsList.length > 0 ? savingsList.map( (save : any) => (
-                        <tr>
+                        <tr key={save._id}>
                           <th>{save.date && save.date.split("T")[0]}</th>
-                          <th>+ ${save.amount}</th>
+                          <th>+ ${save.amount && save.amount}</th>
                           <th><button onClick={ () => handleDeleteAmount({frequency: save.frequency, type: 'output', value: save})}></button></th>
                         </tr>
                     ))
@@ -211,6 +210,7 @@ export default function SavesDetail() {
 
         </div>
       </div>
-    </div>
+    </div>)
+  
   )
 }

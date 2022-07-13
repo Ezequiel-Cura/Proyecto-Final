@@ -47,7 +47,7 @@ export default function Saves() {
           <div className={style.wrapperAllSaves}>
             {usuario.savings.length > 0
             ? usuario.savings.map( (s: SavingUser) => (
-              <div className={style.wrapperSave}>
+              <div className={style.wrapperSave} key={s._id}>
                 <Link to={`/home/saving/add/${s._id}`}>
                   <div className={style.wrapperSaveLink}>
 
