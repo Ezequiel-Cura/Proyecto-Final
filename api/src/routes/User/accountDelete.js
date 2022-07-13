@@ -21,7 +21,6 @@ router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void
     // router.delete("/", async (req: any, res: Response) => {
     const { frequency, type, value } = req.body;
     const id = req.userId;
-    console.log({ frequency, type, value });
     // const id = "62c0a45f6ffc62c777c647de"
     try {
         const user = yield User_1.default.findById(id);
@@ -45,7 +44,6 @@ router.delete("/", authorization_1.default, (req, res) => __awaiter(void 0, void
         }
     }
     catch (err) {
-        console.log(err);
         res.status(400).send(err);
     }
 }));

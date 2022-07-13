@@ -24,7 +24,6 @@ router.put("/", [authorization_1.default, admin_1.default], (req, res) => __awai
                 "review.reports.$.status": "reviewed"
             }
         });
-        console.log(review);
         res.status(200).end();
     }
     catch (err) {

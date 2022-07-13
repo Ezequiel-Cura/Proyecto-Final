@@ -8,11 +8,9 @@ router.delete("/", async (req: Request, res: Response) => {
 
   User.findByIdAndDelete(id)
   .then((user) => {
-    console.log(user)
     if(user){
       return res.status(200).send(`Usuario ${user} eliminado`)
     } else {
-      console.log(user)
       return res.status(404).send(`Usuario ${user} eliminado`)
     }
   })

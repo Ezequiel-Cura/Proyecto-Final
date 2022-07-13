@@ -26,7 +26,6 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).send({ convertData, id, to, amount });
     }
     catch (error) {
-        console.log(error);
         res.status(404).send(error);
     }
 }));

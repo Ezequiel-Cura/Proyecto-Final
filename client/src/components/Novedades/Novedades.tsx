@@ -14,7 +14,6 @@ export default function Novedades() {
     async function fetchData(){
       const axiosNews = await axios.get("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey="+ "e81732e486d0400ab9e1547fe1ec8ee5" ,{withCredentials : false})
       setNews(axiosNews.data.articles)
-      console.log(axiosNews.data.articles)
     }
     fetchData()
   }, []);

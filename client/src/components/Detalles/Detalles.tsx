@@ -91,6 +91,7 @@ export default function Detalles() {
     let sobrantePorcentaje = porcentajeIngreso - porcentajeGastos
     // let dificit = totalGastos - totalIngresos
     
+    
     let deficitPorcentaje = porcentajeGastos - porcentajeIngreso
     if(deficitPorcentaje < 0){
       
@@ -104,6 +105,7 @@ export default function Detalles() {
     }
     
     
+
     return { porcentajeGastos, porcentajeIngreso,totalIngresos,totalGastos,sobrante,sobrantePorcentaje,deficitPorcentaje };
   }
 

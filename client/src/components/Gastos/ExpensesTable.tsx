@@ -62,7 +62,7 @@ export default function ExpensesTable() {
 
   const [selectKey, setSelectKey] = useState<keySelect>({
     frequency: '',
-  })
+  })  
 
   // Validation
 
@@ -100,6 +100,7 @@ export default function ExpensesTable() {
 
   function handleSelectI(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
+      ...input,
       frequency: e.target.value
     })
   }
@@ -121,13 +122,12 @@ export default function ExpensesTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(form, "form en Expenses")
     dispatch(addDato(form));
     setInput({
       category: '',
       description: '',
       amount: 0,
-      date: ''
+      date: today
     })
     setSelectKey({
       frequency: ''
@@ -141,7 +141,6 @@ export default function ExpensesTable() {
 
   function filterByMonth(e: any) {
     e.preventDefault();
-    console.log(e.target.value, "meeeeeeeeeeeeeeeeees")
     dispatch(changeOptions(['month', e.target.value]))
     dispatch(filterOutputByOptions())
     dispatch(totalOutput())
@@ -289,9 +288,13 @@ export default function ExpensesTable() {
 
           <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
             <option value=''>Ordenar por año</option>
-            <option value='2022'>2022</option>
-            <option value='2023'>2023</option>
-            <option value='2024'>2024</option>
+            {
+                ['2020', '2021', '2022', '2023', '2024', '2025'].map( (year: string) => {
+                  return(
+                    <option value={year}>{year}</option>
+                  )
+                })
+              }
           </select>
 
         </div>
@@ -371,7 +374,7 @@ export default function ExpensesTable() {
         {/* Creation form */}
         <form onSubmit={handleSubmit}>
           <div className={styles.form}>
-            <select value={input.category} onChange={handleSelectI}>
+            <select value={selectKey.frequency} onChange={handleSelectI}>
               <option value='' disabled={true}>Selecciona el tipo</option>
               <option value='monthly'>Gasto fijo</option>
               <option value='extra'>Gasto variable</option>

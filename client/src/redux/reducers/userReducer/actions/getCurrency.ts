@@ -9,7 +9,6 @@ async (ingreso: any, { rejectWithValue }) => {
     let getCurrencyData: any = await axios.get("/currency?to="+to+"&from="+from+"&amount="+amount, {
       data: ingreso
     });
-    console.log(getCurrency.data,"reducer data")
     return getCurrencyData.data
   } catch (err: any) {
     return rejectWithValue(err.response.data)

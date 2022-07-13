@@ -52,7 +52,6 @@ export default function SavesDetail() {
   })
 
   function handleSelectCurrent(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e, "select e")
     setSelect({
       ...select,
       to: e.target.value
@@ -73,7 +72,6 @@ export default function SavesDetail() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(form, 'form current')
     dispatch(getCurrency(form));
     setSelect({
       to: ''
