@@ -17,9 +17,11 @@ router.get("/", authorization, async (req: Request, res: Response) => {
       monthly: 1,
       extra: 1,
       categories: 1,
-      role: 1,
       isGoogle: 1,
-      review: 1
+      review: 1,
+      role: 1,
+      banned: 1,
+      verified: 1,
     })
     res.status(200).send(user)
   } catch (err: any) {
