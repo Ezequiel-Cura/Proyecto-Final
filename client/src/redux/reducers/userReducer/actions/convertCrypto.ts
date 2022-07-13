@@ -9,8 +9,9 @@ interface Form{
 
 export const convertCrypto: any = createAsyncThunk("crypto/convertCrypto",
 async (ingreso: Form, { rejectWithValue }) => {
+  const { id, to, amount } = ingreso
   try {
-    let convertCryptoData: any = await axios.get("/crypto/convertCrypto", {
+    let convertCryptoData: any = await axios.get("/crypto/convertCrypto?id="+ id + "&to="+ to + "&amount=" + amount, {
       data: ingreso
     });
     return convertCryptoData.data

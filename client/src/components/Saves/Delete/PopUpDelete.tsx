@@ -3,7 +3,7 @@ import style from '../Css/PopUpForm.module.css';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 
-export default function PopUp(props : any) {
+export default function PopUpDelete(props : any) {
     const { children, open, setOpen } = props;
     
 return (
