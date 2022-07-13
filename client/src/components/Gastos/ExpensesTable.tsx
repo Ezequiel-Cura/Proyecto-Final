@@ -62,7 +62,7 @@ export default function ExpensesTable() {
 
   const [selectKey, setSelectKey] = useState<keySelect>({
     frequency: '',
-  })
+  })  
 
   // Validation
 
@@ -100,6 +100,7 @@ export default function ExpensesTable() {
 
   function handleSelectI(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectKey({
+      ...input,
       frequency: e.target.value
     })
   }
@@ -371,7 +372,7 @@ export default function ExpensesTable() {
         {/* Creation form */}
         <form onSubmit={handleSubmit}>
           <div className={styles.form}>
-            <select value={input.category} onChange={handleSelectI}>
+            <select value={selectKey.frequency} onChange={handleSelectI}>
               <option value='' disabled={true}>Selecciona el tipo</option>
               <option value='monthly'>Gasto fijo</option>
               <option value='extra'>Gasto variable</option>
