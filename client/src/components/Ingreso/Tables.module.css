@@ -47,6 +47,8 @@
     width: 100%;
 }
 
+.months07:global(#Julio){ background-color: #43aa8b;}
+
 .months:global(#Enero){ background-color: #f94144; border-bottom-left-radius: 20px;}
 .months:global(#Febrero){ background-color: #f3722c}
 .months:global(#Marzo){ background-color: #f8961e}

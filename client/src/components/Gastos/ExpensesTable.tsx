@@ -14,6 +14,7 @@ import { deleteCategory } from "redux/reducers/userReducer/actions/deleteCategor
 export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  console.log({renderOutputs})
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -251,6 +252,7 @@ export default function ExpensesTable() {
     }
   }
 
+
   return (
     <div className={styles.background}>
       <Nav />
@@ -303,7 +305,7 @@ export default function ExpensesTable() {
             {
               ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'].map(
                 (month, i) => {
-                  return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.months} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
+                  return (<button value={i < 9 ? `0${i + 1}` : `${i + 1}`} className={styles.month} id={month} onClick={(e) => filterByMonth(e)}>{month}</button>
                   )
                 }
               )
