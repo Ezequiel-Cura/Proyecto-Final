@@ -129,7 +129,7 @@ export default function CryptoInvest() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (usuario.premium) {
+    // if (usuario.premium) {
       dispatch(convertCrypto(form))
       resetAll()
       setForm({
@@ -137,9 +137,9 @@ export default function CryptoInvest() {
         to: '',
         amount: 0
       })
-    } else {
-      return alert('Debes ser un usuario premium para poder convertir la moneda.')
-    }
+    // } else {
+    //   return alert('Debes ser un usuario premium para poder convertir la moneda.')
+    // }
   }
 
   return (
@@ -152,7 +152,7 @@ export default function CryptoInvest() {
             <h1>Finanzas Digitales </h1>
           </div>
           {/* Search form */}
-          <div >
+          <div className={styles.formCrypto}>
             <form onSubmit={handleSubmit}>
               <select id="selectCoin" name='id' onChange={(e) => handleSelectSearch(e)}>
                 <option value="default">Criptomoneda</option>
@@ -216,10 +216,12 @@ export default function CryptoInvest() {
         : <div> Loading... </div>
         }
     </div> */}
+
     <div>
+      <div className={styles.carrouselPretty}>
+<ArrowBackIosNewIcon onClick={(e) => prevPage(e)} cursor='pointer' />
     <ul className={styles.cryptos}>
 
-<ArrowBackIosNewIcon onClick={(e) => prevPage(e)} cursor='pointer' />
 
 {
   cryptoList.length > 0
@@ -244,6 +246,8 @@ export default function CryptoInvest() {
 }
 </ul>
 <ArrowForwardIosIcon onClick={(e) => nextPage(e)} cursor='pointer' />
+
+      </div>
     </div>
          
         </div>
