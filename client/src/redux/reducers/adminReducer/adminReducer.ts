@@ -8,8 +8,9 @@ import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
 import banUser from "./Actions/banUser";
 import getAllReports from "./Actions/getAllReports";
+import closeReview from "./Actions/closeReview";
 
-interface User {
+export interface IUser {
     _id: string,
     email: string,
     firstName: string,
@@ -37,8 +38,8 @@ interface User {
 }
 
 interface adminState {
-    allUsers: User[]  
-    userCard: User
+    allUsers: IUser[]  
+    userCard: IUser
     status: 'idle' | 'loading' | 'success' | 'failed'
   }
 
@@ -188,6 +189,15 @@ const reducerSlice = createSlice({
             state.status = "success"
         },
         [banUser.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [closeReview.pending]: (state) => {
+            state.status = "loading"
+        },
+        [closeReview.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [closeReview.rejected]: (state) => {
             state.status = "failed"
         },
     }
