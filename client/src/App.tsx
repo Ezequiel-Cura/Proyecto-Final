@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from 'components/Home/Home';
 import Login from 'components/Login';
@@ -26,9 +26,32 @@ import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
 import MessagesPanel from 'components/Admin/MessagesPanel/MessagesPanel';
 import Banned from 'components/Banned/Banned';
 import UnVerified from 'components/UnVerified/UnVerified';
+import { Message } from '@mui/icons-material';
 
 function App() {
   const dispatch = useAppDispatch()
+    const [message, setMessage] = useState("");
+  
+    useEffect(() => {
+      // Check to see if this is a redirect back from Checkout
+      const query = new URLSearchParams(window.location.search);
+  
+      if (query.get("success")) {
+        setMessage("Order placed! You will receive an email confirmation.");
+      }
+  
+      if (query.get("canceled")) {
+        setMessage(
+          "Order canceled -- continue to shop around and checkout when you're ready."
+        );
+      }
+    }, []);
+
+    const Message = ({ message }: any) => (
+      <section>
+        <p>{message}</p>
+      </section>
+    );
   
   useEffect(() => {
     if (localStorage.getItem("logged")) dispatch(getUserInfo())
@@ -36,6 +59,13 @@ function App() {
 
   return (
     <Routes>
+          {/* {
+          message ? (
+      <Message message={message} />
+    ) : (
+      <ProductDisplay />
+    )
+    } */}
       <Route path="/" element={<Landing/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
