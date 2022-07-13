@@ -28,10 +28,6 @@ export default function Login() {
     
     function handleGoogleLogin(response: any) {
     dispatch(googleLogin(response.credential))
-    .then((resp: any)=> {
-        if (resp.error) return
-        window.location.reload()
-        })
     }
 
   return (
