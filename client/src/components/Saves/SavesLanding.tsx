@@ -1,5 +1,5 @@
 import Nav from 'components/Nav/Nav';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
 import styles from "./../Ingreso/Input.module.css";
 import img from '../../assets/imgSaving.svg';
