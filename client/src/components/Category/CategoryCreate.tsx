@@ -5,12 +5,13 @@ import { addCategory } from 'redux/reducers/userReducer/actions/addCategory';
 export default function CategoryCreate(props : any) {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
-
+  const {open, setOpen} = props
   const [name, setName] = useState('');
 
   const [frequency, setFrequency] = useState('')
   
   const [type, setType] = useState('')
+
 
     // Validate
     const firstRender = useRef(true)
@@ -22,6 +23,7 @@ export default function CategoryCreate(props : any) {
     useEffect(() => {
       handleFormChange()
     }, [name, frequency, type])
+
     useEffect(() => {
       setDisabled(valMsg === '' ? false : true)
     }, [valMsg])
@@ -34,11 +36,11 @@ export default function CategoryCreate(props : any) {
     type: type
   }
 
-  const handleFormChange = () => { 
-    !form.name ? setMsg('Proporcione un nombre') : 
-    !form.frequency ? setMsg('Proporcione una frequencia') : 
-    !form.type ? setMsg('Proporcione un tipo') : 
-    setMsg('')
+  const handleFormChange = () => {
+      !form.name ? setMsg('Proporcione un nombre') : 
+      !form.frequency ? setMsg('Proporcione una frequencia') : 
+      !form.type ? setMsg('Proporcione un tipo') : 
+      setMsg('')
   }
 
 
@@ -73,17 +75,25 @@ export default function CategoryCreate(props : any) {
   }, [type])
   //-----------------------------------
 
+  const defVals = ['Changa', 'Herencia', 'Encontrado', 'Préstamo', 'Salario', 'Alquiler', 'Deuda', 'Impuestos', 'Salud', 'Viaje', 'Regalo', 'Super', 'Transporte', 'Restaurante', 'Vestimenta', 'Shopping', '', 'Crear']
   const categoryType = usuario.categories.map((e:any)=> e.type)
   const categoryName = usuario.categories.map((e:any)=> e.name)
 
+  let creationSwitch = false
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //Form
     e.preventDefault();
+
     if (categoryName.includes(form.name) && categoryType.includes(form.type)){
       setMsg('Esta categoria ya existe')
+    } else if (defVals.includes(form.name)) {
+      setMsg('Esta categoria ya existe en las categorias basicas')
     } else {
       dispatch(addCategory({value: form}))
     }
+
   }
+
+  if(status === 'CategoryCreated')window.location.reload()
 
   return (
     <div>
