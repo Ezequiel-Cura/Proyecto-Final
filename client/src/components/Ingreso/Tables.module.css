@@ -13,14 +13,21 @@
 }
 
 .title{
-		width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .title h1 {
-		padding: 20px 20px 5px 0px;
-		font-size: 3.0em;
-		color: #D2D2D2;
-		font-weight: lighter;
+    padding: 20px 10px 0px 0px;
+    font-size: 3.0em;
+    color: #D2D2D2;
+    font-weight: lighter;
+}
+
+.title p {
+    color: rgb(142, 140, 140);
+    padding: 0px 0px 0px 20px;
 }
 
 .selectsOrder {
@@ -30,12 +37,12 @@
 }
 
 .selectsOrder select {
-		padding: 10px;
-		margin-right: 20px;
-		border: 1px solid rgb(142, 140, 140);
-		border-radius: 20px;
-		color: rgb(142, 140, 140);
-		background-color: #1f1f1f;;
+    padding: 10px;
+    margin-right: 20px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background-color: #1f1f1f;
 }
 
 .allMonths {
@@ -47,6 +54,8 @@
 .monthCard {
 		width: 100%;
 }
+
+.months07:global(#Julio){ background-color: #43aa8b;}
 
 .months:global(#Enero){ background-color: #f94144; border-bottom-left-radius: 20px;}
 .months:global(#Febrero){ background-color: #f3722c}
@@ -251,6 +260,11 @@
 		background: none;
 		color: white;
 }
+
+.errorForm {
+    color: red,
+}
+
 .CrearDiv{
 		display: flex;
 		justify-content: center;

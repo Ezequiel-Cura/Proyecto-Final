@@ -14,6 +14,7 @@ import { deleteCategory } from "redux/reducers/userReducer/actions/deleteCategor
 export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  console.log({renderOutputs})
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -26,6 +27,7 @@ export default function ExpensesTable() {
     };
   }, [status, dispatch, date])
 
+    // Interfaces
   interface AgregarGastos {
     id?: string,
     frequency: string,             
@@ -48,6 +50,17 @@ export default function ExpensesTable() {
       $oid: string
     }
   }
+  interface Month {
+    nameMonth: string,
+  }
+
+  interface Year {
+    numberYear: string
+  }
+  interface keySelect {
+    frequency: string
+  }
+  //-----------------------
 
   const [input, setInput] = useState<Value>({
     category: '',
@@ -56,13 +69,19 @@ export default function ExpensesTable() {
     date: today,
   })
 
-  interface keySelect {
-    frequency: string
-  }
-
   const [selectKey, setSelectKey] = useState<keySelect>({
     frequency: '',
   })  
+
+  //Render Date
+  const [month, setMonth] = useState<Month>({
+    nameMonth: '',
+  })
+
+  const [year, setYear ] =useState<Year>({
+    numberYear: ''
+  })
+  //---------------
 
   // Validation
 
@@ -139,8 +158,10 @@ export default function ExpensesTable() {
     dispatch(deleteDato(event))
   }
 
+
   function filterByMonth(e: any) {
     e.preventDefault();
+    setMonth({nameMonth: e.target.value})
     dispatch(changeOptions(['month', e.target.value]))
     dispatch(filterOutputByOptions())
     dispatch(totalOutput())
@@ -257,13 +278,15 @@ export default function ExpensesTable() {
     }
   }
 
+
   return (
     <div className={styles.background}>
       <Nav />
       {/* Title */}
       <div className={styles.wrapperAllIngreso}>
         <div className={styles.title}>
-          <h1>Tus Gastos </h1>
+          <h1>Tus Gastos:</h1>
+          <p>{renderOutputs.length > 0 ? "Año: " + (renderOutputs[0].date.split("-")[0]) + " - Mes: " + renderOutputs[0].date.split("-")[1] : (year.numberYear === "" ? "Año: 2022": "Año: " + year.numberYear) + " - Mes: " + month.nameMonth}</p> 
         </div>
 
         {/* Order */}
@@ -448,7 +471,7 @@ export default function ExpensesTable() {
         </form>
 
         {/* Error Display */}
-        <span id="validateError">{valMsg}</span>
+        <span id="validateError" className={styles.errorForm}>{valMsg}</span>
         <br />
 
         {
