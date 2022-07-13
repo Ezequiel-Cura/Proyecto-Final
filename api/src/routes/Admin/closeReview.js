@@ -13,14 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const admin_1 = __importDefault(require("../../middleware/admin"));
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
+const User_1 = __importDefault(require("../../models/User"));
+router.put("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allReviews = yield User_1.default.find({}).where("review.text").exists(true).select({ _id: 1, firstName: 1, lastName: 1, avatar: 1, review: 1 });
-        if (!allReviews)
-            return res.status(404).send("Aun no hay reviews");
-        res.status(200).send(allReviews);
+        const review = yield User_1.default.findOneAndUpdate({ "review.reports._id": req.body.reviewId }, {
+            $set: {
+                "review.reports.$.status": "reviewed"
+            }
+        });
+        console.log(review);
+        res.status(200).end();
     }
     catch (err) {
         res.status(500).send(err.message);

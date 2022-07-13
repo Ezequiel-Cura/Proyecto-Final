@@ -39,7 +39,7 @@ const {allUsers} = useAppSelector(({admin}) => admin)
                 {
                   allUsers.map(user => user.review.reports
                     .filter(report => report.status !== "reviewed")
-                    .map(report =>  <Reports key={report._id} id={user._id} report={report}/>))
+                    .map(report =>  <Reports key={report._id} review={user.review.text} id={user._id} report={report}/>))
                 }
               </tbody>
             </table>
