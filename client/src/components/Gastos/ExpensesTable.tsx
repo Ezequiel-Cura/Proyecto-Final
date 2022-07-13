@@ -128,7 +128,7 @@ export default function ExpensesTable() {
       category: '',
       description: '',
       amount: 0,
-      date: ''
+      date: today
     })
     setSelectKey({
       frequency: ''
