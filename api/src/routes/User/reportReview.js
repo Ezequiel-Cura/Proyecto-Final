@@ -19,8 +19,8 @@ const router = (0, express_1.Router)();
 router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield User_1.default.findById(req.body.id);
-        user.review.reported;
-        user.save();
+        user.review.reports.push({ reportedBy: req.userId, reason: req.body.reason });
+        yield user.save();
         res.status(200).send(user);
     }
     catch (err) {

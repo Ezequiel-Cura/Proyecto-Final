@@ -23,4 +23,4 @@ const id = req.userId
   }
 });
 
-export default router
+export default router;

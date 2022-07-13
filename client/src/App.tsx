@@ -22,10 +22,9 @@ import SavesDetail from 'components/Saves/SavesDetail';
 import Landing from 'components/Landing/Landing';
 import VerifyEmail from 'components/VerifyEmail/VerifyEmail';
 import UserCard from 'components/Admin/UserCard/UserCard';
+import ReportsPanel from 'components/Admin/ReportsPanel/ReportsPanel';
 import CryptoLanding from 'components/CryptoInvest/CryptoLanding';
 import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
-
-
 
 function App() {
   const dispatch = useAppDispatch()
@@ -60,8 +59,8 @@ function App() {
       <Route path='/admin' element={<ProtectedRoute  redirectPath={"/login"} state={{registered: true}} isAllowed={logged && usuario.role === "admin"}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
         <Route path="/admin/userCard" element={<UserCard/>}/>
+        <Route path="/admin/reports" element={<ReportsPanel/>}/>
       </Route>
-
       <Route path="*" element={<LostPage />} />
     </Routes>
   );

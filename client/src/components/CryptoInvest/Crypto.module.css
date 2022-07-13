@@ -1,6 +1,17 @@
-.wrapperAllCrypto{
+.wrapperAllCrypto {
     display: grid;
     grid-template-columns: 178px 1fr;
+}
+
+.cryptos {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    grid-auto-rows: auto;
+
+    grid-gap: 1rem;
+
 }
 
 .title h1 {
@@ -12,7 +23,7 @@
 
 .wrapperText {
     width: 40%;
-    padding:60px 0px 20px 20px;
+    padding: 60px 0px 20px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -57,8 +68,8 @@
 .wrapperLink button:hover {
     font-weight: bold;
     color: white;
-    border-color:rgb(118, 189, 3) ;
-    background-color: rgb(118, 189, 3) ;
+    border-color: rgb(118, 189, 3);
+    background-color: rgb(118, 189, 3);
 }
 
 .img {
@@ -67,7 +78,7 @@
     padding: 20px;
 }
 
-.cryptoList{
+.cryptoList {
     list-style: none;
     background-color: #4a41cc;
     border-radius: 5px;
@@ -80,34 +91,36 @@
     visibility: hidden;
 } */
 
-.cryptoList img{
+.cryptoList img {
     width: 50px;
 }
 
-.cryptoList p{
+.cryptoList p {
     margin: 15px;
 }
 
 
-@media screen and (max-width:1300px)  {
-    .wrapperText{
+@media screen and (max-width:1300px) {
+    .wrapperText {
         width: 100%;
     }
+
     .wrapperImage {
         width: 100%;
     }
+
     .wrapperAllIngreso {
         flex-direction: column;
     }
 }
 
-@media screen and (max-width:900px)  {
+@media screen and (max-width:900px) {
     .wrapperText {
         font-size: 0.8rem;
     }
 }
 
-@media screen and (max-width:500px)  {
+@media screen and (max-width:500px) {
     .wrapperText {
         font-size: 0.5rem;
     }

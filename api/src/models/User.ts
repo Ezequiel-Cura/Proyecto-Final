@@ -18,6 +18,7 @@ export interface IUser {
     reports: [{
       reportedBy: string
       reason: string
+      status: string
     }]
   },
   banned: boolean,
@@ -50,7 +51,8 @@ const userSchema = new Schema<IUser>({
     rating: Number,
     reports: [{
       reportedBy: String,
-      reason: String
+      reason: String,
+      status: { type: String, default: "unReviewed"}
     }]
   },
   avatar: String,

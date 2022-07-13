@@ -1,7 +1,7 @@
 import React, { useState }  from 'react';
 import AddSaveForm from './AddSaveForm';
 import PopUp from './PopUp';
-import style from '../SavesDetail.module.css';
+import style from '../Css/SavesDetail.module.css';
 
 export default function AddSave(props : any) {
   const { name, currentAmount } = props;
@@ -18,7 +18,6 @@ return (
         open={open}
         setOpen={setOpen}
         name={name}
-        currentAmount={currentAmount}
         />
       </PopUp>
     </div>
