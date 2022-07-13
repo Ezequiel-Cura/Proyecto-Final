@@ -7,7 +7,6 @@ import getAllUsers from "./Actions/getAllUsers";
 import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
 import banUser from "./Actions/banUser";
-import getAllReports from "./Actions/getAllReports";
 import closeReview from "./Actions/closeReview";
 
 export interface IUser {
@@ -115,15 +114,6 @@ const reducerSlice = createSlice({
             state.allUsers = payload
         },
         [getAllUsers.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [getAllReports.pending]: (state) => {
-            state.status = "loading"
-        },
-        [getAllReports.fulfilled]: (state, {payload}) => {
-            state.status = "success"
-        },
-        [getAllReports.rejected]: (state) => {
             state.status = "failed"
         },
         [changeRole.pending]: (state) => {

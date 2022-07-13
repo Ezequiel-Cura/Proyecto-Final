@@ -8,7 +8,6 @@ import sendEmail from "./sendEmail"
 import deleteUserReview from "./deleteUserReview"
 import banUser from "./banUser"
 import deleteUser from "./deleteUser"
-import getAllReports from "./getAllReports"
 import closeReview from "./closeReview"
 
 router.use("/getAllUsers", getAllUsers)
@@ -19,7 +18,6 @@ router.use("/sendEmail", sendEmail)
 router.use("/deleteUserReview", deleteUserReview)
 router.use("/banUser", banUser)
 router.use("/deleteUser", deleteUser)
-router.use("/getAllReports", getAllReports)
 router.use("/closeReview", closeReview)
 
 export default router
