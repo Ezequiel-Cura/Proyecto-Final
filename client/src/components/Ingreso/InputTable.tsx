@@ -56,8 +56,8 @@ export default function InputTable() {
 		dispatch(changeOptions([
 			'year',
 			op === '+' ? (year + 1).toString() :
-				op === '-' ? (year - 1).toString() :
-					today.split('-')[0]
+			op === '-' ? (year - 1).toString() :
+			today.split('-')[0]
 		]))
 		dispatch(filterInputByOptions())
 		dispatch(totalInput())
