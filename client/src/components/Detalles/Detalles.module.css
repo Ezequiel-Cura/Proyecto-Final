@@ -109,3 +109,41 @@ h1{
   font-size: larger;
 }
 
+.yearLeft{
+	padding: 10px;
+	border: 1px solid rgb(142, 140, 140) ;
+	border-right: 0px;
+	border-radius: 20px 0px 0px 20px;
+	color: rgb(142, 140, 140);
+	background-color: #1f1f1f;
+}
+.yearCenter{
+	padding: 10px;	
+	border: 1px solid rgb(142, 140, 140);
+	border-left: 0px;
+	border-right: 0px;
+	color: rgb(142, 140, 140);
+	background-color: #1f1f1f;
+}
+.yearRight{
+	padding: 10px;
+	border: 1px solid rgb(142, 140, 140);
+	border-radius: 0px 20px 20px 0px;
+	border-left: 0px;
+	color: rgb(142, 140, 140);
+	background-color: #1f1f1f;
+}
+
+
+.yearLeft:hover{
+	background-color: grey;
+	color: black;
+}
+.yearCenter:hover{
+	background-color: grey;
+	color: black;
+}
+.yearRight:hover{
+	background-color: grey;
+	color: black;
+}

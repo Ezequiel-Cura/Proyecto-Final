@@ -265,8 +265,11 @@ export default function Detalles() {
     return arrayBarChart
   }
 
-  function handleChangeYear(e:any){
-    setYear(e.target.value)
+  function handleChangeYear(op:any){
+    const thisYear:number = Number(year)
+    op === '+' ? setYear((thisYear + 1).toString()) :
+    op === '-' ? setYear((thisYear - 1).toString()) :
+    op === '' && setYear(new Date().getFullYear().toString())
   }
   function handleChangeMonth(e:any){
     setMonth(e.target.value)
@@ -280,14 +283,19 @@ export default function Detalles() {
         <h1>Detalles</h1>
         <div>
           <div className={styles.select_detail}>
-            <select name="years" id="" onChange={(e)=>{handleChangeYear(e)}}>
+            <div className={styles.yearSelect}>
+							<button className={styles.yearLeft} onClick={() => handleChangeYear('-')}>{'<'}</button>
+							<button className={styles.yearCenter} onClick={() => handleChangeYear('')}>{year}</button>
+							<button className={styles.yearRight} onClick={() => handleChangeYear('+')}>{'>'}</button>
+						</div>
+            {/* <select name="years" id="" onChange={(e)=>{handleChangeYear(e)}}>
               <option value="2022">2022</option>
               <option value="2020">2020</option>
               <option value="2021">2021</option>
               <option value="2023">2023</option>
               <option value="2024">2024</option>
               <option value="2025">2025</option>
-            </select>
+            </select> */}
           </div>
           <div>
             <h4>Resumen anual Ingresos</h4>

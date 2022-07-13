@@ -186,12 +186,18 @@ export default function ExpensesTable() {
     dispatch(totalOutput())
   }
 
-  function handleFilterByYear(e: any) {
-    e.preventDefault();
-    setYear({numberYear: e.target.value})
-    dispatch(changeOptions(['year', e.target.value]))
-    dispatch(filterOutputByOptions())
-    dispatch(totalOutput())
+	const options = useAppSelector(state => state.user.options)
+	function handleFilterByYear(op: string) {
+		const year = Number(options.year)
+
+		dispatch(changeOptions([
+			'year',
+			op === '+' ? (year + 1).toString() :
+			op === '-' ? (year - 1).toString() :
+			today.split('-')[0]
+		]))
+		dispatch(filterOutputByOptions())
+		dispatch(totalOutput())
   }
 
   function resetAll() {
@@ -310,8 +316,14 @@ export default function ExpensesTable() {
             <option value='extra'>Gasto variable</option>
           </select>
 
-          <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
-            <option value=''>Ordenar por año</option>
+          <div className={styles.yearSelect}>
+							<button className={styles.yearLeft} onClick={() => handleFilterByYear('-')}>{'<'}</button>
+							<button className={styles.yearCenter} onClick={() => handleFilterByYear('')}>{options.year}</button>
+							<button className={styles.yearRight} onClick={() => handleFilterByYear('+')}>{'>'}</button>
+					</div>
+          
+          {/* <select id='selectYear' onChange={(e) => handleFilterByYear(e)}> */}
+            {/* <option value=''>Ordenar por año</option>
             {
                 ['2020', '2021', '2022', '2023', '2024', '2025'].map( (year: string) => {
                   return(
@@ -319,7 +331,7 @@ export default function ExpensesTable() {
                   )
                 })
               }
-          </select>
+          </select> */}
 
         </div>
 

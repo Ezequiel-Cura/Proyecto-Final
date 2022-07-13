@@ -78,7 +78,7 @@ const initialState: User = {
     frequency: 'default',
     category: 'default',
     month: '',
-    year: ''
+    year: new Date().getFullYear().toString()
   },
   status: 'idle',
   allInputs: [],
@@ -174,7 +174,7 @@ const reducerSlice = createSlice({
       state.options[payload[0]] = payload[1]
     },
     clearChangeOptions: (state) => {
-      state.options = {frequency: 'default', category: 'default', month: '', year: ''}
+      state.options = {frequency: 'default', category: 'default', month: '', year: date.split('-')[0]}
     },
     filterOutputByOptions: (state) => {
       //Year
