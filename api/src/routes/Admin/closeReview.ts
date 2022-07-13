@@ -12,7 +12,6 @@ router.put("/", [authorization, admin], async (req: any, res: any) => {
                 "review.reports.$.status": "reviewed"
             }
         })
-        console.log(review)
         res.status(200).end()
     } catch (err: any) {
         res.status(500).send(err.message)

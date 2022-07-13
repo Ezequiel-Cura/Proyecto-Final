@@ -49,8 +49,8 @@ export default function Detalles() {
 
   const [switchValue,setSwitchvalue] = useState(false)
   const [year,setYear] = useState(date.split("-")[0])
+  const [month,setMonth] = useState("01")
 
-  
   function calculate() {
 
     let ingresos = usuario?.extra.input?.filter((e:any)=>e.date.includes(year))
@@ -78,14 +78,20 @@ export default function Detalles() {
     const totalGastos = gastos + gastosFijos;       // 800
     const totalIngresos = ingresos + ingresosFijos; // 1000 + 1000
 
-    const porcentajeGastos = Math.round((totalGastos * 100) / totalIngresos)
+    let porcentajeGastos = Math.round((totalGastos * 100) / totalIngresos)
     // const porcentajeIngreso1 = 100 - porcentajeGastos
-    const porcentajeIngreso = 100
+
+    let porcentajeIngreso = 100
+    
+    if(totalIngresos === 0){
+      porcentajeIngreso = 0;
+    }
 
     const sobrante = totalIngresos - totalGastos
     let sobrantePorcentaje = porcentajeIngreso - porcentajeGastos
-    let dificit = totalGastos - totalIngresos
-    console.log("deficit",dificit)
+    // let dificit = totalGastos - totalIngresos
+    
+    
     let deficitPorcentaje = porcentajeGastos - porcentajeIngreso
     if(deficitPorcentaje < 0){
       
@@ -94,7 +100,11 @@ export default function Detalles() {
     if(sobrantePorcentaje < 0){
       sobrantePorcentaje = 0
     }
-    console.log(deficitPorcentaje)
+    if(isNaN(porcentajeGastos)){
+      porcentajeGastos = 0
+    }
+    
+    
 
     return { porcentajeGastos, porcentajeIngreso,totalIngresos,totalGastos,sobrante,sobrantePorcentaje,deficitPorcentaje };
   }
@@ -126,22 +136,26 @@ export default function Detalles() {
     border: "1px black solid"
   }
   const data1 = () => {
-    let gastos = status === "success" && usuario.extra.output?.find((e:any)=>e.date === date)
+    let gastos = status === "success" && usuario.extra.output?.find((e:any)=>e.date === year+"-" + month)
+    console.log(year+"-" + month)
+    console.log("Gastos",gastos)
     gastos = gastos ? gastos.entries.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
-    }, 0) : 0
-    const gastosFijos = usuario?.monthly?.output.reduce(
+    }, 0) : 0;
+
+    const gastosFijos =usuario?.monthly?.output.filter((e:any)=>e.date.includes(year+"-"+month)) ?  usuario?.monthly?.output.filter((e:any)=>e.date.includes(year+"-"+month)).reduce(
       (prev: any, actual: any) => {
         return prev + actual.amount;
-    },0);
-    
+    },0) : 0;
+
+    console.log("Fijos",gastosFijos)
     const total = gastos + gastosFijos
-    let data1 = usuario?.extra.output.find((e:any)=>e.date === date)
+    let data1 = usuario?.extra.output.find((e:any)=>e.date === year+"-"+month)
     data1 = data1 ? data1.entries.reduce((c: any, v: any) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
     }, {}) : 0
-    let data2 = usuario?.monthly.output.reduce((c: any, v: any) => {
+    let data2 = usuario?.monthly.output.filter((e:any)=>e.date.includes(year+"-"+month)).reduce((c: any, v: any) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
     }, {})
@@ -178,22 +192,22 @@ export default function Detalles() {
     return elData;
   };
   const data2 = ()=>{
-    let ingresos = status === "success" && usuario.extra.input?.find((e:any)=>e.date === date)
+    let ingresos = status === "success" && usuario.extra.input?.find((e:any)=>e.date === year +"-"+month)
     ingresos = ingresos ? ingresos.entries.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0) : 0
-    const ingresosFijos = usuario?.monthly?.input.reduce(
+    const ingresosFijos = usuario?.monthly?.input.filter((e:any)=>e.date.includes(year +"-"+ month)) ? usuario?.monthly?.input.filter((e:any)=>e.date.includes(year +"-"+ month)).reduce(
       (prev: any, actual: any) => {
         return prev + actual.amount;
-    },0);
+    },0) : 0;
     
     const total = ingresos + ingresosFijos
-    let data1 = usuario?.extra.input.find((e:any)=>e.date === date)
+    let data1 = usuario?.extra.input.find((e:any)=>e.date === year+"-"+month)
     data1 = data1 ? data1.entries.reduce((c: any, v: any) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
     }, {}) : 0
-    let data2 = usuario?.monthly.input.reduce((c: any, v: any) => {
+    let data2 = usuario?.monthly.input.filter((e:any)=>e.date.includes(year +"-"+ month)).reduce((c: any, v: any) => {
       c[v.category] = (c[v.category] || 0) + v.amount;
       return c;
     }, {})
@@ -254,8 +268,10 @@ export default function Detalles() {
   function handleChangeYear(e:any){
     setYear(e.target.value)
   }
-
-
+  function handleChangeMonth(e:any){
+    setMonth(e.target.value)
+  }
+  console.log(month)
   const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e","#7fffd4","#a864ca"];
   return (
     <div className={styles.wrapper}>
@@ -281,12 +297,30 @@ export default function Detalles() {
             </div> */}
             <div className={styles.barra_wrapper}>
               <div>
-                <div style={incomes}>Ingresos - {calculate().porcentajeIngreso} %(${calculate().totalIngresos})</div>
-                <div style={deficit}>{calculate().sobrante < 0 ? "Deficit  -" + calculate().deficitPorcentaje + "%($"+ calculate().sobrante+")" : null }</div>
+                {
+                  calculate().porcentajeIngreso !== 0 ? 
+                  (
+                    <>
+                      <div style={incomes}>Ingresos  {calculate().porcentajeIngreso} %(${calculate().totalIngresos})</div>
+                      <div style={deficit}>{calculate().sobrante < 0 ? "Deficit  -" + calculate().deficitPorcentaje + "%($"+ calculate().sobrante+")" : null }</div>
+                    </>
+                  )
+                  :
+                  <div style={incomes}></div>
+                }
               </div>
               <div style={{"display" : "flex"}}>
-                <div style={gastos}>Gastos - {calculate().porcentajeGastos} %(${calculate().totalGastos})</div>
-                <div style={sobrante}>{calculate().sobrantePorcentaje > 0 ?"Superavit  "+ calculate().sobrantePorcentaje + "%($"+calculate().sobrante : null } </div>
+                {
+                  calculate().porcentajeGastos !== 0 ?
+                  (
+                    <>
+                      <div style={gastos}>Gastos  {calculate().porcentajeGastos} %(${calculate().totalGastos})</div>
+                      <div style={sobrante}>{calculate().sobrantePorcentaje > 0 ?"Superavit  "+ calculate().sobrantePorcentaje + "%($"+calculate().sobrante : null } </div>
+                    </>
+                  )
+                  :
+                  <div style={gastos}></div>
+                }
               </div>
               <div className={styles.div_popOut} ></div>
             </div>
@@ -305,6 +339,22 @@ export default function Detalles() {
           </div>
           <div className={styles.seccion_wrapper}>
             <div className={styles.primer_wrapper}>
+              <div>
+                <select name="" id="" onChange={(e)=>{handleChangeMonth(e)}}>
+                  <option value="01">Enero</option>
+                  <option value="02">Febrero</option>
+                  <option value="03">Marzo</option>
+                  <option value="04">Abril</option>
+                  <option value="05">Mayo</option>
+                  <option value="06">Junio</option>
+                  <option value="07">Julio</option>
+                  <option value="08">Agosto</option>
+                  <option value="09">Septiembre</option>
+                  <option value="10">Octubre</option>
+                  <option value="11">Noviembre</option>
+                  <option value="12">Diciembre</option>
+                </select>
+              </div>
               <div>
                 <span>Gastos</span>
                 <Switch onChange={()=>{

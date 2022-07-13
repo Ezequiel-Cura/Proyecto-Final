@@ -11,7 +11,6 @@ router.delete("/", authorization, async (req: any, res: Response) => {
   // router.delete("/", async (req: any, res: Response) => {
   const { frequency, type, value} = req.body
   const id = req.userId
-  console.log({frequency, type, value})
   // const id = "62c0a45f6ffc62c777c647de"
   try{
     const user = await User.findById(id)
@@ -34,7 +33,6 @@ router.delete("/", authorization, async (req: any, res: Response) => {
     }
   }
   catch (err) {
-    console.log(err)
     res.status(400).send(err)
   }
 });

@@ -12,9 +12,8 @@ export default function Novedades() {
   const [news, setNews] = useState([]);
   useEffect(() => {
     async function fetchData(){
-      const axiosNews = await axios.get("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey="+ "e81732e486d0400ab9e1547fe1ec8ee5" ,{withCredentials : false})
+      const axiosNews = await axios.get("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey="+ process.env.REACT_APP_NEWS_API_KEY ,{withCredentials : false})
       setNews(axiosNews.data.articles)
-      console.log(axiosNews.data.articles)
     }
     fetchData()
   }, []);

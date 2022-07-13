@@ -13,7 +13,6 @@ router.get("/", async (req: Request, res: Response) => {
       const convertData = convertCrypto.data
       res.status(200).send({convertData, id, to, amount })
     } catch (error) {
-        console.log(error)
         res.status(404).send(error)
     }
 })

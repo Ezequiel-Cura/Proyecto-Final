@@ -72,7 +72,6 @@ export default function SavesDetail() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(form, 'form current')
     dispatch(getCurrency(form));
     setSelect({
       to: ''

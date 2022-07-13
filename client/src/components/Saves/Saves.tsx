@@ -12,8 +12,6 @@ export default function Saves() {
   const { usuario, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  console.log({usuario})
-
   useEffect(() => {
     if (status === 'success') {
       dispatch(clearCurrency())
