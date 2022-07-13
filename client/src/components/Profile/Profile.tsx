@@ -128,6 +128,7 @@ export default function Profile() {
                 <form onSubmit={handleDeleteAccount} style={{width: "100%",display: "grid", gridTemplateColumns: "1fr", gridTemplateRows: "min-content 1fr", justifyItems: "center", alignContent: "center"}}>
                     <input style={{width: "75%"}} type="text" placeholder="Tu email" value={emailDeleteVerification || ""} onChange={(e: any) => setEmailDeleteVerification(e.target.value)}/>
                     <button className={styles.confirmButton}>Confirmar</button>
+                    <button className={styles.closeButton} onClick={() => {setDeleteAccountPreview(false); setEmailDeleteVerification("")}} type='button'><span className='material-icons'>close</span></button>
                 </form>
             </div>)
         }
