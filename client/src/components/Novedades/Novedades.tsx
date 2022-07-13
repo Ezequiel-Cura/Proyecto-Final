@@ -5,16 +5,14 @@ import axios from "axios";
 import { Https } from "@mui/icons-material";
 
 
+
+
+
 export default function Novedades() {
   const [news, setNews] = useState([]);
-  // const httpsAgent = new Https.arguments({
-  //   maxVersion: "TLSv1.2",
-  //   minVersion: "TLSv1.2"
-  // })
-
   useEffect(() => {
     async function fetchData(){
-      const axiosNews = await axios.get("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=e81732e486d0400ab9e1547fe1ec8ee5" ,{withCredentials : false,httpsAgent:{ maxVersion: "TLSv1.3",minVersion: "TLSv1.2"}})
+      const axiosNews = await axios.get("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey="+ "e81732e486d0400ab9e1547fe1ec8ee5" ,{withCredentials : false})
       setNews(axiosNews.data.articles)
       console.log(axiosNews.data.articles)
     }

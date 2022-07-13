@@ -14,9 +14,20 @@ const userSchema = new mongoose_1.Schema({
     verified: { type: Boolean, default: false },
     verifyToken: { type: String },
     isEmailSubscripted: { type: Boolean, default: true },
-    review: { type: Object },
+    review: {
+        text: String,
+        rating: Number,
+        reports: [{
+                reportedBy: String,
+                reason: String,
+                status: { type: String, default: "unReviewed" }
+            }]
+    },
     avatar: String,
-    supportMessages: [],
+    banned: { type: Boolean, default: false },
+    supportMessages: [{
+            message: String
+        }],
     premium: { type: Boolean, default: false },
     role: { type: String, default: 'user' },
     savings: [{
@@ -84,6 +95,8 @@ const userSchema = new mongoose_1.Schema({
                 required: true
             },
         }]
+}, {
+    timestamps: true
 });
 userSchema.methods.generateAuthToken = function () {
     const token = jsonwebtoken_1.default.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, { expiresIn: "7d" });

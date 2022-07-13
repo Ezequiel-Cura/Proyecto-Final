@@ -20,7 +20,8 @@ const router = (0, express_1.Router)();
 router.post("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.body;
-        const user = yield User_1.default.findById(id).select({ firstName: 1, avatar: 1, lastName: 1, email: 1, role: 1, premium: 1, review: 1, supportMessages: 1, });
+        const user = yield User_1.default.findById(id).select({ firstName: 1, avatar: 1, lastName: 1, createdAt: 1,
+            updatedAt: 1, email: 1, role: 1, premium: 1, review: 1, supportMessages: 1, banned: 1 });
         res.status(200).send(user);
     }
     catch (err) {

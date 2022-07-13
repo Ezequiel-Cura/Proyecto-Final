@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addCategory } from 'redux/reducers/userReducer/actions/addCategory';
 
-export default function CategoryCreate() {
-
+export default function CategoryCreate(props : any) {
   const dispatch = useAppDispatch();
   const { usuario, status } = useAppSelector(state => state.user);
-
+  const {open, setOpen} = props
   const [name, setName] = useState('');
 
   const [frequency, setFrequency] = useState('')
   
   const [type, setType] = useState('')
+
 
     // Validate
     const firstRender = useRef(true)
@@ -23,6 +23,7 @@ export default function CategoryCreate() {
     useEffect(() => {
       handleFormChange()
     }, [name, frequency, type])
+
     useEffect(() => {
       setDisabled(valMsg === '' ? false : true)
     }, [valMsg])
@@ -35,11 +36,11 @@ export default function CategoryCreate() {
     type: type
   }
 
-  const handleFormChange = () => { 
-    !form.name ? setMsg('Proporcione un nombre') : 
-    !form.frequency ? setMsg('Proporcione una frequencia') : 
-    !form.type ? setMsg('Proporcione un tipo') : 
-    setMsg('')
+  const handleFormChange = () => {
+      !form.name ? setMsg('Proporcione un nombre') : 
+      !form.frequency ? setMsg('Proporcione una frequencia') : 
+      !form.type ? setMsg('Proporcione un tipo') : 
+      setMsg('')
   }
 
 
@@ -74,10 +75,25 @@ export default function CategoryCreate() {
   }, [type])
   //-----------------------------------
 
+  const defVals = ['Changa', 'Herencia', 'Encontrado', 'Préstamo', 'Salario', 'Alquiler', 'Deuda', 'Impuestos', 'Salud', 'Viaje', 'Regalo', 'Super', 'Transporte', 'Restaurante', 'Vestimenta', 'Shopping', '', 'Crear']
+  const categoryType = usuario.categories.map((e:any)=> e.type)
+  const categoryName = usuario.categories.map((e:any)=> e.name)
+
+  let creationSwitch = false
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {         //Form
     e.preventDefault();
-    dispatch(addCategory(form));
+
+    if (categoryName.includes(form.name) && categoryType.includes(form.type)){
+      setMsg('Esta categoria ya existe')
+    } else if (defVals.includes(form.name)) {
+      setMsg('Esta categoria ya existe en las categorias basicas')
+    } else {
+      dispatch(addCategory({value: form}))
+    }
+
   }
+
+  if(status === 'CategoryCreated')window.location.reload()
 
   return (
     <div>
@@ -94,15 +110,16 @@ export default function CategoryCreate() {
         >
         </input>
 
-        <select  value={frequency} onChange={(e) => handleFreqChange(e)} >
-          <option value='' disabled={true}>Selecciona su frecuencia</option>
-          <option value='monthly' >Ingreso fijo</option>
-          <option value='extra'>Ingreso extra</option>
-        </select>
         <select value={type} onChange={(e) => handleTypeChange(e)} >
           <option value='' disabled={true}>Selecciona su tipo</option>
           <option value='input'>Ingreso</option>
           <option value='output'>Gasto</option>
+        </select>
+
+        <select  value={frequency} onChange={(e) => handleFreqChange(e)} >
+          <option value='' disabled={true}>Selecciona su frecuencia</option>
+          <option value='monthly' >Fijo</option>
+          <option value='extra'>Extra</option>
         </select>
         <button type='submit' disabled={valDisable}>Agregar</button>
       </form>

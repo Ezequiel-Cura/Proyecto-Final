@@ -1,12 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import changePremium from "./Actions/changePremium";
 import changeRole from "./Actions/changeRole";
+import deleteUser from "./Actions/deleteUser";
 import deleteUserReview from "./Actions/deleteUserReview";
 import getAllUsers from "./Actions/getAllUsers";
 import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
+import banUser from "./Actions/banUser";
+import getAllReports from "./Actions/getAllReports";
+import closeReview from "./Actions/closeReview";
 
-interface User {
+export interface IUser {
     _id: string,
     email: string,
     firstName: string,
@@ -16,14 +20,26 @@ interface User {
     avatar: string
     review: {
         text: string,
-        rating: number
+        rating: number,
+        reports: [{
+            reportedBy: string
+            reason: string
+            _id: string
+            status: string
+        }]
     }
-    supportMessages: string[]
+    banned?: boolean,
+    supportMessages: {
+        id: string,
+        message: string
+    }
+    createdAt: Date | null
+    updatedAt: Date | null
 }
 
 interface adminState {
-    allUsers: User[]  
-    userCard: User
+    allUsers: IUser[]  
+    userCard: IUser
     status: 'idle' | 'loading' | 'success' | 'failed'
   }
 
@@ -39,10 +55,22 @@ const initialState: adminState = {
         avatar: "",
         review: {
             text: "",
-            rating: 0
+            rating: 0,
+            reports: [{
+                reportedBy: "",
+                reason: "",
+                _id: "",
+                status: "",
+            }],
         },
-        supportMessages: []
-},
+        supportMessages: {
+            id: "",
+            message: ""
+        },
+        banned: false,
+        updatedAt: null,
+        createdAt: null,
+    },
     status: "idle",
 }
 
@@ -50,22 +78,33 @@ const reducerSlice = createSlice({
     name:"admin",
     initialState,
     reducers: {
-        cleanUserCard: (state) => {
-            state.userCard = {
-                _id: "",
-                email: "",
-                firstName: "",
-                lastName: "",
-                role: "",
-                premium: false,
-                avatar: "",
-                review: {
-                    text: "",
-                    rating: 0
-                },
-                supportMessages: []
-            }
+    cleanUserCard: (state) => {
+        state.userCard = {
+            _id: "",
+            email: "",
+            firstName: "",
+            lastName: "",
+            role: "",
+            premium: false,
+            avatar: "",
+            review: {
+                text: "",
+                rating: 0,
+                reports: [{
+                    reportedBy: "",
+                    reason: "",
+                    _id: "",
+                    status: "",
+                }]
+            },
+            supportMessages: {
+                id: "",
+                message: ""
+            },
+            createdAt: null,
+            updatedAt: null,
         }
+    },
     },
     extraReducers:{
         [getAllUsers.pending]: (state) => {
@@ -76,6 +115,15 @@ const reducerSlice = createSlice({
             state.allUsers = payload
         },
         [getAllUsers.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [getAllReports.pending]: (state) => {
+            state.status = "loading"
+        },
+        [getAllReports.fulfilled]: (state, {payload}) => {
+            state.status = "success"
+        },
+        [getAllReports.rejected]: (state) => {
             state.status = "failed"
         },
         [changeRole.pending]: (state) => {
@@ -120,10 +168,36 @@ const reducerSlice = createSlice({
         },
         [deleteUserReview.fulfilled]: (state, {payload}) => {
             state.status = "success"
-            console.log("payload: ",payload)
             state.userCard.review = payload
         },
         [deleteUserReview.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [deleteUser.pending]: (state) => {
+            state.status = "loading"
+        },
+        [deleteUser.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [deleteUser.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [banUser.pending]: (state) => {
+            state.status = "loading"
+        },
+        [banUser.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [banUser.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [closeReview.pending]: (state) => {
+            state.status = "loading"
+        },
+        [closeReview.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [closeReview.rejected]: (state) => {
             state.status = "failed"
         },
     }

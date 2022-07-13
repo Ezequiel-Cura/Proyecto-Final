@@ -1,8 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getAllReviews from "./Actions/getAllReviews";
 
+export interface IUserReview {
+    review : {
+        text: string
+        rating: number
+        reports: []
+    }
+    _id : string
+    firstName: string
+    avatar: string
+}
 interface commonState {
-    allReviews: object[]
+    allReviews: IUserReview[]
     status: 'idle' | 'loading' | 'success' | 'failed'
   }
 

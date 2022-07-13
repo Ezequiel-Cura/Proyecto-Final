@@ -29,7 +29,20 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
         //---------------------------------
         // should frequency be monthly, simply push the entry
         if (frequency === "monthly") {
-            yield user.monthly[key].push(value);
+            let allMonths = [];
+            while (parseInt(value.date.split('-')[1]) < 13) {
+                let value2 = Object.assign({}, value); // value2 = { jssjjs }
+                allMonths.push(value2); //
+                let splitValue = value.date.split('-'); // [2022, 08, 12]
+                let secondPart = parseInt(splitValue[1]) + 1; // 8 + 1 = 9
+                secondPart = secondPart < 10 ? `0${secondPart.toString()}` : secondPart.toString(); // "09"
+                let elements = [splitValue[0], secondPart, splitValue[2]]; // [2022, 09, 12]
+                value.date = elements.join('-'); // value.date = "2022-09-12"
+            }
+            for (let i = 0; i < allMonths.length; i++) {
+                let firstMonth = allMonths[i];
+                yield user.monthly[key].push(firstMonth);
+            }
             yield user.save();
             return res.status(200).send(user);
         }

@@ -1,5 +1,5 @@
 import Nav from 'components/Nav/Nav';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import styles from "./../Ingreso/Input.module.css";
 import img from '../../assets/imgSaving.svg';
@@ -9,9 +9,15 @@ import Saves from './Saves';
 export default function SavesLanding() {
   const { usuario } = useAppSelector(state => state.user);
 
+  // useEffect(() => {
+  //   if (status === 'success'){
+  //     dispatch(renderSaving());
+  //   }
+  // }, [status])
+
   return (
     <div>
-      { usuario.savings > 0 
+      { usuario.savings.length > 0 
       ? <Saves/>
       :(<div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
           <Nav/>

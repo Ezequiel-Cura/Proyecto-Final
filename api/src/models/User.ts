@@ -15,12 +15,19 @@ export interface IUser {
   review?: {
     text: string
     rating: number
+    reports: [{
+      reportedBy: string
+      reason: string
+      status: string
+    }]
   },
-  supportMessages: string[]
+  banned: boolean,
+  supportMessages: {
+    message: string
+  }
   avatar: string
   premium: boolean
   role: string
-
   savings: any
   fees: Array<object>
   monthly: any
@@ -39,9 +46,20 @@ const userSchema = new Schema<IUser>({
   verified: { type: Boolean, default: false},
   verifyToken: { type: String },
   isEmailSubscripted: { type: Boolean, default: true},
-  review: { type: Object },
+  review: {
+    text: String,
+    rating: Number,
+    reports: [{
+      reportedBy: String,
+      reason: String,
+      status: { type: String, default: "unReviewed"}
+    }]
+  },
   avatar: String,
-  supportMessages: [],
+  banned: { type: Boolean, default: false},
+  supportMessages: [{
+    message: String
+  }],
   premium: { type: Boolean, default: false },
   role: { type: String, default: 'user' },
 
@@ -114,6 +132,8 @@ const userSchema = new Schema<IUser>({
       enum: ['input', 'output'],
       required: true},
   }]
+},{
+  timestamps: true
 })
 
 userSchema.methods.generateAuthToken = function () {

@@ -1,0 +1,282 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapperAll {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+}
+
+.wrapperHead {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+}
+
+.title button {
+    width: 45px;
+    height: 45px;
+    margin-right: 20px;
+    border: none;
+    border-radius: 10px;
+    background-image: url(../../../assets/flecha-correcta.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: #00BFA6;
+    transition: background-color .2s;
+    cursor: pointer;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.title button:hover {
+    background-color: rgb(118, 189, 3) ;
+}
+
+.title h1 {
+    font-weight: lighter;
+    font-size: 3.0em;
+    color: #D2D2D2;
+}
+
+.wrapperDetail {
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1100px;
+    height: 130px;
+    border-radius: 20px;
+    margin: 20px;
+    background: black;
+}
+
+.tableDetail {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableDetail table {
+    border-collapse: collapse;
+}
+
+.tableDetail table thead th {
+    padding: 16px;
+    font-weight: lighter;
+    font-size: 1.5rem;
+    color: #00BFA6;
+    border-bottom: 1px solid white;
+}
+
+.tableDetail table tbody th {
+    padding: 18px;
+    font-weight: lighter;
+    color: #D2D2D2;;
+}
+
+.tableGoal {
+    width: 15%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: #C6EC59;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableGoal h3{
+    font-weight: lighter;
+    font-size: 1.8rem;
+    padding: 6px;
+}
+
+.tableGoal p {
+    font-size: 1.3rem;
+    padding: 6px;
+}
+
+.wrapperBody {
+    display: flex;
+    flex-direction: row;
+}
+
+.wrapperBody .divTableA {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    padding: 10px;
+}
+
+.moveTable {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.moveTable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.moveTable table thead th {
+    padding: 5px;
+    font-size: 16px;
+    color: #8F8C8C;
+}
+
+.moveTable table tbody th {
+    padding: 5px;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.moveTable tbody tr {
+    background-color: #333333;
+    border-bottom: 1px solid rgb(38, 37, 37)
+}
+
+.moveTable table button {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    background-image: url(../../../assets/delete.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.moveTable table button:hover {
+    background-color: #DB0808;
+}
+
+.buttonAddSave {
+    width: 500px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: #00BFA6;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.buttonAddSave:hover {
+    background-color: rgb(118, 189, 3) ;
+}
+
+.addNewSave {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border-radius: 10px;
+    color:#00BFA6;
+    background-color: white;
+}
+
+.wrapperBody .divAmountB {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    padding: 10px;
+}
+
+.wrapperBody .divAmountB .divCurrentConvert {
+    width: 360px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: rgb(0, 0, 0);
+}
+
+.divCurrentConvert p {
+    font-weight: lighter;
+    font-size: 14px;
+    margin: 10px;
+}
+
+.divCurrentConvert select {
+    padding: 10px;
+    border: 1px solid rgb(142, 140, 140);
+    border-radius: 20px;
+    color: rgb(142, 140, 140);
+    background-color: #000000;
+}
+
+.divCurrentConvert h2 {
+    font-size: 2rem;
+    padding-top: 10px;
+    font-weight: lighter;
+    color: #63830A;
+}
+
+.divCurrentConvert h3 {
+    font-size: 2.2rem;
+    font-weight: lighter;
+    color: #C6EC59;
+}
+
+.divButtonDelete {
+    display: flex;
+    justify-content: end;
+}
+
+.divButtonDelete button {
+    width: 230px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    color: rgb(0, 0, 0);
+    font-weight: bolder;
+    padding: 10px;
+    margin-right: 30px;
+    background-color: #DB0808;
+    background-image: url(../../../assets/delete.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.divButtonDelete button:hover {
+    background-color: rgb(255, 54, 54) ;
+}

@@ -7,9 +7,11 @@ import ImageEditor from './utils/ImageEditor'
 import { updatePersonalInfo } from '../../redux/reducers/userReducer/userReducer'
 import { Rating } from '@mui/material'
 import addReview from 'redux/reducers/userReducer/actions/addReview'
-import { flexbox } from '@mui/system'
 import deleteReview from 'redux/reducers/userReducer/actions/deleteReview'
 import sendSupportMessage from 'redux/reducers/userReducer/actions/sendSupportMessages'
+import deleteAccount from 'redux/reducers/userReducer/actions/deleteAccount'
+import { useNavigate } from 'react-router-dom'
+import { logout } from 'redux/reducers/userReducer/actions/logout'
 
 interface Profile {
     setImageEditor: () => Boolean
@@ -17,6 +19,7 @@ interface Profile {
 
 export default function Profile() {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const {usuario} : any = useAppSelector(({user})=> user)
     const [imageEditor, setImageEditor] = useState(false)
     const [firstNameDisabled, setFirstNameDisabled] = useState(true)
@@ -27,12 +30,10 @@ export default function Profile() {
     const [reviewMsg, setReviewMsg] = useState("")
     const [supportMessage, setSupportMessage] = useState("")
     const [supportConfirmationMessage, setSupportConfirmationMessage] = useState("")
+    const [review, setReview] = useState({text: "", rating: 0})
+    const [deleteAccountPreview, setDeleteAccountPreview] = useState(false)
+    const [emailDeleteVerification, setEmailDeleteVerification] = useState("")
     
-    const [review, setReview] = useState({
-        text: "",
-        rating: 0,
-    })
-
     useEffect(()=>{
     setState({firstName: usuario.firstName,lastName: usuario.lastName,password: ""})
     setReview(usuario.review)
@@ -102,10 +103,35 @@ export default function Profile() {
     function handleSupportMessageChange (event: ChangeEvent<HTMLTextAreaElement>) {
         setSupportMessage(event.target.value)
     }
+    function handleDeleteAccount (event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        if (emailDeleteVerification !== usuario.email) return
+        dispatch(deleteAccount())
+        .then((resp: any) => {
+            if (resp.error) return alert("no se pudo")
+            dispatch(logout())
+            .then(() => {
+                navigate("/")
+                window.location.reload()
+            })
+        })
+    }
 
   return (
     <div className={styles.wrapper}>
         <Nav/>
+        {
+            deleteAccountPreview && (
+            <div className={styles.deleteAccountModal}>
+                <h2 style={{color: "red"}}>Estas seguro de que quieres eliminar tu cuenta?</h2>
+                <h3 style={{color: "red"}}>Si de verdad quieres borrar tu cuenta, escribe tu email <strong style={{fontWeight: "bolder"}}>"{usuario.email}"</strong></h3>
+                <form onSubmit={handleDeleteAccount} style={{width: "100%",display: "grid", gridTemplateColumns: "1fr", gridTemplateRows: "min-content 1fr", justifyItems: "center", alignContent: "center"}}>
+                    <input style={{width: "75%"}} type="text" placeholder="Tu email" value={emailDeleteVerification || ""} onChange={(e: any) => setEmailDeleteVerification(e.target.value)}/>
+                    <button className={styles.confirmButton}>Confirmar</button>
+                    <button className={styles.closeButton} onClick={() => {setDeleteAccountPreview(false); setEmailDeleteVerification("")}} type='button'><span className='material-icons'>close</span></button>
+                </form>
+            </div>)
+        }
         {
             imageEditor && <ImageEditor setImageEditor={setImageEditor}/>
         }
@@ -155,18 +181,23 @@ export default function Profile() {
             <img referrerPolicy="no-referrer" src={usuario.avatar ? usuario.avatar : imagePlaceholder} alt="Profile pic" className={styles.profilePic} onClick={()=> setImageEditor(true)}/>
             <div className={styles.infoContainer}>
                 { msg && <h1 className={styles.msg}>{msg}</h1>}
-                <form className={styles.separator} onSubmit={updateFirstName}>
+                <div>
                     <label htmlFor="firstName" style={{width: "250px"}}>Nombre del usuario: </label>
+                <form className={styles.separator} onSubmit={updateFirstName}>
                     <input id='firstName' name='firstName' disabled={firstNameDisabled} type='text' placeholder="Tu nombre" value={state.firstName || ""} onChange={handleChange}/>
                     <button className={styles.edit} type="button" onClick={() => setFirstNameDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                     { !firstNameDisabled && <button className={styles.update} onClick={updateFirstName}><i className='material-icons'>done</i></button>}
                 </form>
-                <form className={styles.separator} onSubmit={updateLastName}>
+                </div>
+                <div>
                     <label htmlFor="lastName" style={{width: "250px"}}>Apellido del usuario: </label>
+                <form className={styles.separator} onSubmit={updateLastName}>
                     <input id='lastName' name="lastName" disabled={lastNameDisabled} type='text' placeholder="Tu apellido" value={state.lastName || ""} onChange={handleChange} />
                     <button className={styles.edit} type="button" onClick={() => setLastNameDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                     { !lastNameDisabled && <button className={styles.update} onClick={updateLastName}><i className='material-icons'>done</i></button>}
                 </form>
+                <button className={styles.deleteAccountButton} onClick={() => setDeleteAccountPreview(true)}>Eliminar cuenta</button>
+                </div>
                 {!usuario.isGoogle && 
                     <form className={styles.separator} onSubmit={updatePassword}>
                         <label htmlFor="password" style={{width: "250px"}}>Password: </label>

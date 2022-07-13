@@ -1,13 +1,13 @@
-import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { addSaving } from 'redux/reducers/userReducer/actions/addSaving';
-import style from '../PopUpForm.module.css'
+import style from '../Css/PopUpForm.module.css'
 
-export default function SavesCreate() {
+export default function SavesCreate(props : any) {
   const dispatch = useAppDispatch();
-  const { usuario, status,  } = useAppSelector(state => state.user);
+  const { usuario } = useAppSelector(state => state.user);
+  const { open, setOpen } = props;
+
   interface SavingUser {
     name: string,
     start: string,
@@ -17,7 +17,7 @@ export default function SavesCreate() {
     currency: string,
   }
 
-  const [input1, setInput] = useState<SavingUser>({
+  const [input, setInput] = useState<SavingUser>({
     name: '', 
     start: '', 
     end: '', 
@@ -27,75 +27,78 @@ export default function SavesCreate() {
   });
 
   const form = {
-    value: input1
+    value: input
   }
+
+    //Validacion
+    const firstRender = useRef(true)
+
+    const [valMsg, setMsg] = useState('Completar los datos')
+    const [valDisable, setDisabled] = useState(true)
+  
+    useEffect(() => {
+      if (firstRender.current === true) {
+        firstRender.current = false
+        return
+      }
+
+      const namesSavings = usuario.savings.map((e : any) => e.name)
+      
+      !input.name ? setMsg('Agregue un nombre') :
+      namesSavings.indexOf(input.name) !== -1 ? setMsg('Ya existe una casilla con este nombre, agregue otro'):                                           //-------------------------------!!
+      !input.start ? setMsg('Agrega una fecha de inicio') : 
+      !input.end ? setMsg('Agrega una fecha limite') :
+      !input.goal ? setMsg('Agregar un monto de meta') :
+      input.goal <= 0 ? setMsg('Colocar un numero valido') :
+      !input.depositPlace ? setMsg('Colocar lugar donde se guarda') :
+      !input.currency ? setMsg('Selecciona el tipo de moneda') :
+      setMsg('')
+      
+    }, [input])
+    
+    useEffect(() => {
+      setDisabled(valMsg === '' ? false : true)
+    }, [valMsg])
+  
+    //------------
+
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput({
-      ...input1,
+      ...input,
       [e.target.name]: e.target.value
     })
   }
-  function handleSubmit1(e: React.FormEvent<HTMLFormElement>) {         //-----Form
+  function handleSubmit1(e: React.FormEvent<HTMLFormElement>) {         //-----Form 1 
     e.preventDefault();
-    dispatch(addSaving(form));
-  }
-
-  interface addSave {
-    category: string,
-    description: string,
-    amount: number,
-  }
-
-  const [input2, setInput2] = useState<addSave>({
-    category: 'extra',
-    description: '',
-    amount: 0
-  })
-
-  function handleSubmit2(e: React.FormEvent<HTMLFormElement>) {         //-----Form
-    e.preventDefault();
-    console.log(form, 'form1')
-    dispatch(addDato(form));
-  }
-
-  interface subtractSave {
-    category: string,
-    description: string,
-    amount: number,
-  }
-
-  const [input3, setInput3] = useState<subtractSave>({
-    category: 'input',
-    description: '',
-    amount: 0
-  })
-
-  function handleSubmit3(e: React.FormEvent<HTMLFormElement>) {         //-----Form
-    e.preventDefault();
-    console.log(form, 'form3')
-    dispatch(addDato(form));
+    if(valMsg === ''){
+      dispatch(addSaving(form));
+    }
   }
 
   return (
     <div className={style.wrapperForm}>
       <form onSubmit={handleSubmit1}>
               <h2>Agrega una casilla de ahorro</h2>
+              <br/>
               <label>Nombre de la casilla: </label>
               <input
                 type='text'
                 name='name'
-                value={input1.name}
+                value={input.name}
                 placeholder='Agrega un nombre'
+                className={style.inputText}
                 onChange={handleChange}
               >
               </input>
+              <br/>
               <label>Fecha de inicio: </label>
               <input
                 type='date'
                 name='start'
-                value={input1.start}
+                value={input.start}
                 placeholder='Agrega una fecha'
+                className={style.inputDate}
                 onChange={handleChange}
               >
               </input>
@@ -103,68 +106,59 @@ export default function SavesCreate() {
               <input
                 type='date'
                 name='end'
-                value={input1.end}
+                value={input.end}
                 placeholder='Agrega una descripcion'
+                className={style.inputDate}
                 onChange={handleChange}
               >
               </input>
+              <br/>
               <label>Deposito: </label>
               <input
                 type='text'
                 name='depositPlace'
-                value={input1.depositPlace}
+                value={input.depositPlace}
                 placeholder='Donde esta alojado'
+                className={style.inputText}
                 onChange={handleChange}
               >
               </input>
+              <br/>
               <label>Meta: $ </label>
               <input
                 type='number'
                 name='goal'
                 min='0'
-                value={input1.goal}
+                value={input.goal}
                 placeholder='Agrega un monto'
+                className={style.inputText}
                 onChange={handleChange}
               >
               </input>
-              <div>
-              <label>Seleccionar tipo de moneda: </label>
-                <input type="radio" name="currency" value="ARS" id="" onChange={handleChange} />Peso Argentino
-                <input type="radio" name="currency" value="UYU" id="dolar" onChange={handleChange}/>Peso Uruguayo
-                <input type="radio" name="currency" value="USD" id="dolar" onChange={handleChange}/>Dolar
-                <input type="radio" name="currency" value="EUR" id="euro" onChange={handleChange}/>Euro
-                <input type="radio" name="currency" value="LBP" id="libra" onChange={handleChange}/>Libra Esterlina
-                <input type="radio" name="currency" value="JPY" id="yen" onChange={handleChange}/>Yen
-                <input type="radio" name="currency" value="CHF" id="franco suizo" onChange={handleChange}/>Franco Suizo
+              <br/>
+              <label className={style.labelCurrent}>Selecciona el tipo de moneda: </label>
+              <div className={style.wrapperAllCurrents}>
+                <div className={style.wrapperCurrentsA}>
+                  <input type="radio" name="currency" value="ARS" className={style.inputCurrent} onChange={handleChange}/>Peso Argentino
+                  <br/>
+                  <input type="radio" name="currency" value="UYU" className={style.inputCurrent} onChange={handleChange}/>Peso Uruguayo
+                  <br/>
+                  <input type="radio" name="currency" value="USD" className={style.inputCurrent} onChange={handleChange}/>Dolar
+                  <br/>
+                  <input type="radio" name="currency" value="EUR" className={style.inputCurrent} onChange={handleChange}/>Euro
+                </div>
+                <br/>
+                <div className={style.wrapperCurrentsB}>
+                  <input type="radio" name="currency" value="LBP" className={style.inputCurrent} onChange={handleChange}/>Libra Esterlina
+                  <br/>
+                  <input type="radio" name="currency" value="JPY" className={style.inputCurrent} onChange={handleChange}/>Yen
+                  <br/>
+                  <input type="radio" name="currency" value="CHF" className={style.inputCurrent} onChange={handleChange}/>Franco Suizo
+                </div>
               </div>
-              <button type='submit'>Agregar</button>
+              <button type='submit' disabled={valDisable} onClick={valDisable === false ? ()=> setOpen(!open) : () => setOpen(open)}>Agregar</button>
       </form>
-
-      <br/>
-      <h2>Agrega una cantidad de ahorro</h2>
-      <form>
-        <label>Monto: $</label>
-        <input
-        type='number'
-        name='save'
-        placeholder='Agrega una cantidad ahorro'
-        >
-        </input>
-        <button>Agregar</button>
-      </form>
-
-      <br/>
-      <h2>Saca una cantidad de ahorro</h2>
-      <form>
-        <label>Monto: $</label>
-        <input
-        type='number'
-        name='save'
-        placeholder='Agrega una cantidad ahorro'
-        >
-        </input>
-        <button>Sacar</button>
-      </form>
+      <span id="validateError">{valMsg}</span>
     </div>
   )
 }

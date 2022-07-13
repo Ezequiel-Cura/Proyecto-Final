@@ -6,8 +6,8 @@ const router = Router()
 router.post("/", authorization, async(req: Request, res: Response) => {
     try {
         const user: any = await User.findById(req.userId)
-        if (user?.supportMessages?.length) user?.supportMessages.push(req.body.message)
-        else user.supportMessages = [req.body.message]
+        if (user?.supportMessages?.length) user?.supportMessages.push({ message: req.body.message })
+        else user.supportMessages = [{ message: req.body.message }]
         await user.save()
         res.status(201).end()
     } catch (err: any) {
