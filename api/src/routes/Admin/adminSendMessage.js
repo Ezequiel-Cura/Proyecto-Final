@@ -13,14 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const router = (0, express_1.Router)();
 const admin_1 = __importDefault(require("../../middleware/admin"));
 const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const User_1 = __importDefault(require("../../models/User"));
-const router = (0, express_1.Router)();
-router.get("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
+router.post("/", [authorization_1.default, admin_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allReviews = yield User_1.default.find({}).where("review").exists(true).select({ review: 1 });
-        res.status(200).send(allReviews.filter((review) => { var _a, _b; return (_b = (_a = review === null || review === void 0 ? void 0 : review.review) === null || _a === void 0 ? void 0 : _a.reports) === null || _b === void 0 ? void 0 : _b.length; }));
+        const allEmails = yield User_1.default.find({}).where("isEmailSubscripted").equals(true).select({ _id: 0, email: 1 });
+        yield (0, sendEmail_1.default)({ email: allEmails.map(user => user.email), subject: req.body.subject, text: req.body.msg });
+        res.status(200).send("Successfully sent emails");
     }
     catch (err) {
         res.status(500).send(err.message);

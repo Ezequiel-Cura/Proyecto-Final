@@ -4,7 +4,6 @@ import styles from "./Profile.module.css"
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import ImageEditor from './utils/ImageEditor'
-import { updatePersonalInfo } from '../../redux/reducers/userReducer/userReducer'
 import { Rating } from '@mui/material'
 import addReview from 'redux/reducers/userReducer/actions/addReview'
 import deleteReview from 'redux/reducers/userReducer/actions/deleteReview'
@@ -12,6 +11,7 @@ import sendSupportMessage from 'redux/reducers/userReducer/actions/sendSupportMe
 import deleteAccount from 'redux/reducers/userReducer/actions/deleteAccount'
 import { useNavigate } from 'react-router-dom'
 import { logout } from 'redux/reducers/userReducer/actions/logout'
+import updatePersonalInfo from 'redux/reducers/userReducer/actions/updatePersonalInfo'
 
 interface Profile {
     setImageEditor: () => Boolean
@@ -128,6 +128,7 @@ export default function Profile() {
                 <form onSubmit={handleDeleteAccount} style={{width: "100%",display: "grid", gridTemplateColumns: "1fr", gridTemplateRows: "min-content 1fr", justifyItems: "center", alignContent: "center"}}>
                     <input style={{width: "75%"}} type="text" placeholder="Tu email" value={emailDeleteVerification || ""} onChange={(e: any) => setEmailDeleteVerification(e.target.value)}/>
                     <button className={styles.confirmButton}>Confirmar</button>
+                    <button className={styles.closeButton} onClick={() => {setDeleteAccountPreview(false); setEmailDeleteVerification("")}} type='button'><span className='material-icons'>close</span></button>
                 </form>
             </div>)
         }

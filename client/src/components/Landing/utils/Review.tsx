@@ -2,20 +2,15 @@ import styles from "./Review.module.css"
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import { Rating } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { IUserReview } from "redux/reducers/commonReducer/commonReducer"
+import { Dispatch, SetStateAction } from "react"
 export interface userReview {
-  user: {
-    id: string
-    avatar: string
-    text : string
-    firstName: string
-    review : { 
-      text: string
-      rating: number
-    }
-  }
+  user: IUserReview
+  setMenuPreview: Dispatch<SetStateAction<boolean>>
+  reported: string
 }
 
-export default function Review({user, setMenuPreview, reported}: any) {
+export default function Review({user, setMenuPreview, reported}: userReview) {
   const navigate = useNavigate()
   return (
     <div className={styles.wrapper}>
@@ -33,7 +28,7 @@ export default function Review({user, setMenuPreview, reported}: any) {
         </div>
       </div>
       {localStorage.getItem("logged") ?
-        <button className={styles.reportButton} onClick={() => setMenuPreview((prev : any) => !prev)}><span className="material-icons">report</span></button>
+        <button className={styles.reportButton} onClick={() => setMenuPreview(prev => !prev)}><span className="material-icons">report</span></button>
         :
         <button className={styles.reportButton} onClick={() => navigate("/login")}><span className="material-icons">report</span></button>
       }

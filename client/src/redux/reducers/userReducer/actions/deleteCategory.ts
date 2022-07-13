@@ -3,11 +3,11 @@ import axios from "axios";
 
 
   export const deleteCategory: any = createAsyncThunk("user/deleteCategory",
-  async (ingreso: any, { rejectWithValue }) => {
+  async (id: any, { rejectWithValue }) => {
     try {
       let deleteEntry: any = await axios.delete("/user/category", {
         data: {
-          source: ingreso
+          _id: id
         }
       });
       return deleteEntry.data

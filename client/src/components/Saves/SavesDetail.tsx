@@ -5,23 +5,18 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { addDato } from 'redux/reducers/userReducer/actions/addDato';
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato';
-import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { getCurrency } from 'redux/reducers/userReducer/actions/getCurrency';
 import { setGoalSaves, totalSave } from 'redux/reducers/userReducer/userReducer';
 import AddSave from './Form/AddSave';
-import style from './SavesDetail.module.css';
+import style from './Css/SavesDetail.module.css';
+import ConfirmDeleteDetail from './Delete/ConfirmDeleteDetail';
+import PopUpDelete from './Delete/PopUpDelete';
 
 export default function SavesDetail() {
   const { usuario, status, totalSaving, dataCurrency, renderSavings, savingGoalCompleted } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   let { id } = useParams();
 
-  //Si se agrega un nombre repetido en las casillas "ahorro" se pisan
-  //Mensaje de que logro la meta
-  //
-
-
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
   interface Save {
     _id: string,
     name: string,
@@ -34,9 +29,7 @@ export default function SavesDetail() {
   }
   
   const detail = usuario.savings.find((el : Save) => el._id === id)
-
   const savingsList = renderSavings.filter(sav => sav.description === detail.name)
-  console.log({detail}, {savingsList})
 
   useEffect(() => {
     if (status === 'success') {
@@ -44,9 +37,6 @@ export default function SavesDetail() {
     }
   }, [status])
 
-  function handleDeleteSave(e : any) {
-    dispatch(deleteSaving(e));
-  }
 
   function handleDeleteAmount(e: any) {
     dispatch(deleteDato(e))
@@ -89,7 +79,9 @@ export default function SavesDetail() {
       to: ''
     })
   }
-
+  
+  //Modal
+  const [open, setOpen] = useState<boolean>(false);
   
   return (
     <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
@@ -156,7 +148,7 @@ export default function SavesDetail() {
                     {
                       savingsList.length > 0 ? savingsList.map( (save : any) => (
                         <tr>
-                          <th>{save.date}</th>
+                          <th>{save.date && save.date.split("T")[0]}</th>
                           <th>+ ${save.amount}</th>
                           <th><button onClick={ () => handleDeleteAmount({frequency: save.frequency, type: 'output', value: save})}></button></th>
                         </tr>
@@ -169,7 +161,7 @@ export default function SavesDetail() {
                 </table>
               </div>
 
-              <AddSave name={detail.name} currentAmount={detail.currentAmount}/>
+              <AddSave name={detail.name}/>
             </div>
 
             <div className={style.divAmountB}>
@@ -203,10 +195,20 @@ export default function SavesDetail() {
           </div>
 
           <div className={style.divButtonDelete}>
-            <Link to={'/home/saving/add'}>
-              <button onClick={() => handleDeleteSave({value: detail})}>Elimina este ahorro</button>
-            </Link>
+            <button onClick={() => setOpen(!open)}>Eliminar ahorro</button>
+            <PopUpDelete
+            open={open} 
+            setOpen={setOpen}
+            onClick={() => setOpen(open)}
+            >
+              <ConfirmDeleteDetail
+              open={open}
+              setOpen={setOpen}
+              data={{value: detail}}
+              />
+            </PopUpDelete>
           </div>
+
         </div>
       </div>
     </div>

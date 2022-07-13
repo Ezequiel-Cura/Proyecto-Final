@@ -7,9 +7,10 @@ import getAllUsers from "./Actions/getAllUsers";
 import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
 import banUser from "./Actions/banUser";
-import getAllReports from "./Actions/getAllReports";
+import closeReview from "./Actions/closeReview";
+import adminSendMessage from "./Actions/adminSendMessage";
 
-interface User {
+export interface IUser {
     _id: string,
     email: string,
     firstName: string,
@@ -37,8 +38,8 @@ interface User {
 }
 
 interface adminState {
-    allUsers: User[]  
-    userCard: User
+    allUsers: IUser[]  
+    userCard: IUser
     status: 'idle' | 'loading' | 'success' | 'failed'
   }
 
@@ -116,15 +117,6 @@ const reducerSlice = createSlice({
         [getAllUsers.rejected]: (state) => {
             state.status = "failed"
         },
-        [getAllReports.pending]: (state) => {
-            state.status = "loading"
-        },
-        [getAllReports.fulfilled]: (state, {payload}) => {
-            state.status = "success"
-        },
-        [getAllReports.rejected]: (state) => {
-            state.status = "failed"
-        },
         [changeRole.pending]: (state) => {
             state.status = "loading"
         },
@@ -188,6 +180,24 @@ const reducerSlice = createSlice({
             state.status = "success"
         },
         [banUser.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [closeReview.pending]: (state) => {
+            state.status = "loading"
+        },
+        [closeReview.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [closeReview.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [adminSendMessage.pending]: (state) => {
+            state.status = "loading"
+        },
+        [adminSendMessage.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [adminSendMessage.rejected]: (state) => {
             state.status = "failed"
         },
     }

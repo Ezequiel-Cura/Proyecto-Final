@@ -1,23 +1,24 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface IReport {
-    report: {
+  review: string
+  id : string
+  email: string
+  report: {
     reportedBy: string
     reason: string
     status: string
     _id: string
     }
-    id : string
 }
 
-export default function Reports({report, id}: IReport) {
+export default function Reports({report, id, review, email}: IReport) {
     const navigate = useNavigate()
-    console.log(report)
   return (
-    <tr>
-        <td style={{cursor: "pointer"}} onClick={() => navigate("/admin/reports", 
-        {state: {reportedId: id, reportingId: report._id}})}>{report.reason}</td>
+    <tr style={{cursor: "pointer", textAlign:"center"}} onClick={() => navigate("/admin/reports", 
+    {state: {report, reportedId: id, review, reportingId: report._id}})}>
+        <td>{email}</td>
+        <td>{report.reason}</td>
     </tr>
   )
 }

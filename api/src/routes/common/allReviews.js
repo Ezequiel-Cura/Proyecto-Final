@@ -17,7 +17,7 @@ const User_1 = __importDefault(require("../../models/User"));
 const router = (0, express_1.Router)();
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allReviews = yield User_1.default.find({}).where("review").exists(true).select({ _id: 1, firstName: 1, lastName: 1, avatar: 1, review: 1 });
+        const allReviews = yield User_1.default.find({}).where("review.text").exists(true).select({ _id: 1, firstName: 1, lastName: 1, avatar: 1, review: 1 });
         if (!allReviews)
             return res.status(404).send("Aun no hay reviews");
         res.status(200).send(allReviews);

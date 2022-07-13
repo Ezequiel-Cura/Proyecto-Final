@@ -8,6 +8,7 @@ import { addDato } from 'redux/reducers/userReducer/actions/addDato'
 import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
 import PopUp from "components/Saves/Form/PopUp";
 import CategoryCreate from "components/Category/CategoryCreate";
+import { deleteCategory } from "redux/reducers/userReducer/actions/deleteCategory";
 
 
 export default function ExpensesTable() {
@@ -15,7 +16,7 @@ export default function ExpensesTable() {
   const dispatch = useAppDispatch();
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
+  const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
@@ -27,7 +28,7 @@ export default function ExpensesTable() {
 
   interface AgregarGastos {
     id?: string,
-    frequency: string,               //monthlyExpenses, variableExpenses
+    frequency: string,             
     key: string,
     value: Value,
   }
@@ -52,7 +53,7 @@ export default function ExpensesTable() {
     category: '',
     description: '',
     amount: 0,
-    date: today, 
+    date: today,
   })
 
   interface keySelect {
@@ -75,16 +76,16 @@ export default function ExpensesTable() {
       firstRender.current = false
       return
     }
-    
-    !selectKey.frequency ? setMsg('Proporcione un tipo') :
-    !input.category ? setMsg('Proporcione una categoria') :
-    !input.description ? setMsg('Proporcione una descripcion') :
-    !input.amount ? setMsg('Proporcione un monto') : 
-    setMsg('')
 
-    
+    !selectKey.frequency ? setMsg('Proporcione un tipo') :
+      !input.category ? setMsg('Proporcione una categoria') :
+        !input.description ? setMsg('Proporcione una descripcion') :
+          !input.amount ? setMsg('Proporcione un monto') :
+            setMsg('')
+
+
   }, [input, selectKey])
-  
+
   useEffect(() => {
     setDisabled(valMsg === '' ? false : true)
   }, [valMsg])
@@ -205,7 +206,7 @@ export default function ExpensesTable() {
     } else return null;
   })
 
-  const handlePrevButton = () => {       // 3 === 1 ?
+  const handlePrevButton = () => {    
     setPage((prev) => prev === 1 ? prev : prev - 1);
     if (page !== 1 && (page - 1) % pageLimit === 0) {
       setMaxPageLimit(maxPageLimit - pageLimit);
@@ -221,14 +222,45 @@ export default function ExpensesTable() {
     }
   }
 
+  const catFilterArr = () => {
+
+    let returnArr: Array<string> = []
+    const mOutput = usuario?.monthly.output
+    const eOutput = usuario.extra.output.map((e: any) => e.entries)
+    const aOutput = eOutput.concat(mOutput).flat()
+    const catArr = aOutput.map((e: any) => e.category)
+    catArr.forEach((e: any) => {
+      if (!returnArr.includes(e)) {
+        returnArr.push(e)
+      }
+    })
+    return returnArr
+  }
+
+  const defVals = ['Alquiler', 'Deuda', 'Impuestos', 'Salud', 'Viaje', 'Regalo', 'Super', 'Transporte', 'Restaurante', 'Vestimenta', 'Shopping', '', 'Crear']
+
+  const handleCategoryDelete = (e: any) => {
+    e.preventDefault()
+    const prompt = window.confirm('Seguro que deseas borrar esta categoria?')
+    if (prompt) {
+      const delCat = usuario.categories.find((e: any) => e.name === input.category)
+      dispatch(deleteCategory(delCat._id))
+      setInput({ ...input, category: '' })
+    } else {
+      return
+    }
+  }
+
   return (
     <div className={styles.background}>
       <Nav />
+      {/* Title */}
       <div className={styles.wrapperAllIngreso}>
         <div className={styles.title}>
           <h1>Tus Gastos </h1>
         </div>
 
+        {/* Order */}
         <div className={styles.selectsOrder}>
           <select onChange={(e) => handleOrderAmount(e)}>
             <option value='default'>Ordenar por monto</option>
@@ -236,20 +268,18 @@ export default function ExpensesTable() {
             <option value='menorAMayor'>De menor a mayor</option>
           </select>
 
+
           <select id='selectCategories' onChange={(e) => handleOrderByCategories(e)} >
             <option value='default'>Ordenar por categoria</option>
             {
-              ['Impuestos', 'Deuda', 'Transporte', 'Super', 'Regalo', 'Ocio', 'Alquiler', 'Salud', 'Viaje', 'Restaurante', 'Vestimenta', 'Shopping'].map(undefinedCategory => {
-                return (<option value={undefinedCategory}>{undefinedCategory}</option>)
-              })
-            }
-            {
-              usuario.categories.filter((category: Category) => category.type === 'output').map((category: Category) => {
-                return (<option value={category.name}>{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}</option>)
+              catFilterArr().map((e: any) => {
+                return (<option value={e}>{e}</option>)
               })
             }
             <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>
           </select>
+
+          
 
           <select id='selectFrequency' onChange={(e) => handleFilterByFrequency(e)}>
             <option value='default'>Ordenar por frecuencia</option>
@@ -258,17 +288,15 @@ export default function ExpensesTable() {
           </select>
 
           <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
-              <option value=''>Ordenar por año</option>
-              {
-                ['2020', '2021', '2022', '2023', '2024', '2025'].map( (year: string) => {
-                  return(
-                    <option value={year}>{year}</option>
-                  )
-                })
-              }
-            </select>
+            <option value=''>Ordenar por año</option>
+            <option value='2022'>2022</option>
+            <option value='2023'>2023</option>
+            <option value='2024'>2024</option>
+          </select>
 
         </div>
+
+        {/* Month */}
 
         <div className={styles.allMonths}>
           <div className={styles.monthCard}>
@@ -286,6 +314,7 @@ export default function ExpensesTable() {
           </div>
         </div>
 
+        {/* Table */}
         <table className={styles.table}>
           <thead className={styles.head}>
             <tr>
@@ -332,15 +361,17 @@ export default function ExpensesTable() {
           </tbody>
         </table>
 
+        {/* Pagination */}
         <div className={stylesPag.wrapperPag}>
           <button className={page <= 1 ? stylesPag.disabledPrev : stylesPag.paginationPrev} onClick={() => handlePrevButton()}>Prev</button>
           {indice}
           <button className={page >= pageNumber.length ? stylesPag.disabledNext : stylesPag.paginationNext} onClick={() => handleNextButton()}>Next</button>
         </div>
 
+        {/* Creation form */}
         <form onSubmit={handleSubmit}>
           <div className={styles.form}>
-            <select onChange={handleSelectI}>
+            <select value={input.category} onChange={handleSelectI}>
               <option value='' disabled={true}>Selecciona el tipo</option>
               <option value='monthly'>Gasto fijo</option>
               <option value='extra'>Gasto variable</option>
@@ -351,26 +382,23 @@ export default function ExpensesTable() {
               {
                 selectKey.frequency ?
                   selectKey.frequency === 'monthly' ?
-                  ['Transporte', 'Alquiler', 'Deuda', 'Impuestos', 'Salud', 'Viaje'].map(montOutput => {
+                    ['Transporte', 'Alquiler', 'Deuda', 'Impuestos', 'Salud', 'Viaje'].map(montOutput => {
                       return (<option value={montOutput}>{montOutput}</option>)
                     }) :
                     ['Regalo', 'Super', 'Transporte', 'Salud', 'Viaje', 'Restaurante', 'Vestimenta', 'Shopping'].map(extraOutput => {
                       return (<option value={extraOutput}>{extraOutput}</option>)
                     }) :
-                    <></>
+                  <></>
               }
               {selectKey.frequency ?
-                selectKey.frequency === 'monthly' && usuario.categories.length > 0 ? 
-                usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
+                selectKey.frequency === 'monthly' && usuario.categories.length > 0 ?
+                  usuario.categories.filter((montOutput: Category) => montOutput.frequency === 'monthly' && montOutput.type === 'output').map((montOutput: Category) => {
                     return (<option value={montOutput.name}>{montOutput.name.charAt(0).toUpperCase() + montOutput.name.slice(1).toLowerCase()}</option>)
-                  })
-                  : usuario.categories.filter((extraOutput: Category) => extraOutput.frequency === 'extra' && extraOutput.type === 'output').map((extraOutput: Category) => {
+                  }) :
+                  usuario.categories.filter((extraOutput: Category) => extraOutput.frequency === 'extra' && extraOutput.type === 'output').map((extraOutput: Category) => {
                     return (<option value={extraOutput.name}>{extraOutput.name.charAt(0).toUpperCase() + extraOutput.name.slice(1).toLowerCase()}</option>)
-                  })
-                : usuario.categories.length > 0
-                && usuario.categories.map((allOutputs: Category, i: number) => {
-                  return (<option value={allOutputs.name} key={i}>{allOutputs.name.charAt(0).toUpperCase() + allOutputs.name.slice(1).toLowerCase()}</option>)
-                })
+                  }) :
+                <></>
               }
               <option value='Crear' className={styles.Crear}>Crear</option>
             </select>
@@ -402,9 +430,16 @@ export default function ExpensesTable() {
             <button type='submit' disabled={valDisable}>Agregar</button>
           </div>
         </form>
-        
-        <span id="validateError">{valMsg}</span>
 
+        {/* Error Display */}
+        <span id="validateError">{valMsg}</span>
+        <br />
+
+        {
+          !defVals.includes(input.category) ? <button className={styles.catDeleteButton} onClick={(e: any) => handleCategoryDelete(e)}>Borrar Categoria?</button> : <></>
+        }
+
+        {/* Category Creation */}
         {
           input.category === 'Crear'
           && (<div className={styles.CrearDiv}>
@@ -414,9 +449,9 @@ export default function ExpensesTable() {
               setOpen={setOpen}
               onClick={() => setOpen(open)}
               title="Completa para agregar una categoría!">
-              <CategoryCreate 
-              open={open} 
-              setOpen={setOpen}
+              <CategoryCreate
+                open={open}
+                setOpen={setOpen}
               />
             </PopUp>
           </div>)

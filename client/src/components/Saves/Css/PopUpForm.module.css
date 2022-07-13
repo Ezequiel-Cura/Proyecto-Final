@@ -42,7 +42,7 @@
 }
 
 
-.wrapperForm button {
+/* .wrapperForm button {
     padding: 12px;
     margin-right: 20px;
     border: none;
@@ -52,7 +52,7 @@
     background-color: #00BFA6;
     transition: background-color .2s;
     cursor: pointer;
-}
+} */
 
 .wrapperForm button:hover {
     background-color: rgb(118, 189, 3) ;

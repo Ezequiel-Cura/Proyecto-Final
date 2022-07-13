@@ -1,14 +1,24 @@
-import React from 'react';
-import style from './Saves.module.css';
+import React, { useEffect, useState } from 'react';
+import style from './Css/Saves.module.css';
 import Nav from 'components/Nav/Nav'
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import SavesForm from './Form/SavesForm';
-import { deleteSaving } from 'redux/reducers/userReducer/actions/deleteSaving';
 import { Link } from 'react-router-dom';
+import ConfirmDelete from './Delete/ConfirmDelete';
+import PopUpDelete from './Delete/PopUpDelete';
+import { clearCurrency } from 'redux/reducers/userReducer/userReducer';
 
 export default function Saves() {
-  const { usuario } = useAppSelector(state => state.user);
+  const { usuario, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+
+  console.log({usuario})
+
+  useEffect(() => {
+    if (status === 'success') {
+      dispatch(clearCurrency())
+    }
+  }, [status])
 
   interface SavingUser {
     _id: string,
@@ -21,9 +31,8 @@ export default function Saves() {
     currency: string,
   }
 
-  function handleDelete(e : any) {
-    dispatch(deleteSaving(e))
-  }
+  const [open, setOpen] = useState<boolean>(false);
+
   
   return (
     <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
@@ -59,7 +68,6 @@ export default function Saves() {
                             <th>Final</th>
                             <th>Lugar</th>
                             <th>Moneda</th>
-                            <th>Actual</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -68,7 +76,6 @@ export default function Saves() {
                             <th>{s.end && s.end.split("T")[0]}</th>
                             <th>{s.depositPlace}</th>
                             <th>{s.currency}</th>
-                            <th><div className={style.amount}>$ {s.currentAmount}</div></th>
                           </tr>
                         </tbody>
                       </table>
@@ -80,10 +87,22 @@ export default function Saves() {
                   </div>
                 </Link> 
                 <div className={style.divDelete}>
-                  <button onClick={() => handleDelete({value: s})}></button>
+                  <button onClick={() => setOpen(!open)}></button>
+                  <PopUpDelete
+                  open={open} 
+                  setOpen={setOpen}
+                  onClick={() => setOpen(open)}
+                  >
+                    <ConfirmDelete
+                    open={open}
+                    setOpen={setOpen}
+                    data={{value: s}}
+                    />
+                  </PopUpDelete>
                 </div>
+
               </div>))
-            : (<div className={style.divNothing}>
+            : (<div className={style.divNothing}> 
               <p>No tienes casillas de ahorros</p>
               </div>)
             }

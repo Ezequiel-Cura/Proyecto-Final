@@ -1,6 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
-import axios from 'axios';
-
+import { createSlice, current } from "@reduxjs/toolkit";
 import { registerUser } from './actions/registerUser'
 import { loginUser } from './actions/loginUser'
 import { googleLogin } from './actions/googleLogin'
@@ -20,26 +18,10 @@ import reportReview from "./actions/reportReview";
 import { getCryptoList } from "./actions/getCryptoList";
 import { convertCrypto } from "./actions/convertCrypto";
 import deleteAccount from "./actions/deleteAccount";
+import uploadImage from "./actions/uploadImage";
+import updatePersonalInfo from "./actions/updatePersonalInfo";
 
 const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
-export const updatePersonalInfo: any = createAsyncThunk("user/updatePersonalInfo",
-  async (info: any) => {
-    const { data } = await axios.put("/user/update", info)
-    return data
-  })
-
-export const uploadImage: any = createAsyncThunk("user/uploadImage",
-  async (info: any) => {
-    let formData = new FormData();
-    formData.append("file", info.img)
-    formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET as string | Blob)
-    const result = await axios.post("https://api.cloudinary.com/v1_1/finanzas-personales/image/upload",
-      formData, { withCredentials: false });
-    const { data } = await axios.put("/user/update", { id: info.id, key: "avatar", value: result.data.url });
-    return data
-  });
-
-//---------------------------------
 
 interface Entries {
   date: string,
@@ -55,27 +37,7 @@ interface Extra{
 }
 interface User {
   usuario: any,
-  // {
-  //   firstName: string
-  //   lastName: string
-  //   email: string
-  //   password: string
-  //   savings: []
-  //   monthly: {
-  //     input: [],
-  //     output: []
-  //   },
-  //   extra: {
-  //     input: [],
-  //     output: []
-  //   },
-  //   categories: [],
-  //   review: {
-  //     text: string
-  //     rating: number
-  //   }
-  // }
-  status: 'idle' | 'loading' | 'success' | 'failed'
+  status: 'idle' | 'loading' | 'success' | 'failed' | any
   allInputs: Entries[] | [],
   allOutputs: Entries[] | [],
   renderInputs: Entries[] | [],
@@ -203,6 +165,9 @@ const reducerSlice = createSlice({
       total >= state.usuario.savings[detailIndex].goal 
       ? state.savingGoalCompleted = true
       : state.savingGoalCompleted = false
+    },
+    clearCurrency: (state) => {
+      state.dataCurrency = {}
     },
     setGoalSaves: (state) => {
       state.savingGoalCompleted = false
@@ -342,8 +307,6 @@ const reducerSlice = createSlice({
       //Category
       if (state.options.category !== 'default') {
         state.renderInputs = state.renderInputs.filter((entries: Entries) => state.options.category === entries.category)
-      } else{
-        console.log(state.renderInputs)
       }
     },
     expensesOrderByAmount: (state, { payload }) => {
@@ -420,6 +383,7 @@ const reducerSlice = createSlice({
     },
 
     //---------------------------------------------------------
+
     [addDato.pending]: (state) => {
       state.status = "loading"
     },
@@ -454,7 +418,7 @@ const reducerSlice = createSlice({
       state.status = "loading"
     },
     [addCategory.fulfilled]: (state, { payload }) => {
-      state.status = "success"
+      state.status = "CategoryCreated"
       state.usuario = payload
     },
     [addCategory.rejected]: (state) => {
@@ -573,6 +537,7 @@ export const {
   totalInput,
   renderOutput,
   renderInput,
+  clearCurrency,
   setGoalSaves,
   totalOutput,
   totalSave,

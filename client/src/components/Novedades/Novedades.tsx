@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Nav from "components/Nav/Nav";
 import styles from "./Novedades.module.css";
 import axios from "axios";
+import { Https } from "@mui/icons-material";
 
 
 
@@ -9,7 +10,6 @@ import axios from "axios";
 
 export default function Novedades() {
   const [news, setNews] = useState([]);
-  console.log(process.env.NEWS_API_KEY)
   useEffect(() => {
     async function fetchData(){
       const axiosNews = await axios.get("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey="+ "e81732e486d0400ab9e1547fe1ec8ee5" ,{withCredentials : false})

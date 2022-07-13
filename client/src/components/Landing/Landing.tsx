@@ -64,6 +64,19 @@ export default function Landing() {
 
   return (
     <div className={styles.wrapper}>
+          {menuPreview &&
+          <div className={styles.parentDiv}>
+            <form ref={menuRef} className={styles.form} onSubmit={handleReport}>
+              <h3 style={{textAlign: "center",color: "red", fontWeight: "900"}}>Tenga en cuenta que los administradores podran ver quien envio el reporte</h3>
+              <textarea maxLength={200} className={styles.reportInput} placeholder="Coloque aqui la razon del reporte" value={reportMessage || ""} onChange={handleReportChange}/>
+              <div style={{display: "grid", gridTemplateColumns: "1fr", gridTemplateRows: "1fr 1fr", justifyContent: "center", alignItems: "center", justifyItems: "center"}}>
+              <h3 style={{textAlign: "center",color: "red", fontWeight: "900"}}>{errorReportMessage}</h3>
+              <button className={styles.sendReportButton}>Envia tu reporte</button>
+              </div>
+              <button type="button" className={styles.quitMenuButton} onClick={()=> setMenuPreview(false)}><span className="material-icons">close</span></button>
+            </form>
+          </div>
+          }
       <nav className={styles.nav}>
         <h2 style={{color: "#3DB39E"}}>Finanzas Personales</h2>
         <div className={styles.registerButtonContainer}>
@@ -85,14 +98,13 @@ export default function Landing() {
             </button>
             </>
           }
-          
         </div>
       </nav>
       <div className={styles.firstContainer}>
         <div className={styles.firstContainerLeftDiv}>
           <h1 style={{fontSize:"4rem", width:"100%"}}> Gestion de <p style={{fontWeight: "600"}}>gastos</p> en linea</h1>
           <h3>Administra tus finanzas personales de una manera mas facil</h3>
-          <button className={styles.registerButton} style={{width: "50%", alignSelf: "start", marginTop: "40px"}}>Comienza ahora</button>
+          <button onClick={() => navigate("/login")} className={styles.registerButton} style={{width: "50%", alignSelf: "start", marginTop: "40px"}}>Comienza ahora</button>
         </div>
         <img src={landingMan} alt="landing man" className={styles.landingMan}/>
       </div>
@@ -108,17 +120,6 @@ export default function Landing() {
             arrow_back_ios_new
             </i>
           </div>
-            {menuPreview &&
-              <form ref={menuRef} className={styles.form} onSubmit={handleReport}>
-                <h3 style={{textAlign: "center",color: "red", fontWeight: "900"}}>Tenga en cuenta que los administradores podran ver quien envio el reporte</h3>
-                <textarea maxLength={200} className={styles.reportInput} placeholder="Coloque aqui la razon del reporte" value={reportMessage || ""} onChange={handleReportChange}/>
-                <div style={{display: "grid", gridTemplateColumns: "1fr", gridTemplateRows: "1fr 1fr", justifyContent: "center", alignItems: "center", justifyItems: "center"}}>
-                <h3 style={{textAlign: "center",color: "red", fontWeight: "900"}}>{errorReportMessage}</h3>
-                <button className={styles.sendReportButton}>Envia tu reporte</button>
-                </div>
-                <button type="button" className={styles.quitMenuButton} onClick={()=> setMenuPreview(false)}><span className="material-icons">close</span></button>
-              </form>
-            }
             <Review reported={reported} user={viewingReview} setMenuPreview={setMenuPreview}/>
           <div className={styles.buttonContainer}>
             <i className="material-icons" onClick={handleRightArrow}
