@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from 'redux/hooks';
 import { addDato } from 'redux/reducers/userReducer/actions/addDato';
+import style from '../Css/PopUpForm.module.css'
 
 
 export default function AddSaveForm(props : any) {
@@ -78,7 +79,7 @@ export default function AddSaveForm(props : any) {
   }
 
   return (
-    <div>
+    <div className={style.wrapperForm}>
       <h2>Agrega una cantidad de ahorro</h2>
       <form onSubmit={handleSubmit}>
         <label>Fecha: </label>
@@ -86,6 +87,7 @@ export default function AddSaveForm(props : any) {
           type='date'
           name='date'
           value={input.date}
+          className={style.inputDate}
           onChange={handleChange}
         >
 
@@ -96,6 +98,7 @@ export default function AddSaveForm(props : any) {
           name='amount'
           value={input.amount}
           placeholder='Agrega una cantidad ahorro'
+          className={style.inputText}
           onChange={handleChange}
         >
         </input>

@@ -15,8 +15,9 @@ export default function ConfirmDeleteDetail(props : any) {
   return (
     <div className={style.wrapperForm}>
         <p>¿Seguro que quiere eliminarla?</p>
+        <br/>
         <Link to={'/home/saving/add'}>
-            <button onClick={() => handleDelete(data)}>Confirmar</button>
+            <button className={style.buttonDelete} onClick={() => handleDelete(data)}>Confirmar</button>
         </Link>
     </div>
   )
