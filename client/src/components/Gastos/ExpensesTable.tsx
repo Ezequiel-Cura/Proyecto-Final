@@ -16,7 +16,7 @@ export default function ExpensesTable() {
   const dispatch = useAppDispatch();
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
-  const [date, setDate] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
+  const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
 
   useEffect(() => {
     if (status === 'success') {
@@ -28,7 +28,7 @@ export default function ExpensesTable() {
 
   interface AgregarGastos {
     id?: string,
-    frequency: string,               //monthlyExpenses, variableExpenses
+    frequency: string,             
     key: string,
     value: Value,
   }
@@ -189,10 +189,10 @@ export default function ExpensesTable() {
   }
 
   //Paginado---------------------------------------------------------------
-  const [page, setPage] = useState(1);
-  const [inputsPerPage,] = useState(6);
+  const [page, setPage] = useState(1);            
+  const [inputsPerPage,] = useState(6);           
 
-  const [pageLimit,] = useState(10);
+  const [pageLimit,] = useState(10);  
   const [maxPageLimit, setMaxPageLimit] = useState(10);
   const [minPageLimit, setMinPageLimit] = useState(0);
 
@@ -201,13 +201,13 @@ export default function ExpensesTable() {
     pageNumber.push(i)
   }
 
-  const indice = pageNumber && pageNumber.map(pag => {
-    if (pag <= maxPageLimit && pag > minPageLimit) {
+  const indice = pageNumber && pageNumber.map(pag => {        
+    if (pag <= maxPageLimit && pag > minPageLimit) {          
       return <button className={pag === page ? stylesPag.active : styles.normal} onClick={() => setPage(pag)}>{pag}</button>
     } else return null;
   })
 
-  const handlePrevButton = () => {
+  const handlePrevButton = () => {    
     setPage((prev) => prev === 1 ? prev : prev - 1);
     if (page !== 1 && (page - 1) % pageLimit === 0) {
       setMaxPageLimit(maxPageLimit - pageLimit);

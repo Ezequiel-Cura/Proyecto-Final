@@ -1,5 +1,5 @@
 import React  from 'react';
-import style from '../PopUpForm.module.css';
+import style from '../Css/PopUpForm.module.css';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 

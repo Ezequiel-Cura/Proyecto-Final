@@ -12,6 +12,7 @@
     grid-template-rows: 50px 2fr 1fr;
     justify-items: center;
     align-items: center;
+    z-index: 5;
 }
 .imageInput {
    width: min-content;

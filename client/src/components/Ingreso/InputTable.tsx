@@ -9,18 +9,18 @@ import { deleteDato } from 'redux/reducers/userReducer/actions/deleteDato'
 import { deleteCategory } from 'redux/reducers/userReducer/actions/deleteCategory'
 import PopUp from 'components/Saves/Form/PopUp';
 import CategoryCreate from 'components/Category/CategoryCreate';
-import { setIn } from 'formik';
-import { SelectAllSharp } from '@mui/icons-material';
 
 export default function InputTable() {
   //---------------Date----------------
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
-  const [date, setDate] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
+  const [date, ] = useState(`${today.split('-')[0]}-${today.split('-')[1]}`)
   //-----------------------------------
 
   //Selects/button
   function handleDelete(event: accountParameter) {
-    dispatch(deleteDato(event))
+    const { e, frequency, type, value} = event
+    e.preventDefault()
+    dispatch(deleteDato({frequency, type, value}))
   }
 
   function filterByMonth(e: any) {
@@ -91,7 +91,8 @@ export default function InputTable() {
     id?: string,
     type: string,
     frequency: string,
-    value: any
+    value: any,
+    e?: any
   }
 
   interface keySelect {
@@ -348,11 +349,14 @@ export default function InputTable() {
 
             <select id='selectYear' onChange={(e) => handleFilterByYear(e)}>
               <option value=''>Ordenar por año</option>
-              <option value='2022'>2022</option>
-              <option value='2023'>2023</option>
-              <option value='2024'>2024</option>
+              {
+                ['2020', '2021', '2022', '2023', '2024', '2025'].map( (year: string) => {
+                  return(
+                    <option value={year}>{year}</option>
+                  )
+                })
+              }
             </select>
-
           </div>
 
           {/* Month */}
@@ -394,7 +398,7 @@ export default function InputTable() {
                       <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                       <th>{detalles.description}</th>
                       <th>$ {detalles.amount}</th>
-                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                      <th><button onClick={(e) => handleDelete({e, frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
                     </tr>
                     : <tr key={detalles._id}>
                       <th>Ingreso extra</th>
@@ -402,7 +406,7 @@ export default function InputTable() {
                       <th>{detalles.category ? detalles.category.charAt(0).toUpperCase() + detalles.category.slice(1).toLowerCase() : "-"}</th>
                       <th>{detalles.description}</th>
                       <th>$ {detalles.amount}</th>
-                      <th><button onClick={() => handleDelete({ frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
+                      <th><button onClick={(e) => handleDelete({e, frequency: detalles.frequency, type: 'input', value: detalles })}></button></th>
                     </tr>
                 )
               }) : <></>

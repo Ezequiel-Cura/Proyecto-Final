@@ -1,5 +1,5 @@
 import styles from "./UserCard.module.css"
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from "react-router-dom"  
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import getUserById from "redux/reducers/adminReducer/Actions/getUserById"
@@ -11,20 +11,23 @@ import deleteUserReview from "redux/reducers/adminReducer/Actions/deleteUserRevi
 import banUser from "redux/reducers/adminReducer/Actions/banUser"
 import deleteUser from "redux/reducers/adminReducer/Actions/deleteUser"
 import Select from "react-select"
+import { IUser } from "redux/reducers/adminReducer/adminReducer"
 
 export default function UserCard() {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const {userCard, allUsers } = useAppSelector(({admin}) => admin)
+    const {userCard, allUsers} = useAppSelector(({admin}) => admin)
     const {state}: any = useLocation()
     const [emailMsg, setEmailMsg] = useState("")
     const [emailVerificationMsg, setEmailVerificationMsg] = useState("")
     const [emailFailMsg, setEmailFailMsg] = useState("")
-    const [allUsersSelector, setAllUsersSelector] = useState<any>([])
-    const [searchValue, setSearchValue] = useState<any>("")
+    const [allUsersSelector, setAllUsersSelector] = useState<IUser[]>([])
+    const [searchValue, setSearchValue] = useState<IUser>()
+
     useEffect(() => {
       setAllUsersSelector(allUsers.map(user=> {
-        return {...user, value: user.lastName ? user.firstName + " " + user.lastName : user.firstName , label: user.lastName ? user.firstName + " " + user.lastName : user.firstName }
+        return {...user, value: user.lastName ? user.firstName + " " + user.lastName : user.firstName,
+        label: user.lastName ? user.firstName + " " + user.lastName : user.firstName }
       }))
     },[allUsers])
 
@@ -62,7 +65,12 @@ export default function UserCard() {
     }
 
     function handleBanUser () {
+      if (userCard.banned) {
+        return dispatch(banUser({id: userCard._id, value: false}))
+        .then(() => dispatch(getUserById(state.id)))
+      }
       dispatch(banUser({id: userCard._id, value: true}))
+      .then(() => dispatch(getUserById(state.id)))
     }
 
     function handleDeleteUser () {
@@ -82,9 +90,7 @@ export default function UserCard() {
       if (!searchValue) return
       dispatch(getUserById(searchValue._id))
     }
-
-    console.log(userCard)
-
+    
   return (
     <div className={styles.wrapper}>
       <Nav />
@@ -141,8 +147,14 @@ export default function UserCard() {
           </div>
         </div>
         <div className={styles.buttonsContainer}>
-          <button onClick={handleBanUser} style={{backgroundColor: "#E8A700"}}>Sancionar cuenta
-          <span className="material-icons" style={{width: "min-content", fontSize: "2rem",fontWeight: "bolder" , color: "#D15241"}}>block</span></button>
+          {
+            userCard.banned ?
+            <button onClick={handleBanUser} style={{backgroundColor: "lightGreen"}}>Desbanear cuenta
+            <span className="material-icons" style={{width: "min-content", fontSize: "2rem",fontWeight: "bolder" , color: "#019674"}}>done</span></button>
+            :
+            <button onClick={handleBanUser} style={{backgroundColor: "#E8A700"}}>Banear cuenta
+            <span className="material-icons" style={{width: "min-content", fontSize: "2rem",fontWeight: "bolder" , color: "#D15241"}}>block</span></button>
+          }
           <button onClick={handleDeleteUser}>Eliminar cuenta
           <span className="material-icons" style={{width: "min-content", fontSize: "2rem"}}>delete_forever</span></button>
         </div>
