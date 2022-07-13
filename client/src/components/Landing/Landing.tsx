@@ -98,14 +98,13 @@ export default function Landing() {
             </button>
             </>
           }
-          
         </div>
       </nav>
       <div className={styles.firstContainer}>
         <div className={styles.firstContainerLeftDiv}>
           <h1 style={{fontSize:"4rem", width:"100%"}}> Gestion de <p style={{fontWeight: "600"}}>gastos</p> en linea</h1>
           <h3>Administra tus finanzas personales de una manera mas facil</h3>
-          <button className={styles.registerButton} style={{width: "50%", alignSelf: "start", marginTop: "40px"}}>Comienza ahora</button>
+          <button onClick={() => navigate("/login")} className={styles.registerButton} style={{width: "50%", alignSelf: "start", marginTop: "40px"}}>Comienza ahora</button>
         </div>
         <img src={landingMan} alt="landing man" className={styles.landingMan}/>
       </div>

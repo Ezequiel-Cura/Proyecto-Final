@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import styles from "../index.module.css"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { googleLogin } from '../../../redux/reducers/userReducer/actions/googleLogin'
 import { loginUser } from '../../../redux/reducers/userReducer/actions/loginUser'
@@ -8,7 +8,6 @@ import { useAppDispatch } from "redux/hooks"
 import * as Yup from "yup"
 
 export default function Login() {
-    const navigate = useNavigate()
     const {state} : any = useLocation()
     const dispatch = useAppDispatch()
     const SigninSchema = Yup.object().shape({
@@ -32,7 +31,8 @@ export default function Login() {
     .then((resp: any)=> {
         if (resp.error) return
         window.location.reload()
-    })}
+        })
+    }
 
   return (
     <div className={styles.formContainer}>

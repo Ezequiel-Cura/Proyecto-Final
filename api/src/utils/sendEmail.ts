@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer"
 
 interface Email {
-    email: string
+    email: string | string[]
     subject: string
     text: string
 }

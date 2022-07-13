@@ -1,5 +1,5 @@
 import styles from "./UserCard.module.css"
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from "react-router-dom"  
 import { useAppDispatch, useAppSelector } from "redux/hooks"
 import getUserById from "redux/reducers/adminReducer/Actions/getUserById"
@@ -11,6 +11,7 @@ import deleteUserReview from "redux/reducers/adminReducer/Actions/deleteUserRevi
 import banUser from "redux/reducers/adminReducer/Actions/banUser"
 import deleteUser from "redux/reducers/adminReducer/Actions/deleteUser"
 import Select from "react-select"
+import { IUser } from "redux/reducers/adminReducer/adminReducer"
 
 export default function UserCard() {
     const navigate = useNavigate()
@@ -20,12 +21,13 @@ export default function UserCard() {
     const [emailMsg, setEmailMsg] = useState("")
     const [emailVerificationMsg, setEmailVerificationMsg] = useState("")
     const [emailFailMsg, setEmailFailMsg] = useState("")
-    const [allUsersSelector, setAllUsersSelector] = useState<any>([])
-    const [searchValue, setSearchValue] = useState<any>("")
+    const [allUsersSelector, setAllUsersSelector] = useState<IUser[]>([])
+    const [searchValue, setSearchValue] = useState<IUser>()
 
     useEffect(() => {
       setAllUsersSelector(allUsers.map(user=> {
-        return {...user, value: user.lastName ? user.firstName + " " + user.lastName : user.firstName , label: user.lastName ? user.firstName + " " + user.lastName : user.firstName }
+        return {...user, value: user.lastName ? user.firstName + " " + user.lastName : user.firstName,
+        label: user.lastName ? user.firstName + " " + user.lastName : user.firstName }
       }))
     },[allUsers])
 

@@ -4,7 +4,6 @@ import styles from "./Profile.module.css"
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
 import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import ImageEditor from './utils/ImageEditor'
-import { updatePersonalInfo } from '../../redux/reducers/userReducer/userReducer'
 import { Rating } from '@mui/material'
 import addReview from 'redux/reducers/userReducer/actions/addReview'
 import deleteReview from 'redux/reducers/userReducer/actions/deleteReview'
@@ -12,6 +11,7 @@ import sendSupportMessage from 'redux/reducers/userReducer/actions/sendSupportMe
 import deleteAccount from 'redux/reducers/userReducer/actions/deleteAccount'
 import { useNavigate } from 'react-router-dom'
 import { logout } from 'redux/reducers/userReducer/actions/logout'
+import updatePersonalInfo from 'redux/reducers/userReducer/actions/updatePersonalInfo'
 
 interface Profile {
     setImageEditor: () => Boolean
