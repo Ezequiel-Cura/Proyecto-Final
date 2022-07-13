@@ -22,9 +22,64 @@
     margin-bottom: 50px;
     margin-top: 50px;
 }
-
+.allCryptoData{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.allCryptoData h1{
+    color: rgb(142, 140, 140);
+}
+.platformConteiner{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+}
+.platformsData{
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+    width: 233px;
+    height: 250px;
+    background-color: #121212;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    align-content: space-between;
+    flex-wrap: wrap;
+}
+.platformsData p{
+    margin: 5px;
+    color: rgb(142, 140, 140);
+}
+.platformsData h4{
+    margin: 2px 5px 5px 5px;
+    display: flex;
+    color: rgb(142, 140, 140);
+}
 .carrouselButton{
     padding: 10px;
+}
+
+.infoCrypto{
+    display: flex;
+    background-color: #1E6091;
+    flex-direction: column;
+    padding: 20px 15px;
+    margin: 20px 20px;
+    width: max-content;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    border-radius: 15px;
+}
+.infoCrypto p{
+    margin: 5px;
+    font-weight: bolder;
+    color: rgb(208, 208, 208);
 }
 
 .carrouselButton:hover{
@@ -45,7 +100,7 @@
     margin: 5px;
     width: 600px;
     align-content: flex-start;
-    background-color:  #41463F;
+    background-color: #1E6091; 
     padding: 15px;
     border-radius: 15px;
     box-shadow: 5px 5px 8px 0px #121212;
@@ -55,7 +110,7 @@
     border-radius: 15px;
     height: 25px;
     background-color: #1F1F1F;
-    color: rgb(142, 140, 140);
+    color: rgb(208, 208, 208);
     font-weight: bolder;
 }
 .formCrypto form select{
@@ -63,7 +118,7 @@
     border: 0px;
     border-radius: 5px;
     background-color: #1F1F1F;
-    color: rgb(142, 140, 140);
+    color: rgb(208, 208, 208);
     font-weight: bolder;
 }
 
@@ -73,10 +128,14 @@
     height: 35px;
     border-radius: 10px;
     background-color: #1F1F1F;
-    color: rgb(142, 140, 140);
+    color: rgb(208, 208, 208);
     font-weight: bolder;
     display: flex;
     align-items: center;
+    cursor: pointer;
+}
+.formCrypto form button:hover{
+    padding: 9px 25px ;
 }
 
 .title h1 {

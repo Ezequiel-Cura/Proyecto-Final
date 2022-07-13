@@ -68,8 +68,8 @@ export default function CryptoInvest() {
   const [valDisable, setDisabled] = useState(true)
 
   useEffect(() => {
-    !form.id ? setMsg('Proporcione la moneda que quiere convertir') :
-      !form.to ? setMsg('Proporcione la moneda a la cual convertirá') :
+    !form.id || form.id === 'default' ? setMsg('Proporcione la moneda que quiere convertir') :
+      !form.to || form.id === 'default' ? setMsg('Proporcione la moneda a la cual convertirá') :
         !form.amount ? setMsg('Proporcione un monto') :
           setMsg('')
 
@@ -107,8 +107,8 @@ export default function CryptoInvest() {
   }, [])
 
   function resetAll() {
-    (document.getElementById("selectTo") as HTMLFormElement).value = '';
-    (document.getElementById("selectCoin") as HTMLFormElement).value = '';
+    (document.getElementById("selectTo") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectCoin") as HTMLFormElement).value = 'default';
   }
 
   function handleSelectSearch(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -162,7 +162,7 @@ export default function CryptoInvest() {
                       <option value={crypto.symbol}>{crypto.name}</option>
                     )
                   })
-                  : <p>Loading...</p>
+                  : <option>Loading...</option>
                 }
               </select>
               <select id="selectTo" name='to' onChange={(e) => handleSelectSearch(e)}>
@@ -187,22 +187,29 @@ export default function CryptoInvest() {
           </div>
           {
             cryptoData !== 'Invalid pair' && Object.keys(cryptoData).length > 0
-              ? <div>
+              ? <div className={styles.allCryptoData}>
                 <h1>{cryptoData.amount} de {cryptoData.id} a {cryptoData.to}</h1>
+                <div className={styles.infoCrypto}>
+                <p>Ask: Precio de compra reportado por el exchange, sin sumar comisiones.</p>
+                        <p>TotalAsk: Precio de compra final incluyendo las comisiones de transferencia y trade.</p>
+                        <p>Bid: Precio de venta reportado por el exchange, sin restar comisiones.</p>
+                        <p>TotalBid: Precio de venta final incluyendo las comisiones de transferencia y trade.</p>
+                </div>
+                <div className={styles.platformConteiner}>
                 {
                   Object.entries(cryptoData.convertData).map(([key, value]: any) => {
                     return (
-                      <span>
-                        <h4>Plataforma de compra y venta: {key}</h4>
-                        <p>Ask: {value.ask} - Precio de compra reportado por el exchange, sin sumar comisiones.</p>
-                        <p>TotalAsk: {value.totalAsk} - Precio de compra final incluyendo las comisiones de transferencia y trade.</p>
-                        <p>Bid: {value.bid} - Precio de venta reportado por el exchange, sin restar comisiones.</p>
-                        <p>TotalBid: {value.totalBid} - Precio de venta final incluyendo las comisiones de transferencia y trade.</p>
-                        <p>Time: {value.time} - Timestamp del momento en que fue actualizada esta cotización.</p>
-                      </span>
+                      <div className={styles.platformsData}>
+                        <h4>Plataforma de compra y venta: {key.toUpperCase()}</h4>
+                        <p>Ask: {value.ask} </p>
+                        <p>TotalAsk: {value.totalAsk}.</p>
+                        <p>Bid: {value.bid} </p>
+                        <p>TotalBid: {value.totalBid}.</p>
+                      </div>
                     )
                   })
                 }
+                </div>
               </div>
               :   // {/* Error Display */}
               <span id='validateError' className={styles.formCrypto}>{valMsg}</span>
