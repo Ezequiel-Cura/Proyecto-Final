@@ -29,9 +29,11 @@ router.get("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0,
             monthly: 1,
             extra: 1,
             categories: 1,
-            role: 1,
             isGoogle: 1,
-            review: 1
+            review: 1,
+            role: 1,
+            banned: 1,
+            verified: 1,
         });
         res.status(200).send(user);
     }

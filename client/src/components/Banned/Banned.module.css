@@ -1,0 +1,17 @@
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.link{
+    padding: 15px 25px;
+    background-color: rgba(255, 127, 80, 0.8);
+    border-radius: 20px;
+}
+
+.link:hover {
+    background-color: rgba(255, 127, 80, 0.6);
+}

@@ -7,4 +7,7 @@ async () => {
   await axios.post("/user/logout")
   localStorage.removeItem("logged")
   localStorage.removeItem("admin")
+  localStorage.removeItem("unVerified")
+  localStorage.removeItem("banned")
+  window.location.reload()
 })
