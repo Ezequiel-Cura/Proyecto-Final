@@ -35,63 +35,96 @@ import {
 } from "./Controladores";
 import { renderInput } from "redux/reducers/userReducer/userReducer";
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
 
 export default function Detalles() {
   const dispatch = useAppDispatch()
   const status = useAppSelector((state)=>state.user.status)
   const usuario = useAppSelector((state) => state.user.usuario);
   const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
+
   useEffect(()=>{
     dispatch(renderInput(date))
   },[dispatch])//eslint-disable-line
 
   const [switchValue,setSwitchvalue] = useState(false)
+  const [year,setYear] = useState(date.split("-")[0])
 
+  
   function calculate() {
 
-    let ingresos = usuario?.extra.input?.filter((e:any)=>e.date.includes("2022"))
+    let ingresos = usuario?.extra.input?.filter((e:any)=>e.date.includes(year))
     ingresos = ingresos.map((e:any)=> e.entries ).flat()
     ingresos = ingresos ? ingresos.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0) : 0
 
-    let gastos = usuario.extra.output?.filter((e:any)=>e.date.includes("2022"))
+    let gastos = usuario.extra.output?.filter((e:any)=>e.date.includes(year))
     gastos = gastos.map((e:any)=>e.entries).flat()
     gastos = gastos ? gastos.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0) : 0
 
-    const ingresosFijos = usuario?.monthly.input.reduce(
+    const ingresosFijos = usuario?.monthly.input.filter((e:any)=>e.date.includes(year)).reduce(
       (prev: any, actual: any) => {
         return prev + actual.amount;
     },0);
 
-    const gastosFijos = usuario?.monthly?.output.reduce(
+    const gastosFijos = usuario?.monthly?.output.filter((e:any)=>e.date.includes(year)).reduce(
       (prev: any, actual: any) => {
         return prev + actual.amount;
     },0);
 
     const totalGastos = gastos + gastosFijos;       // 800
     const totalIngresos = ingresos + ingresosFijos; // 1000 + 1000
+
     const porcentajeGastos = Math.round((totalGastos * 100) / totalIngresos)
-    const porcentajeIngreso = 100 - porcentajeGastos
-    
-    return { porcentajeGastos, porcentajeIngreso,totalIngresos,totalGastos };
+    // const porcentajeIngreso1 = 100 - porcentajeGastos
+    const porcentajeIngreso = 100
+
+    const sobrante = totalIngresos - totalGastos
+    let sobrantePorcentaje = porcentajeIngreso - porcentajeGastos
+    let dificit = totalGastos - totalIngresos
+    console.log("deficit",dificit)
+    let deficitPorcentaje = porcentajeGastos - porcentajeIngreso
+    if(deficitPorcentaje < 0){
+      
+      deficitPorcentaje = 0;
+    }
+    if(sobrantePorcentaje < 0){
+      sobrantePorcentaje = 0
+    }
+    console.log(deficitPorcentaje)
+
+    return { porcentajeGastos, porcentajeIngreso,totalIngresos,totalGastos,sobrante,sobrantePorcentaje,deficitPorcentaje };
   }
 
   const incomes = {
-    background: "#dfd527",
+    background: "#316ab6",
     width: calculate().porcentajeIngreso + "%",
-    
+    height: "50px",
+    border: "1px black solid"
   };
 
   const gastos = {
-    background: "red",
+    background: "#f94144",
     width: calculate().porcentajeGastos + "%",
-    height: "70px",
+    height: "50px",
+    border: "1px black solid"
   };
 
+  const sobrante = {
+    background: "green",
+    width: calculate().sobrantePorcentaje + "%",
+    height: "50px",
+    border: "1px black solid"
+  }
+  const deficit = {
+    background: "orange",
+    width: calculate().deficitPorcentaje + "%",
+    height: "50px",
+    border: "1px black solid"
+  }
   const data1 = () => {
     let gastos = status === "success" && usuario.extra.output?.find((e:any)=>e.date === date)
     gastos = gastos ? gastos.entries.reduce((prev: any, actual: any) => {
@@ -204,8 +237,8 @@ export default function Detalles() {
 
   const barChartData = ()=>{
     const arrayBarChart = []
-    const inputs = calcularInputsPorMes(usuario)
-    const gastos = calcularOutputsPorMes(usuario)
+    const inputs = calcularInputsPorMes(usuario,year)
+    const gastos = calcularOutputsPorMes(usuario,year)
 
     for (let i = 0; i < 12; i++) {
      arrayBarChart.push({
@@ -218,6 +251,11 @@ export default function Detalles() {
     return arrayBarChart
   }
 
+  function handleChangeYear(e:any){
+    setYear(e.target.value)
+  }
+
+
   const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e","#7fffd4","#a864ca"];
   return (
     <div className={styles.wrapper}>
@@ -225,19 +263,35 @@ export default function Detalles() {
       <div className={styles.detalles_wrapper}>
         <h1>Detalles</h1>
         <div>
+          <div className={styles.select_detail}>
+            <select name="years" id="" onChange={(e)=>{handleChangeYear(e)}}>
+              <option value="2022">2022</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+            </select>
+          </div>
           <div>
-            <h4>Resumen anualmente</h4>
-            <div style={{ display: "flex" }}>
-              <h5 className={styles.barra_nombres}>Ganancias</h5>
+            <h4>Resumen anual Ingresos</h4>
+            {/* <div style={{ display: "flex" }}>
+              <h5 className={styles.barra_nombres}>Ingresos</h5>
               <h5 className={styles.barra_nombres2}>Gastos</h5>
-            </div>
+            </div> */}
             <div className={styles.barra_wrapper}>
-              <div style={incomes}>{calculate().porcentajeIngreso} %(${calculate().totalIngresos})</div>
-              <div style={gastos}>{calculate().porcentajeGastos} %(${calculate().totalGastos})</div>
+              <div>
+                <div style={incomes}>Ingresos - {calculate().porcentajeIngreso} %(${calculate().totalIngresos})</div>
+                <div style={deficit}>{calculate().sobrante < 0 ? "Deficit  -" + calculate().deficitPorcentaje + "%($"+ calculate().sobrante+")" : null }</div>
+              </div>
+              <div style={{"display" : "flex"}}>
+                <div style={gastos}>Gastos - {calculate().porcentajeGastos} %(${calculate().totalGastos})</div>
+                <div style={sobrante}>{calculate().sobrantePorcentaje > 0 ?"Superavit  "+ calculate().sobrantePorcentaje + "%($"+calculate().sobrante : null } </div>
+              </div>
               <div className={styles.div_popOut} ></div>
             </div>
             <div>
-              <span>Resumen mensualmente</span>
+              <span>Resumen mensual</span>
             <BarChart width={900} height={250} data={barChartData()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -282,31 +336,55 @@ export default function Detalles() {
               <SearchBar />
             </div>
             <div className={styles.totales}>
-              <img src={carrito} alt="LOL" />{" "}
-              <span>
-                {" "}
-                Gastos en el Super totales = ${totalSuper(usuario)}{" "}
-              </span>
-              <img src={gift} alt="LOL" />{" "}
-              <span> Gastos de Regalos totales = ${totalRegalo(usuario)} </span>
-              <img src={salud} alt="LOL" />{" "}
-              <span> Gastos de Salud totales = ${totalSalud(usuario)} </span>
-              <img src={combustible} alt="LOL" />{" "}
-              <span>
-                Gastos de Transporte totales = ${totalTransporte(usuario)}
-              </span>
-              <img src={ocio} alt="LOL" />{" "}
-              <span>Gastos en Ocio totales = ${totalOcio(usuario)}</span>
-              <img src={dumbell} alt="LOL" />{" "}
-              <span>
-                Gastos en Gimnasio totales = $ {totalGimnasio(usuario)}
-              </span>
-              <img src={taxes} alt="LOL" />{" "}
-              <span>
-                Gastos en Alquileres totales = $ {totalAlquiler(usuario)}
-              </span>
-              <img src={balance} alt="LOL" />{" "}
-              <span>Gastos en Impuestos totales = $ {totalImpuestos(usuario)}</span>
+              <div>
+                <img src={carrito} alt="LOL" />{" "}
+                <span>
+                  {" "}
+                  Gastos en el Super totales = ${totalSuper(usuario)}{" "}
+                </span>
+              </div>
+
+              <div>
+                <img src={gift} alt="LOL" />{" "}
+                <span> Gastos de Regalos totales = ${totalRegalo(usuario)} </span>
+              </div>
+
+              <div>
+                <img src={salud} alt="LOL" />{" "}
+                <span> Gastos de Salud totales = ${totalSalud(usuario)} </span>
+              </div>
+
+              <div>
+                <img src={combustible} alt="LOL" />{" "}
+                <span>
+                  Gastos de Transporte totales = ${totalTransporte(usuario)}
+                </span>
+              </div>
+
+              <div>
+                <img src={ocio} alt="LOL" />{" "}
+                <span>Gastos en Ocio totales = ${totalOcio(usuario)}</span>
+              </div>
+
+              <div>
+                <img src={dumbell} alt="LOL" />{" "}
+                <span>
+                  Gastos en Gimnasio totales = $ {totalGimnasio(usuario)}
+                </span>
+              </div>
+
+              <div>
+                <img src={taxes} alt="LOL" />{" "}
+                <span>
+                  Gastos en Alquileres totales = $ {totalAlquiler(usuario)}
+                </span>
+              </div>
+
+              <div>
+                <img src={balance} alt="LOL" />{" "}
+                <span>Gastos en Impuestos totales = $ {totalImpuestos(usuario)}</span>
+              </div>
+
             </div>
             <div className={styles.blocked_wrapper}>
               <div className={styles.blocked}>
