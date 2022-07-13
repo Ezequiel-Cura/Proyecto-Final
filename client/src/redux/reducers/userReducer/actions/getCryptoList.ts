@@ -8,6 +8,5 @@ export const getCryptoList: any = createAsyncThunk("crypto/getCryptoList",
             const { data } = await axios.get("/crypto/getCryptoList")
             return data
         } catch (err: any) {
-            console.log(err)
         }
     })
