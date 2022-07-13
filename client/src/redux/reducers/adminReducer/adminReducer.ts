@@ -8,6 +8,7 @@ import getUserById from "./Actions/getUserById";
 import sendEmail from "./Actions/sendEmail";
 import banUser from "./Actions/banUser";
 import closeReview from "./Actions/closeReview";
+import adminSendMessage from "./Actions/adminSendMessage";
 
 export interface IUser {
     _id: string,
@@ -188,6 +189,15 @@ const reducerSlice = createSlice({
             state.status = "success"
         },
         [closeReview.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [adminSendMessage.pending]: (state) => {
+            state.status = "loading"
+        },
+        [adminSendMessage.fulfilled]: (state) => {
+            state.status = "success"
+        },
+        [adminSendMessage.rejected]: (state) => {
             state.status = "failed"
         },
     }

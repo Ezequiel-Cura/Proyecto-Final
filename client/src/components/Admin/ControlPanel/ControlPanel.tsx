@@ -20,7 +20,7 @@ const {allUsers} = useAppSelector(({admin}) => admin)
       <Nav />
       <div className={styles.pannelWrapper}>
         <div className={styles.topPannelWrapper}>
-          <div style={{display: "grid", gridTemplateRows: "min-content 1fr", paddingTop: "5px"}}>
+          <div style={{display: "grid", gridTemplateRows: "min-content 1fr"}}>
             <h3>Estadisticas de usuarios registrados: </h3>
             <div className={styles.graphContainer}>
               <InfoChart data={allUsers.map(user => user?.createdAt?.toString().substring(0, 10)).filter(e => e !== undefined)}/>

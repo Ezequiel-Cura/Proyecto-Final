@@ -9,6 +9,7 @@ import deleteUserReview from "./deleteUserReview"
 import banUser from "./banUser"
 import deleteUser from "./deleteUser"
 import closeReview from "./closeReview"
+import adminSendMessage from "./adminSendMessage"
 
 router.use("/getAllUsers", getAllUsers)
 router.use("/changeRole", changeRole)
@@ -19,5 +20,6 @@ router.use("/deleteUserReview", deleteUserReview)
 router.use("/banUser", banUser)
 router.use("/deleteUser", deleteUser)
 router.use("/closeReview", closeReview)
+router.use("/adminSendMessage", adminSendMessage)
 
 export default router

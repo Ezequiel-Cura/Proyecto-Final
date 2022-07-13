@@ -26,7 +26,10 @@ return (
         <Link to="/home/detalles"><li>Detalles</li></Link>
         <Link to="/home/crypto"><li>Finanzas Digitales</li></Link>
         {usuario.role === "admin" &&
-        <Link to="/admin/controlPanel"><li>Admin panel</li></Link>
+        <Link to="/admin/controlPanel"><li>Panel de admin</li></Link>
+        }
+        {usuario.role === "admin" &&
+        <Link to="/admin/messagesPanel"><li>Panel de mensajes</li></Link>
         }
         </ul>
         <button className={styles.logout} onClick={()=> dispatch(logout()).then(()=> {navigate("/", {state: {registered: true}}); window.location.reload()})}>

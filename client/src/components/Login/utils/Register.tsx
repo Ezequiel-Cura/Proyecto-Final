@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from "../index.module.css"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { registerUser } from "redux/reducers/userReducer/actions/registerUser"
 import { useAppDispatch } from "redux/hooks"
@@ -8,7 +8,6 @@ import * as Yup from "yup"
 import { googleLogin } from 'redux/reducers/userReducer/actions/googleLogin'
 
 export default function Register() {
-  const navigate = useNavigate()
   const [registeredMsg, setRegisteredMsg] = useState("")
   const SignupSchema = Yup.object().shape({
     firstName: Yup.string().max(30, 'Re largo tu nombre').required("Tu nombre es requerido"),
