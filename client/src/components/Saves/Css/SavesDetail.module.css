@@ -29,7 +29,7 @@
     margin-right: 20px;
     border: none;
     border-radius: 10px;
-    background-image: url(../../assets/flecha-correcta.png);
+    background-image: url(../../../assets/flecha-correcta.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -162,7 +162,7 @@
     height: 30px;
     border-radius: 10px;
     border: none;
-    background-image: url(../../assets/delete.png);
+    background-image: url(../../../assets/delete.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-color: transparent;
@@ -269,7 +269,7 @@
     padding: 10px;
     margin-right: 30px;
     background-color: #DB0808;
-    background-image: url(../../assets/delete.png);
+    background-image: url(../../../assets/delete.png);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: right;

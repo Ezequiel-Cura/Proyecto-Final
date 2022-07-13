@@ -16,10 +16,14 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 const axios_1 = __importDefault(require("axios"));
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, to, amount } = req.body;
+    const { id, to, amount } = req.query;
     try {
-        const convertCrypto = yield (0, axios_1.default)(`https://criptoya.com/api/${id}/${to}/${amount}`);
-        res.status(200).send(convertCrypto.data);
+        if (!id || !to || !amount) {
+            return res.status(404).send('Faltan parámetros válidos.');
+        }
+        const convertCrypto = yield (0, axios_1.default)("https://criptoya.com/api/" + id + "/" + to + "/" + amount);
+        const convertData = convertCrypto.data;
+        res.status(200).send({ convertData, id, to, amount });
     }
     catch (error) {
         console.log(error);
