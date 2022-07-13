@@ -8,10 +8,12 @@
     grid-template-columns: repeat(auto-fill,minMax(400px,1fr));
     gap: 3rem;
     justify-items: center;
+    
 }
 .img_news{
     width: 400px;
     height: 300px;
+    border-radius:20px 20px 0 0 ;
 }
 .cointainer_news{
     height: 100vh;
@@ -23,6 +25,7 @@
     width: 400px;
     text-align: center;
     background-color: gray;
+    border-radius: 20px ;
 }
 
 .newsCard a h4{
