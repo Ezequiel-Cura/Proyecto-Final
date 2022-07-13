@@ -78,7 +78,7 @@ const initialState: User = {
     frequency: 'default',
     category: 'default',
     month: '',
-    year: ''
+    year: date.split('-')[0]
   },
   status: 'idle',
   allInputs: [],
