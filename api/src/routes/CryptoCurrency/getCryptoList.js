@@ -21,7 +21,6 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).send(cryptoList.data);
     }
     catch (error) {
-        console.log(error);
         res.status(404).send(error);
     }
 }));

@@ -22,7 +22,6 @@ router.post("/", authorization, async (req: any, res: Response) => {
 
   }
   catch (err) {
-    console.log({err})
     res.status(400).send(err)
   }
 

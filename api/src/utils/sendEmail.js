@@ -33,7 +33,6 @@ const sendEmail = ({ email, subject, text }) => __awaiter(void 0, void 0, void 0
         });
     }
     catch (err) {
-        console.log(err.message);
     }
 });
 exports.default = sendEmail;

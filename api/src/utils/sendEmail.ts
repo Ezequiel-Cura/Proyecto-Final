@@ -25,7 +25,7 @@ const sendEmail = async ({email, subject, text}: Email) => {
             text
         })
     } catch (err: any) {
-        console.log(err.message)
+        
     }
 }
 

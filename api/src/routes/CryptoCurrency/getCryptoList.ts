@@ -8,7 +8,6 @@ router.get("/", async (req: Request, res: Response) => {
       const cryptoList = await axios('https://api.coingecko.com/api/v3/coins')
       res.status(200).send(cryptoList.data)
     } catch (error) {
-        console.log(error)
         res.status(404).send(error)
     }
 })

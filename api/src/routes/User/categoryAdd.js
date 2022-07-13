@@ -28,7 +28,6 @@ router.post("/", authorization_1.default, (req, res) => __awaiter(void 0, void 0
         res.status(200).send(user);
     }
     catch (err) {
-        console.log({ err });
         res.status(400).send(err);
     }
 }));
