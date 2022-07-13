@@ -6,6 +6,7 @@ async (user, { rejectWithValue }) => {
   try {
     const { data } = await axios.post("/user/login", user)
     localStorage.setItem("logged", "true")
+    if(data.role === "admin") localStorage.setItem("admin", "true")
     return data
   } catch (err: any) {
     return rejectWithValue(err.response.data)
