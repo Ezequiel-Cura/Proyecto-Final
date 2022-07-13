@@ -75,7 +75,7 @@ interface User {
   //     rating: number
   //   }
   // }
-  status: 'idle' | 'loading' | 'success' | 'failed'
+  status: 'idle' | 'loading' | 'success' | 'failed' | any
   allInputs: Entries[] | [],
   allOutputs: Entries[] | [],
   renderInputs: Entries[] | [],
@@ -417,7 +417,7 @@ const reducerSlice = createSlice({
       state.status = "loading"
     },
     [addCategory.fulfilled]: (state, { payload }) => {
-      state.status = "success"
+      state.status = "CategoryCreated"
       state.usuario = payload
     },
     [addCategory.rejected]: (state) => {
