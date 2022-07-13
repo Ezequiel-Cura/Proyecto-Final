@@ -122,7 +122,6 @@ export default function ExpensesTable() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(form, "form en Expenses")
     dispatch(addDato(form));
     setInput({
       category: '',
@@ -142,7 +141,6 @@ export default function ExpensesTable() {
 
   function filterByMonth(e: any) {
     e.preventDefault();
-    console.log(e.target.value, "meeeeeeeeeeeeeeeeees")
     dispatch(changeOptions(['month', e.target.value]))
     dispatch(filterOutputByOptions())
     dispatch(totalOutput())
