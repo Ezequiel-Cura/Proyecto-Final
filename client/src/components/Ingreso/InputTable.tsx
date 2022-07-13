@@ -36,7 +36,7 @@ export default function InputTable() {
     dispatch(inputsOrderByAmount(e.target.value))
   }
 
-  function handleOrderByCategories(e: any) {                          //--------!!!
+  function handleOrderByCategories(e: any) {               
     e.preventDefault();
     dispatch(changeOptions(['category', e.target.value]))
     dispatch(filterInputByOptions());
