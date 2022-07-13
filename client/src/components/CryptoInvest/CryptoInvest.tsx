@@ -205,7 +205,7 @@ export default function CryptoInvest() {
                 }
               </div>
               :   // {/* Error Display */}
-              <span id='validateError'>{valMsg}</span>
+              <span id='validateError' className={styles.formCrypto}>{valMsg}</span>
           }
           {/* <div>
         <h2>Criptomonedas</h2>
@@ -219,7 +219,7 @@ export default function CryptoInvest() {
 
     <div>
       <div className={styles.carrouselPretty}>
-<ArrowBackIosNewIcon onClick={(e) => prevPage(e)} cursor='pointer' />
+<ArrowBackIosNewIcon onClick={(e) => prevPage(e)} cursor='pointer' className={styles.carrouselButton}/>
     <ul className={styles.cryptos}>
 
 
@@ -245,7 +245,7 @@ export default function CryptoInvest() {
     : <li>Loading...</li>
 }
 </ul>
-<ArrowForwardIosIcon onClick={(e) => nextPage(e)} cursor='pointer' />
+<ArrowForwardIosIcon onClick={(e) => nextPage(e)} cursor='pointer' className={styles.carrouselButton} />
 
       </div>
     </div>
