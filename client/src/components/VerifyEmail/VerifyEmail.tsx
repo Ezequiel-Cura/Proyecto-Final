@@ -15,6 +15,7 @@ export default function VerifyEmail() {
                 const {data} = await axios.get(`/user/register/${params.id}/verify/${params.token}`);
                 setMsg(data)
                 setValidUrl(true)
+                localStorage.removeItem("unVerified")
             } catch (err: any) {
                 setMsg(err.response.data)
                 setValidUrl(false)                
