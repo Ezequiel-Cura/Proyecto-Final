@@ -242,6 +242,16 @@ const reducerSlice = createSlice({
         state.renderOutputs = state.renderOutputs.filter((entries: Entries) => state.options.category === entries.category)
       }
     },
+    resetCryptoData: (state) => {
+      state.cryptoData = {}
+    },
+    resetCryptoList: (state) => {
+      state.cryptoList = []
+    },
+    searchCryptoByName: (state, {payload}) => {
+      const filterList = state.cryptoList.filter((crypto: any) => crypto.name.toLowerCase() === payload.toLowerCase())
+      state.cryptoList = filterList
+    },
     filterInputByOptions: (state) => {
       
       if (!state.options.year) {
@@ -537,6 +547,9 @@ export const {
   renderInput,
   clearCurrency,
   setGoalSaves,
+  resetCryptoData,
+  resetCryptoList,
+  searchCryptoByName,
   totalOutput,
   totalSave,
   changeOptions,

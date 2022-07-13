@@ -7,6 +7,7 @@ import { getCryptoList } from 'redux/reducers/userReducer/actions/getCryptoList'
 import styles from './Crypto.module.css'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { resetCryptoData, resetCryptoList, searchCryptoByName } from 'redux/reducers/userReducer/userReducer';
 
 export default function CryptoInvest() {
 
@@ -54,14 +55,6 @@ export default function CryptoInvest() {
     amount: 0
   })
 
-  interface CryptoConvertData {
-    ask: number,
-    totalAsk: number,
-    bid: number,
-    totalBid: number,
-    time: number
-  }
-
   // Validate
 
   const [valMsg, setMsg] = useState('')
@@ -78,8 +71,6 @@ export default function CryptoInvest() {
   useEffect(() => {
     setDisabled(valMsg === '' ? false : true)
   }, [valMsg])
-
-  // SEARCH CRIPTO
 
   interface Crypto {
     name: string,
@@ -101,9 +92,40 @@ export default function CryptoInvest() {
   useEffect(() => {
     if (status === 'success') {
       dispatch(getCryptoList())
-      // .then((json: Crypto[]) => { setData(json); setLoading(false);});
-    }
+    };
+    const foo = async () => { await resetPage() }; foo();
   }, [])
+
+  function resetPage(){
+      setButtonForm(false)
+      resetAll()
+      setForm({
+        id: '',
+        to: '',
+        amount: 0
+      })
+      dispatch(resetCryptoData())
+      dispatch(resetCryptoList())
+  }
+
+  // Search by Name
+
+  const [search, setSearch] = useState({
+    name: ''
+  })
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	
+    setSearch({
+      name: e.target.value
+    })
+  }
+
+  // Convert crypto
+
+  function searchByName(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    e.preventDefault()
+    dispatch(searchCryptoByName(search.name))
+  }
 
   function resetAll() {
     (document.getElementById("selectTo") as HTMLFormElement).value = 'default';
@@ -118,6 +140,18 @@ export default function CryptoInvest() {
     })
   }
 
+  function refreshForm(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    e.preventDefault()
+    setButtonForm(false)
+    resetAll()
+    setForm({
+      id: '',
+      to: '',
+      amount: 0
+    })
+    dispatch(resetCryptoData())
+  }
+
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault()
     setForm({
@@ -125,17 +159,13 @@ export default function CryptoInvest() {
       amount: parseInt(e.target.value)
     })
   }
+  const [buttonForm, setButtonForm] = useState<boolean>(false)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     // if (usuario.premium) {
       dispatch(convertCrypto(form))
-      resetAll()
-      setForm({
-        id: '',
-        to: '',
-        amount: 0
-      })
+      setButtonForm(true)
     // } else {
     //   return alert('Debes ser un usuario premium para poder convertir la moneda.')
     // }
@@ -150,9 +180,22 @@ export default function CryptoInvest() {
           <div className={styles.title}>
             <h1>Finanzas Digitales </h1>
           </div>
+          {/* Search by name */}
+          <div className={styles.searchCrypto}>
+            <label>Encuentra tu criptomoneda</label>
+            <input type="text" 
+            value={search.name}
+            placeholder='Buscar por nombre'
+            onChange={handleChange}
+            /> <button onClick={(e) => searchByName(e)}>Buscar</button>
+          </div>
           {/* Search form */}
           <div className={styles.formCrypto}>
             <form onSubmit={handleSubmit}>
+              {
+                buttonForm &&
+                <button onClick={(e) => refreshForm(e)}>X</button>
+              }
               <select id="selectCoin" name='id' onChange={(e) => handleSelectSearch(e)}>
                 <option value="default">Criptomoneda</option>
                 {cryptoList.length > 0
@@ -187,19 +230,19 @@ export default function CryptoInvest() {
           {
             cryptoData !== 'Invalid pair' && Object.keys(cryptoData).length > 0
               ? <div className={styles.allCryptoData}>
-                <h1>{cryptoData.amount} de {cryptoData.id} a {cryptoData.to}</h1>
                 <div className={styles.infoCrypto}>
                 <p>Ask: Precio de compra reportado por el exchange, sin sumar comisiones.</p>
                         <p>TotalAsk: Precio de compra final incluyendo las comisiones de transferencia y trade.</p>
                         <p>Bid: Precio de venta reportado por el exchange, sin restar comisiones.</p>
                         <p>TotalBid: Precio de venta final incluyendo las comisiones de transferencia y trade.</p>
                 </div>
+                  <h1>Plataformas de compra y venta:</h1>
                 <div className={styles.platformConteiner}>
                 {
                   Object.entries(cryptoData.convertData).map(([key, value]: any) => {
                     return (
                       <div className={styles.platformsData}>
-                        <h4>Plataforma de compra y venta: {key.toUpperCase()}</h4>
+                        <h4>{key.toUpperCase()}</h4>
                         <p>Ask: {value.ask} </p>
                         <p>TotalAsk: {value.totalAsk}.</p>
                         <p>Bid: {value.bid} </p>
@@ -231,13 +274,12 @@ export default function CryptoInvest() {
 
 {
   cryptoList.length > 0
-    ? currentCrypto.slice(0, 50).map((crypto: Crypto, i: any) => {
+    ? currentCrypto.slice(0, 50).map((crypto: Crypto, i: number) => {
       return (
         <li className={styles.cryptoList} key={i}>
           <img src={crypto.image.large} alt="Not found" />
           <p>Nombre: {crypto.name}</p>
           <p>Símbolo: {crypto.symbol}</p>
-          <p>Id: {crypto.id}</p>
           <span className={styles.cryptoPrice}>
             <p>Precio actual</p>
             <p>En peso argentino: {crypto.market_data.current_price.ars}</p>
