@@ -13,30 +13,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const authorization_1 = __importDefault(require("../../middleware/authorization"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const User_1 = __importDefault(require("../../models/User"));
 dotenv_1.default.config();
-// This is your test secret API key.
-const stripe = require('stripe')('sk_test_51LLEF3JqdJUgQbC1PKIVo0uUmubjgnhvsX0pQuDJUEesap4t2rCtM3Ee7CJ0pP2CfmhVlOE23cMbJWzSRtMKbKE4008A8xCL13');
 const router = (0, express_1.Router)();
-router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/', authorization_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const Id = req.userId;
     try {
-        const session = yield stripe.checkout.sessions.create({
-            line_items: [
-                {
-                    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    price: 'price_1LLFFYJqdJUgQbC1lQMWLxfP',
-                    quantity: 1,
-                },
-            ],
-            mode: 'payment',
-            success_url: `http://localhost:3001/user/premium/success`,
-            cancel_url: `${process.env.FRONT_URL}/home/premium`,
-        });
-        res.redirect(303, session.url);
-        // res.status(200).send('Stripe Premium')
+        yield User_1.default.findByIdAndUpdate(Id, { $set: { premium: true } });
+        res.redirect(`http://localhost:3000/home/premium`);
     }
     catch (err) {
+        res.redirect(400, 'http://localhost:3000/home/premium');
         console.log(err);
     }
 }));
+/*
+const result = await User.updateOne({_id: id}, { $set: { [premium]: true} })
+const user = await User.findById(id).select({_id: 0, [premium]: 1})
+if(user){
+  result
+  ? res.status(200).send(user)
+  : res.status(304).send("Failed update");
+}
+*/
 exports.default = router;
