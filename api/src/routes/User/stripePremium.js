@@ -29,7 +29,7 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 },
             ],
             mode: 'payment',
-            success_url: `${process.env.BACK_URL}user/premium/success`,
+            success_url: `${process.env.BACK_URL}/user/premium/success`,
             cancel_url: `${process.env.FRONT_URL}/home/premium`,
         });
         res.redirect(303, session.url);
