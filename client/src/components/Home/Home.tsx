@@ -2,7 +2,7 @@ import styles from "./Home.module.css"
 import Nav from "components/Nav/Nav"
 import { Link } from 'react-router-dom'
 import { useAppSelector } from "redux/hooks"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { renderInput, renderOutput, totalInput, totalOutput } from "redux/reducers/userReducer/userReducer"
 import { useDispatch } from "react-redux"
 

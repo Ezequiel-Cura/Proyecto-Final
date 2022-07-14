@@ -12,7 +12,7 @@ const dispatch = useAppDispatch()
 const {allUsers} = useAppSelector(({admin}) => admin)
   useEffect(()=>{
   dispatch(getAllUsers())
-  },[])
+  },[]) // eslint-disable-line
 
   return (
     <div className={styles.wrapper}>

@@ -1,6 +1,6 @@
 import Nav from 'components/Nav/Nav';
 import React from 'react';
-import axios from 'axios'
+
 import img from "../../assets/premium.svg";
 import styles from "./ProductDisplay.module.css"
 

@@ -26,7 +26,6 @@ router.get('/', authorization_1.default, (req, res) => __awaiter(void 0, void 0,
     }
     catch (err) {
         res.redirect(400, `${process.env.FRONT_URL}/home/premium`);
-        console.log(err);
     }
 }));
 /*

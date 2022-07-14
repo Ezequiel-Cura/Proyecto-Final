@@ -66,10 +66,6 @@ router.get("/capture-order", async (req: Request, res: Response) => {
             password: process.env.PAYPAL_API_SECRET
         }
     })
-
-    console.log("TOKEN", token, "PAYERID", PayerID)
-    console.log(response.data)
-    console.log("Capturing Order")
    
     res.redirect("https://finanzas-personales-henry.herokuapp.com/user/premium/success")
 })

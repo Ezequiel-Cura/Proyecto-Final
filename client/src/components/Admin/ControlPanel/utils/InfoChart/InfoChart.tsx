@@ -1,4 +1,4 @@
-import styles from "./InfoChart.module.css"
+import styles from "./InfoChart.module.css" // eslint-disable-line
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function InfoChart  ({data}: any) {
