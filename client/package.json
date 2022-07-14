@@ -25,6 +25,7 @@
     "dotenv": "^16.0.1",
     "formik": "^2.2.9",
     "mercadopago": "^1.5.14",
+    "numeral": "^2.0.6",
     "react": "^18.2.0",
     "react-avatar-editor": "^13.0.0",
     "react-dom": "^18.2.0",
@@ -39,6 +40,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/numeral": "^2.0.2",
     "@types/react-avatar-editor": "^12.0.0"
   },
   "scripts": {

@@ -69,7 +69,7 @@
 
 .infoCrypto{
     display: flex;
-    background-color: #1E6091;
+    background-color: #e86d2a7d;
     flex-direction: column;
     padding: 20px 15px;
     margin: 20px 20px;
@@ -115,10 +115,11 @@
     background-color: #1F1F1F;
     color: rgb(208, 208, 208);
     font-weight: bolder;
+    border: 2px solid #181818;
 }
 .formCrypto form select{
     height: 35px;
-    border: 0px;
+    border: 2px solid #181818;
     border-radius: 5px;
     background-color: #1F1F1F;
     color: rgb(208, 208, 208);
@@ -232,10 +233,10 @@
 }
 .searchCrypto{
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: flex-end;
     height: 100px;
     margin: 0px 25px;
 }
@@ -244,11 +245,26 @@
     padding: 10px;
     color: rgb(208, 208, 208);
     font-weight: bolder;
-    border: 1px #01203682 solid;
+    border: 2px solid #181818;
     border-radius: 10px;
+    margin: 0px;
+}
+.searchCrypto button:hover{
+    background-color: rgb(208, 208, 208);
+    color: #1F1F1F;
 }
 .searchCrypto input{
     width: 240px;
+    margin: 15px;
+    border-radius: 10px;
+    height: 20px;
+    border: 2px solid #181818;
+}
+
+.price{
+    font-weight: bolder;
+    color: rgb(31, 31, 31);
+    font-size: 18px;
 }
 
 
