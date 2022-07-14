@@ -12,14 +12,6 @@ export default function Home() {
   const dispatch = useDispatch()
 
   const { usuario } = useAppSelector( s => s.user)
-  const [message, setMessage] = useState("");
-
-
-  const Message = ({ message }: any) => (
-    <section>
-      <p>{message}</p>
-    </section>
-  );
 
   useEffect(() => {
      if(status === 'success'){ 
@@ -35,10 +27,11 @@ export default function Home() {
       <div className={styles.text_wrapper}>
       {
         usuario.premium ? (
-    <Message message={message} />
+          <section>
+          <p>Usted es un usuario Premium.</p>
+        </section>
   ) : (
     <Link to={"/home/premium"}><button>Premium</button></Link>
-
   )
   }
         <div className={styles.title_wrapper}>

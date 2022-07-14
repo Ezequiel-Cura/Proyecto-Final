@@ -26,8 +26,7 @@ import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
 import MessagesPanel from 'components/Admin/MessagesPanel/MessagesPanel';
 import Banned from 'components/Banned/Banned';
 import UnVerified from 'components/UnVerified/UnVerified';
-import { Message } from '@mui/icons-material';
-import ProductDisplay from 'components/Premium/ProductDisplay';
+import {ProductDisplay} from 'components/Premium/ProductDisplay';
 
 function App() {
   const dispatch = useAppDispatch()

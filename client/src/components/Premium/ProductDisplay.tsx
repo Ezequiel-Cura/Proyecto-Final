@@ -1,36 +1,23 @@
-import { CardElement, Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import Nav from 'components/Nav/Nav';
 import React from 'react';
-import style from './ProductDisplay.module.css'
+import axios from 'axios'
 
-export default function ProductDisplay(){
-
-  const stripePromise = loadStripe('codigo de conexion para el pago')
-
-  return (
+const logo = require('../../assets/favicon.ico')
+export const ProductDisplay = () => (
     <section style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
         <Nav/>
-        <Elements stripe={stripePromise}>
-          {/* <form>
-            <CardElement></CardElement>
-          </form> */}
         <div className="product">
             <img
-                src="https://i.imgur.com/EHyR2nP.png"
+                src={logo}
                 alt="The cover of Stubborn Attachments"
             />
             <div className="description">
-                <h3>Stubborn Attachments</h3>
-                <h5>$20.00</h5>
+                <h3>Premium</h3>
+                <h5>$500</h5>
             </div>
-        </div>
-        <form action="/create-checkout-session" method="POST" className={style.buttonCheckout}>
-            <button type="submit">Checkout</button>
+        <form action='http://localhost:3001/user/premium/buy' method='POST'>
+            <button type="submit">Consigue premium</button>
         </form>
-        </Elements>
+        </div>
     </section>
-  
-  )
-
-}
+);
