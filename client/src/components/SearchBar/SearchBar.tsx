@@ -58,7 +58,7 @@ return(
           <span>${e.amount}</span>
         </div>
       ))
-    : <span>¡Acá salen tus gastos buscados!</span>
+    : <span>¡Acá busca tus gastos del mes actual!!</span>
     }
       </div>
     </div>
