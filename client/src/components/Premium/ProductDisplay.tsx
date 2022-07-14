@@ -1,10 +1,15 @@
 import Nav from 'components/Nav/Nav';
 import React from 'react';
-import axios from 'axios'
+
 import img from "../../assets/premium.svg";
 import styles from "./ProductDisplay.module.css"
+import { useAppSelector } from 'redux/hooks';
 
-export const ProductDisplay = () => (
+export function ProductDisplay() {
+  const { usuario } = useAppSelector(state => state.user)
+  const disabled = usuario.premium
+  
+  return (
     <section style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
         <Nav/>
         <div className={styles.background}>
@@ -14,7 +19,7 @@ export const ProductDisplay = () => (
             </div>
             <div className={styles.wrapperText}>
               <div>
-                <h1>Adquiere una cuenta premium</h1>
+                <h1>{disabled ? 'Usted es un usuario premium' : 'Adquiere una cuenta premium'}</h1>
               </div>
               <div>
                 <h3>Que beneficios obtienes:</h3>
@@ -25,13 +30,14 @@ export const ProductDisplay = () => (
                 <p>- Dejar una reseña sobre nuestra página</p>
               </div>
                  <form action={`${process.env.REACT_APP_API}user/buyPremium/create-order`} method='GET'>
-                <button type="submit">Consigue premium a través de PayPal!</button>
+                <button className={styles.premiumButton} disabled={disabled} type="submit">Consigue premium a través de PayPal!</button>
                 </form>
               <form action={`${process.env.REACT_APP_API}user/premium/buy`} method='POST'>
-                <button type="submit">Consigue premium!</button>
+                <button className={styles.premiumButton} disabled={disabled} type="submit">Consigue premium!</button>
               </form>
             </div>
           </div>
         </div>
     </section>
-);
+    )
+}

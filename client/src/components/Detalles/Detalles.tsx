@@ -137,8 +137,7 @@ export default function Detalles() {
   }
   const data1 = () => {
     let gastos = status === "success" && usuario.extra.output?.find((e:any)=>e.date === year+"-" + month)
-    console.log(year+"-" + month)
-    console.log("Gastos",gastos)
+    
     gastos = gastos ? gastos.entries.reduce((prev: any, actual: any) => {
       return prev + actual.amount;
     }, 0) : 0;
@@ -148,7 +147,7 @@ export default function Detalles() {
         return prev + actual.amount;
     },0) : 0;
 
-    console.log("Fijos",gastosFijos)
+    
     const total = gastos + gastosFijos
     let data1 = usuario?.extra.output.find((e:any)=>e.date === year+"-"+month)
     data1 = data1 ? data1.entries.reduce((c: any, v: any) => {
@@ -274,7 +273,7 @@ export default function Detalles() {
   function handleChangeMonth(e:any){
     setMonth(e.target.value)
   }
-  console.log(month)
+  
   const colors = ["#e27b7b", "#cfc4c4", "#96db99", "#92b0c4", "#d4ca8e","#7fffd4","#a864ca"];
   return (
     <div className={styles.wrapper}>
@@ -347,30 +346,37 @@ export default function Detalles() {
           </div>
           <div className={styles.seccion_wrapper}>
             <div className={styles.primer_wrapper}>
-              <div>
-                <select name="" id="" onChange={(e)=>{handleChangeMonth(e)}}>
-                  <option value="01">Enero</option>
-                  <option value="02">Febrero</option>
-                  <option value="03">Marzo</option>
-                  <option value="04">Abril</option>
-                  <option value="05">Mayo</option>
-                  <option value="06">Junio</option>
-                  <option value="07">Julio</option>
-                  <option value="08">Agosto</option>
-                  <option value="09">Septiembre</option>
-                  <option value="10">Octubre</option>
-                  <option value="11">Noviembre</option>
-                  <option value="12">Diciembre</option>
-                </select>
-              </div>
-              <div>
-                <span>Gastos</span>
-                <Switch onChange={()=>{
-                  
-                  setSwitchvalue(!switchValue)
-                }}/>
-                <span>Ingresos</span>
-              </div>
+              {
+                 usuario.premium === true ? 
+                 (
+                  <>
+                    <div>
+                      <select name="" id="" onChange={(e)=>{handleChangeMonth(e)}}>
+                        <option value="01">Enero</option>
+                        <option value="02">Febrero</option>
+                        <option value="03">Marzo</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Mayo</option>
+                        <option value="06">Junio</option>
+                        <option value="07">Julio</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                      </select>
+                    </div>
+                    <div>                
+                      <span>Gastos</span>
+                      <Switch onChange={()=>{
+                        setSwitchvalue(!switchValue)
+                      }}/>
+                      <span>Ingresos</span>                  
+                    </div>                  
+                  </>
+                 ):
+                 null
+              }
               <PieChart width={500} height={400}>
                 <Pie
                   data={switchValue ? data2() : data1()}
@@ -446,8 +452,21 @@ export default function Detalles() {
             </div>
             <div className={styles.blocked_wrapper}>
               <div className={styles.blocked}>
-                <img src={lock} alt="" />
-                <span>Compra premium para mas detalles</span>
+                {
+                  usuario.premium === false ? 
+                  (
+                    <>
+                      <img src={lock} alt="" />
+                      <span>Compra premium para mas detalles</span>
+                    </>
+                  )
+                  :
+                  (
+                    <>
+                      <span>Tienes nuevos botones para usar!!</span>
+                    </>
+                  )
+                }
               </div>
             </div>
           </div>

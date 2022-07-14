@@ -13,7 +13,7 @@ router.get('/', authorization, async (req: Request, res: Response) => {
     res.redirect(`${process.env.FRONT_URL}/home/premium`)
   } catch(err){
     res.redirect(400, `${process.env.FRONT_URL}/home/premium`)
-    console.log(err)
+    
   }
 })
 

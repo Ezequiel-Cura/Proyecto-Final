@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from 'components/Home/Home';
 import Login from 'components/Login';
@@ -8,7 +8,7 @@ import InputTable from 'components/Ingreso/InputTable';
 import Expenses from 'components/Gastos/Expenses';
 import ExpensesTable from 'components/Gastos/ExpensesTable';
 import Detalles from 'components/Detalles/Detalles';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppDispatch } from 'redux/hooks';
 import { getUserInfo } from 'redux/reducers/userReducer/actions/getUserInfo';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
 import LostPage from 'components/LostPage/LostPage';

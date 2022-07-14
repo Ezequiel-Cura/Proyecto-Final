@@ -9,7 +9,7 @@ export default function SearchBar(){
    const [filtrado, setFiltrado] = useState<any>([])
 
    const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
-
+ 
    const extraDate = usuario?.extra.output.find((e: any) => e.date === date)
 
    const monthly = usuario?.monthly
@@ -21,13 +21,13 @@ export default function SearchBar(){
   function handleChange(e: React.SyntheticEvent){
     e.preventDefault()
   let inputaux = input.toLowerCase().trim()
-  let busqueda = [...extraDate.entries, ...monthly.output].filter((e) => e.description.toLowerCase().includes(inputaux))
-
+  
   //   let busquedaExtra =  extraDate.entries?.filter((e: any) => (e.description.toLowerCase().includes(input.toLowerCase().trim())) )
-
+  
   //   let busquedaMensual = monthly.output.filter((e: any) => (e.description.toLowerCase().includes(input.toLowerCase().trim())))
-
+  
   //   let concatenado = busquedaExtra.concat(busquedaMensual)
+  let busqueda = [...extraDate.entries, ...monthly.output].filter((e) => e.description.toLowerCase().includes(inputaux))
 
   setFiltrado(busqueda)
   // setFiltrado(concatenado)

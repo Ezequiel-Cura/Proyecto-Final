@@ -72,7 +72,7 @@ export default function InputTable() {
 	function resetAll() {
 		(document.getElementById("selectCategories") as HTMLFormElement).value = 'default';
 		(document.getElementById("selectFrequency") as HTMLFormElement).value = 'default';
-		(document.getElementById("selectYear") as HTMLFormElement).value = ''
+		
 	}
 
 	function handleRefresh(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
