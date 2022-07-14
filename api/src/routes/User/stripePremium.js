@@ -29,7 +29,11 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 },
             ],
             mode: 'payment',
+<<<<<<< HEAD
             success_url: `http://localhost:3000/home`,
+=======
+            success_url: `http://localhost:3001/premium/buy?success=true`,
+>>>>>>> ac6c98087a620b358a0322117ba2856c124b902a
             cancel_url: `http://localhost:3000/home/premium`,
         });
         res.redirect(303, session.url);
