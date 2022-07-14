@@ -8,7 +8,7 @@ import store from 'redux/store';
 import axios from 'axios';
 
 axios.defaults.withCredentials= true;
-axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:3001";
+axios.defaults.baseURL = process.env.REACT_APP_API
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
