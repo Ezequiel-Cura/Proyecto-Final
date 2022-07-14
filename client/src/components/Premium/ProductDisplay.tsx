@@ -24,11 +24,11 @@ export const ProductDisplay = () => (
                 <p>- Obtener el valor de criptomonedas en distintas monedas</p>
                 <p>- Dejar una reseña sobre nuestra página</p>
               </div>
-              <form action='http://localhost:3001/user/premium/buy' method='POST'>
-                <button type="submit">Consigue premium a través de Stripe!</button>
-              </form>
-                 <form action='http://localhost:3001/user/buyPremium/create-order' method='GET'>
+                 <form action={`${process.env.REACT_APP_API}/user/buyPremium/create-order`} method='GET'>
                 <button type="submit">Consigue premium a través de PayPal!</button>
+                </form>
+              <form action={`${process.env.REACT_APP_API}/user/premium/buy`} method='POST'>
+                <button type="submit">Consigue premium!</button>
               </form>
             </div>
           </div>

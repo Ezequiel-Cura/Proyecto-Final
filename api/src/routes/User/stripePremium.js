@@ -16,7 +16,7 @@ const express_1 = require("express");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 // This is your test secret API key.
-const stripe = require('stripe')('sk_test_51LLEF3JqdJUgQbC1PKIVo0uUmubjgnhvsX0pQuDJUEesap4t2rCtM3Ee7CJ0pP2CfmhVlOE23cMbJWzSRtMKbKE4008A8xCL13');
+const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 const router = (0, express_1.Router)();
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,7 +29,7 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 },
             ],
             mode: 'payment',
-            success_url: `http://localhost:3001/user/premium/success`,
+            success_url: `${process.env.REACT_APP_API}/user/premium/success`,
             cancel_url: `${process.env.FRONT_URL}/home/premium`,
         });
         res.redirect(303, session.url);

@@ -10,9 +10,9 @@ router.get('/', authorization, async (req: Request, res: Response) => {
   const Id = req.userId
   try {    
     await User.findByIdAndUpdate(Id, {$set: {premium: true}})
-    res.redirect(`https://proyecto-final-lime-beta.vercel.app/home/premium`)
+    res.redirect(`${process.env.FRONT_URL}/home/premium`)
   } catch(err){
-    res.redirect(400, 'https://proyecto-final-lime-beta.vercel.app/home/premium')
+    res.redirect(400, `${process.env.FRONT_URL}/home/premium`)
     console.log(err)
   }
 })
