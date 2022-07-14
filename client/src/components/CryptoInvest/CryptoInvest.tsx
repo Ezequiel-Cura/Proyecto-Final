@@ -109,6 +109,21 @@ export default function CryptoInvest() {
       dispatch(resetCryptoList())
   }
 
+  function handleRefresh(){
+    setButtonForm(false)
+    resetAll()
+    setForm({
+      id: '',
+      to: '',
+      amount: 0
+    })
+    setSearch({
+      name: ''
+    })
+    dispatch(resetCryptoData())
+    dispatch(getCryptoList())
+}
+
   // Search by Name
 
   const [search, setSearch] = useState({
@@ -189,6 +204,7 @@ export default function CryptoInvest() {
             placeholder='Buscar por nombre'
             onChange={handleChange}
             /> <button onClick={(e) => searchByName(e)}>Buscar</button>
+            <button onClick={handleRefresh}>Refresh</button>
           </div>
           {/* Search form */}
           <div className={styles.formCrypto}>

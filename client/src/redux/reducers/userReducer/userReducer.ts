@@ -325,7 +325,7 @@ const reducerSlice = createSlice({
       state.renderOutputs = orderByAmount
     },
     inputsOrderByAmount: (state, { payload }) => {
-      const orderInputs: Entries[] = [...state.allInputs];
+      const orderInputs: Entries[] = [...state.renderInputs];
       let orderByAmount = payload === 'menorAMayor'
         ? orderInputs.sort((a, b) => a.amount - b.amount)
         : orderInputs.sort((a, b) => b.amount - a.amount)
