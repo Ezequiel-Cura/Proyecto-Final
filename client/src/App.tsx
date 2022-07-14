@@ -34,7 +34,7 @@ function App() {
   
   useEffect(() => {
     if (localStorage.getItem("logged")) dispatch(getUserInfo())
-  }, [])
+  }, [])// eslint-disable-line
 
   return (
     <Routes>

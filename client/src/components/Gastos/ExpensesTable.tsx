@@ -77,7 +77,7 @@ export default function ExpensesTable() {
     nameMonth: '',
   })
 
-  const [year, setYear ] =useState<Year>({
+  const [year, setYear ] =useState<Year>({// eslint-disable-line
     numberYear: ''
   })
   //---------------

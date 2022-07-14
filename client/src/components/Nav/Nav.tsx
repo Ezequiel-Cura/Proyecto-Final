@@ -5,7 +5,7 @@ import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import { logout } from 'redux/reducers/userReducer/actions/logout'
 
 export default function Nav() {
-const navigate = useNavigate()
+const navigate = useNavigate()// eslint-disable-line
 const dispatch = useAppDispatch()
 const {usuario}: any = useAppSelector(({user}) => user)
 return (
