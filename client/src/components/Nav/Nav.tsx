@@ -24,6 +24,9 @@ return (
         <Link to="/home/saving"><li>Ahorros</li></Link>
         <Link to="/home/detalles"><li>Detalles</li></Link>
         <Link to="/home/crypto"><li>Finanzas Digitales</li></Link>
+         {
+            !usuario.premium && ( <Link to={"/home/premium"}><li>Premium</li></Link> )
+         }
         {usuario?.role === "admin" &&
         <Link to="/admin/controlPanel"><li>Panel de admin</li></Link>
         }

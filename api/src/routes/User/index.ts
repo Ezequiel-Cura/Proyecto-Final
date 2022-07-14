@@ -17,6 +17,8 @@ import review from "./review"
 import supportMessages from "./supportMessages"
 import reportReview from "./reportReview"
 import deleteAccount from "./deleteAccount"
+import stripePremium from "./stripePremium"
+import premiumSuccess from "./premiumSuccess"
 
 router.use('/login', login)
 router.use('/register', register)
@@ -35,5 +37,7 @@ router.use("/review", review)
 router.use("/supportMessages", supportMessages)
 router.use("/reportReview", reportReview)
 router.use("/deleteAccount", deleteAccount)
+router.use("/premium/buy", stripePremium)
+router.use('/premium/success', premiumSuccess)
 
 export default router
