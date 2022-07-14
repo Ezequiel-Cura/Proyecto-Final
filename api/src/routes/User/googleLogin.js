@@ -34,7 +34,7 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 return res.status(400).send("La contraseña es incorrecta");
             const token = user.generateAuthToken();
             return res.cookie("access_token", token, { maxAge: 7 * 24 * 3600 * 1000, httpOnly: true, sameSite: process.env.NODE_ENV ? "none" : "lax", secure: process.env.NODE_ENV ? true : false })
-                .status(200).send({ role: user.role });
+                .status(200).send({ role: user.role, isBanned: user.banned, isVerified: user.verified });
         }
         const newUser = yield new User_1.default({ firstName: given_name, email, password: passwordHash, avatar: picture, isGoogle: true, verified: true }).save();
         const token = newUser.generateAuthToken();

@@ -28,15 +28,14 @@ export default function SavesDetail() {
     currency: string,
   }
   
-  const detail = usuario.savings.find((el : Save) => el._id === id)
-  const savingsList = renderSavings.filter(sav => sav.description === detail.name)
+  const detail = usuario?.savings.find((el : Save) => el._id === id)
+  const savingsList = renderSavings?.filter(sav => sav.description === detail.name)
 
   useEffect(() => {
     if (status === 'success') {
       dispatch(totalSave(detail))
     }
-  }, [status])
-
+  }, [status])// eslint-disable-line
 
   function handleDeleteAmount(e: any) {
     dispatch(deleteDato(e))
@@ -65,8 +64,8 @@ export default function SavesDetail() {
   }
 
   const form: current = {
-    to: select.to,
-    from: detail.currency,
+    to: select?.to,
+    from: detail?.currency,
     amount: totalSaving
   }
 
@@ -82,7 +81,7 @@ export default function SavesDetail() {
   const [open, setOpen] = useState<boolean>(false);
   
   return (
-    <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
+    (<div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
       <Nav/>
       <div className={style.background}>
         <div className={style.wrapperAll}>
@@ -91,13 +90,13 @@ export default function SavesDetail() {
 
             <div className={style.title}>
               <Link to={"/home/saving/add"}><button></button></Link>
-              <h1>Detalle de "{detail.name}"</h1>
+              <h1>Detalle de "{detail?.name}"</h1>
             </div>
             {
               savingGoalCompleted 
               ?
               <Alert onClose={() => dispatch(setGoalSaves())}>
-                     `¡Felicidades {usuario.firstName}! Llegaste a la meta de tu ahorro {detail.name}`
+                     `¡Felicidades {usuario?.firstName}! Llegaste a la meta de tu ahorro {detail.name}`
               </Alert>
               : <></>
             }
@@ -115,18 +114,18 @@ export default function SavesDetail() {
                   </thead>
                   <tbody>
                     <tr>
-                      <th>{detail.start && detail.start.split("T")[0]}</th>
-                      <th>{detail.currency}</th>
-                      <th>{detail.depositPlace}</th>
+                      <th>{detail?.start && detail?.start.split("T")[0]}</th>
+                      <th>{detail?.currency}</th>
+                      <th>{detail?.depositPlace}</th>
                       <th>$ {totalSaving}</th>
-                      <th>{detail.end && detail.end.split("T")[0]}</th>
+                      <th>{detail?.end && detail?.end.split("T")[0]}</th>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div className={style.tableGoal}>
                 <h3>Meta</h3>
-                <p>$ {detail.goal}</p>
+                <p>$ {detail?.goal}</p>
               </div>
             </div>
           </div>
@@ -144,10 +143,10 @@ export default function SavesDetail() {
                   </thead>
                   <tbody>
                     {
-                      savingsList.length > 0 ? savingsList.map( (save : any) => (
+                      savingsList?.length > 0 ? savingsList?.map( (save : any) => (
                         <tr>
                           <th>{save.date && save.date.split("T")[0]}</th>
-                          <th>+ ${save.amount}</th>
+                          <th>+ ${save.amount && save.amount}</th>
                           <th><button onClick={ () => handleDeleteAmount({frequency: save.frequency, type: 'output', value: save})}></button></th>
                         </tr>
                     ))
@@ -159,7 +158,7 @@ export default function SavesDetail() {
                 </table>
               </div>
 
-              <AddSave name={detail.name}/>
+              <AddSave name={detail?.name}/>
             </div>
 
             <div className={style.divAmountB}>
@@ -179,13 +178,13 @@ export default function SavesDetail() {
                   <button type='submit'>Calcular</button>
                 </form>
                 {
-                  dataCurrency.query
-                  ? <h2>{dataCurrency.query.to}</h2>
-                  : <h2>{detail.currency}</h2>
+                  dataCurrency?.query
+                  ? <h2>{dataCurrency?.query.to}</h2>
+                  : <h2>{detail?.currency}</h2>
                 }
                 {
-                  dataCurrency.result
-                  ? <h3> $ {parseFloat(dataCurrency.result).toFixed(2)}</h3> 
+                  dataCurrency?.result
+                  ? <h3> $ {parseFloat(dataCurrency?.result).toFixed(2)}</h3> 
                   : <h3>$ {totalSaving}</h3>
                 }
               </div>
@@ -209,6 +208,7 @@ export default function SavesDetail() {
 
         </div>
       </div>
-    </div>
+    </div>)
+  
   )
 }

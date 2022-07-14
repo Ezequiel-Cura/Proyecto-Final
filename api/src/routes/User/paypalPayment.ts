@@ -24,8 +24,8 @@ router.get("/create-order", async (req: Request, res: Response) => {
             brand_name: "Proyecto Final Henry",
             landing_page: "LOGIN",
             user_action: "PAY_NOW",
-            return_url: "http://localhost:3001/user/buypremium/capture-order",
-            cancel_url: "http://localhost:3001/user/buypremium/cancel-order",
+            return_url: "https://finanzas-personales-henry.herokuapp.com/user/buypremium/capture-order",
+            cancel_url: "https://finanzas-personales-henry.herokuapp.com/user/buypremium/cancel-order",
         }
     };
 
@@ -47,8 +47,8 @@ router.get("/create-order", async (req: Request, res: Response) => {
         Authorization: `Bearer ${access_token}`
        }
     })
-
-    res.json(response.data)
+    res.redirect(response.data.links[1].href)
+    // res.json(response.data)
   }catch(error){
     return res.status(500).send("Something goes wrong!")
   }
@@ -70,15 +70,12 @@ router.get("/capture-order", async (req: Request, res: Response) => {
     console.log("TOKEN", token, "PAYERID", PayerID)
     console.log(response.data)
     console.log("Capturing Order")
-
-    res.status(200)
+   
+    res.redirect("https://finanzas-personales-henry.herokuapp.com/user/premium/success")
 })
 
 router.get("/cancel-order", async (req: Request, res: Response) => {
-    console.log("Canceled Order")
+    res.redirect("https://proyecto-final-lime-beta.vercel.app/home/premium")
 })
-// router.get("/ping", (req: Request, res: Response) => {
-//     res.send("pong")
-// })
 
 export default router

@@ -16,7 +16,7 @@ export default function Saves() {
     if (status === 'success') {
       dispatch(clearCurrency())
     }
-  }, [status])
+  }, [status])// eslint-disable-line
 
   interface SavingUser {
     _id: string,
@@ -45,7 +45,7 @@ export default function Saves() {
           <div className={style.wrapperAllSaves}>
             {usuario.savings.length > 0
             ? usuario.savings.map( (s: SavingUser) => (
-              <div className={style.wrapperSave}>
+              <div className={style.wrapperSave} key={s._id}>
                 <Link to={`/home/saving/add/${s._id}`}>
                   <div className={style.wrapperSaveLink}>
 
@@ -107,7 +107,7 @@ export default function Saves() {
           </div>
 
           <SavesForm/>
-          
+
         </div>
       </div>
     </div>

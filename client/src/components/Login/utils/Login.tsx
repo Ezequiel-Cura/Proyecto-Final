@@ -24,14 +24,10 @@ export default function Login() {
         document.getElementById("signInDiv"),
         {width: "100%",longtitle: true,theme: 'dark'}
         )
-    },[])
+    },[])// eslint-disable-line
     
     function handleGoogleLogin(response: any) {
     dispatch(googleLogin(response.credential))
-    .then((resp: any)=> {
-        if (resp.error) return
-        window.location.reload()
-        })
     }
 
   return (

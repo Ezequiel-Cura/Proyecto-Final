@@ -8,6 +8,7 @@ import * as Yup from "yup"
 import { googleLogin } from 'redux/reducers/userReducer/actions/googleLogin'
 
 export default function Register() {
+  const dispatch = useAppDispatch()
   const [registeredMsg, setRegisteredMsg] = useState("")
   const SignupSchema = Yup.object().shape({
     firstName: Yup.string().max(30, 'Re largo tu nombre').required("Tu nombre es requerido"),
@@ -15,7 +16,6 @@ export default function Register() {
     email: Yup.string().email('Ese email no existe').required("Tu email es requerido"),
     password: Yup.string().min(4, "Tu contraseña es muy corta").max(30, "wtf re largo eso").required("dale amigo q onda no tenes contraseña")
   });
-  const dispatch = useAppDispatch()
   useEffect(()=>{
     /* global google */
     google.accounts.id.initialize({
@@ -26,11 +26,11 @@ export default function Register() {
         document.getElementById("signInDiv"),
         {width: "100%",longtitle: true,theme: 'dark'}
         )
-    },[])
+    },[])// eslint-disable-line
     
     function handleGoogleLogin(response: any) {
-    dispatch(googleLogin(response.credential))
-    .then(()=> window.location.reload())}
+      dispatch(googleLogin(response.credential))
+    }
   return (
     <div  className={styles.formContainer}>
       <div className={styles.textContainer}>

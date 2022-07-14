@@ -18,6 +18,8 @@ import supportMessages from "./supportMessages"
 import reportReview from "./reportReview"
 import deleteAccount from "./deleteAccount"
 import paypalPayment from "./paypalPayment"
+import stripePremium from "./stripePremium"
+import premiumSuccess from "./premiumSuccess"
 
 router.use('/login', login)
 router.use('/register', register)
@@ -37,5 +39,7 @@ router.use("/supportMessages", supportMessages)
 router.use("/reportReview", reportReview)
 router.use("/deleteAccount", deleteAccount)
 router.use("/buyPremium", paypalPayment)
+router.use("/premium/buy", stripePremium)
+router.use('/premium/success', premiumSuccess)
 
 export default router

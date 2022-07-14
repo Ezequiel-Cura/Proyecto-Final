@@ -78,7 +78,7 @@ const initialState: User = {
     frequency: 'default',
     category: 'default',
     month: '',
-    year: ''
+    year: new Date().getFullYear().toString()
   },
   status: 'idle',
   allInputs: [],
@@ -174,7 +174,7 @@ const reducerSlice = createSlice({
       state.options[payload[0]] = payload[1]
     },
     clearChangeOptions: (state) => {
-      state.options = {frequency: 'default', category: 'default', month: '', year: ''}
+      state.options = {frequency: 'default', category: 'default', month: '', year: date.split('-')[0]}
     },
     filterOutputByOptions: (state) => {
       //Year
@@ -241,6 +241,16 @@ const reducerSlice = createSlice({
       } else {
         state.renderOutputs = state.renderOutputs.filter((entries: Entries) => state.options.category === entries.category)
       }
+    },
+    resetCryptoData: (state) => {
+      state.cryptoData = {}
+    },
+    resetCryptoList: (state) => {
+      state.cryptoList = []
+    },
+    searchCryptoByName: (state, {payload}) => {
+      const filterList = state.cryptoList.filter((crypto: any) => crypto.name.toLowerCase() === payload.toLowerCase())
+      state.cryptoList = filterList
     },
     filterInputByOptions: (state) => {
       
@@ -537,6 +547,9 @@ export const {
   renderInput,
   clearCurrency,
   setGoalSaves,
+  resetCryptoData,
+  resetCryptoList,
+  searchCryptoByName,
   totalOutput,
   totalSave,
   changeOptions,

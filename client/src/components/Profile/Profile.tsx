@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, FormEventHandler, SyntheticEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Nav from 'components/Nav/Nav'
 import styles from "./Profile.module.css"
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
@@ -17,7 +17,7 @@ interface Profile {
     setImageEditor: () => Boolean
 }
 
-export default function Profile() {
+export default function Profile() {// eslint-disable-line
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const {usuario} : any = useAppSelector(({user})=> user)
@@ -196,16 +196,18 @@ export default function Profile() {
                     <button className={styles.edit} type="button" onClick={() => setLastNameDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                     { !lastNameDisabled && <button className={styles.update} onClick={updateLastName}><i className='material-icons'>done</i></button>}
                 </form>
-                <button className={styles.deleteAccountButton} onClick={() => setDeleteAccountPreview(true)}>Eliminar cuenta</button>
                 </div>
                 {!usuario.isGoogle && 
-                    <form className={styles.separator} onSubmit={updatePassword}>
+                <div>
                         <label htmlFor="password" style={{width: "250px"}}>Password: </label>
+                    <form className={styles.separator} onSubmit={updatePassword}>
                         <input id='password' name='password' disabled={passwordDisabled} type='password' placeholder='Tu contraseña nueva' value={state.password || ""} onChange={handleChange} />
                         <button className={styles.edit} type="button" onClick={() => setPasswordDisabled(prev => !prev)}><i className='material-icons'>edit</i></button>
                         { !passwordDisabled && <button className={styles.update} onClick={updatePassword}><i className='material-icons'>done</i></button>}
                     </form>
+                </div>
                 }
+                <button className={styles.deleteAccountButton} onClick={() => setDeleteAccountPreview(true)}>Eliminar cuenta</button>
             </div>
         </div>
     </div>

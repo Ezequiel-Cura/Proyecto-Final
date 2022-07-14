@@ -15,19 +15,20 @@ export default function VerifyEmail() {
                 const {data} = await axios.get(`/user/register/${params.id}/verify/${params.token}`);
                 setMsg(data)
                 setValidUrl(true)
+                localStorage.removeItem("unVerified")
             } catch (err: any) {
                 setMsg(err.response.data)
                 setValidUrl(false)                
             }
         }
         	verifyEmailUrl()
-    }, [])
+    }, [])// eslint-disable-line
 return (
     <div className={styles.wrapper}>
     {
         validUrl ? (
         <div className={styles.container}>
-            <img src={success} alt="success image" className={styles.success_img} />
+            <img src={success} alt="success imagen" className={styles.success_img} />
             <h1>{msg}</h1>
             <Link to="/login" state={{registered: true}}>
                 <button className={styles.btn}>
