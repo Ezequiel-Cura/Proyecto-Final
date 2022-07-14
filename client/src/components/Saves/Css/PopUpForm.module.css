@@ -42,17 +42,17 @@
 }
 
 
-/* .wrapperForm button {
+.wrapperForm .buttonDelete {
     padding: 12px;
     margin-right: 20px;
     border: none;
     border-radius: 20px;
     font-weight: bold;
     color: rgb(255, 255, 255);
-    background-color: #00BFA6;
+    background-color: #e30808;
     transition: background-color .2s;
     cursor: pointer;
-} */
+}
 
 .wrapperForm button:hover {
     background-color: rgb(118, 189, 3) ;

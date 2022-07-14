@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap');
 .wrapperAllCrypto {
     display: grid;
     grid-template-columns: 1fr;
@@ -9,8 +10,9 @@
     grid-template-columns: repeat(3, 1fr);
 
     align-items: center;
-    background-color: #4a41cc;
-    border-radius: 5px;
+    background-color: #2E332C; /* #1E6091; */
+
+    border-radius: 15px;
     padding: 45px;
 }
 .carrouselPretty{
@@ -18,17 +20,133 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+.allCryptoData{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.platformConteiner{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+}
+.platformsData{
+    display: flex;
+    flex-direction: column;
+    margin: 12px;
+    width: 192px;
+    height: 229px;
+    background-color: #00345982;
+    border-radius: 15px;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    padding: 0px 15px;
+}
+.platformsData p{
+    margin: 5px;
+    color: rgb(142, 140, 140);
+}
+.platformsData h4{
+    margin: 2px 5px 5px 5px;
+    display: flex;
+    color: rgb(142, 140, 140);
+    font-weight: 900;
+}
+
+.carrouselButton{
+    padding: 10px;
+}
+
+.infoCrypto{
+    display: flex;
+    background-color: #1E6091;
+    flex-direction: column;
+    padding: 20px 15px;
+    margin: 20px 20px;
+    width: max-content;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    border-radius: 15px;
+}
+.infoCrypto p{
+    margin: 5px;
+    font-weight: bolder;
+    color: rgb(208, 208, 208);
+}
+
+.carrouselButton:hover{
+    background-color: rgba(0, 191, 166, 0.7);
+    border-radius: 100%;
 }
 
 .formCrypto{
     display: flex;
-    margin: 15px 15px 5px 5px;
+    justify-content: flex-end;
+    margin: 0px 20px 10px 0px;
+    font-family: 'Comfortaa'
+}
+.formCrypto form{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 5px;
+    width: 600px;
+    align-content: flex-start;
+    background-color: #00345982;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 8px 0px #121212;
+}
+.formCrypto form input{
+    width: 100px;
+    border-radius: 15px;
+    height: 25px;
+    background-color: #1F1F1F;
+    color: rgb(208, 208, 208);
+    font-weight: bolder;
+}
+.formCrypto form select{
+    height: 35px;
+    border: 0px;
+    border-radius: 5px;
+    background-color: #1F1F1F;
+    color: rgb(208, 208, 208);
+    font-weight: bolder;
+}
+
+.formCrypto form button{
+    width: max-content;
+    padding: 9px 25px ;
+    height: 35px;
+    border-radius: 10px;
+    background-color: #1F1F1F;
+    color: rgb(208, 208, 208);
+    font-weight: bolder;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid #181818;
+}
+.formCrypto form button:hover{
+    background-color: rgb(208, 208, 208);
+    color: #1F1F1F;
 }
 
 .title h1 {
     padding: 20px 20px 15px 20px;
     font-size: 3.0em;
-    margin: 150px 15px 15px 20px;
+    margin: 115px 15px 15px 20px;
     color: #D2D2D2;
     font-weight: lighter;
     width: fit-content;
@@ -93,12 +211,16 @@
 
 .cryptoList {
     list-style: none;
-    background-color: #252525;
-    border-radius: 5px;
+    background-color: #41463f;
+    border-radius: 15px;
     width: 250px;
     height: 330px;
     margin: 15px;
     padding: 15px;
+}
+
+.cryptoList:hover{
+    box-shadow: 5px 5px 8px 0px #121212;
 }
 
 .cryptoList img {
@@ -107,6 +229,26 @@
 
 .cryptoList p {
     margin: 15px;
+}
+.searchCrypto{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    height: 100px;
+    margin: 0px 25px;
+}
+.searchCrypto button{
+    background-color: #00345982;
+    padding: 10px;
+    color: rgb(208, 208, 208);
+    font-weight: bolder;
+    border: 1px #01203682 solid;
+    border-radius: 10px;
+}
+.searchCrypto input{
+    width: 240px;
 }
 
 

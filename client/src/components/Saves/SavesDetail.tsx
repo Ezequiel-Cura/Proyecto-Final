@@ -37,7 +37,6 @@ export default function SavesDetail() {
     }
   }, [status])// eslint-disable-line
 
-
   function handleDeleteAmount(e: any) {
     dispatch(deleteDato(e))
     dispatch(addDato({frequency:"extra", key: "input", value: e.value}))
@@ -82,7 +81,7 @@ export default function SavesDetail() {
   const [open, setOpen] = useState<boolean>(false);
   
   return (
-    <div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
+    (<div style={{display:"grid",gridTemplateColumns:"178px 1fr"}}>
       <Nav/>
       <div className={style.background}>
         <div className={style.wrapperAll}>
@@ -147,7 +146,7 @@ export default function SavesDetail() {
                       savingsList?.length > 0 ? savingsList?.map( (save : any) => (
                         <tr>
                           <th>{save.date && save.date.split("T")[0]}</th>
-                          <th>+ ${save.amount}</th>
+                          <th>+ ${save.amount && save.amount}</th>
                           <th><button onClick={ () => handleDeleteAmount({frequency: save.frequency, type: 'output', value: save})}></button></th>
                         </tr>
                     ))
@@ -209,6 +208,7 @@ export default function SavesDetail() {
 
         </div>
       </div>
-    </div>
+    </div>)
+  
   )
 }
