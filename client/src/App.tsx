@@ -27,6 +27,7 @@ import MessagesPanel from 'components/Admin/MessagesPanel/MessagesPanel';
 import Banned from 'components/Banned/Banned';
 import UnVerified from 'components/UnVerified/UnVerified';
 import { Message } from '@mui/icons-material';
+import { ProductDisplay } from 'components/Premium/ProductDisplay';
 
 function App() {
   const dispatch = useAppDispatch()
@@ -59,13 +60,13 @@ function App() {
 
   return (
     <Routes>
-          {/* {
+          {
           message ? (
       <Message message={message} />
     ) : (
-      <ProductDisplay />
+      <Route path="/premium" element={<ProductDisplay />}/> 
     )
-    } */}
+    }
       <Route path="/" element={<Landing/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
