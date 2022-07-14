@@ -16,7 +16,7 @@ export default function Saves() {
     if (status === 'success') {
       dispatch(clearCurrency())
     }
-  }, [status])
+  }, [status])// eslint-disable-line
 
   interface SavingUser {
     _id: string,
@@ -107,7 +107,7 @@ export default function Saves() {
           </div>
 
           <SavesForm/>
-          
+
         </div>
       </div>
     </div>

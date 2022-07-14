@@ -4,7 +4,7 @@ import PopUp from './PopUp';
 import style from '../Css/SavesDetail.module.css';
 
 export default function AddSave(props : any) {
-  const { name, currentAmount } = props;
+  const { name } = props;
   const [open, setOpen] = useState<boolean>(false);
 return (
     <div>

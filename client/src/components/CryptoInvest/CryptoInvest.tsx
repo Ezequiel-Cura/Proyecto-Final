@@ -7,10 +7,11 @@ import { getCryptoList } from 'redux/reducers/userReducer/actions/getCryptoList'
 import styles from './Crypto.module.css'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { resetCryptoData, resetCryptoList, searchCryptoByName } from 'redux/reducers/userReducer/userReducer';
 
 export default function CryptoInvest() {
 
-  const { cryptoList, status, cryptoData, usuario } = useAppSelector(state => state.user);
+  const { cryptoList, status, cryptoData, usuario } = useAppSelector(state => state.user);// eslint-disable-line
 
   const dispatch = useDispatch()
 
@@ -54,22 +55,14 @@ export default function CryptoInvest() {
     amount: 0
   })
 
-  interface CryptoConvertData {
-    ask: number,
-    totalAsk: number,
-    bid: number,
-    totalBid: number,
-    time: number
-  }
-
   // Validate
 
   const [valMsg, setMsg] = useState('')
   const [valDisable, setDisabled] = useState(true)
 
   useEffect(() => {
-    !form.id ? setMsg('Proporcione la moneda que quiere convertir') :
-      !form.to ? setMsg('Proporcione la moneda a la cual convertirá') :
+    !form.id || form.id === 'default' ? setMsg('Proporcione la moneda que quiere convertir') :
+      !form.to || form.id === 'default' ? setMsg('Proporcione la moneda a la cual convertirá') :
         !form.amount ? setMsg('Proporcione un monto') :
           setMsg('')
 
@@ -78,8 +71,6 @@ export default function CryptoInvest() {
   useEffect(() => {
     setDisabled(valMsg === '' ? false : true)
   }, [valMsg])
-
-  // SEARCH CRIPTO
 
   interface Crypto {
     name: string,
@@ -101,13 +92,44 @@ export default function CryptoInvest() {
   useEffect(() => {
     if (status === 'success') {
       dispatch(getCryptoList())
-      // .then((json: Crypto[]) => { setData(json); setLoading(false);});
-    }
-  }, [])
+    };
+    const foo = async () => { await resetPage() }; foo();
+  }, [])// eslint-disable-line
+
+  function resetPage(){
+      setButtonForm(false)
+      resetAll()
+      setForm({
+        id: '',
+        to: '',
+        amount: 0
+      })
+      dispatch(resetCryptoData())
+      dispatch(resetCryptoList())
+  }
+
+  // Search by Name
+
+  const [search, setSearch] = useState({
+    name: ''
+  })
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {	
+    setSearch({
+      name: e.target.value
+    })
+  }
+
+  // Convert crypto
+
+  function searchByName(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    e.preventDefault()
+    dispatch(searchCryptoByName(search.name))
+  }
 
   function resetAll() {
-    (document.getElementById("selectTo") as HTMLFormElement).value = '';
-    (document.getElementById("selectCoin") as HTMLFormElement).value = '';
+    (document.getElementById("selectTo") as HTMLFormElement).value = 'default';
+    (document.getElementById("selectCoin") as HTMLFormElement).value = 'default';
   }
 
   function handleSelectSearch(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -118,6 +140,18 @@ export default function CryptoInvest() {
     })
   }
 
+  function refreshForm(e: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    e.preventDefault()
+    setButtonForm(false)
+    resetAll()
+    setForm({
+      id: '',
+      to: '',
+      amount: 0
+    })
+    dispatch(resetCryptoData())
+  }
+
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault()
     setForm({
@@ -125,17 +159,13 @@ export default function CryptoInvest() {
       amount: parseInt(e.target.value)
     })
   }
+  const [buttonForm, setButtonForm] = useState<boolean>(false)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     // if (usuario.premium) {
       dispatch(convertCrypto(form))
-      resetAll()
-      setForm({
-        id: '',
-        to: '',
-        amount: 0
-      })
+      setButtonForm(true)
     // } else {
     //   return alert('Debes ser un usuario premium para poder convertir la moneda.')
     // }
@@ -150,9 +180,22 @@ export default function CryptoInvest() {
           <div className={styles.title}>
             <h1>Finanzas Digitales </h1>
           </div>
+          {/* Search by name */}
+          <div className={styles.searchCrypto}>
+            <label>Encuentra tu criptomoneda</label>
+            <input type="text" 
+            value={search.name}
+            placeholder='Buscar por nombre'
+            onChange={handleChange}
+            /> <button onClick={(e) => searchByName(e)}>Buscar</button>
+          </div>
           {/* Search form */}
           <div className={styles.formCrypto}>
             <form onSubmit={handleSubmit}>
+              {
+                buttonForm &&
+                <button onClick={(e) => refreshForm(e)}>X</button>
+              }
               <select id="selectCoin" name='id' onChange={(e) => handleSelectSearch(e)}>
                 <option value="default">Criptomoneda</option>
                 {cryptoList.length > 0
@@ -161,7 +204,7 @@ export default function CryptoInvest() {
                       <option value={crypto.symbol}>{crypto.name}</option>
                     )
                   })
-                  : <p>Loading...</p>
+                  : <option>Loading...</option>
                 }
               </select>
               <select id="selectTo" name='to' onChange={(e) => handleSelectSearch(e)}>
@@ -186,25 +229,32 @@ export default function CryptoInvest() {
           </div>
           {
             cryptoData !== 'Invalid pair' && Object.keys(cryptoData).length > 0
-              ? <div>
-                <h1>{cryptoData.amount} de {cryptoData.id} a {cryptoData.to}</h1>
+              ? <div className={styles.allCryptoData}>
+                <div className={styles.infoCrypto}>
+                <p>Ask: Precio de compra reportado por el exchange, sin sumar comisiones.</p>
+                        <p>TotalAsk: Precio de compra final incluyendo las comisiones de transferencia y trade.</p>
+                        <p>Bid: Precio de venta reportado por el exchange, sin restar comisiones.</p>
+                        <p>TotalBid: Precio de venta final incluyendo las comisiones de transferencia y trade.</p>
+                </div>
+                  <h1>Plataformas de compra y venta:</h1>
+                <div className={styles.platformConteiner}>
                 {
                   Object.entries(cryptoData.convertData).map(([key, value]: any) => {
                     return (
-                      <span>
-                        <h4>Plataforma de compra y venta: {key}</h4>
-                        <p>Ask: {value.ask} - Precio de compra reportado por el exchange, sin sumar comisiones.</p>
-                        <p>TotalAsk: {value.totalAsk} - Precio de compra final incluyendo las comisiones de transferencia y trade.</p>
-                        <p>Bid: {value.bid} - Precio de venta reportado por el exchange, sin restar comisiones.</p>
-                        <p>TotalBid: {value.totalBid} - Precio de venta final incluyendo las comisiones de transferencia y trade.</p>
-                        <p>Time: {value.time} - Timestamp del momento en que fue actualizada esta cotización.</p>
-                      </span>
+                      <div className={styles.platformsData}>
+                        <h4>{key.toUpperCase()}</h4>
+                        <p>Ask: {value.ask} </p>
+                        <p>TotalAsk: {value.totalAsk}.</p>
+                        <p>Bid: {value.bid} </p>
+                        <p>TotalBid: {value.totalBid}.</p>
+                      </div>
                     )
                   })
                 }
+                </div>
               </div>
               :   // {/* Error Display */}
-              <span id='validateError'>{valMsg}</span>
+              <span id='validateError' className={styles.formCrypto}>{valMsg}</span>
           }
           {/* <div>
         <h2>Criptomonedas</h2>
@@ -218,19 +268,18 @@ export default function CryptoInvest() {
 
     <div>
       <div className={styles.carrouselPretty}>
-<ArrowBackIosNewIcon onClick={(e) => prevPage(e)} cursor='pointer' />
+<ArrowBackIosNewIcon onClick={(e) => prevPage(e)} cursor='pointer' className={styles.carrouselButton}/>
     <ul className={styles.cryptos}>
 
 
 {
   cryptoList.length > 0
-    ? currentCrypto.slice(0, 50).map((crypto: Crypto, i: any) => {
+    ? currentCrypto.slice(0, 50).map((crypto: Crypto, i: number) => {
       return (
         <li className={styles.cryptoList} key={i}>
           <img src={crypto.image.large} alt="Not found" />
           <p>Nombre: {crypto.name}</p>
           <p>Símbolo: {crypto.symbol}</p>
-          <p>Id: {crypto.id}</p>
           <span className={styles.cryptoPrice}>
             <p>Precio actual</p>
             <p>En peso argentino: {crypto.market_data.current_price.ars}</p>
@@ -244,7 +293,7 @@ export default function CryptoInvest() {
     : <li>Loading...</li>
 }
 </ul>
-<ArrowForwardIosIcon onClick={(e) => nextPage(e)} cursor='pointer' />
+<ArrowForwardIosIcon onClick={(e) => nextPage(e)} cursor='pointer' className={styles.carrouselButton} />
 
       </div>
     </div>

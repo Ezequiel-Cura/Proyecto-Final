@@ -5,7 +5,7 @@ import imagePlaceholder from "assets/imagePlaceholder.jpg"
 import { logout } from 'redux/reducers/userReducer/actions/logout'
 
 export default function Nav() {
-const navigate = useNavigate()
+const navigate = useNavigate()// eslint-disable-line
 const dispatch = useAppDispatch()
 const {usuario}: any = useAppSelector(({user}) => user)
 return (
@@ -24,6 +24,9 @@ return (
         <Link to="/home/saving"><li>Ahorros</li></Link>
         <Link to="/home/detalles"><li>Detalles</li></Link>
         <Link to="/home/crypto"><li>Finanzas Digitales</li></Link>
+         {
+            !usuario.premium && ( <Link to={"/home/premium"}><li>Premium</li></Link> )
+         }
         {usuario?.role === "admin" &&
         <Link to="/admin/controlPanel"><li>Panel de admin</li></Link>
         }

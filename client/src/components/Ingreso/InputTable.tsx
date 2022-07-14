@@ -140,7 +140,7 @@ export default function InputTable() {
 			dispatch(renderInput(date))
 			dispatch(totalInput())
 		}
-	}, [status])
+	}, [status])// eslint-disable-line
 
 
 	//-----------------------------------
@@ -158,11 +158,11 @@ export default function InputTable() {
 		date: today
 	});
 
-	const [month, setMonth] = useState<Month>({
+	const [month, setMonth] = useState<Month>({// eslint-disable-line
     nameMonth: '',
   })
 
-  const [year, setYear ] =useState<Year>({
+  const [year, setYear ] =useState<Year>({// eslint-disable-line
     numberYear: ''
   })
   //---------------

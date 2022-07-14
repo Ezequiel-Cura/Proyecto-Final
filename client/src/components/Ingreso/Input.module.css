@@ -1,6 +1,7 @@
 .wrapperAllIngreso{
-    display: grid;
-    grid-template-columns: 178px 1fr;
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
 }
 
 .wrapperText {
@@ -54,10 +55,20 @@
     background-color: rgb(118, 189, 3) ;
 }
 
-.img {
-    position: relative;
-    width: 150px;
+.wrapperImg {
+    width: 80%;
+    height: 80%;
+}
+
+.wrapperImg .img {
+    width: 75%;
     padding: 20px;
+}
+
+.wrapperImg2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
