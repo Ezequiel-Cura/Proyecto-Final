@@ -4,7 +4,7 @@ import styles from "./Novedades.module.css";
 import axios from "axios";
 
 export default function Novedades() {
-  const hola = "hola"
+  
   const [news, setNews] = useState([]);
   
   useEffect(() => {
