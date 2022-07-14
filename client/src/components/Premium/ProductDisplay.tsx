@@ -1,5 +1,8 @@
 import Nav from 'components/Nav/Nav';
 import React from 'react';
+import axios from 'axios'
+
+
 
 export const ProductDisplay = () => (
     <section style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
@@ -14,7 +17,7 @@ export const ProductDisplay = () => (
                 <h5>$20.00</h5>
             </div>
         </div>
-        <form action="/create-checkout-session" method="POST">
+        <form action='http://localhost:3001/user/premium/buy' method='POST'>
             <button type="submit">Checkout</button>
         </form>
     </section>
