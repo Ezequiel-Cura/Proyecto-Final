@@ -163,12 +163,12 @@ export default function CryptoInvest() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    // if (usuario.premium) {
+    if (usuario.premium) {
       dispatch(convertCrypto(form))
       setButtonForm(true)
-    // } else {
-    //   return alert('Debes ser un usuario premium para poder convertir la moneda.')
-    // }
+    } else {
+      return alert('Debes ser un usuario premium para poder convertir la moneda.')
+    }
   }
 
   return (
