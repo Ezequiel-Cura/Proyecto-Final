@@ -10,9 +10,8 @@ import Reports from "./utils/Reports/Reports"
 export default function ControlPanel() {
 const dispatch = useAppDispatch()
 const {allUsers} = useAppSelector(({admin}) => admin)
-
   useEffect(()=>{
-    dispatch(getAllUsers())
+  dispatch(getAllUsers())
   },[])
 
   return (
