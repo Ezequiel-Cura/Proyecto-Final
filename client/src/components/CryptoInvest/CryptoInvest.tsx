@@ -8,6 +8,7 @@ import styles from './Crypto.module.css'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { resetCryptoData, resetCryptoList, searchCryptoByName } from 'redux/reducers/userReducer/userReducer';
+import numeral from 'numeral';
 
 export default function CryptoInvest() {
 
@@ -163,12 +164,12 @@ export default function CryptoInvest() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (usuario.premium) {
+    // if (usuario.premium) {
       dispatch(convertCrypto(form))
       setButtonForm(true)
-    } else {
-      return alert('Debes ser un usuario premium para poder convertir la moneda.')
-    }
+    // } else {
+    //   return alert('Debes ser un usuario premium para poder convertir la moneda.')
+    // }
   }
 
   return (
@@ -243,10 +244,10 @@ export default function CryptoInvest() {
                     return (
                       <div className={styles.platformsData}>
                         <h4>{key.toUpperCase()}</h4>
-                        <p>Ask: {value.ask} </p>
-                        <p>TotalAsk: {value.totalAsk}.</p>
-                        <p>Bid: {value.bid} </p>
-                        <p>TotalBid: {value.totalBid}.</p>
+                        <p>Ask: {numeral(value.ask).format('$0,0.00')} </p>
+                        <p>TotalAsk: {numeral(value.totalAsk).format('$0,0.00')}.</p>
+                        <p>Bid: {numeral(value.bid).format('$0,0.00')} </p>
+                        <p>TotalBid: {numeral(value.totalBid).format('$0,0.00')}.</p>
                       </div>
                     )
                   })
@@ -256,15 +257,6 @@ export default function CryptoInvest() {
               :   // {/* Error Display */}
               <span id='validateError' className={styles.formCrypto}>{valMsg}</span>
           }
-          {/* <div>
-        <h2>Criptomonedas</h2>
-        {!loading ? <Pagination {...paginationAttributes} 
-                          onPrevClick={onPrevClick} 
-                          onNextClick={onNextClick}
-                          onPageChange={onPageChange}/>
-        : <div> Loading... </div>
-        }
-    </div> */}
 
     <div>
       <div className={styles.carrouselPretty}>
@@ -281,11 +273,11 @@ export default function CryptoInvest() {
           <p>Nombre: {crypto.name}</p>
           <p>Símbolo: {crypto.symbol}</p>
           <span className={styles.cryptoPrice}>
-            <p>Precio actual</p>
-            <p>En peso argentino: {crypto.market_data.current_price.ars}</p>
-            <p>En dólares: {crypto.market_data.current_price.usd}</p>
-            <p>En euros: {crypto.market_data.current_price.eur}</p>
-            <p>En bitcoin: {crypto.market_data.current_price.btc}</p>
+            <p className={styles.price}>Precio actual</p>
+            <p>En peso argentino: {numeral(crypto.market_data.current_price.ars).format('$0,0.00')}</p>
+            <p>En dólar: {numeral(crypto.market_data.current_price.usd).format('$0,0.00')}</p>
+            <p>En euro: {numeral(crypto.market_data.current_price.eur).format('$0,0.00')}</p>
+            <p>En bitcoin: {numeral(crypto.market_data.current_price.btc).format('$0,0.00')}</p>
           </span>
         </li>
       )
