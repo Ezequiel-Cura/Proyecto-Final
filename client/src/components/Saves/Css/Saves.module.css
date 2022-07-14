@@ -198,3 +198,7 @@
 .divNothing {
     padding: 20px;
 }
+
+.wrapperForm span {
+    color: #DB0808;
+}

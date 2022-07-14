@@ -14,7 +14,6 @@ import { deleteCategory } from "redux/reducers/userReducer/actions/deleteCategor
 export default function ExpensesTable() {
   const { usuario, renderOutputs, totalOutputsMonth, status } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-  console.log({renderOutputs})
 
   const today = `${new Date().getFullYear()}-${((new Date().getMonth() + 1) < 10) ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)}-${(new Date().getDate() < 10) ? '0' + new Date().getDate() : new Date().getDate()}`
   const [date, ] = useState(`${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`)
@@ -302,7 +301,7 @@ export default function ExpensesTable() {
             <option value='default'>Ordenar por categoria</option>
             {
               catFilterArr().map((e: any) => {
-                return (<option value={e}>{e}</option>)
+                return (<option value={e} key={e}>{e}</option>)
               })
             }
             <option value='Ahorros' className={styles.Ahorros}>Ahorros</option>

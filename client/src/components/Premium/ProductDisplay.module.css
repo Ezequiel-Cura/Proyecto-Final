@@ -1,7 +1,56 @@
 .buttonCheckout{
     display: flex;
     flex-direction: column;
-    align-content: flex-start;
-    justify-content: flex-end;
-    align-items: center;
+}
+
+.background {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+	justify-content: center;
+	align-items: center;
+}
+
+.wrapperAll {
+    display: flex;
+    flex-direction: row;
+}
+
+.wrapperText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    margin: 10px;
+}
+
+.wrapperText h1 {
+    font-size: 3.0em;
+    color: #00BFA6;
+    font-weight: lighter;
+}
+
+.wrapperText h3 {
+    padding: 0px 0px 10px 0px;
+}
+
+.wrapperText p {
+    font-weight: lighter;
+    margin: 5px;
+}
+
+.wrapperAll button {
+    padding: 12px;
+    margin-right: 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    background-color: #00BFA6;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+.wrapperAll button:hover {
+    background-color: rgb(118, 189, 3) ;
 }
