@@ -54,3 +54,12 @@
 .wrapperAll button:hover {
     background-color: rgb(118, 189, 3) ;
 }
+
+.premiumButton:disabled{
+    background-color: #1f1f1f;
+    border: 1px aliceblue solid
+    
+}
+.premiumButton:disabled:hover{
+    background-color: #3f3f3f;
+}
