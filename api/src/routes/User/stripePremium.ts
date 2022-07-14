@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 // This is your test secret API key.
-const stripe = require('stripe')('sk_test_51LLEF3JqdJUgQbC1PKIVo0uUmubjgnhvsX0pQuDJUEesap4t2rCtM3Ee7CJ0pP2CfmhVlOE23cMbJWzSRtMKbKE4008A8xCL13');
+const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 const router = Router();  
 
 router.post('/', async (req, res) => {
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `http://localhost:3001/user/premium/success`,
+      success_url: `https://finanzas-personales-henry.herokuapp.com/user/premium/success`,
       cancel_url: `${process.env.FRONT_URL}/home/premium`,
     });
     res.redirect(303, session.url);
