@@ -22,7 +22,12 @@ router.post('/', async (req, res) => {
       cancel_url: `${process.env.FRONT_URL}/home/premium`,
     });
     res.redirect(303, session.url);
-    // res.status(200).send('Stripe Premium')
+    console.log({session}, session.url, 'RESPUESTAA')
+    // if(session.url === `http://localhost:3000/home`) {
+    //   res.status(200).send('Premium')
+    // } else{
+    //   res.status(404).send('No es premium')
+    // }
 
   } catch(err) {
     console.log(err)

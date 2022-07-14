@@ -20,8 +20,9 @@ export const ProductDisplay = () => (
                 <h3>Que beneficios obtienes:</h3>
                 <p>Podras...</p>
                 <p>- Acceder al detalle de tus ingresos y gastos</p>
-                <p>- Tener casillas de ahorros ilimitado</p>
-                <p>- Dejar una reseña de nuestra pagina</p>
+                <p>- Tener casilla de ahorros ilimitado</p>
+                <p>- Obtener el valor de criptomonedas en distintas monedas</p>
+                <p>- Dejar una reseña sobre nuestra página</p>
               </div>
               <form action='http://localhost:3001/user/premium/buy' method='POST'>
                 <button type="submit">Consigue premium!</button>
