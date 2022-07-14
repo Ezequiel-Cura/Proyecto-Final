@@ -15,6 +15,8 @@ declare global {
       FRONT_URL: string,
       FRONT_URL1: string,
       FRONT_URL2: string,
+      PAYPAL_API_CLIENT: string,
+      PAYPAL_API_SECRET: string,
     }
   }
 }
