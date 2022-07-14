@@ -22,13 +22,13 @@ export default function VerifyEmail() {
             }
         }
         	verifyEmailUrl()
-    }, [])
+    }, [])// eslint-disable-line
 return (
     <div className={styles.wrapper}>
     {
         validUrl ? (
         <div className={styles.container}>
-            <img src={success} alt="success image" className={styles.success_img} />
+            <img src={success} alt="success imagen" className={styles.success_img} />
             <h1>{msg}</h1>
             <Link to="/login" state={{registered: true}}>
                 <button className={styles.btn}>

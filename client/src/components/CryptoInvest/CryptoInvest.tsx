@@ -11,7 +11,7 @@ import { resetCryptoData, resetCryptoList, searchCryptoByName } from 'redux/redu
 
 export default function CryptoInvest() {
 
-  const { cryptoList, status, cryptoData, usuario } = useAppSelector(state => state.user);
+  const { cryptoList, status, cryptoData, usuario } = useAppSelector(state => state.user);// eslint-disable-line
 
   const dispatch = useDispatch()
 
@@ -94,7 +94,7 @@ export default function CryptoInvest() {
       dispatch(getCryptoList())
     };
     const foo = async () => { await resetPage() }; foo();
-  }, [])
+  }, [])// eslint-disable-line
 
   function resetPage(){
       setButtonForm(false)
