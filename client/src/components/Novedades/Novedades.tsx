@@ -22,7 +22,7 @@ export default function Novedades() {
     }
     fetchData()
   }, []);
-  console.log("News",news)
+  
   return (
     <div style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
       <Nav />

@@ -69,9 +69,6 @@ router.get("/capture-order", (req, res) => __awaiter(void 0, void 0, void 0, fun
             password: process.env.PAYPAL_API_SECRET
         }
     });
-    console.log("TOKEN", token, "PAYERID", PayerID);
-    console.log(response.data);
-    console.log("Capturing Order");
     res.redirect("https://finanzas-personales-henry.herokuapp.com/user/premium/success");
 }));
 router.get("/cancel-order", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
