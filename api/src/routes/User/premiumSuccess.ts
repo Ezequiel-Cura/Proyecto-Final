@@ -10,9 +10,9 @@ router.get('/', authorization, async (req: Request, res: Response) => {
   const Id = req.userId
   try {    
     await User.findByIdAndUpdate(Id, {$set: {premium: true}})
-    res.redirect(`http://localhost:3000/home/premium`)
+    res.redirect(`/home/premium`)
   } catch(err){
-    res.redirect(400, 'http://localhost:3000/home/premium')
+    res.redirect(400, '/home/premium')
     console.log(err)
   }
 })
