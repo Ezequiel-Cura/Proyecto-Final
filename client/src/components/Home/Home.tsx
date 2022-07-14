@@ -26,13 +26,11 @@ export default function Home() {
       <Nav/>
       <div className={styles.text_wrapper}>
       {
-        usuario.premium ? (
+        usuario.premium && (
           <section>
           <p>Usted es un usuario Premium.</p>
         </section>
-  ) : (
-    <Link to={"/home/premium"}><button>Premium</button></Link>
-  )
+  ) 
   }
         <div className={styles.title_wrapper}>
           <h1>Administra tus finanzas</h1>
