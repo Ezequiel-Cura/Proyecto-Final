@@ -22,10 +22,10 @@ router.get('/', authorization_1.default, (req, res) => __awaiter(void 0, void 0,
     const Id = req.userId;
     try {
         yield User_1.default.findByIdAndUpdate(Id, { $set: { premium: true } });
-        res.redirect(`http://localhost:3000/home/premium`);
+        res.redirect(`${process.env.FRONT_URL}/home/premium`);
     }
     catch (err) {
-        res.redirect(400, 'http://localhost:3000/home/premium');
+        res.redirect(400, `${process.env.FRONT_URL}/home/premium`);
         console.log(err);
     }
 }));
