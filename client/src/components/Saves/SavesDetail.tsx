@@ -35,7 +35,7 @@ export default function SavesDetail() {
     if (status === 'success') {
       dispatch(totalSave(detail))
     }
-  }, [status])
+  }, [status])// eslint-disable-line
 
 
   function handleDeleteAmount(e: any) {

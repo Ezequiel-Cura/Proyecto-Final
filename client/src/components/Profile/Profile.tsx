@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, FormEventHandler, SyntheticEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Nav from 'components/Nav/Nav'
 import styles from "./Profile.module.css"
 import { useAppDispatch, useAppSelector } from 'redux/hooks'
@@ -17,7 +17,7 @@ interface Profile {
     setImageEditor: () => Boolean
 }
 
-export default function Profile() {
+export default function Profile() {// eslint-disable-line
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const {usuario} : any = useAppSelector(({user})=> user)

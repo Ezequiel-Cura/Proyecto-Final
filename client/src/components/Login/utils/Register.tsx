@@ -26,7 +26,7 @@ export default function Register() {
         document.getElementById("signInDiv"),
         {width: "100%",longtitle: true,theme: 'dark'}
         )
-    },[])
+    },[])// eslint-disable-line
     
     function handleGoogleLogin(response: any) {
       dispatch(googleLogin(response.credential))
