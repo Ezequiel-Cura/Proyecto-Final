@@ -1,9 +1,19 @@
+import { CardElement, Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import Nav from 'components/Nav/Nav';
 import React from 'react';
 
-export const ProductDisplay = () => (
+export default function ProductDisplay (){
+
+  const stripePromise = loadStripe('codigo de conexion para el pago')
+
+  return (
     <section style={{ display: "grid", gridTemplateColumns: "178px 1fr" }}>
         <Nav/>
+        <Elements stripe={stripePromise}>
+          <form>
+            <CardElement></CardElement>
+          </form>
         <div className="product">
             <img
                 src="https://i.imgur.com/EHyR2nP.png"
@@ -17,5 +27,9 @@ export const ProductDisplay = () => (
         <form action="/create-checkout-session" method="POST">
             <button type="submit">Checkout</button>
         </form>
+        </Elements>
     </section>
-);
+  
+  )
+
+}
