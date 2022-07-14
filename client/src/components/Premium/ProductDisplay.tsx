@@ -24,7 +24,7 @@ export const ProductDisplay = () => (
                 <p>- Obtener el valor de criptomonedas en distintas monedas</p>
                 <p>- Dejar una reseña sobre nuestra página</p>
               </div>
-              <form action='http://localhost:3001/user/premium/buy' method='POST'>
+              <form action='/user/premium/buy' method='POST'>
                 <button type="submit">Consigue premium!</button>
               </form>
             </div>
