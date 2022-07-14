@@ -26,6 +26,7 @@ import CryptoInvest from 'components/CryptoInvest/CryptoInvest';
 import MessagesPanel from 'components/Admin/MessagesPanel/MessagesPanel';
 import Banned from 'components/Banned/Banned';
 import UnVerified from 'components/UnVerified/UnVerified';
+import {ProductDisplay} from "components/Premium/ProductDisplay";
 
 function App() {
   const dispatch = useAppDispatch()
@@ -56,6 +57,7 @@ function App() {
         <Route path="/home/novedades" element={<Novedades/>} />
         <Route path="/home/crypto/currency" element={<CryptoInvest />} />
         <Route path="/home/crypto" element={<CryptoLanding />} />
+        <Route path="/home/premium" element={<ProductDisplay/>} />
       </Route>
       <Route path='/admin' element={<ProtectedRoute isAllowed={{boolean: localStorage.getItem("admin")}}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>
