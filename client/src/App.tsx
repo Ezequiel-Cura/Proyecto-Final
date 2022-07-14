@@ -8,7 +8,7 @@ import InputTable from 'components/Ingreso/InputTable';
 import Expenses from 'components/Gastos/Expenses';
 import ExpensesTable from 'components/Gastos/ExpensesTable';
 import Detalles from 'components/Detalles/Detalles';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { getUserInfo } from 'redux/reducers/userReducer/actions/getUserInfo';
 import { ProtectedRoute } from 'utils/ProtectedRoutes';
 import LostPage from 'components/LostPage/LostPage';
@@ -27,32 +27,11 @@ import MessagesPanel from 'components/Admin/MessagesPanel/MessagesPanel';
 import Banned from 'components/Banned/Banned';
 import UnVerified from 'components/UnVerified/UnVerified';
 import { Message } from '@mui/icons-material';
-import { ProductDisplay } from 'components/Premium/ProductDisplay';
+import ProductDisplay from 'components/Premium/ProductDisplay';
 
 function App() {
   const dispatch = useAppDispatch()
-    const [message, setMessage] = useState("");
-  
-    useEffect(() => {
-      // Check to see if this is a redirect back from Checkout
-      const query = new URLSearchParams(window.location.search);
-  
-      if (query.get("success")) {
-        setMessage("Order placed! You will receive an email confirmation.");
-      }
-  
-      if (query.get("canceled")) {
-        setMessage(
-          "Order canceled -- continue to shop around and checkout when you're ready."
-        );
-      }
-    }, []);
 
-    const Message = ({ message }: any) => (
-      <section>
-        <p>{message}</p>
-      </section>
-    );
   
   useEffect(() => {
     if (localStorage.getItem("logged")) dispatch(getUserInfo())
@@ -60,13 +39,6 @@ function App() {
 
   return (
     <Routes>
-          {
-          message ? (
-      <Message message={message} />
-    ) : (
-      <Route path="/premium" element={<ProductDisplay />}/> 
-    )
-    }
       <Route path="/" element={<Landing/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/users/:id/verify/:verifyToken" element={<VerifyEmail/>}/>
@@ -87,6 +59,7 @@ function App() {
         <Route path="/home/novedades" element={<Novedades/>} />
         <Route path="/home/crypto/currency" element={<CryptoInvest />} />
         <Route path="/home/crypto" element={<CryptoLanding />} />
+      <Route path="/home/premium" element={<ProductDisplay />}/> 
       </Route>
       <Route path='/admin' element={<ProtectedRoute isAllowed={{boolean: localStorage.getItem("admin")}}/>}>
         <Route path="/admin/controlPanel" element={<ControlPanel/>}/>

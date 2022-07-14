@@ -1,0 +1,7 @@
+.buttonCheckout{
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: flex-end;
+    align-items: center;
+}
