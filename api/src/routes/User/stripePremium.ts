@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `https://finanzas-personales-henry.herokuapp.com/user/premium/success`,
+      success_url: `${process.env.REACT_APP_API}/user/premium/success`,
       cancel_url: `${process.env.FRONT_URL}/home/premium`,
     });
     res.redirect(303, session.url);
