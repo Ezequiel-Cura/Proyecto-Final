@@ -18,11 +18,11 @@ router.post('/', async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `http://localhost:3001/premium/buy?success=true`,
+      success_url: `http://localhost:3000/home`,
       cancel_url: `http://localhost:3000/home/premium`,
     });
-  
     res.redirect(303, session.url);
+    // res.status(200).send('Stripe Premium')
 
   } catch(err) {
     console.log(err)

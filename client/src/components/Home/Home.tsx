@@ -2,7 +2,7 @@ import styles from "./Home.module.css"
 import Nav from "components/Nav/Nav"
 import { Link } from 'react-router-dom'
 import { useAppSelector } from "redux/hooks"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { renderInput, renderOutput, totalInput, totalOutput } from "redux/reducers/userReducer/userReducer"
 import { useDispatch } from "react-redux"
 
@@ -10,6 +10,8 @@ export default function Home() {
   const { status, totalInputsMonth, totalOutputsMonth } = useAppSelector((state)=> state.user)
   const date = `${new Date().getFullYear()}-${String(new Date().getMonth()).length < 2 ? "0" + String(new Date().getMonth() + 1) : String(new Date().getMonth())}`
   const dispatch = useDispatch()
+
+  const { usuario } = useAppSelector( s => s.user)
 
   useEffect(() => {
      if(status === 'success'){ 
@@ -23,6 +25,13 @@ export default function Home() {
     <div className={styles.wrapper}>
       <Nav/>
       <div className={styles.text_wrapper}>
+      {
+        usuario.premium && (
+          <section>
+          <p>Usted es un usuario Premium.</p>
+        </section>
+  ) 
+  }
         <div className={styles.title_wrapper}>
           <h1>Administra tus finanzas</h1>
         </div>
